@@ -24,9 +24,7 @@
 		"api:scripts": "npx tsx scripts/hey-api.ts",
 		"api:gen": "pnpm openapi:gen && pnpm api:scripts && pnpm format:openapi",
 		"    APP    ": "",
-		"build": "react-router build",
-		"dev": "react-router dev",
-		"typecheck": "react-router typegen && tsc"
+		"start:admin": "node scripts/start-admin.js --mode develop"
 	},
 	"engines": {
 		"node": ">=24.13.0 <25.0.0",
@@ -73,6 +71,7 @@
 		"@types/qs": "^6.14.0",
 		"@types/react": "^19.2.7",
 		"@types/react-dom": "^19.2.3",
+		"concurrently": "^9.2.1",
 		"eslint": "9.39.2",
 		"husky": "^9.1.7",
 		"lint-staged": "16.2.7",
