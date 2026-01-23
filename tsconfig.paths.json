@@ -1,0 +1,11 @@
+{
+	"compilerOptions": {
+		"paths": {
+			"~@/i18n": ["./packages/i18n/index.ts"],
+			"~@/authorization": ["./packages/authorization/index.ts"],
+			"~@/api": ["./packages/api/index.ts"],
+			"~@/query-client": ["./packages/query-client/index.ts"],
+			"~@/mobx": ["./packages/mobx/index.ts"]
+		}
+	}
+}
