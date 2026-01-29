@@ -28,4 +28,21 @@ export {
 	ZonesOverviewPanel,
 	type ZonesOverviewPanelProps,
 } from "./dashboard";
+export {
+	ClimateTab,
+	EnergyTab,
+	EquipmentAlertsPanel,
+	EquipmentDetailsTab,
+	EquipmentOverviewHeader,
+	HistoricalCharts,
+	LimitsComparisonPanel,
+	RecentAlerts,
+	RefrigerationTab,
+	type Sensor as EquipmentSensor,
+	SensorChart,
+	SensorReadingsGrid,
+	type SensorStatus,
+	SensorsTable,
+	type SensorType,
+} from "./equipment";
 export { SiteTrendCharts } from "./sites";
