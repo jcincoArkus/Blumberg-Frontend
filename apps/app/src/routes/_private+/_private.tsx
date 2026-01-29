@@ -22,8 +22,10 @@ class PrivateRouteController {
 
 export const privateRouteController = new PrivateRouteController();
 
-export function loader() {
-	return privateRouteController.load();
+export async function clientLoader() {
+	// Continue loading authorization
+	privateRouteController.load();
+	return {};
 }
 
 export default function Private() {

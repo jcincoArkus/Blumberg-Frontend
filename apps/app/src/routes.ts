@@ -1,6 +1,14 @@
-import { type RouteConfig } from "@react-router/dev/routes";
-import { flatRoutes } from "@react-router/fs-routes";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-export default flatRoutes({
-	ignoredRouteFiles: ["**/.*"], // Ignore dotfiles like .DS_Store
-}) satisfies RouteConfig;
+import { remixRoutesOptionAdapter } from "@react-router/remix-routes-option-adapter";
+import { flatRoutes } from "remix-flat-routes";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+export default remixRoutesOptionAdapter((defineRoutes) => {
+	return flatRoutes("routes", defineRoutes, {
+		appDir: __dirname, // Absolute path to src/ directory
+		ignoredRouteFiles: ["**/.*"],
+	});
+});

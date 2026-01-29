@@ -6,7 +6,7 @@ const mode = modeArg ? modeArg.split("=")[1] || args[args.indexOf(modeArg) + 1] 
 
 const commands = [
 	{
-		command: `VITE_DEFAULT_LOCALE="en-XA" react-router dev ./apps/app --config ./apps/app/vite.config.ts --strictPort --mode ${mode}`,
+		command: `VITE_DEFAULT_LOCALE="en-XA" react-router dev ./apps/app --config ./apps/app/vite.config.ts --port 5080 --strictPort --mode ${mode}`,
 		name: "admin",
 		prefixColor: "yellow",
 	},

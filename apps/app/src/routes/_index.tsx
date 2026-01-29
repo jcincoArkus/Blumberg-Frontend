@@ -1,13 +1,25 @@
-import { Welcome } from "../welcome/welcome";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
+
+import { authViewModel } from "~@/view-model";
+
 import type { Route } from "./+types/_index";
 
-export function meta({}: Route.MetaArgs) {
-	return [
-		{ title: "New React Router App" },
-		{ name: "description", content: "Welcome to React Router!" },
-	];
+export async function clientLoader() {
+	return { isAuthenticated: authViewModel.isAuthenticated };
 }
 
-export default function Home() {
-	return <Welcome />;
+export default function Index({ loaderData }: Route.ComponentProps) {
+	const navigate = useNavigate();
+	const { isAuthenticated } = loaderData;
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			navigate("/home", { replace: true });
+		} else {
+			navigate("/login", { replace: true });
+		}
+	}, [isAuthenticated, navigate]);
+
+	return <div>Loading...</div>;
 }
