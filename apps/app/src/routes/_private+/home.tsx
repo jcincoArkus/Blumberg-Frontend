@@ -1,15 +1,14 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
+import type { Domain } from "~@/views";
 import {
 	ActiveAlertsPanel,
 	AIInsightsPanel,
 	DashboardShell,
-	DomainProvider,
 	GlobalStatusBar,
 	KeyMetricsCards,
 	SensorReliabilityPanel,
 	TrendsPanel,
-	useDomain,
 	ZonesOverviewPanel,
 } from "~@/views";
 
@@ -38,8 +37,9 @@ function filterAlertsByDomain(
 	return alertList.filter((a) => !a.sensorId || domainSensorIds.includes(a.sensorId));
 }
 
-function DashboardContent() {
-	const { activeDomain } = useDomain();
+export default function Home() {
+	// Local state for domain - will be replaced with MobX ViewModel
+	const [activeDomain, setActiveDomain] = useState<Domain>("All");
 
 	// Filter data based on active domain
 	const domainSensors = useMemo(() => filterSensorsByDomain(sensors, activeDomain), [activeDomain]);
@@ -142,56 +142,48 @@ function DashboardContent() {
 	);
 
 	return (
-		<div className="space-y-4">
-			<GlobalStatusBar
-				systemStatus={systemStatus}
-				activeAlerts={alertsBySeverity}
-				sensorsOnline={sensorsOnline}
-				totalSensors={domainSensors.length}
-				alerts={activeAlerts}
-			/>
+		<DashboardShell activeDomain={activeDomain} onDomainChange={setActiveDomain}>
+			<div className="space-y-4">
+				<GlobalStatusBar
+					systemStatus={systemStatus}
+					activeAlerts={alertsBySeverity}
+					sensorsOnline={sensorsOnline}
+					totalSensors={domainSensors.length}
+					alerts={activeAlerts}
+				/>
 
-			<div className="space-y-3 p-4 lg:p-6">
-				<div className="grid gap-3 lg:grid-cols-12">
-					<div className="lg:col-span-3">
-						<ActiveAlertsPanel alerts={activeAlerts} />
+				<div className="space-y-3 p-4 lg:p-6">
+					<div className="grid gap-3 lg:grid-cols-12">
+						<div className="lg:col-span-3">
+							<ActiveAlertsPanel alerts={activeAlerts} />
+						</div>
+						<div className="lg:col-span-6 space-y-3">
+							<KeyMetricsCards {...keyMetrics} />
+							<TrendsPanel data={trendData} />
+						</div>
+						<div className="lg:col-span-3">
+							<AIInsightsPanel insights={displayInsights} />
+						</div>
 					</div>
-					<div className="lg:col-span-6 space-y-3">
-						<KeyMetricsCards {...keyMetrics} />
-						<TrendsPanel data={trendData} />
-					</div>
-					<div className="lg:col-span-3">
-						<AIInsightsPanel insights={displayInsights} />
-					</div>
-				</div>
 
-				<div className="grid gap-3 lg:grid-cols-12 items-start">
-					<div className="lg:col-span-9">
-						<ZonesOverviewPanel sites={sites} />
-					</div>
-					<div className="lg:col-span-3">
-						<SensorReliabilityPanel
-							offlineCount={sensorReliability.offline}
-							staleCount={sensorReliability.stale}
-							flappingCount={sensorReliability.flapping}
-							totalSensors={domainSensors.length}
-							offlineSensors={sensorReliability.offlineSensors}
-							staleSensors={sensorReliability.staleSensors}
-							flappingSensors={sensorReliability.flappingSensors}
-						/>
+					<div className="grid gap-3 lg:grid-cols-12 items-start">
+						<div className="lg:col-span-9">
+							<ZonesOverviewPanel sites={sites} />
+						</div>
+						<div className="lg:col-span-3">
+							<SensorReliabilityPanel
+								offlineCount={sensorReliability.offline}
+								staleCount={sensorReliability.stale}
+								flappingCount={sensorReliability.flapping}
+								totalSensors={domainSensors.length}
+								offlineSensors={sensorReliability.offlineSensors}
+								staleSensors={sensorReliability.staleSensors}
+								flappingSensors={sensorReliability.flappingSensors}
+							/>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	);
-}
-
-export default function Home() {
-	return (
-		<DomainProvider>
-			<DashboardShell>
-				<DashboardContent />
-			</DashboardShell>
-		</DomainProvider>
+		</DashboardShell>
 	);
 }

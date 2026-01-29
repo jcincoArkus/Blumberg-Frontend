@@ -21,7 +21,7 @@ import { Link, useLocation } from "react-router";
 
 import { Button, Collapsible, CollapsibleContent, CollapsibleTrigger, cn } from "~@/ui";
 
-import { type Domain, useDomain } from "./DomainContext";
+export type Domain = "All" | "Energy" | "Climate" | "Refrigeration" | "Equipment";
 
 interface NavItem {
 	label: string;
@@ -82,12 +82,26 @@ const domainTabs: Domain[] = ["All", "Energy", "Climate", "Refrigeration", "Equi
 
 interface DashboardShellProps {
 	children: ReactNode;
+	/** Active domain filter - will be controlled by MobX ViewModel */
+	activeDomain?: Domain;
+	/** Callback when domain changes - will be controlled by MobX ViewModel */
+	onDomainChange?: (domain: Domain) => void;
+	/** Whether to show domain tabs in header */
+	showDomainTabs?: boolean;
 }
 
-export function DashboardShell({ children }: DashboardShellProps) {
+export function DashboardShell({
+	children,
+	activeDomain: controlledDomain,
+	onDomainChange,
+	showDomainTabs = true,
+}: DashboardShellProps) {
 	const location = useLocation();
 	const pathname = location.pathname;
-	const { activeDomain, setActiveDomain } = useDomain();
+	// Local state for uncontrolled mode (temporary until MobX integration)
+	const [localDomain, setLocalDomain] = useState<Domain>("All");
+	const activeDomain = controlledDomain ?? localDomain;
+	const setActiveDomain = onDomainChange ?? setLocalDomain;
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
 		if (typeof window !== "undefined") {
@@ -375,23 +389,25 @@ export function DashboardShell({ children }: DashboardShellProps) {
 						</Button>
 
 						{/* Domain Tabs */}
-						<div className="hidden md:flex items-center gap-1">
-							{domainTabs.map((tab) => (
-								<button
-									key={tab}
-									type="button"
-									onClick={() => setActiveDomain(tab)}
-									className={cn(
-										"px-3 py-1.5 text-sm font-medium rounded-md transition-colors",
-										activeDomain === tab
-											? "bg-primary text-primary-foreground"
-											: "text-muted-foreground hover:bg-muted hover:text-foreground",
-									)}
-								>
-									{tab}
-								</button>
-							))}
-						</div>
+						{showDomainTabs && (
+							<div className="hidden md:flex items-center gap-1">
+								{domainTabs.map((tab) => (
+									<button
+										key={tab}
+										type="button"
+										onClick={() => setActiveDomain(tab)}
+										className={cn(
+											"px-3 py-1.5 text-sm font-medium rounded-md transition-colors",
+											activeDomain === tab
+												? "bg-primary text-primary-foreground"
+												: "text-muted-foreground hover:bg-muted hover:text-foreground",
+										)}
+									>
+										{tab}
+									</button>
+								))}
+							</div>
+						)}
 					</div>
 				</header>
 

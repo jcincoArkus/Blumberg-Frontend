@@ -1,13 +1,14 @@
-// Context
+// Layout
 
 // Panels
 export { ActiveAlertsPanel } from "./ActiveAlertsPanel";
 export { type AgentInsight, AIInsightsPanel, type AIInsightsPanelProps } from "./AIInsightsPanel";
-// Layout
-export { DashboardShell } from "./DashboardShell";
-export { type Domain, DomainProvider, useDomain } from "./DomainContext";
+export { DashboardPanel } from "./DashboardPanel";
+export { DashboardShell, type Domain } from "./DashboardShell";
 export { GlobalStatusBar } from "./GlobalStatusBar";
 export { KeyMetricsCards, type KeyMetricsCardsProps } from "./KeyMetricsCards";
+// Components
+export { KPIGauge } from "./KPIGauge";
 export {
 	type Sensor,
 	SensorReliabilityPanel,

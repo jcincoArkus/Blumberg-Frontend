@@ -1,9 +1,12 @@
+export type AlertStatus = "active" | "acknowledged" | "resolved";
+export type AlertSeverity = "critical" | "high" | "medium" | "low";
+
 export interface Alert {
 	id: string;
 	name: string;
 	description: string;
-	severity: "critical" | "high" | "medium" | "low";
-	status: "active" | "acknowledged" | "resolved";
+	severity: AlertSeverity;
+	status: AlertStatus;
 	createdAt: string;
 	acknowledgedAt?: string;
 	resolvedAt?: string;

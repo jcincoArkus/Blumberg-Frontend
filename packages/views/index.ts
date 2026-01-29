@@ -1,22 +1,30 @@
-export { type Alert, AlertDetailsDrawer, type AlertEvent, type AlertNotification } from "./alerts";
+export {
+	type Alert,
+	AlertDetailsDrawer,
+	type AlertEvent,
+	type AlertNotification,
+	type AlertStatus,
+	AlertsStatusTabs,
+	AlertsWorkQueueTable,
+} from "./alerts";
 export {
 	ActiveAlertsPanel,
 	type AgentInsight,
 	AIInsightsPanel,
 	type AIInsightsPanelProps,
+	DashboardPanel,
 	DashboardShell,
 	type Domain,
-	DomainProvider,
 	GlobalStatusBar,
 	KeyMetricsCards,
 	type KeyMetricsCardsProps,
+	KPIGauge,
 	type Sensor,
 	SensorReliabilityPanel,
 	type SensorReliabilityPanelProps,
 	type Site,
 	TrendsPanel,
 	type TrendsPanelProps,
-	useDomain,
 	ZonesOverviewPanel,
 	type ZonesOverviewPanelProps,
 } from "./dashboard";

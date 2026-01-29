@@ -26,4 +26,15 @@ export {
 	DrawerTrigger,
 } from "./Drawer";
 export { Separator } from "./Separator";
+export {
+	Table,
+	TableBody,
+	TableCaption,
+	TableCell,
+	TableFooter,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "./Table";
+export { Tabs, TabsContent, TabsList, TabsTrigger } from "./Tabs";
 export { cn } from "./utils";

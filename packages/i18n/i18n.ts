@@ -9,15 +9,16 @@ i18n.setMessagesCompiler(compileMessage);
 i18n.load(Language.ENGLISH_US, {});
 i18n.activate(Language.ENGLISH_US);
 
+const configLocale = (import.meta.env.VITE_DEFAULT_LOCALE as Language) ?? Language.ENGLISH_US;
+
 export async function dynamicActivateLocale(locale: Language): Promise<void> {
 	const { messages } = (await import(`./messages/${locale}.json?lingui`)) as { messages: Messages };
-
 	i18n.load(locale, messages);
 	i18n.activate(locale);
 }
 
 class LocaleController {
-	locale: Language = Language.ENGLISH_US;
+	locale: Language = configLocale;
 
 	constructor() {
 		makeAutoObservable(this);
@@ -33,7 +34,7 @@ export const localeController = new LocaleController();
 export function i18nLoader(): void {
 	reaction(
 		() => ({
-			configLocale: Language.PSEUDO,
+			configLocale: configLocale,
 			workspaceLocale: undefined,
 			userLocale: undefined,
 			directLocale: localeController.locale,
