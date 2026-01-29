@@ -8,6 +8,18 @@ export {
 	AlertsWorkQueueTable,
 } from "./alerts";
 export {
+	type AlertRule,
+	AlertRuleEditor,
+	type AlertRuleNotification,
+	type AlertRuleScope,
+	type AlertRuleScopeType,
+	type AlertRuleSeverity,
+	AlertRulesTable,
+	type AlertRuleThresholds,
+	type NotificationChannel,
+	type SensorType as AlertSensorType,
+} from "./config";
+export {
 	ActiveAlertsPanel,
 	type AgentInsight,
 	AIInsightsPanel,

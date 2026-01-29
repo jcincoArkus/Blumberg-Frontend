@@ -1,6 +1,19 @@
 // Utilities
 
 // Components
+export {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogOverlay,
+	AlertDialogPortal,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "./AlertDialog";
 export { Badge, type BadgeProps, badgeVariants } from "./Badge";
 export { Button, type ButtonProps, buttonVariants } from "./Button";
 export {
@@ -12,7 +25,20 @@ export {
 	CardHeader,
 	CardTitle,
 } from "./Card";
+export { Checkbox } from "./Checkbox";
 export { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./Collapsible";
+export {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogOverlay,
+	DialogPortal,
+	DialogTitle,
+	DialogTrigger,
+} from "./Dialog";
 export {
 	Drawer,
 	DrawerClose,
@@ -25,6 +51,20 @@ export {
 	DrawerTitle,
 	DrawerTrigger,
 } from "./Drawer";
+export {
+	DropdownMenu,
+	DropdownMenuCheckboxItem,
+	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuPortal,
+	DropdownMenuRadioGroup,
+	DropdownMenuRadioItem,
+	DropdownMenuSeparator,
+	DropdownMenuShortcut,
+	DropdownMenuTrigger,
+} from "./DropdownMenu";
 export { Input } from "./Input";
 export { Progress } from "./Progress";
 export {
