@@ -8,4 +8,20 @@ export type {
 	AlertRuleThresholds,
 	NotificationChannel,
 	SensorType,
-} from "~@/app/mock-data/alerting";
+} from "../../../apps/app/src/mock-data/alerting";
+// Sensor types
+export type {
+	DataMapping,
+	DataMappingTransform,
+	DataMappingTransformType,
+	Equipment,
+	Sensor,
+	SensorStatus,
+	Site,
+} from "../../../apps/app/src/mock-data/sensors";
+export {
+	getEquipmentBySite,
+	getUnitForSensorType,
+	sensorTypeOptions,
+	transformTypeOptions,
+} from "../../../apps/app/src/mock-data/sensors";
