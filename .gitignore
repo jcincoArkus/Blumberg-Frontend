@@ -2,6 +2,7 @@
 .env
 /node_modules/
 *.log
+.claude/
 
 # React Router
 /**/.react-router/
