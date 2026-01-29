@@ -46,6 +46,16 @@ export {
 	type SensorType,
 } from "./equipment";
 export {
+	ApiIngestionTab,
+	CsvUploadTab,
+	type IngestionError,
+	IngestionHistory,
+	type IngestionRun,
+	IngestionRunDetailsDrawer,
+	type RejectedRow,
+	type SensorReading as IngestionSensorReading,
+} from "./ingestion";
+export {
 	SensorHealthFilters,
 	SensorHealthStats,
 	SensorHealthTable,

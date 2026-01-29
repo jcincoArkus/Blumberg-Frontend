@@ -50,4 +50,5 @@ export {
 	TableRow,
 } from "./Table";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./Tabs";
+export { Textarea } from "./Textarea";
 export { cn } from "./utils";
