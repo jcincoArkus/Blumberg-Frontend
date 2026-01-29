@@ -28,3 +28,4 @@ export {
 	ZonesOverviewPanel,
 	type ZonesOverviewPanelProps,
 } from "./dashboard";
+export { SiteTrendCharts } from "./sites";
