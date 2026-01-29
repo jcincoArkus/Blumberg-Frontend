@@ -11,5 +11,14 @@ export const makeAutoObservable: typeof _internalMakeAutoObservable = (
 	});
 };
 
-export { action, autorun, reaction, runInAction, when } from "mobx";
+export {
+	action,
+	autorun,
+	computed,
+	makeObservable,
+	observable,
+	reaction,
+	runInAction,
+	when,
+} from "mobx";
 export { observer } from "mobx-react-lite";

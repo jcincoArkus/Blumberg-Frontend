@@ -2,6 +2,7 @@
 
 export { postApiV1AuthLoginMutation } from "./@tanstack/react-query.gen";
 export { type CreateClientConfig, client } from "./client.gen";
+export { postApiV1AuthLoginObservedMutation } from "./mobx-mutation.gen";
 export { type Options, postApiV1AuthLogin } from "./sdk.gen";
 export type {
 	AuthResponse,

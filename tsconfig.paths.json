@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"paths": {
+			"~@/config": ["./packages/config/index.ts"],
 			"~@/i18n": ["./packages/i18n/index.ts"],
 			"~@/authorization": ["./packages/authorization/index.ts"],
 			"~@/api": ["./packages/api/index.ts"],

@@ -2,7 +2,7 @@ import path from "node:path";
 
 import { defineConfig } from "@hey-api/openapi-ts";
 
-const decimal = require("./transformers/decimal");
+import { defineConfig as pluginMobxQuery } from "./mobx-query-plugin";
 
 function folderPath(p: string) {
 	return path.relative(process.cwd(), path.resolve(__dirname, p));
@@ -18,8 +18,8 @@ export default defineConfig({
 		path: folderPath("./generated"),
 		case: "camelCase",
 		clean: true,
-		format: "biome",
 	},
+	postProcess: ["biome:format"],
 	plugins: [
 		{
 			name: "@hey-api/typescript",
@@ -28,8 +28,8 @@ export default defineConfig({
 		{
 			name: "@hey-api/transformers",
 			dates: true,
-			transformers: [decimal.Expressions],
-			typeTransformers: [decimal.TypeTransformers],
+			transformers: [],
+			typeTransformers: [],
 		},
 		{
 			name: "@hey-api/sdk",
@@ -58,5 +58,6 @@ export default defineConfig({
 			infiniteQueryKeys: false,
 			infiniteQueryOptions: false,
 		},
+		pluginMobxQuery(),
 	],
 });
