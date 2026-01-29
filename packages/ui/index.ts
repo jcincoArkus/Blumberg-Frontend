@@ -25,6 +25,19 @@ export {
 	DrawerTitle,
 	DrawerTrigger,
 } from "./Drawer";
+export { Progress } from "./Progress";
+export {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectLabel,
+	SelectScrollDownButton,
+	SelectScrollUpButton,
+	SelectSeparator,
+	SelectTrigger,
+	SelectValue,
+} from "./Select";
 export { Separator } from "./Separator";
 export {
 	Table,

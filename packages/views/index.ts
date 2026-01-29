@@ -45,4 +45,9 @@ export {
 	SensorsTable,
 	type SensorType,
 } from "./equipment";
+export {
+	SensorHealthFilters,
+	SensorHealthStats,
+	SensorHealthTable,
+} from "./sensor-health";
 export { SiteTrendCharts } from "./sites";
