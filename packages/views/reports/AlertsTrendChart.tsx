@@ -1,0 +1,47 @@
+import {
+	Bar,
+	BarChart,
+	CartesianGrid,
+	Legend,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from "recharts";
+
+interface AlertsTrendChartProps {
+	data: Array<{
+		date: string;
+		count: number;
+		critical: number;
+		high: number;
+		medium: number;
+		low: number;
+	}>;
+}
+
+export function AlertsTrendChart({ data }: AlertsTrendChartProps) {
+	if (data.length === 0) {
+		return (
+			<div className="flex h-64 items-center justify-center text-muted-foreground">
+				No data available for chart
+			</div>
+		);
+	}
+
+	return (
+		<ResponsiveContainer width="100%" height={400}>
+			<BarChart data={data}>
+				<CartesianGrid strokeDasharray="3 3" />
+				<XAxis dataKey="date" tick={{ fontSize: 12 }} angle={-45} textAnchor="end" height={80} />
+				<YAxis tick={{ fontSize: 12 }} />
+				<Tooltip />
+				<Legend />
+				<Bar dataKey="critical" stackId="severity" fill="#ef4444" name="Critical" />
+				<Bar dataKey="high" stackId="severity" fill="#f97316" name="High" />
+				<Bar dataKey="medium" stackId="severity" fill="#f59e0b" name="Medium" />
+				<Bar dataKey="low" stackId="severity" fill="#3b82f6" name="Low" />
+			</BarChart>
+		</ResponsiveContainer>
+	);
+}

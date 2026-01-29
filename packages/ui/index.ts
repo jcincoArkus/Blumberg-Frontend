@@ -25,6 +25,7 @@ export {
 	DrawerTitle,
 	DrawerTrigger,
 } from "./Drawer";
+export { Input } from "./Input";
 export { Progress } from "./Progress";
 export {
 	Select,
@@ -39,6 +40,7 @@ export {
 	SelectValue,
 } from "./Select";
 export { Separator } from "./Separator";
+export { Switch } from "./Switch";
 export {
 	Table,
 	TableBody,
