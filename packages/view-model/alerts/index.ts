@@ -1,2 +1,2 @@
-// AlertsViewModel exports will be added here
-export {};
+export { AlertsViewModel } from "./AlertsViewModel";
+export { useAlertsViewModel } from "./useAlertsViewModel";
