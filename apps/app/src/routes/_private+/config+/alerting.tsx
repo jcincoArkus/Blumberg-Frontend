@@ -1,8 +1,9 @@
 import { Plus } from "lucide-react";
-import { useState } from "react";
 
+import { observer } from "~@/mobx";
 import { Button } from "~@/ui";
-import { type AlertRule, AlertRuleEditor, AlertRulesTable } from "~@/views";
+import { useAlertRulesViewModel } from "~@/view-model";
+import { AlertRuleEditor, AlertRulesTable } from "~@/views";
 
 import {
 	equipment,
@@ -15,54 +16,12 @@ import {
 	timeOptions,
 } from "../../../mock-data/alerting";
 
-export default function AlertingConfigPage() {
-	const [rules, setRules] = useState<AlertRule[]>(initialRules);
-	const [editingRule, setEditingRule] = useState<AlertRule | null>(null);
-	const [isEditorOpen, setIsEditorOpen] = useState(false);
-
-	const handleCreate = () => {
-		setEditingRule(null);
-		setIsEditorOpen(true);
-	};
-
-	const handleEdit = (rule: AlertRule) => {
-		setEditingRule(rule);
-		setIsEditorOpen(true);
-	};
-
-	const handleSave = (rule: AlertRule) => {
-		if (editingRule) {
-			setRules((prev) => prev.map((r) => (r.id === rule.id ? rule : r)));
-		} else {
-			setRules((prev) => [...prev, rule]);
-		}
-		setIsEditorOpen(false);
-		setEditingRule(null);
-	};
-
-	const handleDelete = (ruleId: string) => {
-		setRules((prev) => prev.filter((r) => r.id !== ruleId));
-	};
-
-	const handleToggle = (ruleId: string, enabled: boolean) => {
-		setRules((prev) =>
-			prev.map((r) =>
-				r.id === ruleId ? { ...r, enabled, updatedAt: new Date().toISOString() } : r,
-			),
-		);
-	};
-
-	const handleDuplicate = (rule: AlertRule) => {
-		const duplicatedRule: AlertRule = {
-			...rule,
-			id: `rule-${Date.now()}`,
-			name: `${rule.name} (Copy)`,
-			enabled: false,
-			createdAt: new Date().toISOString(),
-			updatedAt: new Date().toISOString(),
-		};
-		setRules((prev) => [...prev, duplicatedRule]);
-	};
+/**
+ * Alert Rules Configuration page component.
+ * Uses AlertRulesViewModel for all state management and CRUD operations.
+ */
+const AlertingConfigPage = observer(function AlertingConfigPage() {
+	const vm = useAlertRulesViewModel({ rules: initialRules });
 
 	return (
 		<div className="container py-6">
@@ -73,28 +32,28 @@ export default function AlertingConfigPage() {
 						Configure automatic alerts for sensor readings that exceed defined thresholds.
 					</p>
 				</div>
-				<Button onClick={handleCreate}>
+				<Button onClick={() => vm.openEditor(null)}>
 					<Plus className="mr-2 h-4 w-4" />
 					Create Rule
 				</Button>
 			</div>
 
 			<AlertRulesTable
-				rules={rules}
-				onEdit={handleEdit}
-				onDelete={handleDelete}
-				onToggle={handleToggle}
-				onDuplicate={handleDuplicate}
+				rules={vm.rules}
+				onEdit={vm.openEditor}
+				onDelete={vm.deleteRule}
+				onToggle={vm.toggleRule}
+				onDuplicate={vm.duplicateRule}
 				formatDuration={formatDuration}
 				getScopeLabel={getScopeLabel}
 				getThresholdsSummary={getThresholdsSummary}
 			/>
 
 			<AlertRuleEditor
-				open={isEditorOpen}
-				onOpenChange={setIsEditorOpen}
-				rule={editingRule}
-				onSave={handleSave}
+				open={vm.isEditorOpen}
+				onOpenChange={(open) => !open && vm.closeEditor()}
+				rule={vm.editingRule}
+				onSave={vm.saveRule}
 				sensorTypeOptions={sensorTypeOptions}
 				sites={sites}
 				equipment={equipment}
@@ -102,4 +61,6 @@ export default function AlertingConfigPage() {
 			/>
 		</div>
 	);
-}
+});
+
+export default AlertingConfigPage;
