@@ -1,3 +1,5 @@
+import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 import {
 	Activity,
 	Bell,
@@ -34,51 +36,19 @@ interface NavSection {
 	items: NavItem[];
 }
 
-const dashboardItem: NavItem = {
-	label: "Dashboards",
-	href: "/",
-	icon: <LayoutDashboard className="size-5" />,
+/** Domain tab labels - keys for i18n lookup */
+type DomainKey = "all" | "energy" | "climate" | "refrigeration" | "equipment";
+
+const domainKeys: DomainKey[] = ["all", "energy", "climate", "refrigeration", "equipment"];
+
+/** Map domain keys to Domain type values */
+const domainKeyToValue: Record<DomainKey, Domain> = {
+	all: "All",
+	energy: "Energy",
+	climate: "Climate",
+	refrigeration: "Refrigeration",
+	equipment: "Equipment",
 };
-
-const navSections: NavSection[] = [
-	{
-		section: "OPERATIONS",
-		items: [
-			{
-				label: "Monitoring",
-				href: "/monitoring/sensor-health",
-				icon: <Activity className="size-5" />,
-			},
-			{ label: "Alerts", href: "/alerts", icon: <Bell className="size-5" /> },
-			{ label: "Sites", href: "/sites", icon: <Building2 className="size-5" /> },
-			{
-				label: "Equipment Overview",
-				href: "/equipment-overview",
-				icon: <Server className="size-5" />,
-			},
-		],
-	},
-	{
-		section: "ANALYTICS",
-		items: [
-			{
-				label: "Historical Reports",
-				href: "/reports/history",
-				icon: <FileText className="size-5" />,
-			},
-		],
-	},
-	{
-		section: "PLATFORM",
-		items: [
-			{ label: "Data Ingestion", href: "/ingestion", icon: <Upload className="size-5" /> },
-			{ label: "Configuration", href: "/config/sensors", icon: <Settings className="size-5" /> },
-			{ label: "User Management", href: "/admin/users", icon: <Users className="size-5" /> },
-		],
-	},
-];
-
-const domainTabs: Domain[] = ["All", "Energy", "Climate", "Refrigeration", "Equipment"];
 
 interface DashboardShellProps {
 	children: ReactNode;
@@ -96,8 +66,68 @@ export function DashboardShell({
 	onDomainChange,
 	showDomainTabs = true,
 }: DashboardShellProps) {
+	const { _ } = useLingui();
 	const location = useLocation();
 	const pathname = location.pathname;
+
+	// Navigation items with i18n
+	const dashboardItem: NavItem = {
+		label: _(t`Dashboards`),
+		href: "/",
+		icon: <LayoutDashboard className="size-5" />,
+	};
+
+	const navSections: NavSection[] = [
+		{
+			section: _(t`OPERATIONS`),
+			items: [
+				{
+					label: _(t`Monitoring`),
+					href: "/monitoring/sensor-health",
+					icon: <Activity className="size-5" />,
+				},
+				{ label: _(t`Alerts`), href: "/alerts", icon: <Bell className="size-5" /> },
+				{ label: _(t`Sites`), href: "/sites", icon: <Building2 className="size-5" /> },
+				{
+					label: _(t`Equipment Overview`),
+					href: "/equipment-overview",
+					icon: <Server className="size-5" />,
+				},
+			],
+		},
+		{
+			section: _(t`ANALYTICS`),
+			items: [
+				{
+					label: _(t`Historical Reports`),
+					href: "/reports/history",
+					icon: <FileText className="size-5" />,
+				},
+			],
+		},
+		{
+			section: _(t`PLATFORM`),
+			items: [
+				{ label: _(t`Data Ingestion`), href: "/ingestion", icon: <Upload className="size-5" /> },
+				{
+					label: _(t`Configuration`),
+					href: "/config/sensors",
+					icon: <Settings className="size-5" />,
+				},
+				{ label: _(t`User Management`), href: "/admin/users", icon: <Users className="size-5" /> },
+			],
+		},
+	];
+
+	// Domain tab labels with i18n
+	const domainLabels: Record<DomainKey, string> = {
+		all: _(t`All`),
+		energy: _(t`Energy`),
+		climate: _(t`Climate`),
+		refrigeration: _(t`Refrigeration`),
+		equipment: _(t`Equipment`),
+	};
+
 	// Local state for uncontrolled mode (temporary until MobX integration)
 	const [localDomain, setLocalDomain] = useState<Domain>("All");
 	const activeDomain = controlledDomain ?? localDomain;
@@ -174,27 +204,27 @@ export function DashboardShell({
 							"flex items-center gap-2 transition-opacity flex-1 min-w-0",
 							sidebarCollapsed ? "justify-center flex-1" : "",
 						)}
-						title={sidebarCollapsed ? "Blumberg Supply Chain" : undefined}
+						title={sidebarCollapsed ? _(t`Blumberg Supply Chain`) : undefined}
 					>
-						<div className="flex size-8 items-center justify-center rounded-md bg-primary flex-shrink-0">
+						<div className="flex size-8 items-center justify-center rounded-md bg-primary shrink-0">
 							<Gauge className="size-5 text-primary-foreground" />
 						</div>
 						{!sidebarCollapsed && (
 							<div className="flex flex-col min-w-0">
 								<span className="text-sm font-semibold text-foreground truncate">Blumberg</span>
 								<span className="text-[10px] text-muted-foreground leading-tight truncate">
-									Supply Chain
+									{_(t`Supply Chain`)}
 								</span>
 							</div>
 						)}
 					</Link>
-					<div className="flex items-center gap-0.5 flex-shrink-0">
+					<div className="flex items-center gap-0.5 shrink-0">
 						<Button
 							variant="ghost"
 							size="sm"
 							className="hidden lg:flex h-8 w-8 p-0 hover:bg-muted -mr-1"
 							onClick={toggleSidebar}
-							title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+							title={sidebarCollapsed ? _(t`Expand sidebar`) : _(t`Collapse sidebar`)}
 						>
 							{sidebarCollapsed ? (
 								<ChevronRight className="size-4" />
@@ -207,6 +237,7 @@ export function DashboardShell({
 							size="sm"
 							className="lg:hidden h-8 w-8 p-0"
 							onClick={() => setMobileMenuOpen(false)}
+							aria-label={_(t`Close menu`)}
 						>
 							<X className="size-5" />
 						</Button>
@@ -231,7 +262,7 @@ export function DashboardShell({
 								aria-current={isItemActive(dashboardItem.href) ? "page" : undefined}
 								title={sidebarCollapsed ? dashboardItem.label : undefined}
 							>
-								<span className="flex-shrink-0">{dashboardItem.icon}</span>
+								<span className="shrink-0">{dashboardItem.icon}</span>
 								{!sidebarCollapsed && <span>{dashboardItem.label}</span>}
 							</Link>
 						</li>
@@ -348,11 +379,11 @@ export function DashboardShell({
 				{!sidebarCollapsed && (
 					<div className="border-t border-border p-3">
 						<div className="rounded-md bg-muted p-3">
-							<p className="text-xs font-medium text-foreground">System Status</p>
-							<p className="mt-1 text-xs text-muted-foreground">All systems operational</p>
+							<p className="text-xs font-medium text-foreground">{_(t`System Status`)}</p>
+							<p className="mt-1 text-xs text-muted-foreground">{_(t`All systems operational`)}</p>
 							<div className="mt-2 flex items-center gap-1.5">
 								<span className="size-2 rounded-full bg-emerald-500" />
-								<span className="text-xs text-muted-foreground">34 sensors active</span>
+								<span className="text-xs text-muted-foreground">{_(t`34 sensors active`)}</span>
 							</div>
 						</div>
 					</div>
@@ -362,7 +393,7 @@ export function DashboardShell({
 						<div className="flex items-center justify-center">
 							<span
 								className="size-2 rounded-full bg-emerald-500"
-								title="All systems operational"
+								title={_(t`All systems operational`)}
 							/>
 						</div>
 					</div>
@@ -391,21 +422,24 @@ export function DashboardShell({
 						{/* Domain Tabs */}
 						{showDomainTabs && (
 							<div className="hidden md:flex items-center gap-1">
-								{domainTabs.map((tab) => (
-									<button
-										key={tab}
-										type="button"
-										onClick={() => setActiveDomain(tab)}
-										className={cn(
-											"px-3 py-1.5 text-sm font-medium rounded-md transition-colors",
-											activeDomain === tab
-												? "bg-primary text-primary-foreground"
-												: "text-muted-foreground hover:bg-muted hover:text-foreground",
-										)}
-									>
-										{tab}
-									</button>
-								))}
+								{domainKeys.map((key) => {
+									const domainValue = domainKeyToValue[key];
+									return (
+										<button
+											key={key}
+											type="button"
+											onClick={() => setActiveDomain(domainValue)}
+											className={cn(
+												"px-3 py-1.5 text-sm font-medium rounded-md transition-colors",
+												activeDomain === domainValue
+													? "bg-primary text-primary-foreground"
+													: "text-muted-foreground hover:bg-muted hover:text-foreground",
+											)}
+										>
+											{domainLabels[key]}
+										</button>
+									);
+								})}
 							</div>
 						)}
 					</div>
@@ -423,7 +457,7 @@ export function DashboardShell({
 					onKeyDown={(e) => e.key === "Escape" && setMobileMenuOpen(false)}
 					role="button"
 					tabIndex={0}
-					aria-label="Close menu"
+					aria-label={_(t`Close menu`)}
 				/>
 			)}
 		</div>
