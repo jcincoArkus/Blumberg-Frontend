@@ -21,6 +21,10 @@ const config: LinguiConfig = defineConfig({
 			exclude: ["**/node_modules/**", "**/*.d.ts", "**/dist/**", "**/build/**"],
 		},
 	],
+	macro: {
+		corePackage: ["~@/i18n/macro", "@lingui/core/macro"],
+		jsxPackage: ["~@/i18n/macro", "@lingui/react/macro"],
+	},
 });
 
 export default config;

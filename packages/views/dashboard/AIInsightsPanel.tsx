@@ -1,5 +1,6 @@
 import { AlertTriangle, CheckCircle2, Info } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import { cn } from "~@/ui";
 
 export interface AgentInsight {
@@ -28,9 +29,8 @@ function getInsightIcon(severity: string) {
 
 function formatInsightText(insight: AgentInsight): { finding: string; context: string } {
 	const finding = insight.description;
-	const context = insight.timeHorizon
-		? `Expected within ${insight.timeHorizon}`
-		: "Based on recent patterns";
+	const timeHorizon = insight.timeHorizon;
+	const context = timeHorizon ? t`Expected within ${timeHorizon}` : t`Based on recent patterns`;
 
 	return { finding, context };
 }
@@ -41,11 +41,11 @@ export function AIInsightsPanel({ insights }: AIInsightsPanelProps) {
 	return (
 		<div className="h-full flex flex-col bg-card text-card-foreground rounded-xl border shadow-sm overflow-hidden">
 			<div className="px-3 pt-3 pb-0.5">
-				<h3 className="text-base font-semibold leading-tight">AI Insights</h3>
+				<h3 className="text-base font-semibold leading-tight">{t`AI Insights`}</h3>
 			</div>
 			<div className="flex-1 divide-y overflow-y-auto">
 				{displayInsights.length === 0 ? (
-					<div className="p-3 text-center text-xs text-muted-foreground">No insights available</div>
+					<div className="p-3 text-center text-xs text-muted-foreground">{t`No insights available`}</div>
 				) : (
 					displayInsights.map((insight) => {
 						const Icon = getInsightIcon(insight.severity);

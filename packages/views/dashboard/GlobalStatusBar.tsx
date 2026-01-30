@@ -2,6 +2,7 @@ import { AlertCircle, CheckCircle2, Clock, Radio } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
 
+import { t } from "~@/i18n/macro";
 import { Badge, cn } from "~@/ui";
 
 import { AlertDetailsDrawer } from "../alerts/AlertDetailsDrawer";
@@ -15,23 +16,26 @@ interface GlobalStatusBarProps {
 	alerts?: Alert[];
 }
 
-const statusConfig = {
-	healthy: {
-		icon: CheckCircle2,
-		label: "Healthy",
-		className: "text-emerald-600 bg-emerald-50 border-emerald-200",
-	},
-	degraded: {
-		icon: AlertCircle,
-		label: "Degraded",
-		className: "text-amber-600 bg-amber-50 border-amber-200",
-	},
-	critical: {
-		icon: AlertCircle,
-		label: "Critical",
-		className: "text-red-600 bg-red-50 border-red-200",
-	},
-};
+function getStatusConfig(status: "healthy" | "degraded" | "critical") {
+	const configs = {
+		healthy: {
+			icon: CheckCircle2,
+			label: t`Healthy`,
+			className: "text-emerald-600 bg-emerald-50 border-emerald-200",
+		},
+		degraded: {
+			icon: AlertCircle,
+			label: t`Degraded`,
+			className: "text-amber-600 bg-amber-50 border-amber-200",
+		},
+		critical: {
+			icon: AlertCircle,
+			label: t`Critical`,
+			className: "text-red-600 bg-red-50 border-red-200",
+		},
+	};
+	return configs[status];
+}
 
 export function GlobalStatusBar({
 	systemStatus,
@@ -43,7 +47,7 @@ export function GlobalStatusBar({
 	const [selectedSeverity, setSelectedSeverity] = useState<"high" | "medium" | null>(null);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-	const config = statusConfig[systemStatus];
+	const config = getStatusConfig(systemStatus);
 	const Icon = config.icon;
 	const currentTime = new Date().toLocaleTimeString("en-US", {
 		hour: "2-digit",
@@ -80,22 +84,24 @@ export function GlobalStatusBar({
 						{/* System Status */}
 						<div className="flex items-center gap-2">
 							<Icon className={cn("size-4", config.className.split(" ")[0])} />
-							<span className="font-medium">System: {config.label}</span>
+							<span className="font-medium">
+								{t`System:`} {config.label}
+							</span>
 						</div>
 
 						{/* Active Alerts Summary */}
 						<div className="flex items-center gap-2">
 							<AlertCircle className="size-4 text-muted-foreground" />
-							<span className="text-muted-foreground">Alerts:</span>
+							<span className="text-muted-foreground">{t`Alerts:`}</span>
 							{activeAlerts.high > 0 && (
 								<button
 									type="button"
 									onClick={() => handleSeverityClick("high")}
 									className="cursor-pointer hover:opacity-80 transition-opacity"
-									title="View high severity alerts"
+									title={t`View high severity alerts`}
 								>
 									<Badge variant="destructive" className="h-5 px-1.5 text-xs">
-										{activeAlerts.high} High
+										{t`${activeAlerts.high} High`}
 									</Badge>
 								</button>
 							)}
@@ -104,13 +110,13 @@ export function GlobalStatusBar({
 									type="button"
 									onClick={() => handleSeverityClick("medium")}
 									className="cursor-pointer hover:opacity-80 transition-opacity"
-									title="View medium severity alerts"
+									title={t`View medium severity alerts`}
 								>
 									<Badge
 										variant="outline"
 										className="h-5 px-1.5 text-xs border-amber-500 text-amber-700"
 									>
-										{activeAlerts.medium} Medium
+										{t`${activeAlerts.medium} Medium`}
 									</Badge>
 								</button>
 							)}
@@ -120,12 +126,12 @@ export function GlobalStatusBar({
 										variant="outline"
 										className="h-5 px-1.5 text-xs hover:opacity-80 transition-opacity cursor-pointer"
 									>
-										{activeAlerts.low} Low
+										{t`${activeAlerts.low} Low`}
 									</Badge>
 								</Link>
 							)}
 							{activeAlerts.high === 0 && activeAlerts.medium === 0 && activeAlerts.low === 0 && (
-								<span className="text-muted-foreground">None</span>
+								<span className="text-muted-foreground">{t`None`}</span>
 							)}
 						</div>
 
@@ -140,11 +146,11 @@ export function GlobalStatusBar({
 					<Link
 						to="/monitoring/sensor-health"
 						className="flex items-center gap-2 hover:text-foreground transition-colors cursor-pointer"
-						title="View sensor health details"
+						title={t`View sensor health details`}
 					>
 						<Radio className="size-4 text-muted-foreground" />
 						<span className="text-muted-foreground hover:text-foreground">
-							{sensorsOnline} / {totalSensors} sensors online
+							{t`${sensorsOnline} / ${totalSensors} sensors online`}
 						</span>
 					</Link>
 				</div>

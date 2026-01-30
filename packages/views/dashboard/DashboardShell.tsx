@@ -1,5 +1,3 @@
-import { t } from "@lingui/core/macro";
-import { useLingui } from "@lingui/react";
 import {
 	Activity,
 	Bell,
@@ -21,6 +19,7 @@ import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
 
+import { t } from "~@/i18n/macro";
 import { Button, Collapsible, CollapsibleContent, CollapsibleTrigger, cn } from "~@/ui";
 
 export type Domain = "All" | "Energy" | "Climate" | "Refrigeration" | "Equipment";
@@ -66,66 +65,65 @@ export function DashboardShell({
 	onDomainChange,
 	showDomainTabs = true,
 }: DashboardShellProps) {
-	const { _ } = useLingui();
 	const location = useLocation();
 	const pathname = location.pathname;
 
 	// Navigation items with i18n
 	const dashboardItem: NavItem = {
-		label: _(t`Dashboards`),
+		label: t`Dashboards`,
 		href: "/",
 		icon: <LayoutDashboard className="size-5" />,
 	};
 
 	const navSections: NavSection[] = [
 		{
-			section: _(t`OPERATIONS`),
+			section: t`OPERATIONS`,
 			items: [
 				{
-					label: _(t`Monitoring`),
+					label: t`Monitoring`,
 					href: "/monitoring/sensor-health",
 					icon: <Activity className="size-5" />,
 				},
-				{ label: _(t`Alerts`), href: "/alerts", icon: <Bell className="size-5" /> },
-				{ label: _(t`Sites`), href: "/sites", icon: <Building2 className="size-5" /> },
+				{ label: t`Alerts`, href: "/alerts", icon: <Bell className="size-5" /> },
+				{ label: t`Sites`, href: "/sites", icon: <Building2 className="size-5" /> },
 				{
-					label: _(t`Equipment Overview`),
+					label: t`Equipment Overview`,
 					href: "/equipment-overview",
 					icon: <Server className="size-5" />,
 				},
 			],
 		},
 		{
-			section: _(t`ANALYTICS`),
+			section: t`ANALYTICS`,
 			items: [
 				{
-					label: _(t`Historical Reports`),
+					label: t`Historical Reports`,
 					href: "/reports/history",
 					icon: <FileText className="size-5" />,
 				},
 			],
 		},
 		{
-			section: _(t`PLATFORM`),
+			section: t`PLATFORM`,
 			items: [
-				{ label: _(t`Data Ingestion`), href: "/ingestion", icon: <Upload className="size-5" /> },
+				{ label: t`Data Ingestion`, href: "/ingestion", icon: <Upload className="size-5" /> },
 				{
-					label: _(t`Configuration`),
+					label: t`Configuration`,
 					href: "/config/sensors",
 					icon: <Settings className="size-5" />,
 				},
-				{ label: _(t`User Management`), href: "/admin/users", icon: <Users className="size-5" /> },
+				{ label: t`User Management`, href: "/admin/users", icon: <Users className="size-5" /> },
 			],
 		},
 	];
 
 	// Domain tab labels with i18n
 	const domainLabels: Record<DomainKey, string> = {
-		all: _(t`All`),
-		energy: _(t`Energy`),
-		climate: _(t`Climate`),
-		refrigeration: _(t`Refrigeration`),
-		equipment: _(t`Equipment`),
+		all: t`All`,
+		energy: t`Energy`,
+		climate: t`Climate`,
+		refrigeration: t`Refrigeration`,
+		equipment: t`Equipment`,
 	};
 
 	// Local state for uncontrolled mode (temporary until MobX integration)
@@ -204,7 +202,7 @@ export function DashboardShell({
 							"flex items-center gap-2 transition-opacity flex-1 min-w-0",
 							sidebarCollapsed ? "justify-center flex-1" : "",
 						)}
-						title={sidebarCollapsed ? _(t`Blumberg Supply Chain`) : undefined}
+						title={sidebarCollapsed ? t`Blumberg Supply Chain` : undefined}
 					>
 						<div className="flex size-8 items-center justify-center rounded-md bg-primary shrink-0">
 							<Gauge className="size-5 text-primary-foreground" />
@@ -213,7 +211,7 @@ export function DashboardShell({
 							<div className="flex flex-col min-w-0">
 								<span className="text-sm font-semibold text-foreground truncate">Blumberg</span>
 								<span className="text-[10px] text-muted-foreground leading-tight truncate">
-									{_(t`Supply Chain`)}
+									{t`Supply Chain`}
 								</span>
 							</div>
 						)}
@@ -224,7 +222,7 @@ export function DashboardShell({
 							size="sm"
 							className="hidden lg:flex h-8 w-8 p-0 hover:bg-muted -mr-1"
 							onClick={toggleSidebar}
-							title={sidebarCollapsed ? _(t`Expand sidebar`) : _(t`Collapse sidebar`)}
+							title={sidebarCollapsed ? t`Expand sidebar` : t`Collapse sidebar`}
 						>
 							{sidebarCollapsed ? (
 								<ChevronRight className="size-4" />
@@ -237,7 +235,7 @@ export function DashboardShell({
 							size="sm"
 							className="lg:hidden h-8 w-8 p-0"
 							onClick={() => setMobileMenuOpen(false)}
-							aria-label={_(t`Close menu`)}
+							aria-label={t`Close menu`}
 						>
 							<X className="size-5" />
 						</Button>
@@ -379,11 +377,11 @@ export function DashboardShell({
 				{!sidebarCollapsed && (
 					<div className="border-t border-border p-3">
 						<div className="rounded-md bg-muted p-3">
-							<p className="text-xs font-medium text-foreground">{_(t`System Status`)}</p>
-							<p className="mt-1 text-xs text-muted-foreground">{_(t`All systems operational`)}</p>
+							<p className="text-xs font-medium text-foreground">{t`System Status`}</p>
+							<p className="mt-1 text-xs text-muted-foreground">{t`All systems operational`}</p>
 							<div className="mt-2 flex items-center gap-1.5">
 								<span className="size-2 rounded-full bg-emerald-500" />
-								<span className="text-xs text-muted-foreground">{_(t`34 sensors active`)}</span>
+								<span className="text-xs text-muted-foreground">{t`34 sensors active`}</span>
 							</div>
 						</div>
 					</div>
@@ -393,7 +391,7 @@ export function DashboardShell({
 						<div className="flex items-center justify-center">
 							<span
 								className="size-2 rounded-full bg-emerald-500"
-								title={_(t`All systems operational`)}
+								title={t`All systems operational`}
 							/>
 						</div>
 					</div>
@@ -457,7 +455,7 @@ export function DashboardShell({
 					onKeyDown={(e) => e.key === "Escape" && setMobileMenuOpen(false)}
 					role="button"
 					tabIndex={0}
-					aria-label={_(t`Close menu`)}
+					aria-label={t`Close menu`}
 				/>
 			)}
 		</div>

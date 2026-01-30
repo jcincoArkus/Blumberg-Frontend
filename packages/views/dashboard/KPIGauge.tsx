@@ -1,5 +1,6 @@
 import { Minus, TrendingDown, TrendingUp } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import { cn } from "~@/ui";
 
 interface KPIGaugeProps {
@@ -18,7 +19,7 @@ export function KPIGauge({
 	value,
 	unit = "%",
 	trend,
-	trendLabel = "vs last period",
+	trendLabel = t`vs last period`,
 	status = "neutral",
 	size = "md",
 	maxValue = 100,

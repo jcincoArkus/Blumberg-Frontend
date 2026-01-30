@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Line, LineChart, ResponsiveContainer, Tooltip } from "recharts";
 
+import { t } from "~@/i18n/macro";
 import { Button, Card, CardContent, CardHeader, CardTitle } from "~@/ui";
 
 export interface TrendsPanelProps {
@@ -29,7 +30,7 @@ export function TrendsPanel({ data }: TrendsPanelProps) {
 		<Card>
 			<CardHeader className="pb-2">
 				<div className="flex items-center justify-between">
-					<CardTitle className="text-base font-semibold">Trends</CardTitle>
+					<CardTitle className="text-base font-semibold">{t`Trends`}</CardTitle>
 					<div className="flex gap-1">
 						<Button
 							variant={timeRange === "24h" ? "default" : "ghost"}
@@ -55,7 +56,7 @@ export function TrendsPanel({ data }: TrendsPanelProps) {
 					{/* AQI Sparkline */}
 					<div>
 						<div className="flex items-center justify-between mb-1">
-							<span className="text-xs font-medium text-muted-foreground">AQI</span>
+							<span className="text-xs font-medium text-muted-foreground">{t`AQI`}</span>
 							<span className="text-xs text-muted-foreground">
 								{data.aqi[data.aqi.length - 1]?.value || 0}
 							</span>
@@ -79,7 +80,7 @@ export function TrendsPanel({ data }: TrendsPanelProps) {
 					{/* CO₂ Sparkline */}
 					<div>
 						<div className="flex items-center justify-between mb-1">
-							<span className="text-xs font-medium text-muted-foreground">CO₂</span>
+							<span className="text-xs font-medium text-muted-foreground">{t`CO₂`}</span>
 							<span className="text-xs text-muted-foreground">
 								{data.co2[data.co2.length - 1]?.value || 0} ppm
 							</span>
@@ -103,7 +104,7 @@ export function TrendsPanel({ data }: TrendsPanelProps) {
 					{/* Temperature Sparkline */}
 					<div>
 						<div className="flex items-center justify-between mb-1">
-							<span className="text-xs font-medium text-muted-foreground">Temperature</span>
+							<span className="text-xs font-medium text-muted-foreground">{t`Temperature`}</span>
 							<span className="text-xs text-muted-foreground">
 								{data.temperature[data.temperature.length - 1]?.value || 0}°C
 							</span>

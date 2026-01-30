@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 
+import { t } from "~@/i18n/macro";
 import { cn } from "~@/ui";
 
 export interface Site {
@@ -33,9 +34,9 @@ export function ZonesOverviewPanel({ sites }: ZonesOverviewPanelProps) {
 		<div className="bg-card text-card-foreground rounded-xl border shadow-sm">
 			<div className="px-3 pt-3 pb-0.5">
 				<div className="flex items-center justify-between">
-					<h3 className="text-base font-semibold leading-tight">Locations</h3>
+					<h3 className="text-base font-semibold leading-tight">{t`Locations`}</h3>
 					{locationCount > 6 && (
-						<span className="text-xs text-muted-foreground font-normal">{locationCount} total</span>
+						<span className="text-xs text-muted-foreground font-normal">{t`${locationCount} total`}</span>
 					)}
 				</div>
 			</div>

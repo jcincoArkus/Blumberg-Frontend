@@ -1,5 +1,6 @@
 import { Minus, TrendingDown, TrendingUp } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import { cn } from "~@/ui";
 
 interface MetricData {
@@ -16,7 +17,17 @@ export interface KeyMetricsCardsProps {
 	humidity: MetricData;
 }
 
-function MetricCard({ label, metric }: { label: string; metric: MetricData }) {
+type StatusKey = "stable" | "rising" | "improving";
+
+function MetricCard({
+	label,
+	metric,
+	statusLabel,
+}: {
+	label: string;
+	metric: MetricData;
+	statusLabel: string;
+}) {
 	const trendConfig = {
 		up: { icon: TrendingUp, color: "text-red-600" },
 		down: { icon: TrendingDown, color: "text-emerald-600" },
@@ -45,9 +56,7 @@ function MetricCard({ label, metric }: { label: string; metric: MetricData }) {
 					</div>
 					<div className="flex items-center justify-center gap-1.5 pt-0.5">
 						<TrendIcon className={cn("size-3", trendColor)} />
-						<span className={cn("text-xs font-medium", statusColor)}>
-							{metric.status.charAt(0).toUpperCase() + metric.status.slice(1)}
-						</span>
+						<span className={cn("text-xs font-medium", statusColor)}>{statusLabel}</span>
 					</div>
 				</div>
 			</div>
@@ -56,12 +65,26 @@ function MetricCard({ label, metric }: { label: string; metric: MetricData }) {
 }
 
 export function KeyMetricsCards({ aqi, co2, temperature, humidity }: KeyMetricsCardsProps) {
+	const statusLabels: Record<StatusKey, string> = {
+		stable: t`Stable`,
+		rising: t`Rising`,
+		improving: t`Improving`,
+	};
+
 	return (
 		<div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
-			<MetricCard label="AQI" metric={aqi} />
-			<MetricCard label="CO₂" metric={co2} />
-			<MetricCard label="Temperature" metric={temperature} />
-			<MetricCard label="Humidity" metric={humidity} />
+			<MetricCard label={t`AQI`} metric={aqi} statusLabel={statusLabels[aqi.status]} />
+			<MetricCard label={t`CO₂`} metric={co2} statusLabel={statusLabels[co2.status]} />
+			<MetricCard
+				label={t`Temperature`}
+				metric={temperature}
+				statusLabel={statusLabels[temperature.status]}
+			/>
+			<MetricCard
+				label={t`Humidity`}
+				metric={humidity}
+				statusLabel={statusLabels[humidity.status]}
+			/>
 		</div>
 	);
 }

@@ -2,6 +2,7 @@ import { AlertTriangle, ChevronDown, ChevronRight, Clock, TrendingUp } from "luc
 import { useState } from "react";
 import { Link } from "react-router";
 
+import { t } from "~@/i18n/macro";
 import { Badge, Collapsible, CollapsibleContent, CollapsibleTrigger, cn } from "~@/ui";
 
 export interface Sensor {
@@ -39,7 +40,7 @@ export function SensorReliabilityPanel({
 		<div className="bg-card text-card-foreground rounded-xl border shadow-sm">
 			<div className="px-3 pt-3 pb-0.5">
 				<div className="flex items-center justify-between">
-					<h3 className="text-sm font-semibold leading-tight">Sensor Status</h3>
+					<h3 className="text-sm font-semibold leading-tight">{t`Sensor Status`}</h3>
 					<Badge
 						variant="outline"
 						className={cn(
@@ -56,17 +57,17 @@ export function SensorReliabilityPanel({
 				<div className="flex items-center justify-between gap-2">
 					<div className="flex-1 text-center">
 						<p className="text-lg font-semibold">{offlineCount}</p>
-						<p className="text-xs text-muted-foreground">Offline</p>
+						<p className="text-xs text-muted-foreground">{t`Offline`}</p>
 					</div>
 					<div className="w-px h-8 bg-border" />
 					<div className="flex-1 text-center">
 						<p className="text-lg font-semibold">{staleCount}</p>
-						<p className="text-xs text-muted-foreground">Stale</p>
+						<p className="text-xs text-muted-foreground">{t`Stale`}</p>
 					</div>
 					<div className="w-px h-8 bg-border" />
 					<div className="flex-1 text-center">
 						<p className="text-lg font-semibold">{flappingCount}</p>
-						<p className="text-xs text-muted-foreground">Flapping</p>
+						<p className="text-xs text-muted-foreground">{t`Flapping`}</p>
 					</div>
 				</div>
 
@@ -77,7 +78,7 @@ export function SensorReliabilityPanel({
 							<div>
 								<div className="flex items-center gap-1.5 mb-1">
 									<AlertTriangle className="size-3 text-red-600" />
-									<p className="text-xs font-medium text-red-700">Offline</p>
+									<p className="text-xs font-medium text-red-700">{t`Offline`}</p>
 								</div>
 								<div className="space-y-0.5">
 									{offlineSensors.slice(0, 2).map((sensor) => (
@@ -91,7 +92,7 @@ export function SensorReliabilityPanel({
 									))}
 									{offlineSensors.length > 2 && (
 										<p className="text-xs text-muted-foreground text-center">
-											+{offlineSensors.length - 2} more
+											{t`+${offlineSensors.length - 2} more`}
 										</p>
 									)}
 								</div>
@@ -102,7 +103,7 @@ export function SensorReliabilityPanel({
 							<div>
 								<div className="flex items-center gap-1.5 mb-1">
 									<Clock className="size-3 text-amber-600" />
-									<p className="text-xs font-medium text-amber-700">Stale</p>
+									<p className="text-xs font-medium text-amber-700">{t`Stale`}</p>
 								</div>
 								<div className="space-y-0.5">
 									{staleSensors.slice(0, 2).map((sensor) => (
@@ -116,7 +117,7 @@ export function SensorReliabilityPanel({
 									))}
 									{staleSensors.length > 2 && (
 										<p className="text-xs text-muted-foreground text-center">
-											+{staleSensors.length - 2} more
+											{t`+${staleSensors.length - 2} more`}
 										</p>
 									)}
 								</div>
@@ -132,7 +133,7 @@ export function SensorReliabilityPanel({
 							<div className="flex items-center gap-1.5">
 								<TrendingUp className="size-3 text-orange-600" />
 								<p className="text-xs font-medium text-orange-700">
-									Flapping ({flappingSensors.length})
+									{t`Flapping`} ({flappingSensors.length})
 								</p>
 							</div>
 							{isFlappingOpen ? (
@@ -157,7 +158,7 @@ export function SensorReliabilityPanel({
 										to="/monitoring/sensor-health"
 										className="block text-center text-xs text-primary hover:underline pt-0.5"
 									>
-										View all →
+										{t`View all →`}
 									</Link>
 								)}
 							</div>
@@ -168,7 +169,7 @@ export function SensorReliabilityPanel({
 				{/* All Healthy State */}
 				{!hasIssues && (
 					<div className="text-center py-1">
-						<p className="text-xs text-muted-foreground">{totalSensors} sensors operational</p>
+						<p className="text-xs text-muted-foreground">{t`${totalSensors} sensors operational`}</p>
 					</div>
 				)}
 			</div>
