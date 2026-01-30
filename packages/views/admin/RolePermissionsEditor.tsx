@@ -1,8 +1,16 @@
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, Pencil, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import {
-	Badge,
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
 	Button,
 	Checkbox,
 	Collapsible,
@@ -17,6 +25,8 @@ export interface RolePermissionsEditorProps {
 	role: Role;
 	rolePermissions: RolePermissions;
 	onPermissionsChange?: (roleId: string, categories: PermissionCategory[]) => void;
+	onEditRole?: (role: Role) => void;
+	onDeleteRole?: (roleId: string) => void;
 	readOnly?: boolean;
 }
 
@@ -24,6 +34,8 @@ export function RolePermissionsEditor({
 	role,
 	rolePermissions,
 	onPermissionsChange,
+	onEditRole,
+	onDeleteRole,
 	readOnly = false,
 }: RolePermissionsEditorProps) {
 	const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
@@ -83,6 +95,8 @@ export function RolePermissionsEditor({
 		return { read, write };
 	}, [rolePermissions]);
 
+	const isCustomRole = role.type === "custom";
+
 	return (
 		<div className="space-y-3">
 			{/* Header */}
@@ -91,9 +105,57 @@ export function RolePermissionsEditor({
 					<h3 className="text-base font-semibold">{role.name}</h3>
 					{role.description && <p className="text-xs text-muted-foreground">{role.description}</p>}
 				</div>
-				<div className="flex items-center gap-3 text-xs text-muted-foreground">
-					<span>{totalCounts.read} Read</span>
-					<span>{totalCounts.write} Write</span>
+				<div className="flex items-center gap-3">
+					<div className="flex items-center gap-2 text-xs text-muted-foreground">
+						<span>{totalCounts.read} Read</span>
+						<span>{totalCounts.write} Write</span>
+					</div>
+					{isCustomRole && (
+						<div className="flex items-center gap-1 ml-2">
+							{onEditRole && (
+								<Button
+									variant="ghost"
+									size="icon-sm"
+									onClick={() => onEditRole(role)}
+									aria-label="Edit role"
+								>
+									<Pencil className="size-4" />
+								</Button>
+							)}
+							{onDeleteRole && (
+								<AlertDialog>
+									<AlertDialogTrigger asChild>
+										<Button
+											variant="ghost"
+											size="icon-sm"
+											className="text-destructive hover:text-destructive"
+											aria-label="Delete role"
+										>
+											<Trash2 className="size-4" />
+										</Button>
+									</AlertDialogTrigger>
+									<AlertDialogContent>
+										<AlertDialogHeader>
+											<AlertDialogTitle>Delete Role</AlertDialogTitle>
+											<AlertDialogDescription>
+												Are you sure you want to delete "{role.name}"? This action cannot be undone.
+												Users with this role will lose these permissions.
+											</AlertDialogDescription>
+										</AlertDialogHeader>
+										<AlertDialogFooter>
+											<AlertDialogCancel>Cancel</AlertDialogCancel>
+											<AlertDialogAction
+												onClick={() => onDeleteRole(role.id)}
+												className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+											>
+												Delete
+											</AlertDialogAction>
+										</AlertDialogFooter>
+									</AlertDialogContent>
+								</AlertDialog>
+							)}
+						</div>
+					)}
 				</div>
 			</div>
 

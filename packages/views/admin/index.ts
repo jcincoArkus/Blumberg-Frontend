@@ -1,5 +1,6 @@
 // Admin View Components
 
+export { RoleEditorDialog, type RoleEditorDialogProps } from "./RoleEditorDialog";
 export { RolePermissionsEditor, type RolePermissionsEditorProps } from "./RolePermissionsEditor";
 // New Datadog-style components
 export { RolesList, type RolesListProps } from "./RolesList";

@@ -6,6 +6,8 @@ import {
 	DashboardPanel,
 	DashboardShell,
 	type Role,
+	RoleEditorDialog,
+	type RolePermissions,
 	RolePermissionsEditor,
 	RolesList,
 	UnauthorizedView,
@@ -18,18 +20,22 @@ import {
 import {
 	countUsersByRole,
 	currentUser,
+	rolePermissions as initialRolePermissions,
 	roles as initialRoles,
 	users as initialUsers,
-	rolePermissions,
+	permissionCategories,
 } from "../../../mock-data/users";
 
 export default function AdminUsersPage() {
 	const [users, setUsers] = useState<User[]>(initialUsers);
-	const [roles] = useState<Role[]>(initialRoles);
+	const [roles, setRoles] = useState<Role[]>(initialRoles);
+	const [rolePermissions, setRolePermissions] = useState<RolePermissions[]>(initialRolePermissions);
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
 	const [selectedRole, setSelectedRole] = useState<Role | null>(null);
 	const [isEditorOpen, setIsEditorOpen] = useState(false);
 	const [editingUser, setEditingUser] = useState<User | null>(null);
+	const [isRoleEditorOpen, setIsRoleEditorOpen] = useState(false);
+	const [editingRole, setEditingRole] = useState<Role | null>(null);
 
 	// Check if current user has admin role
 	const hasAdminRole = currentUser.roleIds.includes("role-admin");
@@ -83,16 +89,75 @@ export default function AdminUsersPage() {
 		return rolePermissions.find((rp) => rp.roleId === selectedRole.id) || null;
 	};
 
+	// Role CRUD handlers
+	const handleCreateRole = () => {
+		setEditingRole(null);
+		setIsRoleEditorOpen(true);
+	};
+
+	const handleEditRole = (role: Role) => {
+		setEditingRole(role);
+		setIsRoleEditorOpen(true);
+	};
+
+	const handleSaveRole = (role: Role, permissions: RolePermissions) => {
+		if (editingRole) {
+			// Update existing role
+			setRoles((prev) => prev.map((r) => (r.id === role.id ? role : r)));
+			setRolePermissions((prev) => prev.map((rp) => (rp.roleId === role.id ? permissions : rp)));
+			toast.success("Role updated successfully");
+		} else {
+			// Create new role
+			setRoles((prev) => [...prev, role]);
+			setRolePermissions((prev) => [...prev, permissions]);
+			toast.success("Role created successfully");
+		}
+		setIsRoleEditorOpen(false);
+		setEditingRole(null);
+		// Update selected role if it was edited
+		if (selectedRole?.id === role.id) {
+			setSelectedRole(role);
+		}
+	};
+
+	const handleDeleteRole = (roleId: string) => {
+		// Remove role from users first
+		setUsers((prev) =>
+			prev.map((user) => ({
+				...user,
+				roleIds: user.roleIds.filter((id) => id !== roleId),
+			})),
+		);
+		// Remove role and its permissions
+		setRoles((prev) => prev.filter((r) => r.id !== roleId));
+		setRolePermissions((prev) => prev.filter((rp) => rp.roleId !== roleId));
+		// Clear selection if deleted role was selected
+		if (selectedRole?.id === roleId) {
+			setSelectedRole(null);
+		}
+		toast.success("Role deleted successfully");
+	};
+
+	const getEditingRolePermissions = () => {
+		if (!editingRole) return null;
+		return rolePermissions.find((rp) => rp.roleId === editingRole.id) || null;
+	};
+
+	const handleCancelRoleEditor = () => {
+		setIsRoleEditorOpen(false);
+		setEditingRole(null);
+	};
+
 	return (
-		<DashboardShell title="User Management" description="Manage users, roles, and permissions">
-			<DashboardPanel>
+		<DashboardShell>
+			<DashboardPanel title="User Management" description="Manage users, roles, and permissions">
 				<Tabs defaultValue="users" className="w-full">
 					<TabsList>
 						<TabsTrigger value="users">Users</TabsTrigger>
 						<TabsTrigger value="roles">Roles &amp; Permissions</TabsTrigger>
 					</TabsList>
 
-					<TabsContent value="users" className="mt-6 relative">
+					<TabsContent value="users" className="mt-4 relative">
 						<div className="w-full">
 							<UsersGrid
 								users={users}
@@ -114,22 +179,33 @@ export default function AdminUsersPage() {
 						)}
 					</TabsContent>
 
-					<TabsContent value="roles" className="mt-6">
-						<div className="flex gap-6">
+					<TabsContent value="roles" className="mt-4">
+						<div className="flex gap-6 h-[calc(100vh-200px)]">
 							<div className="w-140 shrink-0">
 								<RolesList
 									roles={roles}
 									getUserCountByRole={countUsersByRole}
 									onSelectRole={handleSelectRole}
-									selectedRoleId={selectedRole?.id}
+									onCreateRole={handleCreateRole}
+									selectedRoleId={isRoleEditorOpen ? undefined : selectedRole?.id}
 								/>
 							</div>
-							<div className="flex-1">
-								{selectedRole && getSelectedRolePermissions() ? (
+							<div className="flex-1 min-h-0">
+								{isRoleEditorOpen ? (
+									<RoleEditorDialog
+										role={editingRole}
+										rolePermissions={getEditingRolePermissions()}
+										defaultCategories={permissionCategories}
+										onCancel={handleCancelRoleEditor}
+										onSave={handleSaveRole}
+									/>
+								) : selectedRole && getSelectedRolePermissions() ? (
 									<RolePermissionsEditor
 										role={selectedRole}
 										rolePermissions={getSelectedRolePermissions()!}
 										readOnly={selectedRole.type === "managed"}
+										onEditRole={handleEditRole}
+										onDeleteRole={handleDeleteRole}
 									/>
 								) : (
 									<div className="flex items-center justify-center h-64 text-muted-foreground text-sm">

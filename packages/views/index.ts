@@ -10,6 +10,9 @@ export {
 	type PermissionItem,
 	// New Datadog-style types
 	type Role,
+	RoleEditorDialog,
+	type RoleEditorDialogProps,
+	type RolePermissions,
 	type RolePermissions as AdminRolePermissions,
 	RolePermissionsEditor,
 	type RolePermissionsEditorProps,
