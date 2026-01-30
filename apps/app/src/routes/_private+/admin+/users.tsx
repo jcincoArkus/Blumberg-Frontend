@@ -1,24 +1,22 @@
-import { useState } from "react";
 import { toast } from "sonner";
 
+import { observer } from "~@/mobx";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
+import { useUsersViewModel } from "~@/view-model";
+import type { Role, RolePermissions, User } from "~@/views";
 import {
 	DashboardPanel,
 	DashboardShell,
-	type Role,
 	RoleEditorDialog,
-	type RolePermissions,
 	RolePermissionsEditor,
 	RolesList,
 	UnauthorizedView,
-	type User,
 	UserEditorNew,
 	UserProfilePanel,
 	UsersGrid,
 } from "~@/views";
 
 import {
-	countUsersByRole,
 	currentUser,
 	rolePermissions as initialRolePermissions,
 	roles as initialRoles,
@@ -26,126 +24,46 @@ import {
 	permissionCategories,
 } from "../../../mock-data/users";
 
-export default function AdminUsersPage() {
-	const [users, setUsers] = useState<User[]>(initialUsers);
-	const [roles, setRoles] = useState<Role[]>(initialRoles);
-	const [rolePermissions, setRolePermissions] = useState<RolePermissions[]>(initialRolePermissions);
-	const [selectedUser, setSelectedUser] = useState<User | null>(null);
-	const [selectedRole, setSelectedRole] = useState<Role | null>(null);
-	const [isEditorOpen, setIsEditorOpen] = useState(false);
-	const [editingUser, setEditingUser] = useState<User | null>(null);
-	const [isRoleEditorOpen, setIsRoleEditorOpen] = useState(false);
-	const [editingRole, setEditingRole] = useState<Role | null>(null);
+/**
+ * Admin Users page component.
+ * Uses UsersViewModel for all state management and CRUD operations.
+ */
+const AdminUsersPage = observer(function AdminUsersPage() {
+	const vm = useUsersViewModel({
+		users: initialUsers,
+		roles: initialRoles,
+		rolePermissions: initialRolePermissions,
+		permissionCategories,
+		currentUser,
+	});
 
 	// Check if current user has admin role
-	const hasAdminRole = currentUser.roleIds.includes("role-admin");
-
-	if (!hasAdminRole) {
+	if (!vm.hasAdminRole) {
 		return (
-			<DashboardShell title="User Management" description="Manage users, roles, and permissions">
-				<DashboardPanel>
+			<DashboardShell>
+				<DashboardPanel title="User Management" description="Manage users, roles, and permissions">
 					<UnauthorizedView />
 				</DashboardPanel>
 			</DashboardShell>
 		);
 	}
 
-	const handleUserClick = (user: User) => {
-		setSelectedUser(user);
-	};
-
-	const handleEditUser = (user: User) => {
-		setEditingUser(user);
-		setIsEditorOpen(true);
-	};
-
-	const handleCreateUser = () => {
-		setEditingUser(null);
-		setIsEditorOpen(true);
-	};
-
+	// Handlers with toast notifications (presentation concern)
 	const handleSaveUser = (user: User) => {
-		if (editingUser) {
-			setUsers((prev) => prev.map((u) => (u.id === user.id ? user : u)));
-			toast.success("User updated successfully");
-		} else {
-			const newUser = { ...user, id: `user-${Date.now()}` };
-			setUsers((prev) => [...prev, newUser]);
-			toast.success("User created successfully");
-		}
-		setIsEditorOpen(false);
-		setEditingUser(null);
-		if (selectedUser?.id === user.id) {
-			setSelectedUser(user);
-		}
-	};
-
-	const handleSelectRole = (role: Role) => {
-		setSelectedRole(role);
-	};
-
-	const getSelectedRolePermissions = () => {
-		if (!selectedRole) return null;
-		return rolePermissions.find((rp) => rp.roleId === selectedRole.id) || null;
-	};
-
-	// Role CRUD handlers
-	const handleCreateRole = () => {
-		setEditingRole(null);
-		setIsRoleEditorOpen(true);
-	};
-
-	const handleEditRole = (role: Role) => {
-		setEditingRole(role);
-		setIsRoleEditorOpen(true);
+		const isUpdate = vm.editingUser !== null;
+		vm.saveUser(user);
+		toast.success(isUpdate ? "User updated successfully" : "User created successfully");
 	};
 
 	const handleSaveRole = (role: Role, permissions: RolePermissions) => {
-		if (editingRole) {
-			// Update existing role
-			setRoles((prev) => prev.map((r) => (r.id === role.id ? role : r)));
-			setRolePermissions((prev) => prev.map((rp) => (rp.roleId === role.id ? permissions : rp)));
-			toast.success("Role updated successfully");
-		} else {
-			// Create new role
-			setRoles((prev) => [...prev, role]);
-			setRolePermissions((prev) => [...prev, permissions]);
-			toast.success("Role created successfully");
-		}
-		setIsRoleEditorOpen(false);
-		setEditingRole(null);
-		// Update selected role if it was edited
-		if (selectedRole?.id === role.id) {
-			setSelectedRole(role);
-		}
+		const isUpdate = vm.editingRole !== null;
+		vm.saveRole(role, permissions);
+		toast.success(isUpdate ? "Role updated successfully" : "Role created successfully");
 	};
 
 	const handleDeleteRole = (roleId: string) => {
-		// Remove role from users first
-		setUsers((prev) =>
-			prev.map((user) => ({
-				...user,
-				roleIds: user.roleIds.filter((id) => id !== roleId),
-			})),
-		);
-		// Remove role and its permissions
-		setRoles((prev) => prev.filter((r) => r.id !== roleId));
-		setRolePermissions((prev) => prev.filter((rp) => rp.roleId !== roleId));
-		// Clear selection if deleted role was selected
-		if (selectedRole?.id === roleId) {
-			setSelectedRole(null);
-		}
+		vm.deleteRole(roleId);
 		toast.success("Role deleted successfully");
-	};
-
-	const getEditingRolePermissions = () => {
-		if (!editingRole) return null;
-		return rolePermissions.find((rp) => rp.roleId === editingRole.id) || null;
-	};
-
-	const handleCancelRoleEditor = () => {
-		setIsRoleEditorOpen(false);
-		setEditingRole(null);
 	};
 
 	return (
@@ -160,20 +78,20 @@ export default function AdminUsersPage() {
 					<TabsContent value="users" className="mt-4 relative">
 						<div className="w-full">
 							<UsersGrid
-								users={users}
-								roles={roles}
-								onUserClick={handleUserClick}
-								onInviteUsers={handleCreateUser}
-								selectedUserId={selectedUser?.id}
+								users={vm.users}
+								roles={vm.roles}
+								onUserClick={vm.selectUser}
+								onInviteUsers={() => vm.openUserEditor(null)}
+								selectedUserId={vm.selectedUser?.id}
 							/>
 						</div>
-						{selectedUser && (
+						{vm.selectedUser && (
 							<div className="fixed top-0 right-0 h-full w-90 bg-background border-l shadow-lg z-50 overflow-y-auto">
 								<UserProfilePanel
-									user={selectedUser}
-									roles={roles}
-									onClose={() => setSelectedUser(null)}
-									onEdit={handleEditUser}
+									user={vm.selectedUser}
+									roles={vm.roles}
+									onClose={() => vm.selectUser(null)}
+									onEdit={vm.openUserEditor}
 								/>
 							</div>
 						)}
@@ -183,28 +101,28 @@ export default function AdminUsersPage() {
 						<div className="flex gap-6 h-[calc(100vh-200px)]">
 							<div className="w-140 shrink-0">
 								<RolesList
-									roles={roles}
-									getUserCountByRole={countUsersByRole}
-									onSelectRole={handleSelectRole}
-									onCreateRole={handleCreateRole}
-									selectedRoleId={isRoleEditorOpen ? undefined : selectedRole?.id}
+									roles={vm.roles}
+									getUserCountByRole={vm.countUsersByRole}
+									onSelectRole={vm.selectRole}
+									onCreateRole={() => vm.openRoleEditor(null)}
+									selectedRoleId={vm.isRoleEditorOpen ? undefined : vm.selectedRole?.id}
 								/>
 							</div>
 							<div className="flex-1 min-h-0">
-								{isRoleEditorOpen ? (
+								{vm.isRoleEditorOpen ? (
 									<RoleEditorDialog
-										role={editingRole}
-										rolePermissions={getEditingRolePermissions()}
-										defaultCategories={permissionCategories}
-										onCancel={handleCancelRoleEditor}
+										role={vm.editingRole}
+										rolePermissions={vm.editingRolePermissions}
+										defaultCategories={vm.permissionCategories}
+										onCancel={vm.closeRoleEditor}
 										onSave={handleSaveRole}
 									/>
-								) : selectedRole && getSelectedRolePermissions() ? (
+								) : vm.selectedRole && vm.selectedRolePermissions ? (
 									<RolePermissionsEditor
-										role={selectedRole}
-										rolePermissions={getSelectedRolePermissions()!}
-										readOnly={selectedRole.type === "managed"}
-										onEditRole={handleEditRole}
+										role={vm.selectedRole}
+										rolePermissions={vm.selectedRolePermissions}
+										readOnly={vm.selectedRole.type === "managed"}
+										onEditRole={vm.openRoleEditor}
 										onDeleteRole={handleDeleteRole}
 									/>
 								) : (
@@ -218,16 +136,18 @@ export default function AdminUsersPage() {
 				</Tabs>
 			</DashboardPanel>
 
-			{isEditorOpen && (
+			{vm.isUserEditorOpen && (
 				<UserEditorNew
-					user={editingUser}
-					roles={roles}
-					open={isEditorOpen}
-					onOpenChange={setIsEditorOpen}
+					user={vm.editingUser}
+					roles={vm.roles}
+					open={vm.isUserEditorOpen}
+					onOpenChange={(open) => !open && vm.closeUserEditor()}
 					onSave={handleSaveUser}
-					currentUserId={currentUser.id}
+					currentUserId={vm.currentUser.id}
 				/>
 			)}
 		</DashboardShell>
 	);
-}
+});
+
+export default AdminUsersPage;
