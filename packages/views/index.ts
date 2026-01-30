@@ -1,3 +1,42 @@
+// Admin - User & Role Management
+export {
+	type LoginMethod,
+	// Legacy types (for backward compatibility)
+	type ModuleName as AdminModuleName,
+	type Permission as AdminPermission,
+	type PermissionAccess,
+	type PermissionAction as AdminPermissionAction,
+	type PermissionCategory,
+	type PermissionItem,
+	// New Datadog-style types
+	type Role,
+	type RolePermissions as AdminRolePermissions,
+	RolePermissionsEditor,
+	type RolePermissionsEditorProps,
+	// New Datadog-style components
+	RolesList,
+	type RolesListProps,
+	// Legacy components (for backward compatibility)
+	RolesPermissionsMatrix,
+	type RolesPermissionsMatrixProps,
+	type RoleType,
+	UnauthorizedView,
+	type User as AdminUser,
+	type User,
+	UserEditor,
+	UserEditorNew,
+	type UserEditorNewProps,
+	type UserEditorProps,
+	UserProfilePanel,
+	type UserProfilePanelProps,
+	type UserRole as AdminUserRole,
+	type UserStatus as AdminUserStatus,
+	type UserStatus,
+	UsersGrid,
+	type UsersGridProps,
+	UsersTable,
+	type UsersTableProps,
+} from "./admin";
 export {
 	type Alert,
 	AlertDetailsDrawer,
