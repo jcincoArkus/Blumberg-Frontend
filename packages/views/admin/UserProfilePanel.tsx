@@ -12,6 +12,7 @@ import {
 	X,
 } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import { Avatar, AvatarFallback, AvatarImage, Badge, Button, cn, Separator } from "~@/ui";
 
 import type { LoginMethod, Role, User, UserStatus } from "./types";
@@ -42,17 +43,17 @@ export function UserProfilePanel({ user, roles, onClose, onEdit }: UserProfilePa
 	const getStatusConfig = (status: UserStatus) => {
 		const configs = {
 			active: {
-				label: "Active",
+				label: t`Active`,
 				className:
 					"bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400",
 			},
 			pending: {
-				label: "Invite Pending",
+				label: t`Invite Pending`,
 				className:
 					"bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400",
 			},
 			deactivated: {
-				label: "Deactivated",
+				label: t`Deactivated`,
 				className:
 					"bg-slate-100 text-slate-500 border-slate-200 dark:bg-slate-800 dark:text-slate-400",
 			},
@@ -62,16 +63,16 @@ export function UserProfilePanel({ user, roles, onClose, onEdit }: UserProfilePa
 
 	const getLoginMethodLabel = (method: LoginMethod): string => {
 		const labels: Record<LoginMethod, string> = {
-			google: "Google",
-			password: "Password",
-			saml: "SAML",
-			sso: "SSO",
+			google: t`Google`,
+			password: t`Password`,
+			saml: t`SAML`,
+			sso: t`SSO`,
 		};
 		return labels[method];
 	};
 
 	const formatDateTime = (dateString?: string): string => {
-		if (!dateString) return "Never";
+		if (!dateString) return t`Never`;
 		const date = new Date(dateString);
 		return date.toLocaleString("en-US", {
 			month: "short",
@@ -83,7 +84,7 @@ export function UserProfilePanel({ user, roles, onClose, onEdit }: UserProfilePa
 	};
 
 	const formatRelativeTime = (dateString?: string): string => {
-		if (!dateString) return "Never";
+		if (!dateString) return t`Never`;
 		const date = new Date(dateString);
 		const now = new Date();
 		const diffMs = now.getTime() - date.getTime();
@@ -91,9 +92,9 @@ export function UserProfilePanel({ user, roles, onClose, onEdit }: UserProfilePa
 		const diffHours = Math.floor(diffMs / 3600000);
 		const diffDays = Math.floor(diffMs / 86400000);
 
-		if (diffMins < 60) return `${diffMins} min ago`;
-		if (diffHours < 24) return `${diffHours} hours ago`;
-		if (diffDays < 30) return `${diffDays} days ago`;
+		if (diffMins < 60) return t`${diffMins} min ago`;
+		if (diffHours < 24) return t`${diffHours} hours ago`;
+		if (diffDays < 30) return t`${diffDays} days ago`;
 		return formatDateTime(dateString);
 	};
 
@@ -104,18 +105,18 @@ export function UserProfilePanel({ user, roles, onClose, onEdit }: UserProfilePa
 		<div className="w-full h-full flex flex-col bg-background border-l">
 			{/* Header */}
 			<div className="flex items-center justify-between p-4 border-b">
-				<h3 className="font-semibold">User Details</h3>
+				<h3 className="font-semibold">{t`User Details`}</h3>
 				<div className="flex items-center gap-2">
 					{onEdit && (
 						<Button variant="ghost" size="sm" onClick={() => onEdit(user)}>
 							<Edit className="size-4 mr-1" aria-hidden="true" />
-							Edit
+							{t`Edit`}
 						</Button>
 					)}
 					{onClose && (
 						<Button variant="ghost" size="icon" className="size-8" onClick={onClose}>
 							<X className="size-4" aria-hidden="true" />
-							<span className="sr-only">Close</span>
+							<span className="sr-only">{t`Close`}</span>
 						</Button>
 					)}
 				</div>
@@ -138,12 +139,12 @@ export function UserProfilePanel({ user, roles, onClose, onEdit }: UserProfilePa
 				</div>
 
 				{/* Contact Section */}
-				<Section title="Contact" icon={<Mail className="size-4" />}>
-					<InfoRow label="Email" value={user.email} />
+				<Section title={t`Contact`} icon={<Mail className="size-4" />}>
+					<InfoRow label={t`Email`} value={user.email} />
 				</Section>
 
 				{/* Roles Section */}
-				<Section title="Roles" icon={<Shield className="size-4" />}>
+				<Section title={t`Roles`} icon={<Shield className="size-4" />}>
 					<div className="flex flex-wrap gap-2">
 						{userRoles.map((role) => (
 							<Badge key={role.id} variant="secondary">
@@ -151,39 +152,39 @@ export function UserProfilePanel({ user, roles, onClose, onEdit }: UserProfilePa
 							</Badge>
 						))}
 						{userRoles.length === 0 && (
-							<span className="text-sm text-muted-foreground">No roles assigned</span>
+							<span className="text-sm text-muted-foreground">{t`No roles assigned`}</span>
 						)}
 					</div>
 				</Section>
 
 				{/* Activity and Login Section */}
-				<Section title="Activity and Login" icon={<LogIn className="size-4" />}>
-					<InfoRow label="Status" value={statusConfig.label} />
-					<InfoRow label="Last Active" value={formatRelativeTime(user.lastActiveAt)} />
-					<InfoRow label="Last Login" value={formatDateTime(user.lastLoginAt)} />
+				<Section title={t`Activity and Login`} icon={<LogIn className="size-4" />}>
+					<InfoRow label={t`Status`} value={statusConfig.label} />
+					<InfoRow label={t`Last Active`} value={formatRelativeTime(user.lastActiveAt)} />
+					<InfoRow label={t`Last Login`} value={formatDateTime(user.lastLoginAt)} />
 					<InfoRow
-						label="Login Methods"
+						label={t`Login Methods`}
 						value={
 							user.loginMethods.length > 0
 								? user.loginMethods.map(getLoginMethodLabel).join(", ")
-								: "None"
+								: t`None`
 						}
 					/>
 					<InfoRow
-						label="MFA"
+						label={t`MFA`}
 						value={
 							<span className={user.mfaEnabled ? "text-emerald-600" : "text-muted-foreground"}>
-								{user.mfaEnabled ? "Enabled" : "Disabled"}
+								{user.mfaEnabled ? t`Enabled` : t`Disabled`}
 							</span>
 						}
 					/>
-					<InfoRow label="Created" value={formatDateTime(user.createdAt)} />
-					<InfoRow label="Modified" value={formatDateTime(user.modifiedAt)} />
+					<InfoRow label={t`Created`} value={formatDateTime(user.createdAt)} />
+					<InfoRow label={t`Modified`} value={formatDateTime(user.modifiedAt)} />
 				</Section>
 
 				{/* Notes Section */}
 				{user.notes && (
-					<Section title="Notes" icon={<UserIcon className="size-4" />}>
+					<Section title={t`Notes`} icon={<UserIcon className="size-4" />}>
 						<p className="text-sm text-muted-foreground">{user.notes}</p>
 					</Section>
 				)}

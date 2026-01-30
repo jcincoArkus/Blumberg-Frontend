@@ -1,6 +1,7 @@
 import { ChevronDown, ChevronRight, Pencil, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { t } from "~@/i18n/macro";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -16,7 +17,6 @@ import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
-	cn,
 } from "~@/ui";
 
 import type { PermissionAccess, PermissionCategory, Role, RolePermissions } from "./types";
@@ -107,8 +107,8 @@ export function RolePermissionsEditor({
 				</div>
 				<div className="flex items-center gap-3">
 					<div className="flex items-center gap-2 text-xs text-muted-foreground">
-						<span>{totalCounts.read} Read</span>
-						<span>{totalCounts.write} Write</span>
+						<span>{t`${totalCounts.read} Read`}</span>
+						<span>{t`${totalCounts.write} Write`}</span>
 					</div>
 					{isCustomRole && (
 						<div className="flex items-center gap-1 ml-2">
@@ -136,19 +136,18 @@ export function RolePermissionsEditor({
 									</AlertDialogTrigger>
 									<AlertDialogContent>
 										<AlertDialogHeader>
-											<AlertDialogTitle>Delete Role</AlertDialogTitle>
+											<AlertDialogTitle>{t`Delete Role`}</AlertDialogTitle>
 											<AlertDialogDescription>
-												Are you sure you want to delete "{role.name}"? This action cannot be undone.
-												Users with this role will lose these permissions.
+												{t`Are you sure you want to delete "${role.name}"? This action cannot be undone. Users with this role will lose these permissions.`}
 											</AlertDialogDescription>
 										</AlertDialogHeader>
 										<AlertDialogFooter>
-											<AlertDialogCancel>Cancel</AlertDialogCancel>
+											<AlertDialogCancel>{t`Cancel`}</AlertDialogCancel>
 											<AlertDialogAction
 												onClick={() => onDeleteRole(role.id)}
 												className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
 											>
-												Delete
+												{t`Delete`}
 											</AlertDialogAction>
 										</AlertDialogFooter>
 									</AlertDialogContent>
@@ -185,9 +184,9 @@ export function RolePermissionsEditor({
 										<span className="text-sm font-medium">{category.name}</span>
 									</div>
 									<div className="flex items-center gap-2 text-xs text-muted-foreground">
-										<span>{counts.readCount} Read</span>
+										<span>{t`${counts.readCount} Read`}</span>
 										<span>-</span>
-										<span>{counts.writeCount} Write</span>
+										<span>{t`${counts.writeCount} Write`}</span>
 									</div>
 								</Button>
 							</CollapsibleTrigger>
@@ -259,9 +258,9 @@ function PermissionRow({ permission, isEditable, onAccessChange }: PermissionRow
 						onCheckedChange={handleReadChange}
 						disabled={!isEditable}
 						className="size-3.5"
-						aria-label={`${permission.name} Read access`}
+						aria-label={t`${permission.name} Read access`}
 					/>
-					<span className="text-[11px] text-muted-foreground">Read</span>
+					<span className="text-[11px] text-muted-foreground">{t`Read`}</span>
 				</label>
 				<label className="flex items-center gap-1.5 cursor-pointer">
 					<Checkbox
@@ -269,9 +268,9 @@ function PermissionRow({ permission, isEditable, onAccessChange }: PermissionRow
 						onCheckedChange={handleWriteChange}
 						disabled={!isEditable}
 						className="size-3.5"
-						aria-label={`${permission.name} Write access`}
+						aria-label={t`${permission.name} Write access`}
 					/>
-					<span className="text-[11px] text-muted-foreground">Write</span>
+					<span className="text-[11px] text-muted-foreground">{t`Write`}</span>
 				</label>
 			</div>
 		</div>

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { t } from "~@/i18n/macro";
 import {
 	Alert,
 	AlertDescription,
@@ -35,13 +36,14 @@ import {
 
 import type { Role, User, UserStatus } from "./types";
 
-const formSchema = z.object({
-	name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-	email: z.string().email({ message: "Invalid email address." }),
-	roleIds: z.array(z.string()).min(1, { message: "At least one role is required." }),
-	isActive: z.boolean(),
-	notes: z.string().optional(),
-});
+const getFormSchema = () =>
+	z.object({
+		name: z.string().min(2, { message: t`Name must be at least 2 characters.` }),
+		email: z.string().email({ message: t`Invalid email address.` }),
+		roleIds: z.array(z.string()).min(1, { message: t`At least one role is required.` }),
+		isActive: z.boolean(),
+		notes: z.string().optional(),
+	});
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -62,6 +64,7 @@ export function UserEditorNew({
 	onSave,
 	currentUserId,
 }: UserEditorNewProps) {
+	const formSchema = getFormSchema();
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -100,11 +103,11 @@ export function UserEditorNew({
 		if (user && user.id === currentUserId) {
 			const hadAdminRole = user.roleIds.includes("role-admin");
 			if (hadAdminRole && !hasAdminRole) {
-				form.setError("roleIds", { message: "You cannot remove your own admin role" });
+				form.setError("roleIds", { message: t`You cannot remove your own admin role` });
 				return;
 			}
 			if (!values.isActive) {
-				form.setError("isActive", { message: "You cannot deactivate your own account" });
+				form.setError("isActive", { message: t`You cannot deactivate your own account` });
 				return;
 			}
 		}
@@ -168,11 +171,11 @@ export function UserEditorNew({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="sm:max-w-[500px]">
+			<DialogContent className="sm:max-w-125">
 				<DialogHeader>
-					<DialogTitle>{user ? "Edit User" : "Create User"}</DialogTitle>
+					<DialogTitle>{user ? t`Edit User` : t`Create User`}</DialogTitle>
 					<DialogDescription>
-						{user ? "Update user information and roles" : "Add a new user to the system"}
+						{user ? t`Update user information and roles` : t`Add a new user to the system`}
 					</DialogDescription>
 				</DialogHeader>
 
@@ -180,7 +183,7 @@ export function UserEditorNew({
 					<Alert className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950">
 						<AlertTriangle className="h-4 w-4 text-amber-600" aria-hidden="true" />
 						<AlertDescription className="text-amber-800 dark:text-amber-200">
-							You are editing your own account. Some options may be restricted.
+							{t`You are editing your own account. Some options may be restricted.`}
 						</AlertDescription>
 					</Alert>
 				)}
@@ -195,9 +198,9 @@ export function UserEditorNew({
 								render={({ field }) => (
 									<FormItem className="flex items-center justify-between rounded-lg border p-3">
 										<div className="space-y-0.5">
-											<FormLabel className="text-base">Status</FormLabel>
+											<FormLabel className="text-base">{t`Status`}</FormLabel>
 											<FormDescription>
-												{field.value ? "User is active" : "User is deactivated"}
+												{field.value ? t`User is active` : t`User is deactivated`}
 											</FormDescription>
 										</div>
 										<FormControl>
@@ -205,7 +208,7 @@ export function UserEditorNew({
 												checked={field.value}
 												onCheckedChange={field.onChange}
 												disabled={isSelfEdit}
-												aria-label="Toggle user status"
+												aria-label={t`Toggle user status`}
 											/>
 										</FormControl>
 									</FormItem>
@@ -218,9 +221,9 @@ export function UserEditorNew({
 							name="name"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Name *</FormLabel>
+									<FormLabel>{t`Name`} *</FormLabel>
 									<FormControl>
-										<Input placeholder="John Doe" {...field} />
+										<Input placeholder={t`John Doe`} {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -232,9 +235,9 @@ export function UserEditorNew({
 							name="email"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Email *</FormLabel>
+									<FormLabel>{t`Email`} *</FormLabel>
 									<FormControl>
-										<Input type="email" placeholder="john.doe@example.com" {...field} />
+										<Input type="email" placeholder={t`john.doe@example.com`} {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -247,7 +250,7 @@ export function UserEditorNew({
 							name="roleIds"
 							render={() => (
 								<FormItem>
-									<FormLabel>Roles *</FormLabel>
+									<FormLabel>{t`Roles`} *</FormLabel>
 									{/* Selected Roles as Chips */}
 									{selectedRoleIds.length > 0 && (
 										<div className="flex flex-wrap gap-2 mb-2">
@@ -268,7 +271,7 @@ export function UserEditorNew({
 																type="button"
 																onClick={() => removeRole(roleId)}
 																className="ml-1 rounded-full p-0.5 hover:bg-muted"
-																aria-label={`Remove ${role.name}`}
+																aria-label={t`Remove ${role.name}`}
 															>
 																<X className="size-3" />
 															</button>
@@ -290,8 +293,8 @@ export function UserEditorNew({
 											>
 												<span className="text-muted-foreground">
 													{selectedRoleIds.length === 0
-														? "Select roles..."
-														: `${selectedRoleIds.length} role${selectedRoleIds.length > 1 ? "s" : ""} selected`}
+														? t`Select roles...`
+														: t`${selectedRoleIds.length} role(s) selected`}
 												</span>
 												<ChevronDown className="ml-2 size-4 shrink-0 opacity-50" />
 											</Button>
@@ -302,18 +305,18 @@ export function UserEditorNew({
 												<Search className="mr-2 size-4 shrink-0 opacity-50" aria-hidden="true" />
 												<input
 													type="text"
-													placeholder="Search roles..."
+													placeholder={t`Search roles...`}
 													value={roleSearchQuery}
 													onChange={(e) => setRoleSearchQuery(e.target.value)}
 													className="flex h-8 w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-													aria-label="Search roles"
+													aria-label={t`Search roles`}
 												/>
 												{roleSearchQuery && (
 													<button
 														type="button"
 														onClick={() => setRoleSearchQuery("")}
 														className="ml-2 rounded-full p-0.5 hover:bg-muted"
-														aria-label="Clear search"
+														aria-label={t`Clear search`}
 													>
 														<X className="size-3" />
 													</button>
@@ -324,7 +327,7 @@ export function UserEditorNew({
 												<div className="p-1">
 													{filteredRoles.length === 0 ? (
 														<div className="py-6 text-center text-sm text-muted-foreground">
-															No roles found
+															{t`No roles found`}
 														</div>
 													) : (
 														filteredRoles.map((role) => {
@@ -363,7 +366,7 @@ export function UserEditorNew({
 																				: "bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
 																		)}
 																	>
-																		{role.type}
+																		{role.type === "managed" ? t`managed` : t`custom`}
 																	</Badge>
 																</label>
 															);
@@ -383,9 +386,13 @@ export function UserEditorNew({
 							name="notes"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Notes</FormLabel>
+									<FormLabel>{t`Notes`}</FormLabel>
 									<FormControl>
-										<Textarea placeholder="Optional notes about this user..." rows={2} {...field} />
+										<Textarea
+											placeholder={t`Optional notes about this user...`}
+											rows={2}
+											{...field}
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -394,9 +401,9 @@ export function UserEditorNew({
 
 						<DialogFooter>
 							<Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-								Cancel
+								{t`Cancel`}
 							</Button>
-							<Button type="submit">{user ? "Save Changes" : "Create User"}</Button>
+							<Button type="submit">{user ? t`Save Changes` : t`Create User`}</Button>
 						</DialogFooter>
 					</form>
 				</Form>

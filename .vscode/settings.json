@@ -7,7 +7,6 @@
 		"source.fixAll.biome": "explicit",
 		"source.organizeImports.biome": "explicit"
 	},
-	"biome.enabled": true,
 	"biome.requireConfiguration": true,
 	"explorer.fileNesting.enabled": true,
 	"explorer.fileNesting.patterns": {
@@ -26,5 +25,6 @@
 	},
 	"files.associations": {
 		"*.css": "tailwindcss"
-	}
+	},
+	"cSpell.words": ["lingui"]
 }

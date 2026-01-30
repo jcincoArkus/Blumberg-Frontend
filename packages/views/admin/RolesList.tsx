@@ -1,6 +1,7 @@
 import { Plus, Shield } from "lucide-react";
 import { useMemo } from "react";
 
+import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
@@ -43,12 +44,12 @@ export function RolesList({
 	const getTypeBadge = (type: RoleType) => {
 		const config = {
 			managed: {
-				label: "Managed",
+				label: t`Managed`,
 				className:
 					"bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800",
 			},
 			custom: {
-				label: "Custom",
+				label: t`Custom`,
 				className:
 					"bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-800",
 			},
@@ -67,12 +68,12 @@ export function RolesList({
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-2">
 					<Shield className="size-5 text-muted-foreground" aria-hidden="true" />
-					<h3 className="text-lg font-semibold">Roles</h3>
+					<h3 className="text-lg font-semibold">{t`Roles`}</h3>
 				</div>
 				{onCreateRole && (
 					<Button onClick={onCreateRole} size="sm">
 						<Plus className="size-4 mr-2" aria-hidden="true" />
-						New Role
+						{t`New Role`}
 					</Button>
 				)}
 			</div>
@@ -82,9 +83,9 @@ export function RolesList({
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead>Role Name</TableHead>
-							<TableHead>Type</TableHead>
-							<TableHead className="text-right">Number of Users</TableHead>
+							<TableHead>{t`Role Name`}</TableHead>
+							<TableHead>{t`Type`}</TableHead>
+							<TableHead className="text-right">{t`Number of Users`}</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>

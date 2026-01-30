@@ -1,30 +1,31 @@
 import { Check } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import { Badge, cn, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~@/ui";
 
 import type { LegacyRolePermissions, ModuleName, PermissionAction, UserRole } from "./types";
 
-const moduleLabels: Record<ModuleName, string> = {
-	system_overview: "System Overview",
-	site_overview: "Site / Facility Overview",
-	equipment_overview: "Equipment Overview",
-	alerts_events: "Alerts & Events",
-	alerting_config: "Alerting Configuration",
-	sensor_management: "Sensor Management",
-	sensor_health: "Sensor Health & Data Quality",
-	data_ingestion: "Data Ingestion",
-	user_management: "User & Role Management",
-	historical_reports: "Historical Reports",
-};
+const getModuleLabels = (): Record<ModuleName, string> => ({
+	system_overview: t`System Overview`,
+	site_overview: t`Site / Facility Overview`,
+	equipment_overview: t`Equipment Overview`,
+	alerts_events: t`Alerts & Events`,
+	alerting_config: t`Alerting Configuration`,
+	sensor_management: t`Sensor Management`,
+	sensor_health: t`Sensor Health & Data Quality`,
+	data_ingestion: t`Data Ingestion`,
+	user_management: t`User & Role Management`,
+	historical_reports: t`Historical Reports`,
+});
 
-const actionLabels: Record<PermissionAction, string> = {
-	view: "View",
-	create: "Create",
-	edit: "Edit",
-	delete: "Delete",
-	configure: "Configure",
-	ack_resolve: "Ack/Resolve",
-};
+const getActionLabels = (): Record<PermissionAction, string> => ({
+	view: t`View`,
+	create: t`Create`,
+	edit: t`Edit`,
+	delete: t`Delete`,
+	configure: t`Configure`,
+	ack_resolve: t`Ack/Resolve`,
+});
 
 export interface RolesPermissionsMatrixProps {
 	rolePermissions: LegacyRolePermissions[];
@@ -32,6 +33,8 @@ export interface RolesPermissionsMatrixProps {
 
 export function RolesPermissionsMatrix({ rolePermissions }: RolesPermissionsMatrixProps) {
 	const roles: UserRole[] = ["admin", "operator", "viewer"];
+	const moduleLabels = getModuleLabels();
+	const actionLabels = getActionLabels();
 
 	const getActionsForRoleAndModule = (role: UserRole, module: ModuleName): PermissionAction[] => {
 		const rolePerms = rolePermissions.find((rp) => rp.role === role);
@@ -41,9 +44,9 @@ export function RolesPermissionsMatrix({ rolePermissions }: RolesPermissionsMatr
 
 	const getRoleBadge = (role: UserRole) => {
 		const config = {
-			admin: { label: "Admin", className: "bg-purple-100 text-purple-700 border-purple-200" },
-			operator: { label: "Operator", className: "bg-blue-100 text-blue-700 border-blue-200" },
-			viewer: { label: "Viewer", className: "bg-slate-100 text-slate-700 border-slate-200" },
+			admin: { label: t`Admin`, className: "bg-purple-100 text-purple-700 border-purple-200" },
+			operator: { label: t`Operator`, className: "bg-blue-100 text-blue-700 border-blue-200" },
+			viewer: { label: t`Viewer`, className: "bg-slate-100 text-slate-700 border-slate-200" },
 		};
 		const cfg = config[role];
 		return (
@@ -59,9 +62,9 @@ export function RolesPermissionsMatrix({ rolePermissions }: RolesPermissionsMatr
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead className="w-[200px]">Module</TableHead>
+							<TableHead className="w-50">{t`Module`}</TableHead>
 							{roles.map((role) => (
-								<TableHead key={role} className="text-center min-w-[200px]">
+								<TableHead key={role} className="text-center min-w-50">
 									{getRoleBadge(role)}
 								</TableHead>
 							))}
@@ -89,7 +92,7 @@ export function RolesPermissionsMatrix({ rolePermissions }: RolesPermissionsMatr
 													))}
 												</div>
 											) : (
-												<span className="text-xs text-muted-foreground">No access</span>
+												<span className="text-xs text-muted-foreground">{t`No access`}</span>
 											)}
 										</TableCell>
 									);
@@ -101,25 +104,25 @@ export function RolesPermissionsMatrix({ rolePermissions }: RolesPermissionsMatr
 			</div>
 
 			<div className="text-sm text-muted-foreground">
-				<p className="font-medium mb-2">Permission Actions:</p>
+				<p className="font-medium mb-2">{t`Permission Actions:`}</p>
 				<ul className="list-disc list-inside space-y-1">
 					<li>
-						<strong>View:</strong> Read-only access to view module content
+						<strong>{t`View`}:</strong> {t`Read-only access to view module content`}
 					</li>
 					<li>
-						<strong>Create:</strong> Ability to create new records
+						<strong>{t`Create`}:</strong> {t`Ability to create new records`}
 					</li>
 					<li>
-						<strong>Edit:</strong> Ability to modify existing records
+						<strong>{t`Edit`}:</strong> {t`Ability to modify existing records`}
 					</li>
 					<li>
-						<strong>Delete:</strong> Ability to remove records
+						<strong>{t`Delete`}:</strong> {t`Ability to remove records`}
 					</li>
 					<li>
-						<strong>Configure:</strong> Ability to change module settings
+						<strong>{t`Configure`}:</strong> {t`Ability to change module settings`}
 					</li>
 					<li>
-						<strong>Ack/Resolve:</strong> Ability to acknowledge or resolve alerts
+						<strong>{t`Ack/Resolve`}:</strong> {t`Ability to acknowledge or resolve alerts`}
 					</li>
 				</ul>
 			</div>

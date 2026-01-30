@@ -1,6 +1,7 @@
 import { Mail, Search, UserPlus } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { t } from "~@/i18n/macro";
 import {
 	Avatar,
 	AvatarFallback,
@@ -84,17 +85,17 @@ export function UsersGrid({
 	const getStatusConfig = (status: UserStatus) => {
 		const configs = {
 			active: {
-				label: "Active",
+				label: t`Active`,
 				className:
 					"bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400",
 			},
 			pending: {
-				label: "Invite Pending",
+				label: t`Invite Pending`,
 				className:
 					"bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400",
 			},
 			deactivated: {
-				label: "Deactivated",
+				label: t`Deactivated`,
 				className:
 					"bg-slate-100 text-slate-500 border-slate-200 dark:bg-slate-800 dark:text-slate-400",
 			},
@@ -120,17 +121,17 @@ export function UsersGrid({
 						aria-hidden="true"
 					/>
 					<Input
-						placeholder="Filter by name or email..."
+						placeholder={t`Filter by name or email...`}
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
 						className="pl-9"
-						aria-label="Search users"
+						aria-label={t`Search users`}
 					/>
 				</div>
 				{onInviteUsers && (
 					<Button onClick={onInviteUsers}>
 						<UserPlus className="size-4 mr-2" aria-hidden="true" />
-						Invite Users
+						{t`Invite Users`}
 					</Button>
 				)}
 			</div>
@@ -145,7 +146,7 @@ export function UsersGrid({
 							<Checkbox
 								checked={isChecked}
 								onCheckedChange={() => toggleStatusFilter(status)}
-								aria-label={`Filter ${config.label}`}
+								aria-label={t`Filter ${config.label}`}
 							/>
 							<span className="text-sm">
 								{config.label} ({statusCounts[status]})
@@ -158,8 +159,8 @@ export function UsersGrid({
 			{/* Users Grid */}
 			{filteredUsers.length === 0 ? (
 				<div className="py-12 text-center">
-					<p className="text-sm font-medium text-foreground mb-1">No users found</p>
-					<p className="text-xs text-muted-foreground">Try adjusting your search or filters</p>
+					<p className="text-sm font-medium text-foreground mb-1">{t`No users found`}</p>
+					<p className="text-xs text-muted-foreground">{t`Try adjusting your search or filters`}</p>
 				</div>
 			) : (
 				<UserCardsGrid
@@ -223,7 +224,7 @@ function UserCardsGrid({
 											variant="outline"
 											className={cn("text-[10px] px-1.5 py-0 shrink-0", statusConfig.className)}
 										>
-											{user.status === "pending" ? "Pending" : ""}
+											{user.status === "pending" ? t`Pending` : ""}
 										</Badge>
 									</div>
 									<div className="flex items-center gap-1 text-sm text-muted-foreground mt-0.5">

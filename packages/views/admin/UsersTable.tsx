@@ -12,6 +12,7 @@ import {
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
+import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
@@ -87,17 +88,17 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 			// Update existing - Prevent self-lockout
 			if (editingUser.id === currentUserId) {
 				if (user.role !== "admin" || user.status === "disabled") {
-					toast.error("You cannot demote yourself or disable your own account");
+					toast.error(t`You cannot demote yourself or disable your own account`);
 					return;
 				}
 			}
 			onUsersChange(users.map((u) => (u.id === user.id ? user : u)));
-			toast.success("User updated successfully");
+			toast.success(t`User updated successfully`);
 		} else {
 			// Create new
 			const newUser = { ...user, id: `user-${Date.now()}`, createdAt: new Date().toISOString() };
 			onUsersChange([...users, newUser]);
-			toast.success("User created successfully");
+			toast.success(t`User created successfully`);
 		}
 		setIsEditorOpen(false);
 		setEditingUser(null);
@@ -106,17 +107,19 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 	const handleToggleStatus = (user: User) => {
 		// Prevent self-disable
 		if (user.id === currentUserId) {
-			toast.error("You cannot disable your own account");
+			toast.error(t`You cannot disable your own account`);
 			return;
 		}
 
 		const newStatus: UserStatus = user.status === "active" ? "disabled" : "active";
 		onUsersChange(users.map((u) => (u.id === user.id ? { ...u, status: newStatus } : u)));
-		toast.success(`User ${newStatus === "active" ? "enabled" : "disabled"} successfully`);
+		toast.success(
+			newStatus === "active" ? t`User enabled successfully` : t`User disabled successfully`,
+		);
 	};
 
 	const formatTimestamp = (dateString?: string) => {
-		if (!dateString) return "Never";
+		if (!dateString) return t`Never`;
 		const date = new Date(dateString);
 		return date.toLocaleString("en-US", {
 			month: "short",
@@ -129,9 +132,9 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 
 	const getRoleBadge = (role: UserRole) => {
 		const config = {
-			admin: { label: "Admin", className: "bg-purple-100 text-purple-700 border-purple-200" },
-			operator: { label: "Operator", className: "bg-blue-100 text-blue-700 border-blue-200" },
-			viewer: { label: "Viewer", className: "bg-slate-100 text-slate-700 border-slate-200" },
+			admin: { label: t`Admin`, className: "bg-purple-100 text-purple-700 border-purple-200" },
+			operator: { label: t`Operator`, className: "bg-blue-100 text-blue-700 border-blue-200" },
+			viewer: { label: t`Viewer`, className: "bg-slate-100 text-slate-700 border-slate-200" },
 		};
 		const cfg = config[role];
 		return (
@@ -143,8 +146,8 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 
 	const getStatusBadge = (status: UserStatus) => {
 		const config = {
-			active: { label: "Active", className: "bg-emerald-100 text-emerald-700 border-emerald-200" },
-			disabled: { label: "Disabled", className: "bg-red-100 text-red-700 border-red-200" },
+			active: { label: t`Active`, className: "bg-emerald-100 text-emerald-700 border-emerald-200" },
+			disabled: { label: t`Disabled`, className: "bg-red-100 text-red-700 border-red-200" },
 		};
 		const cfg = config[status];
 		return (
@@ -167,11 +170,11 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 							aria-hidden="true"
 						/>
 						<Input
-							placeholder="Search by name or email..."
+							placeholder={t`Search by name or email...`}
 							value={searchQuery}
 							onChange={(e) => setSearchQuery(e.target.value)}
 							className="pl-9"
-							aria-label="Search users"
+							aria-label={t`Search users`}
 						/>
 					</div>
 					<Button
@@ -180,7 +183,7 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 						className="sm:w-auto"
 					>
 						<Filter className="size-4 mr-2" aria-hidden="true" />
-						Filters
+						{t`Filters`}
 						{activeFiltersCount > 0 && (
 							<Badge variant="secondary" className="ml-2 h-5 min-w-5 px-1.5 text-xs">
 								{activeFiltersCount}
@@ -189,7 +192,7 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 					</Button>
 					<Button onClick={handleCreate}>
 						<Plus className="size-4 mr-2" aria-hidden="true" />
-						Create User
+						{t`Create User`}
 					</Button>
 				</div>
 
@@ -197,32 +200,32 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 				{showFilters && (
 					<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 border rounded-lg bg-muted/30">
 						<div>
-							<label className="text-xs font-medium text-muted-foreground mb-1.5 block">Role</label>
+							<label className="text-xs font-medium text-muted-foreground mb-1.5 block">{t`Role`}</label>
 							<Select value={roleFilter} onValueChange={setRoleFilter}>
 								<SelectTrigger className="h-8">
 									<SelectValue />
 								</SelectTrigger>
 								<SelectContent>
-									<SelectItem value="all">All Roles</SelectItem>
-									<SelectItem value="admin">Admin</SelectItem>
-									<SelectItem value="operator">Operator</SelectItem>
-									<SelectItem value="viewer">Viewer</SelectItem>
+									<SelectItem value="all">{t`All Roles`}</SelectItem>
+									<SelectItem value="admin">{t`Admin`}</SelectItem>
+									<SelectItem value="operator">{t`Operator`}</SelectItem>
+									<SelectItem value="viewer">{t`Viewer`}</SelectItem>
 								</SelectContent>
 							</Select>
 						</div>
 
 						<div>
 							<label className="text-xs font-medium text-muted-foreground mb-1.5 block">
-								Status
+								{t`Status`}
 							</label>
 							<Select value={statusFilter} onValueChange={setStatusFilter}>
 								<SelectTrigger className="h-8">
 									<SelectValue />
 								</SelectTrigger>
 								<SelectContent>
-									<SelectItem value="all">All Status</SelectItem>
-									<SelectItem value="active">Active</SelectItem>
-									<SelectItem value="disabled">Disabled</SelectItem>
+									<SelectItem value="all">{t`All Status`}</SelectItem>
+									<SelectItem value="active">{t`Active`}</SelectItem>
+									<SelectItem value="disabled">{t`Disabled`}</SelectItem>
 								</SelectContent>
 							</Select>
 						</div>
@@ -239,7 +242,7 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 									className="h-8"
 								>
 									<X className="size-3 mr-1" aria-hidden="true" />
-									Clear Filters
+									{t`Clear Filters`}
 								</Button>
 							</div>
 						)}
@@ -249,11 +252,11 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 				{/* Table */}
 				{filteredUsers.length === 0 ? (
 					<div className="py-12 text-center">
-						<p className="text-sm font-medium text-foreground mb-1">No users found</p>
+						<p className="text-sm font-medium text-foreground mb-1">{t`No users found`}</p>
 						<p className="text-xs text-muted-foreground">
 							{searchQuery || activeFiltersCount > 0
-								? "Try adjusting your search or filters"
-								: "Create your first user to get started"}
+								? t`Try adjusting your search or filters`
+								: t`Create your first user to get started`}
 						</p>
 					</div>
 				) : (
@@ -270,7 +273,7 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 
 				{/* Results Count */}
 				<div className="text-sm text-muted-foreground">
-					Showing {filteredUsers.length} user{filteredUsers.length !== 1 ? "s" : ""}
+					{t`Showing ${filteredUsers.length} user(s)`}
 				</div>
 			</div>
 
@@ -313,12 +316,12 @@ function UsersTableContent({
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead>Name</TableHead>
-						<TableHead>Email</TableHead>
-						<TableHead>Role</TableHead>
-						<TableHead>Status</TableHead>
-						<TableHead>Last Login</TableHead>
-						<TableHead className="text-right">Actions</TableHead>
+						<TableHead>{t`Name`}</TableHead>
+						<TableHead>{t`Email`}</TableHead>
+						<TableHead>{t`Role`}</TableHead>
+						<TableHead>{t`Status`}</TableHead>
+						<TableHead>{t`Last Login`}</TableHead>
+						<TableHead className="text-right">{t`Actions`}</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -341,13 +344,13 @@ function UsersTableContent({
 									<DropdownMenuTrigger asChild>
 										<Button variant="ghost" size="sm" className="h-8 w-8 p-0">
 											<MoreHorizontal className="h-4 w-4" aria-hidden="true" />
-											<span className="sr-only">Open menu</span>
+											<span className="sr-only">{t`Open menu`}</span>
 										</Button>
 									</DropdownMenuTrigger>
 									<DropdownMenuContent align="end">
 										<DropdownMenuItem onClick={() => onEdit(user)}>
 											<Edit className="mr-2 h-4 w-4" aria-hidden="true" />
-											Edit
+											{t`Edit`}
 										</DropdownMenuItem>
 										{user.status === "active" ? (
 											<DropdownMenuItem
@@ -356,7 +359,7 @@ function UsersTableContent({
 												className="text-amber-600 focus:text-amber-600"
 											>
 												<UserX className="mr-2 h-4 w-4" aria-hidden="true" />
-												Disable
+												{t`Disable`}
 											</DropdownMenuItem>
 										) : (
 											<DropdownMenuItem
@@ -364,7 +367,7 @@ function UsersTableContent({
 												className="text-emerald-600 focus:text-emerald-600"
 											>
 												<UserCheck className="mr-2 h-4 w-4" aria-hidden="true" />
-												Enable
+												{t`Enable`}
 											</DropdownMenuItem>
 										)}
 									</DropdownMenuContent>

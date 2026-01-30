@@ -1,5 +1,3 @@
-import type React from "react";
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, cn } from "~@/ui";
 
 interface DashboardPanelProps {

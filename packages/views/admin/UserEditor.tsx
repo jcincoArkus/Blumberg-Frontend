@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { t } from "~@/i18n/macro";
 import {
 	Alert,
 	AlertDescription,
@@ -32,13 +33,14 @@ import {
 
 import type { User } from "./types";
 
-const formSchema = z.object({
-	name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-	email: z.string().email({ message: "Invalid email address." }),
-	role: z.enum(["admin", "operator", "viewer"]),
-	status: z.enum(["active", "disabled"]),
-	notes: z.string().optional(),
-});
+const getFormSchema = () =>
+	z.object({
+		name: z.string().min(2, { message: t`Name must be at least 2 characters.` }),
+		email: z.string().email({ message: t`Invalid email address.` }),
+		role: z.enum(["admin", "operator", "viewer"]),
+		status: z.enum(["active", "disabled"]),
+		notes: z.string().optional(),
+	});
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -51,6 +53,7 @@ export interface UserEditorProps {
 }
 
 export function UserEditor({ user, open, onOpenChange, onSave, currentUserId }: UserEditorProps) {
+	const formSchema = getFormSchema();
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -98,7 +101,7 @@ export function UserEditor({ user, open, onOpenChange, onSave, currentUserId }: 
 		if (user && user.id === currentUserId) {
 			if (values.role !== "admin" || values.status === "disabled") {
 				form.setError("role", {
-					message: "You cannot demote yourself or disable your own account",
+					message: t`You cannot demote yourself or disable your own account`,
 				});
 				return;
 			}
@@ -111,11 +114,11 @@ export function UserEditor({ user, open, onOpenChange, onSave, currentUserId }: 
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="sm:max-w-[500px]">
+			<DialogContent className="sm:max-w-125">
 				<DialogHeader>
-					<DialogTitle>{user ? "Edit User" : "Create User"}</DialogTitle>
+					<DialogTitle>{user ? t`Edit User` : t`Create User`}</DialogTitle>
 					<DialogDescription>
-						{user ? "Update user information and permissions" : "Add a new user to the system"}
+						{user ? t`Update user information and permissions` : t`Add a new user to the system`}
 					</DialogDescription>
 				</DialogHeader>
 
@@ -123,7 +126,7 @@ export function UserEditor({ user, open, onOpenChange, onSave, currentUserId }: 
 					<Alert className="border-amber-200 bg-amber-50">
 						<AlertTriangle className="h-4 w-4 text-amber-600" aria-hidden="true" />
 						<AlertDescription className="text-amber-800">
-							You are editing your own account. You cannot demote yourself or disable your account.
+							{t`You are editing your own account. You cannot demote yourself or disable your account.`}
 						</AlertDescription>
 					</Alert>
 				)}
@@ -135,9 +138,9 @@ export function UserEditor({ user, open, onOpenChange, onSave, currentUserId }: 
 							name="name"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Name *</FormLabel>
+									<FormLabel>{t`Name`} *</FormLabel>
 									<FormControl>
-										<Input placeholder="John Doe" {...field} />
+										<Input placeholder={t`John Doe`} {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -149,9 +152,9 @@ export function UserEditor({ user, open, onOpenChange, onSave, currentUserId }: 
 							name="email"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Email *</FormLabel>
+									<FormLabel>{t`Email`} *</FormLabel>
 									<FormControl>
-										<Input type="email" placeholder="john.doe@example.com" {...field} />
+										<Input type="email" placeholder={t`john.doe@example.com`} {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -163,7 +166,7 @@ export function UserEditor({ user, open, onOpenChange, onSave, currentUserId }: 
 							name="role"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Role *</FormLabel>
+									<FormLabel>{t`Role`} *</FormLabel>
 									<Select onValueChange={field.onChange} value={field.value} disabled={isSelfEdit}>
 										<FormControl>
 											<SelectTrigger>
@@ -171,13 +174,13 @@ export function UserEditor({ user, open, onOpenChange, onSave, currentUserId }: 
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>
-											<SelectItem value="admin">Admin</SelectItem>
-											<SelectItem value="operator">Operator</SelectItem>
-											<SelectItem value="viewer">Viewer</SelectItem>
+											<SelectItem value="admin">{t`Admin`}</SelectItem>
+											<SelectItem value="operator">{t`Operator`}</SelectItem>
+											<SelectItem value="viewer">{t`Viewer`}</SelectItem>
 										</SelectContent>
 									</Select>
 									<FormDescription>
-										{isSelfEdit && "You cannot change your own role"}
+										{isSelfEdit && t`You cannot change your own role`}
 									</FormDescription>
 									<FormMessage />
 								</FormItem>
@@ -189,7 +192,7 @@ export function UserEditor({ user, open, onOpenChange, onSave, currentUserId }: 
 							name="status"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Status *</FormLabel>
+									<FormLabel>{t`Status`} *</FormLabel>
 									<Select onValueChange={field.onChange} value={field.value} disabled={isSelfEdit}>
 										<FormControl>
 											<SelectTrigger>
@@ -197,12 +200,12 @@ export function UserEditor({ user, open, onOpenChange, onSave, currentUserId }: 
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>
-											<SelectItem value="active">Active</SelectItem>
-											<SelectItem value="disabled">Disabled</SelectItem>
+											<SelectItem value="active">{t`Active`}</SelectItem>
+											<SelectItem value="disabled">{t`Disabled`}</SelectItem>
 										</SelectContent>
 									</Select>
 									<FormDescription>
-										{isSelfEdit && "You cannot disable your own account"}
+										{isSelfEdit && t`You cannot disable your own account`}
 									</FormDescription>
 									<FormMessage />
 								</FormItem>
@@ -214,9 +217,13 @@ export function UserEditor({ user, open, onOpenChange, onSave, currentUserId }: 
 							name="notes"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Notes</FormLabel>
+									<FormLabel>{t`Notes`}</FormLabel>
 									<FormControl>
-										<Textarea placeholder="Optional notes about this user..." rows={3} {...field} />
+										<Textarea
+											placeholder={t`Optional notes about this user...`}
+											rows={3}
+											{...field}
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -225,9 +232,9 @@ export function UserEditor({ user, open, onOpenChange, onSave, currentUserId }: 
 
 						<DialogFooter>
 							<Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-								Cancel
+								{t`Cancel`}
 							</Button>
-							<Button type="submit">{user ? "Update User" : "Create User"}</Button>
+							<Button type="submit">{user ? t`Update User` : t`Create User`}</Button>
 						</DialogFooter>
 					</form>
 				</Form>

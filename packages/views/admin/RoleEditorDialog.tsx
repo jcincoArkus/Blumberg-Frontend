@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { t } from "~@/i18n/macro";
 import {
 	Button,
 	Checkbox,
@@ -22,10 +23,11 @@ import {
 
 import type { PermissionAccess, PermissionCategory, Role, RolePermissions } from "./types";
 
-const formSchema = z.object({
-	name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-	description: z.string().optional(),
-});
+const getFormSchema = () =>
+	z.object({
+		name: z.string().min(2, { message: t`Name must be at least 2 characters.` }),
+		description: z.string().optional(),
+	});
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -45,6 +47,7 @@ export function RoleEditorDialog({
 	onSave,
 }: RoleEditorDialogProps) {
 	const isEditing = role !== null;
+	const formSchema = getFormSchema();
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -172,9 +175,13 @@ export function RoleEditorDialog({
 					{/* Fixed Header */}
 					<div className="shrink-0 space-y-4 pb-4">
 						<div className="border-b pb-3">
-							<h3 className="text-base font-semibold">{isEditing ? "Edit Role" : "Create Role"}</h3>
+							<h3 className="text-base font-semibold">
+								{isEditing ? t`Edit Role` : t`Create Role`}
+							</h3>
 							<p className="text-xs text-muted-foreground">
-								{isEditing ? "Update role information and permissions" : "Create a new custom role"}
+								{isEditing
+									? t`Update role information and permissions`
+									: t`Create a new custom role`}
 							</p>
 						</div>
 
@@ -183,9 +190,9 @@ export function RoleEditorDialog({
 							name="name"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Role Name *</FormLabel>
+									<FormLabel>{t`Role Name`} *</FormLabel>
 									<FormControl>
-										<Input placeholder="e.g., APM Editor" {...field} />
+										<Input placeholder={t`e.g., APM Editor`} {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -197,16 +204,20 @@ export function RoleEditorDialog({
 							name="description"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Description</FormLabel>
+									<FormLabel>{t`Description`}</FormLabel>
 									<FormControl>
-										<Textarea placeholder="Describe what this role is for..." rows={2} {...field} />
+										<Textarea
+											placeholder={t`Describe what this role is for...`}
+											rows={2}
+											{...field}
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
 							)}
 						/>
 
-						<FormLabel className="block">Permissions</FormLabel>
+						<FormLabel className="block">{t`Permissions`}</FormLabel>
 					</div>
 
 					{/* Scrollable Permissions */}
@@ -240,9 +251,9 @@ export function RoleEditorDialog({
 														<span className="text-sm font-medium">{category.name}</span>
 													</div>
 													<div className="flex items-center gap-2 text-xs text-muted-foreground">
-														<span>{counts.readCount} Read</span>
+														<span>{t`${counts.readCount} Read`}</span>
 														<span>-</span>
-														<span>{counts.writeCount} Write</span>
+														<span>{t`${counts.writeCount} Write`}</span>
 													</div>
 												</Button>
 											</CollapsibleTrigger>
@@ -251,7 +262,7 @@ export function RoleEditorDialog({
 											<div className="ml-6 border-l pl-3 py-1 space-y-0.5">
 												{/* Select All row */}
 												<div className="flex items-center justify-between py-1 px-2 rounded bg-muted/30">
-													<span className="text-xs font-medium">Select All</span>
+													<span className="text-xs font-medium">{t`Select All`}</span>
 													<label className="flex items-center gap-1.5 cursor-pointer">
 														<Checkbox
 															checked={allSelected}
@@ -290,9 +301,9 @@ export function RoleEditorDialog({
 					{/* Fixed Footer */}
 					<div className="shrink-0 flex justify-end gap-2 pt-4 border-t mt-4">
 						<Button type="button" variant="outline" onClick={onCancel}>
-							Cancel
+							{t`Cancel`}
 						</Button>
-						<Button type="submit">{isEditing ? "Save Changes" : "Create Role"}</Button>
+						<Button type="submit">{isEditing ? t`Save Changes` : t`Create Role`}</Button>
 					</div>
 				</form>
 			</Form>
@@ -342,18 +353,18 @@ function PermissionRow({ permission, onAccessChange }: PermissionRowProps) {
 						checked={isRead}
 						onCheckedChange={handleReadChange}
 						className="size-3.5"
-						aria-label={`${permission.name} Read access`}
+						aria-label={t`${permission.name} Read access`}
 					/>
-					<span className="text-[11px] text-muted-foreground">Read</span>
+					<span className="text-[11px] text-muted-foreground">{t`Read`}</span>
 				</label>
 				<label className="flex items-center gap-1.5 cursor-pointer">
 					<Checkbox
 						checked={isWrite}
 						onCheckedChange={handleWriteChange}
 						className="size-3.5"
-						aria-label={`${permission.name} Write access`}
+						aria-label={t`${permission.name} Write access`}
 					/>
-					<span className="text-[11px] text-muted-foreground">Write</span>
+					<span className="text-[11px] text-muted-foreground">{t`Write`}</span>
 				</label>
 			</div>
 		</div>
