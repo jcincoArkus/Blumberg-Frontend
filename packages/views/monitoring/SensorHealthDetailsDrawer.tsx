@@ -1,0 +1,452 @@
+import {
+	AlertCircle,
+	AlertTriangle,
+	CheckCircle2,
+	Clock,
+	Database,
+	RefreshCw,
+	X,
+	XCircle,
+} from "lucide-react";
+
+import {
+	Badge,
+	Button,
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+	cn,
+	Drawer,
+	DrawerClose,
+	DrawerContent,
+	DrawerDescription,
+	DrawerHeader,
+	DrawerTitle,
+	Progress,
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+	Separator,
+} from "~@/ui";
+
+import type { QualityWindow, SensorHealthData } from "./types";
+
+interface SensorHealthDetailsDrawerProps {
+	data: SensorHealthData;
+	open: boolean;
+	onOpenChange: (open: boolean) => void;
+	timeWindow: QualityWindow;
+	onTimeWindowChange: (window: QualityWindow) => void;
+}
+
+function SensorHealthDetailsDrawer({
+	data,
+	open,
+	onOpenChange,
+	timeWindow,
+	onTimeWindowChange,
+}: SensorHealthDetailsDrawerProps) {
+	const formatTimestamp = (dateString: string) => {
+		const date = new Date(dateString);
+		return date.toLocaleString("en-US", {
+			month: "short",
+			day: "numeric",
+			year: "numeric",
+			hour: "2-digit",
+			minute: "2-digit",
+			second: "2-digit",
+		});
+	};
+
+	const getHealthBadge = (status?: "healthy" | "stale" | "silent") => {
+		if (!status) {
+			return (
+				<Badge variant="outline" className="bg-slate-100 text-slate-700 border-slate-200">
+					Unknown
+				</Badge>
+			);
+		}
+		const config = {
+			healthy: {
+				label: "Healthy",
+				className: "bg-emerald-100 text-emerald-700 border-emerald-200",
+				icon: CheckCircle2,
+			},
+			stale: {
+				label: "Stale",
+				className: "bg-amber-100 text-amber-700 border-amber-200",
+				icon: Clock,
+			},
+			silent: {
+				label: "Silent",
+				className: "bg-red-100 text-red-700 border-red-200",
+				icon: XCircle,
+			},
+		};
+		const cfg = config[status];
+		const Icon = cfg.icon;
+		return (
+			<Badge variant="outline" className={cn("border font-semibold", cfg.className)}>
+				<Icon className="size-3 mr-1" />
+				{cfg.label}
+			</Badge>
+		);
+	};
+
+	const getAgeFormatted = () => {
+		if (!data.health?.lastReportedAt) return "N/A";
+		const now = Date.now();
+		const lastReported = new Date(data.health.lastReportedAt).getTime();
+		const ageMinutes = Math.floor((now - lastReported) / (60 * 1000));
+		if (ageMinutes < 60) return `${ageMinutes}m`;
+		if (ageMinutes < 1440) return `${Math.floor(ageMinutes / 60)}h ${ageMinutes % 60}m`;
+		return `${Math.floor(ageMinutes / 1440)}d`;
+	};
+
+	return (
+		<Drawer open={open} onOpenChange={onOpenChange} direction="right">
+			<DrawerContent className="h-full w-full sm:max-w-2xl">
+				<DrawerHeader className="border-b">
+					<div className="flex items-start justify-between">
+						<div className="flex-1">
+							<DrawerTitle className="text-xl font-semibold mb-2">
+								Sensor Health & Quality Diagnostics
+							</DrawerTitle>
+							<DrawerDescription>
+								{data.sensor.name} ({data.sensor.id})
+							</DrawerDescription>
+						</div>
+						<DrawerClose asChild>
+							<Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+								<X className="h-4 w-4" />
+								<span className="sr-only">Close</span>
+							</Button>
+						</DrawerClose>
+					</div>
+				</DrawerHeader>
+
+				<div className="flex-1 overflow-y-auto p-6 space-y-6">
+					{/* Sensor Info */}
+					<div className="space-y-2">
+						<div className="flex items-center gap-2 flex-wrap">
+							<Badge variant="outline" className="capitalize">
+								{data.sensor.type}
+							</Badge>
+							<span className="text-sm text-muted-foreground">•</span>
+							<span className="text-sm text-muted-foreground">
+								{data.sensor.siteName || "Unknown Site"}
+							</span>
+							{data.sensor.equipmentName && (
+								<>
+									<span className="text-sm text-muted-foreground">•</span>
+									<span className="text-sm text-muted-foreground">{data.sensor.equipmentName}</span>
+								</>
+							)}
+						</div>
+					</div>
+
+					<Separator />
+
+					{/* Sensor Health - continued in next part */}
+					<SensorHealthSection
+						data={data}
+						getHealthBadge={getHealthBadge}
+						formatTimestamp={formatTimestamp}
+						ageFormatted={getAgeFormatted()}
+					/>
+
+					<Separator />
+
+					{/* Data Quality Diagnostics */}
+					<DataQualitySection
+						data={data}
+						timeWindow={timeWindow}
+						onTimeWindowChange={onTimeWindowChange}
+					/>
+
+					<Separator />
+
+					{/* Ingestion Errors */}
+					<IngestionErrorsSection data={data} formatTimestamp={formatTimestamp} />
+				</div>
+			</DrawerContent>
+		</Drawer>
+	);
+}
+
+// Sensor Health Section
+interface SensorHealthSectionProps {
+	data: SensorHealthData;
+	getHealthBadge: (status?: "healthy" | "stale" | "silent") => JSX.Element;
+	formatTimestamp: (dateString: string) => string;
+	ageFormatted: string;
+}
+
+function SensorHealthSection({
+	data,
+	getHealthBadge,
+	formatTimestamp,
+	ageFormatted,
+}: SensorHealthSectionProps) {
+	return (
+		<div className="space-y-4">
+			<h3 className="text-sm font-semibold text-foreground">Sensor Health</h3>
+
+			<div className="space-y-3">
+				<div className="flex items-center justify-between p-3 rounded-lg border bg-card">
+					<div>
+						<p className="text-xs text-muted-foreground mb-1">Health Status</p>
+						{getHealthBadge(data.health?.healthStatus)}
+					</div>
+				</div>
+
+				{data.health && (
+					<>
+						<div>
+							<p className="text-xs text-muted-foreground mb-1">Last Reported</p>
+							<p className="text-sm font-medium text-foreground">
+								{formatTimestamp(data.health.lastReportedAt)}
+							</p>
+							<p className="text-xs text-muted-foreground mt-0.5">{ageFormatted} ago</p>
+						</div>
+
+						<div>
+							<p className="text-xs text-muted-foreground mb-1">Expected Reporting Interval</p>
+							<p className="text-sm font-medium text-foreground">
+								Every {Math.floor(data.health.expectedIntervalSeconds / 60)} minutes
+							</p>
+						</div>
+
+						<Card>
+							<CardHeader className="pb-3">
+								<CardTitle className="text-sm">Classification Logic</CardTitle>
+							</CardHeader>
+							<CardContent className="space-y-2 text-xs">
+								<div className="flex items-center justify-between">
+									<span className="text-muted-foreground">Healthy:</span>
+									<span className="font-medium">
+										Reported within {Math.floor(data.health.warningThresholdSeconds / 60)} minutes
+									</span>
+								</div>
+								<div className="flex items-center justify-between">
+									<span className="text-muted-foreground">Stale:</span>
+									<span className="font-medium">
+										Late beyond {Math.floor(data.health.warningThresholdSeconds / 60)} minutes
+									</span>
+								</div>
+								<div className="flex items-center justify-between">
+									<span className="text-muted-foreground">Silent:</span>
+									<span className="font-medium">
+										Beyond {Math.floor(data.health.criticalThresholdSeconds / 60)} minutes
+									</span>
+								</div>
+							</CardContent>
+						</Card>
+					</>
+				)}
+			</div>
+		</div>
+	);
+}
+
+// Data Quality Section
+interface DataQualitySectionProps {
+	data: SensorHealthData;
+	timeWindow: QualityWindow;
+	onTimeWindowChange: (window: QualityWindow) => void;
+}
+
+function DataQualitySection({ data, timeWindow, onTimeWindowChange }: DataQualitySectionProps) {
+	return (
+		<div className="space-y-4">
+			<div className="flex items-center justify-between">
+				<h3 className="text-sm font-semibold text-foreground">Data Quality Diagnostics</h3>
+				<Select
+					value={timeWindow}
+					onValueChange={(value) => onTimeWindowChange(value as QualityWindow)}
+				>
+					<SelectTrigger className="h-8 w-[120px]">
+						<SelectValue />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectItem value="1h">Last 1h</SelectItem>
+						<SelectItem value="24h">Last 24h</SelectItem>
+						<SelectItem value="7d">Last 7d</SelectItem>
+					</SelectContent>
+				</Select>
+			</div>
+
+			{data.quality ? (
+				<div className="space-y-4">
+					{/* Missing Data Summary */}
+					<Card>
+						<CardHeader className="pb-3">
+							<CardTitle className="text-sm">Missing Data Summary</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-3">
+							<div>
+								<div className="flex items-center justify-between mb-1">
+									<span className="text-xs text-muted-foreground">Missing Count</span>
+									<span className="text-sm font-medium">{data.quality.missingPoints} points</span>
+								</div>
+								<div className="flex items-center justify-between mb-1">
+									<span className="text-xs text-muted-foreground">Expected</span>
+									<span className="text-sm font-medium">{data.quality.expectedPoints} points</span>
+								</div>
+								<div className="flex items-center justify-between mb-1">
+									<span className="text-xs text-muted-foreground">Received</span>
+									<span className="text-sm font-medium">{data.quality.receivedPoints} points</span>
+								</div>
+							</div>
+						</CardContent>
+					</Card>
+
+					{/* Inconsistency Summary */}
+					<Card>
+						<CardHeader className="pb-3">
+							<CardTitle className="text-sm">Inconsistency Summary</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-2">
+							<div className="flex items-center justify-between">
+								<span className="text-xs text-muted-foreground">Inconsistent Points</span>
+								<span className="text-sm font-medium">{data.quality.inconsistentPoints}</span>
+							</div>
+							{data.quality.notes && (
+								<p className="text-xs text-muted-foreground mt-2">{data.quality.notes}</p>
+							)}
+						</CardContent>
+					</Card>
+
+					{/* Quality Score Indicators */}
+					<Card>
+						<CardHeader className="pb-3">
+							<CardTitle className="text-sm">Quality Score Indicators</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-4">
+							<div>
+								<div className="flex items-center justify-between mb-1.5">
+									<span className="text-xs font-medium text-foreground">Completeness</span>
+									<span className="text-xs font-medium text-foreground">
+										{data.quality.completenessPct.toFixed(1)}%
+									</span>
+								</div>
+								<Progress value={data.quality.completenessPct} className="h-2" />
+							</div>
+							<div>
+								<div className="flex items-center justify-between mb-1.5">
+									<span className="text-xs font-medium text-foreground">Consistency</span>
+									<span className="text-xs font-medium text-foreground">
+										{data.quality.consistencyPct.toFixed(1)}%
+									</span>
+								</div>
+								<Progress value={data.quality.consistencyPct} className="h-2" />
+							</div>
+							<div>
+								<div className="flex items-center justify-between mb-1.5">
+									<span className="text-xs font-medium text-foreground">Freshness</span>
+									<span className="text-xs font-medium text-foreground">
+										{data.quality.freshnessPct.toFixed(1)}%
+									</span>
+								</div>
+								<Progress value={data.quality.freshnessPct} className="h-2" />
+							</div>
+						</CardContent>
+					</Card>
+				</div>
+			) : (
+				<Card>
+					<CardContent className="py-6 text-center">
+						<Database className="size-8 mx-auto mb-2 text-muted-foreground" />
+						<p className="text-sm text-muted-foreground">
+							No data quality information available for this sensor.
+						</p>
+					</CardContent>
+				</Card>
+			)}
+		</div>
+	);
+}
+
+// Ingestion Errors Section
+interface IngestionErrorsSectionProps {
+	data: SensorHealthData;
+	formatTimestamp: (dateString: string) => string;
+}
+
+function IngestionErrorsSection({ data, formatTimestamp }: IngestionErrorsSectionProps) {
+	return (
+		<div className="space-y-4">
+			<h3 className="text-sm font-semibold text-foreground">Ingestion Errors</h3>
+
+			{data.ingestionErrors.length > 0 ? (
+				<div className="space-y-2">
+					{data.ingestionErrors.map((error) => (
+						<Card key={error.id}>
+							<CardContent className="p-4 space-y-2">
+								<div className="flex items-start justify-between">
+									<div className="flex-1">
+										<div className="flex items-center gap-2 mb-1 flex-wrap">
+											<Badge
+												variant="outline"
+												className={
+													error.severity === "alert"
+														? "bg-red-100 text-red-700 border-red-200"
+														: "bg-amber-100 text-amber-700 border-amber-200"
+												}
+											>
+												{error.severity === "alert" ? (
+													<AlertCircle className="size-3 mr-1" />
+												) : (
+													<AlertTriangle className="size-3 mr-1" />
+												)}
+												{error.severity}
+											</Badge>
+											<Badge variant="outline" className="capitalize">
+												{error.source}
+											</Badge>
+											<Badge variant="outline" className="font-mono text-xs">
+												{error.errorCode}
+											</Badge>
+										</div>
+										<p className="text-sm font-medium text-foreground mb-1">{error.message}</p>
+										<p className="text-xs text-muted-foreground">
+											{formatTimestamp(error.timestamp)}
+										</p>
+									</div>
+								</div>
+							</CardContent>
+						</Card>
+					))}
+				</div>
+			) : (
+				<Card>
+					<CardContent className="py-6 text-center">
+						<CheckCircle2 className="size-8 mx-auto mb-2 text-emerald-500" />
+						<p className="text-sm text-muted-foreground">
+							No ingestion errors in the last 24 hours.
+						</p>
+					</CardContent>
+				</Card>
+			)}
+
+			{/* Retry / Investigate CTA */}
+			{data.ingestionErrors.length > 0 && (
+				<div className="flex gap-2">
+					<Button variant="outline" size="sm" className="flex-1">
+						<RefreshCw className="size-4 mr-2" />
+						Retry Ingestion
+					</Button>
+					<Button variant="outline" size="sm" className="flex-1">
+						<AlertCircle className="size-4 mr-2" />
+						Investigate
+					</Button>
+				</div>
+			)}
+		</div>
+	);
+}
+
+export { SensorHealthDetailsDrawer, type SensorHealthDetailsDrawerProps };

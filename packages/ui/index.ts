@@ -14,6 +14,8 @@ export {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "./AlertDialog";
+// New UI Components
+export { Avatar, AvatarFallback, AvatarImage } from "./Avatar";
 export { Badge, type BadgeProps, badgeVariants } from "./Badge";
 export { Button, type ButtonProps, buttonVariants } from "./Button";
 export {
@@ -66,7 +68,11 @@ export {
 	DropdownMenuTrigger,
 } from "./DropdownMenu";
 export { Input } from "./Input";
+export { Label } from "./Label";
+export { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "./Popover";
 export { Progress } from "./Progress";
+export { RadioGroup, RadioGroupItem } from "./RadioGroup";
+export { ScrollArea, ScrollBar } from "./ScrollArea";
 export {
 	Select,
 	SelectContent,
@@ -80,6 +86,9 @@ export {
 	SelectValue,
 } from "./Select";
 export { Separator } from "./Separator";
+export { Skeleton } from "./Skeleton";
+export { Spinner } from "./Spinner";
+export { StatusBadge, type StatusBadgeProps, type StatusType } from "./StatusBadge";
 export { Switch } from "./Switch";
 export {
 	Table,
@@ -93,4 +102,5 @@ export {
 } from "./Table";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./Tabs";
 export { Textarea } from "./Textarea";
+export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./Tooltip";
 export { cn } from "./utils";

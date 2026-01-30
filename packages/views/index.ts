@@ -81,6 +81,28 @@ export {
 	type RejectedRow,
 	type SensorReading as IngestionSensorReading,
 } from "./ingestion";
+// Monitoring - Advanced Sensor Health (different from sensor-health above)
+export {
+	type DataQualityInfo,
+	type DataQualityStatus,
+	type Equipment as MonitoringEquipment,
+	type ErrorSeverity,
+	type HealthStatus,
+	type IngestionErrorInfo,
+	type IngestionSource,
+	type IngestionStatus,
+	type QualityWindow,
+	type SensorHealthData,
+	SensorHealthDetailsDrawer,
+	type SensorHealthDetailsDrawerProps,
+	SensorHealthKPIs,
+	type SensorHealthKPIsProps,
+	type SensorHealthRecordInfo,
+	SensorHealthTable as MonitoringSensorHealthTable,
+	type SensorHealthTableProps as MonitoringSensorHealthTableProps,
+	type SensorInfo,
+	type Site as MonitoringSite,
+} from "./monitoring";
 export {
 	type AlertSeverity as ReportsAlertSeverity,
 	type AlertStatus as ReportsAlertStatus,
