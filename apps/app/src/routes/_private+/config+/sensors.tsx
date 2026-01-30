@@ -1,15 +1,10 @@
 import { Plus } from "lucide-react";
-import { useMemo, useState } from "react";
 
+import { observer } from "~@/mobx";
 import { Button } from "~@/ui";
-import {
-	type ConfigEquipment,
-	type ConfigSensor,
-	ConfigSensorsTable,
-	type ConfigSite,
-	SensorDetailsDrawer,
-	SensorEditor,
-} from "~@/views";
+import { useSensorsConfigViewModel } from "~@/view-model";
+import type { ConfigEquipment, ConfigSensor, ConfigSite } from "~@/views";
+import { ConfigSensorsTable, SensorDetailsDrawer, SensorEditor } from "~@/views";
 
 import {
 	equipment,
@@ -21,95 +16,16 @@ import {
 	transformTypeOptions,
 } from "../../../mock-data/sensors";
 
-export default function SensorsConfigPage() {
-	const [sensors, setSensors] = useState<ConfigSensor[]>(getAllSensorsEnriched);
-	const [selectedSensor, setSelectedSensor] = useState<ConfigSensor | null>(null);
-	const [editingSensor, setEditingSensor] = useState<ConfigSensor | null>(null);
-	const [isEditorOpen, setIsEditorOpen] = useState(false);
-	const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-
-	// Filter state
-	const [searchQuery, setSearchQuery] = useState("");
-	const [statusFilter, setStatusFilter] = useState<string>("all");
-	const [typeFilter, setTypeFilter] = useState<string>("all");
-	const [siteFilter, setSiteFilter] = useState<string>("all");
-	const [equipmentFilter, setEquipmentFilter] = useState<string>("all");
-
-	// Filtered sensors
-	const filteredSensors = useMemo(() => {
-		return sensors.filter((sensor) => {
-			// Search filter
-			const matchesSearch =
-				searchQuery === "" ||
-				sensor.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				sensor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				sensor.siteName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				sensor.equipmentName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				sensor.type.toLowerCase().includes(searchQuery.toLowerCase());
-
-			// Status filter
-			const matchesStatus = statusFilter === "all" || sensor.status === statusFilter;
-
-			// Type filter
-			const matchesType = typeFilter === "all" || sensor.type === typeFilter;
-
-			// Site filter
-			const matchesSite = siteFilter === "all" || sensor.siteId === siteFilter;
-
-			// Equipment filter
-			const matchesEquipment =
-				equipmentFilter === "all" ||
-				(equipmentFilter === "unassigned" && !sensor.equipmentId) ||
-				sensor.equipmentId === equipmentFilter;
-
-			return matchesSearch && matchesStatus && matchesType && matchesSite && matchesEquipment;
-		});
-	}, [sensors, searchQuery, statusFilter, typeFilter, siteFilter, equipmentFilter]);
-
-	const handleCreate = () => {
-		setEditingSensor(null);
-		setIsEditorOpen(true);
-	};
-
-	const handleEdit = (sensor: ConfigSensor) => {
-		setEditingSensor(sensor);
-		setIsEditorOpen(true);
-	};
-
-	const handleViewDetails = (sensor: ConfigSensor) => {
-		setSelectedSensor(sensor);
-		setIsDetailsOpen(true);
-	};
-
-	const handleSave = (sensor: ConfigSensor) => {
-		if (editingSensor) {
-			setSensors((prev) => prev.map((s) => (s.id === sensor.id ? sensor : s)));
-		} else {
-			setSensors((prev) => [...prev, sensor]);
-		}
-		setIsEditorOpen(false);
-		setEditingSensor(null);
-	};
-
-	const handleToggleStatus = (id: string, status: string) => {
-		setSensors((prev) =>
-			prev.map((s) => (s.id === id ? { ...s, status: status as ConfigSensor["status"] } : s)),
-		);
-		// Also update selected sensor if viewing details
-		if (selectedSensor?.id === id) {
-			setSelectedSensor((prev) =>
-				prev ? { ...prev, status: status as ConfigSensor["status"] } : null,
-			);
-		}
-	};
-
-	const handleClearFilters = () => {
-		setSearchQuery("");
-		setStatusFilter("all");
-		setTypeFilter("all");
-		setSiteFilter("all");
-		setEquipmentFilter("all");
-	};
+/**
+ * Sensors Configuration page component.
+ * Uses SensorsConfigViewModel for all state management and filtering.
+ */
+const SensorsConfigPage = observer(function SensorsConfigPage() {
+	const vm = useSensorsConfigViewModel({
+		sensors: getAllSensorsEnriched(),
+		sites: sites as ConfigSite[],
+		equipment: equipment as ConfigEquipment[],
+	});
 
 	return (
 		<div className="container py-6">
@@ -120,54 +36,56 @@ export default function SensorsConfigPage() {
 						Register, configure, and manage sensors across all sites.
 					</p>
 				</div>
-				<Button onClick={handleCreate}>
+				<Button onClick={() => vm.openEditor(null)}>
 					<Plus className="mr-2 h-4 w-4" />
 					Register Sensor
 				</Button>
 			</div>
 
 			<ConfigSensorsTable
-				sensors={filteredSensors}
-				sites={sites as ConfigSite[]}
-				equipment={equipment as ConfigEquipment[]}
-				searchQuery={searchQuery}
-				onSearchChange={setSearchQuery}
-				statusFilter={statusFilter}
-				onStatusFilterChange={setStatusFilter}
-				typeFilter={typeFilter}
-				onTypeFilterChange={setTypeFilter}
-				siteFilter={siteFilter}
-				onSiteFilterChange={setSiteFilter}
-				equipmentFilter={equipmentFilter}
-				onEquipmentFilterChange={setEquipmentFilter}
-				onClearFilters={handleClearFilters}
-				onViewDetails={handleViewDetails}
-				onEdit={handleEdit}
-				onToggleStatus={handleToggleStatus}
+				sensors={vm.filteredSensors}
+				sites={vm.sites}
+				equipment={vm.equipment}
+				searchQuery={vm.searchQuery}
+				onSearchChange={vm.setSearchQuery}
+				statusFilter={vm.statusFilter}
+				onStatusFilterChange={vm.setStatusFilter}
+				typeFilter={vm.typeFilter}
+				onTypeFilterChange={vm.setTypeFilter}
+				siteFilter={vm.siteFilter}
+				onSiteFilterChange={vm.setSiteFilter}
+				equipmentFilter={vm.equipmentFilter}
+				onEquipmentFilterChange={vm.setEquipmentFilter}
+				onClearFilters={vm.clearFilters}
+				onViewDetails={vm.viewDetails}
+				onEdit={vm.openEditor}
+				onToggleStatus={vm.toggleSensorStatus}
 			/>
 
 			<SensorEditor
-				open={isEditorOpen}
-				onOpenChange={setIsEditorOpen}
-				sensor={editingSensor}
-				onSave={handleSave}
-				sites={sites as ConfigSite[]}
-				equipment={equipment as ConfigEquipment[]}
+				open={vm.isEditorOpen}
+				onOpenChange={(open) => !open && vm.closeEditor()}
+				sensor={vm.editingSensor}
+				onSave={vm.saveSensor}
+				sites={vm.sites}
+				equipment={vm.equipment}
 				sensorTypeOptions={sensorTypeOptions}
 				transformTypeOptions={transformTypeOptions}
 				getEquipmentBySite={getEquipmentBySite}
 				getUnitForSensorType={getUnitForSensorType}
 			/>
 
-			{selectedSensor && (
+			{vm.selectedSensor && (
 				<SensorDetailsDrawer
-					sensor={selectedSensor}
-					open={isDetailsOpen}
-					onOpenChange={setIsDetailsOpen}
-					onEdit={handleEdit}
-					onToggleStatus={handleToggleStatus}
+					sensor={vm.selectedSensor}
+					open={vm.isDetailsOpen}
+					onOpenChange={(open) => !open && vm.closeDetails()}
+					onEdit={vm.openEditor}
+					onToggleStatus={vm.toggleSensorStatus}
 				/>
 			)}
 		</div>
 	);
-}
+});
+
+export default SensorsConfigPage;
