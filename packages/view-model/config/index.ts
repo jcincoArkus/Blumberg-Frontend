@@ -1,2 +1,2 @@
-// SensorsConfigViewModel and AlertRulesViewModel exports will be added here
-export {};
+export { SensorsConfigViewModel } from "./SensorsConfigViewModel";
+export { useSensorsConfigViewModel } from "./useSensorsConfigViewModel";
