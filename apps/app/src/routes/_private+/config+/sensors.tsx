@@ -1,11 +1,6 @@
 import { Plus } from "lucide-react";
 
 import { observer } from "~@/mobx";
-import { Button } from "~@/ui";
-import { useSensorsConfigViewModel } from "~@/view-model";
-import type { ConfigEquipment, ConfigSensor, ConfigSite } from "~@/views";
-import { ConfigSensorsTable, SensorDetailsDrawer, SensorEditor } from "~@/views";
-
 import {
 	equipment,
 	getAllSensorsEnriched,
@@ -14,7 +9,11 @@ import {
 	sensorTypeOptions,
 	sites,
 	transformTypeOptions,
-} from "../../../mock-data/sensors";
+} from "~@/mock-data";
+import { Button } from "~@/ui";
+import { useSensorsConfigViewModel } from "~@/view-model";
+import type { ConfigEquipment, ConfigSensor, ConfigSite } from "~@/views";
+import { ConfigSensorsTable, SensorDetailsDrawer, SensorEditor } from "~@/views";
 
 /**
  * Sensors Configuration page component.

@@ -1,4 +1,11 @@
 import { observer } from "~@/mobx";
+import {
+	alertsData,
+	calculateAlertDuration,
+	getAlertsEquipmentName as getEquipmentName,
+	getSensorName,
+	getSensorType,
+} from "~@/mock-data";
 import { useAlertsViewModel } from "~@/view-model";
 import {
 	AlertsStatusTabs,
@@ -7,14 +14,6 @@ import {
 	DashboardShell,
 	KPIGauge,
 } from "~@/views";
-
-import {
-	alertsData,
-	calculateAlertDuration,
-	getEquipmentName,
-	getSensorName,
-	getSensorType,
-} from "../../mock-data/alerts";
 
 const AlertsPage = observer(function AlertsPage() {
 	const vm = useAlertsViewModel(alertsData);

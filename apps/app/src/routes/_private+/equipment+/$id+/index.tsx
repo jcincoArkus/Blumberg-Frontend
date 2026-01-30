@@ -9,6 +9,13 @@ import {
 } from "lucide-react";
 import { Link, useParams } from "react-router";
 
+import {
+	getAlertsByEquipment,
+	getSiteEquipmentById as getEquipmentById,
+	getSensorsByEquipment,
+	getSiteDataById as getSiteById,
+	type SiteSensor,
+} from "~@/mock-data";
 import { Badge, Button, Card, CardContent, Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
 import {
 	ClimateTab,
@@ -19,14 +26,6 @@ import {
 	KPIGauge,
 	RefrigerationTab,
 } from "~@/views";
-
-import {
-	getAlertsByEquipment,
-	getEquipmentById,
-	getSensorsByEquipment,
-	getSiteById,
-	type SiteSensor,
-} from "../../../../mock-data/sites";
 
 function getStatusConfig(status: string) {
 	switch (status) {

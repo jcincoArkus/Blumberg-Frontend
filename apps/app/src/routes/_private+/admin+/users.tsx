@@ -1,6 +1,13 @@
 import { toast } from "sonner";
 
 import { observer } from "~@/mobx";
+import {
+	currentUser,
+	rolePermissions as initialRolePermissions,
+	roles as initialRoles,
+	users as initialUsers,
+	permissionCategories,
+} from "~@/mock-data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
 import { useUsersViewModel } from "~@/view-model";
 import type { Role, RolePermissions, User } from "~@/views";
@@ -15,14 +22,6 @@ import {
 	UserProfilePanel,
 	UsersGrid,
 } from "~@/views";
-
-import {
-	currentUser,
-	rolePermissions as initialRolePermissions,
-	roles as initialRoles,
-	users as initialUsers,
-	permissionCategories,
-} from "../../../mock-data/users";
 
 /**
  * Admin Users page component.

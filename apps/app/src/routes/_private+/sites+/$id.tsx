@@ -12,6 +12,13 @@ import {
 import { Link, useParams } from "react-router";
 
 import {
+	type SiteEquipmentType as Equipment,
+	getAlertsBySite,
+	getSiteEquipmentBySite as getEquipmentBySite,
+	getSensorsBySite,
+	getSiteDataById as getSiteById,
+} from "~@/mock-data";
+import {
 	Badge,
 	Button,
 	Card,
@@ -26,14 +33,6 @@ import {
 	TableRow,
 } from "~@/ui";
 import { SiteTrendCharts } from "~@/views";
-
-import {
-	type Equipment,
-	getAlertsBySite,
-	getEquipmentBySite,
-	getSensorsBySite,
-	getSiteById,
-} from "../../../mock-data/sites";
 
 function getSiteStatusConfig(status: string, hasActiveAlerts: boolean, hasCritical: boolean) {
 	if (status === "critical" || hasCritical) {

@@ -1,14 +1,18 @@
 import { useMemo, useState } from "react";
 
 import {
+	siteEquipment as equipment,
+	getSiteDataById as getSiteById,
+	siteSensors,
+	siteData as sites,
+} from "~@/mock-data";
+import {
 	DashboardPanel,
 	DashboardShell,
 	SensorHealthFilters,
 	SensorHealthStats,
 	SensorHealthTable,
 } from "~@/views";
-
-import { equipment, getSiteById, siteSensors, sites } from "../../mock-data/sites";
 
 // Enrich sensors with additional data for the health table
 function enrichSensors() {

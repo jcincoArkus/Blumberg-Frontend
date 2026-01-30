@@ -1,10 +1,9 @@
 import { AlertTriangle, Server } from "lucide-react";
 import { Link } from "react-router";
 
+import { siteEquipment as equipment, getSiteDataById as getSiteById } from "~@/mock-data";
 import { Card, CardContent } from "~@/ui";
 import { DashboardShell } from "~@/views";
-
-import { equipment, getSiteById } from "../../mock-data/sites";
 
 function getStatusConfig(status: string) {
 	switch (status) {

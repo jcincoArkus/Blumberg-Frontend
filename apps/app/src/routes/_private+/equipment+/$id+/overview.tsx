@@ -1,6 +1,13 @@
 import { ArrowLeft, XCircle } from "lucide-react";
 import { Link, useParams } from "react-router";
 
+import {
+	getAlertsByEquipment,
+	getSiteEquipmentById as getEquipmentById,
+	getSensorsByEquipment,
+	getSiteDataById as getSiteById,
+	type SiteSensor,
+} from "~@/mock-data";
 import { Button } from "~@/ui";
 import {
 	DashboardShell,
@@ -11,14 +18,6 @@ import {
 	LimitsComparisonPanel,
 	SensorReadingsGrid,
 } from "~@/views";
-
-import {
-	getAlertsByEquipment,
-	getEquipmentById,
-	getSensorsByEquipment,
-	getSiteById,
-	type SiteSensor,
-} from "../../../../mock-data/sites";
 
 // Convert SiteSensor to EquipmentSensor with mock values
 function toEquipmentSensor(sensor: SiteSensor): EquipmentSensor {

@@ -1,5 +1,13 @@
 import { useMemo, useState } from "react";
 
+import {
+	type ReportAlertSeverity as AlertSeverity,
+	siteEquipment as equipment,
+	getHistoricalAlerts,
+	getHistoricalReadings,
+	type ReportSensorType as SensorType,
+	siteData as sites,
+} from "~@/mock-data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
 import {
 	AlertsHistoryTab,
@@ -10,14 +18,6 @@ import {
 	type HistoricalReading,
 	ReadingsHistoryTab,
 } from "~@/views";
-
-import {
-	type AlertSeverity,
-	getHistoricalAlerts,
-	getHistoricalReadings,
-	type SensorType,
-} from "../../../mock-data/reports";
-import { equipment, sites } from "../../../mock-data/sites";
 
 export default function HistoricalReportsPage() {
 	const [activeTab, setActiveTab] = useState("readings");

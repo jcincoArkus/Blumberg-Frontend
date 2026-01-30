@@ -1,6 +1,16 @@
 import { useMemo, useState } from "react";
 
 import {
+	equipment,
+	getAllIngestionErrorsLast24h,
+	getDataQualityRecord,
+	getIngestionErrorsForSensor,
+	getSensorHealthRecord,
+	sensorHealthRecords,
+	sensors,
+	sites,
+} from "~@/mock-data";
+import {
 	DashboardPanel,
 	DashboardShell,
 	MonitoringSensorHealthTable,
@@ -9,15 +19,6 @@ import {
 	SensorHealthDetailsDrawer,
 	SensorHealthKPIs,
 } from "~@/views";
-
-import {
-	getAllIngestionErrorsLast24h,
-	getDataQualityRecord,
-	getIngestionErrorsForSensor,
-	getSensorHealthRecord,
-	sensorHealthRecords,
-} from "../../../mock-data/sensor-health";
-import { equipment, sensors, sites } from "../../../mock-data/sensors";
 
 export default function SensorHealthPage() {
 	const [selectedSensor, setSelectedSensor] = useState<SensorHealthData | null>(null);

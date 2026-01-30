@@ -1,4 +1,10 @@
 import { observer } from "~@/mobx";
+import {
+	agentInsights,
+	dashboardAlerts as alerts,
+	dashboardSensors as sensors,
+	dashboardSites as sites,
+} from "~@/mock-data";
 import { useDashboardViewModel } from "~@/view-model";
 import {
 	ActiveAlertsPanel,
@@ -10,8 +16,6 @@ import {
 	TrendsPanel,
 	ZonesOverviewPanel,
 } from "~@/views";
-
-import { agentInsights, alerts, sensors, sites } from "../../mock-data/dashboard";
 
 /**
  * Dashboard/Home page component.

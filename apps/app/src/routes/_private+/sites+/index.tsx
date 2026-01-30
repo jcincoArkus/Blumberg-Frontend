@@ -12,10 +12,9 @@ import {
 } from "lucide-react";
 import { Link } from "react-router";
 
+import { getAllSitesWithStats, type SiteWithStats, siteData as sites } from "~@/mock-data";
 import { Badge, Card, CardContent, CardHeader, CardTitle } from "~@/ui";
 import { DashboardShell } from "~@/views";
-
-import { getAllSitesWithStats, type SiteWithStats, sites } from "../../../mock-data/sites";
 
 function getStatusConfig(status: string) {
 	switch (status) {

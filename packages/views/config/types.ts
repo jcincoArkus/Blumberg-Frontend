@@ -1,27 +1,25 @@
 // Re-export types from mock data
+// Sensor types
 export type {
+	AlertingSensorType as SensorType,
 	AlertRule,
 	AlertRuleNotification,
 	AlertRuleScope,
 	AlertRuleScopeType,
 	AlertRuleSeverity,
 	AlertRuleThresholds,
-	NotificationChannel,
-	SensorType,
-} from "../../../apps/app/src/mock-data/alerting";
-// Sensor types
-export type {
 	DataMapping,
 	DataMappingTransform,
 	DataMappingTransformType,
 	Equipment,
+	NotificationChannel,
 	Sensor,
 	SensorStatus,
 	Site,
-} from "../../../apps/app/src/mock-data/sensors";
+} from "~@/mock-data";
 export {
 	getEquipmentBySite,
 	getUnitForSensorType,
 	sensorTypeOptions,
 	transformTypeOptions,
-} from "../../../apps/app/src/mock-data/sensors";
+} from "~@/mock-data";

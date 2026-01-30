@@ -1,20 +1,19 @@
 import { Plus } from "lucide-react";
 
 import { observer } from "~@/mobx";
-import { Button } from "~@/ui";
-import { useAlertRulesViewModel } from "~@/view-model";
-import { AlertRuleEditor, AlertRulesTable } from "~@/views";
-
 import {
-	equipment,
+	alertingEquipment as equipment,
 	formatDuration,
 	getScopeLabel,
 	getThresholdsSummary,
 	alertRules as initialRules,
-	sensorTypeOptions,
-	sites,
+	alertingSensorTypeOptions as sensorTypeOptions,
+	alertingSites as sites,
 	timeOptions,
-} from "../../../mock-data/alerting";
+} from "~@/mock-data";
+import { Button } from "~@/ui";
+import { useAlertRulesViewModel } from "~@/view-model";
+import { AlertRuleEditor, AlertRulesTable } from "~@/views";
 
 /**
  * Alert Rules Configuration page component.

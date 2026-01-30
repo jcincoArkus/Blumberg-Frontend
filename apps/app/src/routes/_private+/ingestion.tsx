@@ -1,5 +1,12 @@
 import { useState } from "react";
 
+import {
+	getAllIngestionRuns,
+	getIngestionRunsLast24h,
+	ingestionRuns,
+	siteSensors,
+	validateSensorReading,
+} from "~@/mock-data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
 import {
 	ApiIngestionTab,
@@ -9,14 +16,6 @@ import {
 	IngestionHistory,
 	type IngestionRun,
 } from "~@/views";
-
-import {
-	getAllIngestionRuns,
-	getIngestionRunsLast24h,
-	ingestionRuns,
-	validateSensorReading,
-} from "../../mock-data/ingestion";
-import { siteSensors } from "../../mock-data/sites";
 
 export default function DataIngestionPage() {
 	const [activeTab, setActiveTab] = useState("api");
