@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Outlet } from "react-router";
 
 import { authorizationController } from "~@/authorization";
+import { DashboardShell } from "~@/views";
 
 class PrivateRouteController {
 	constructor() {
@@ -28,6 +29,11 @@ export async function clientLoader() {
 	return {};
 }
 
+/**
+ * Private layout route.
+ * Wraps all private routes with DashboardShell (sidebar + header).
+ * This ensures consistent navigation across all authenticated pages.
+ */
 export default function Private() {
 	useEffect(() => {
 		return () => {
@@ -39,5 +45,9 @@ export default function Private() {
 		return <div>Loading...</div>;
 	}
 
-	return <Outlet />;
+	return (
+		<DashboardShell>
+			<Outlet />
+		</DashboardShell>
+	);
 }

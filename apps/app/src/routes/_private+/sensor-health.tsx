@@ -8,7 +8,6 @@ import {
 } from "~@/mock-data";
 import {
 	DashboardPanel,
-	DashboardShell,
 	SensorHealthFilters,
 	SensorHealthStats,
 	SensorHealthTable,
@@ -86,41 +85,39 @@ export default function SensorHealthPage() {
 	}, [enrichedSensors]);
 
 	return (
-		<DashboardShell>
-			<div className="space-y-6">
-				{/* Page Header */}
-				<div>
-					<h1 className="text-2xl font-semibold text-foreground">Sensor Health</h1>
-					<p className="text-sm text-muted-foreground">
-						Monitor sensor status, battery levels, and connectivity across all sites
-					</p>
-				</div>
-
-				{/* Health Stats */}
-				<SensorHealthStats stats={stats} />
-
-				{/* Filters */}
-				<DashboardPanel title="Filters">
-					<SensorHealthFilters
-						statusFilter={statusFilter}
-						setStatusFilter={setStatusFilter}
-						siteFilter={siteFilter}
-						setSiteFilter={setSiteFilter}
-						typeFilter={typeFilter}
-						setTypeFilter={setTypeFilter}
-						sites={sites}
-						sensorTypes={sensorTypes}
-					/>
-				</DashboardPanel>
-
-				{/* Sensors Table */}
-				<DashboardPanel
-					title="All Sensors"
-					description={`Showing ${filteredSensors.length} of ${enrichedSensors.length} sensors`}
-				>
-					<SensorHealthTable sensors={filteredSensors} />
-				</DashboardPanel>
+		<div className="space-y-6">
+			{/* Page Header */}
+			<div>
+				<h1 className="text-2xl font-semibold text-foreground">Sensor Health</h1>
+				<p className="text-sm text-muted-foreground">
+					Monitor sensor status, battery levels, and connectivity across all sites
+				</p>
 			</div>
-		</DashboardShell>
+
+			{/* Health Stats */}
+			<SensorHealthStats stats={stats} />
+
+			{/* Filters */}
+			<DashboardPanel title="Filters">
+				<SensorHealthFilters
+					statusFilter={statusFilter}
+					setStatusFilter={setStatusFilter}
+					siteFilter={siteFilter}
+					setSiteFilter={setSiteFilter}
+					typeFilter={typeFilter}
+					setTypeFilter={setTypeFilter}
+					sites={sites}
+					sensorTypes={sensorTypes}
+				/>
+			</DashboardPanel>
+
+			{/* Sensors Table */}
+			<DashboardPanel
+				title="All Sensors"
+				description={`Showing ${filteredSensors.length} of ${enrichedSensors.length} sensors`}
+			>
+				<SensorHealthTable sensors={filteredSensors} />
+			</DashboardPanel>
+		</div>
 	);
 }

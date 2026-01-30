@@ -11,7 +11,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
 import {
 	AlertsHistoryTab,
-	DashboardShell,
 	type DateRangePreset,
 	type HistoricalAlert,
 	HistoricalFilters,
@@ -104,64 +103,62 @@ export default function HistoricalReportsPage() {
 	}, [previousPeriod, equipmentFilter, severityFilter]);
 
 	return (
-		<DashboardShell>
-			<div className="space-y-6">
-				{/* Page Header */}
-				<div>
-					<h1 className="text-xl font-semibold text-foreground">Historical Data & Reporting</h1>
-					<p className="text-sm text-muted-foreground">
-						Retrospective analysis of system behavior. Answer: "Has this happened before?" and "Is
-						the situation getting better or worse over time?"
-					</p>
-				</div>
-
-				{/* Global Filters */}
-				<HistoricalFilters
-					datePreset={datePreset}
-					onDatePresetChange={setDatePreset}
-					startDate={startDate}
-					onStartDateChange={setStartDate}
-					endDate={endDate}
-					onEndDateChange={setEndDate}
-					siteFilter={siteFilter}
-					onSiteFilterChange={setSiteFilter}
-					equipmentFilter={equipmentFilter}
-					onEquipmentFilterChange={setEquipmentFilter}
-					sensorTypeFilter={sensorTypeFilter}
-					onSensorTypeFilterChange={setSensorTypeFilter}
-					severityFilter={severityFilter}
-					onSeverityFilterChange={setSeverityFilter}
-					comparePrevious={comparePrevious}
-					onComparePreviousChange={setComparePrevious}
-					sites={sites}
-					equipment={equipment}
-				/>
-
-				{/* Tabs */}
-				<Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-					<TabsList className="grid w-full grid-cols-2">
-						<TabsTrigger value="readings">Readings History</TabsTrigger>
-						<TabsTrigger value="alerts">Alerts History</TabsTrigger>
-					</TabsList>
-
-					<TabsContent value="readings" className="space-y-6">
-						<ReadingsHistoryTab
-							readings={readings}
-							previousReadings={previousReadings}
-							comparePrevious={comparePrevious}
-						/>
-					</TabsContent>
-
-					<TabsContent value="alerts" className="space-y-6">
-						<AlertsHistoryTab
-							alerts={alerts}
-							previousAlerts={previousAlerts}
-							comparePrevious={comparePrevious}
-							equipment={equipment}
-						/>
-					</TabsContent>
-				</Tabs>
+		<div className="space-y-6">
+			{/* Page Header */}
+			<div>
+				<h1 className="text-xl font-semibold text-foreground">Historical Data & Reporting</h1>
+				<p className="text-sm text-muted-foreground">
+					Retrospective analysis of system behavior. Answer: "Has this happened before?" and "Is the
+					situation getting better or worse over time?"
+				</p>
 			</div>
-		</DashboardShell>
+
+			{/* Global Filters */}
+			<HistoricalFilters
+				datePreset={datePreset}
+				onDatePresetChange={setDatePreset}
+				startDate={startDate}
+				onStartDateChange={setStartDate}
+				endDate={endDate}
+				onEndDateChange={setEndDate}
+				siteFilter={siteFilter}
+				onSiteFilterChange={setSiteFilter}
+				equipmentFilter={equipmentFilter}
+				onEquipmentFilterChange={setEquipmentFilter}
+				sensorTypeFilter={sensorTypeFilter}
+				onSensorTypeFilterChange={setSensorTypeFilter}
+				severityFilter={severityFilter}
+				onSeverityFilterChange={setSeverityFilter}
+				comparePrevious={comparePrevious}
+				onComparePreviousChange={setComparePrevious}
+				sites={sites}
+				equipment={equipment}
+			/>
+
+			{/* Tabs */}
+			<Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+				<TabsList className="grid w-full grid-cols-2">
+					<TabsTrigger value="readings">Readings History</TabsTrigger>
+					<TabsTrigger value="alerts">Alerts History</TabsTrigger>
+				</TabsList>
+
+				<TabsContent value="readings" className="space-y-6">
+					<ReadingsHistoryTab
+						readings={readings}
+						previousReadings={previousReadings}
+						comparePrevious={comparePrevious}
+					/>
+				</TabsContent>
+
+				<TabsContent value="alerts" className="space-y-6">
+					<AlertsHistoryTab
+						alerts={alerts}
+						previousAlerts={previousAlerts}
+						comparePrevious={comparePrevious}
+						equipment={equipment}
+					/>
+				</TabsContent>
+			</Tabs>
+		</div>
 	);
 }

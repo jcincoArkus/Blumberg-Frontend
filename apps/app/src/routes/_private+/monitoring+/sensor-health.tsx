@@ -12,7 +12,6 @@ import {
 } from "~@/mock-data";
 import {
 	DashboardPanel,
-	DashboardShell,
 	MonitoringSensorHealthTable,
 	type QualityWindow,
 	type SensorHealthData,
@@ -251,60 +250,58 @@ export default function SensorHealthPage() {
 	}));
 
 	return (
-		<DashboardShell>
-			<div className="space-y-6">
-				{/* Page Header */}
-				<div>
-					<h1 className="text-xl font-semibold text-foreground">Sensor Health & Data Quality</h1>
-					<p className="text-sm text-muted-foreground">
-						Monitor sensor health, data quality, and ingestion status. Identify technical issues
-						affecting data reliability.
-					</p>
-				</div>
-
-				{/* KPI Summary Cards */}
-				<SensorHealthKPIs kpis={kpis} />
-
-				{/* Sensor Health Table */}
-				<DashboardPanel
-					title="Sensor Health & Quality Work Table"
-					description="Search and filter sensors by health status, data quality, ingestion source, site, equipment, or type"
-				>
-					<MonitoringSensorHealthTable
-						data={sortedData}
-						searchQuery={searchQuery}
-						onSearchChange={setSearchQuery}
-						healthFilter={healthFilter}
-						onHealthFilterChange={setHealthFilter}
-						qualityFilter={qualityFilter}
-						onQualityFilterChange={setQualityFilter}
-						ingestionFilter={ingestionFilter}
-						onIngestionFilterChange={setIngestionFilter}
-						typeFilter={typeFilter}
-						onTypeFilterChange={setTypeFilter}
-						siteFilter={siteFilter}
-						onSiteFilterChange={setSiteFilter}
-						equipmentFilter={equipmentFilter}
-						onEquipmentFilterChange={setEquipmentFilter}
-						timeWindow={timeWindow}
-						onTimeWindowChange={setTimeWindow}
-						sites={monitoringSites}
-						equipment={monitoringEquipment}
-						onViewDetails={handleViewDetails}
-					/>
-				</DashboardPanel>
-
-				{/* Sensor Details Drawer */}
-				{selectedSensor && (
-					<SensorHealthDetailsDrawer
-						data={selectedSensor}
-						open={isDetailsOpen}
-						onOpenChange={setIsDetailsOpen}
-						timeWindow={timeWindow}
-						onTimeWindowChange={setTimeWindow}
-					/>
-				)}
+		<div className="space-y-6">
+			{/* Page Header */}
+			<div>
+				<h1 className="text-xl font-semibold text-foreground">Sensor Health & Data Quality</h1>
+				<p className="text-sm text-muted-foreground">
+					Monitor sensor health, data quality, and ingestion status. Identify technical issues
+					affecting data reliability.
+				</p>
 			</div>
-		</DashboardShell>
+
+			{/* KPI Summary Cards */}
+			<SensorHealthKPIs kpis={kpis} />
+
+			{/* Sensor Health Table */}
+			<DashboardPanel
+				title="Sensor Health & Quality Work Table"
+				description="Search and filter sensors by health status, data quality, ingestion source, site, equipment, or type"
+			>
+				<MonitoringSensorHealthTable
+					data={sortedData}
+					searchQuery={searchQuery}
+					onSearchChange={setSearchQuery}
+					healthFilter={healthFilter}
+					onHealthFilterChange={setHealthFilter}
+					qualityFilter={qualityFilter}
+					onQualityFilterChange={setQualityFilter}
+					ingestionFilter={ingestionFilter}
+					onIngestionFilterChange={setIngestionFilter}
+					typeFilter={typeFilter}
+					onTypeFilterChange={setTypeFilter}
+					siteFilter={siteFilter}
+					onSiteFilterChange={setSiteFilter}
+					equipmentFilter={equipmentFilter}
+					onEquipmentFilterChange={setEquipmentFilter}
+					timeWindow={timeWindow}
+					onTimeWindowChange={setTimeWindow}
+					sites={monitoringSites}
+					equipment={monitoringEquipment}
+					onViewDetails={handleViewDetails}
+				/>
+			</DashboardPanel>
+
+			{/* Sensor Details Drawer */}
+			{selectedSensor && (
+				<SensorHealthDetailsDrawer
+					data={selectedSensor}
+					open={isDetailsOpen}
+					onOpenChange={setIsDetailsOpen}
+					timeWindow={timeWindow}
+					onTimeWindowChange={setTimeWindow}
+				/>
+			)}
+		</div>
 	);
 }

@@ -14,7 +14,6 @@ import { Link } from "react-router";
 
 import { getAllSitesWithStats, type SiteWithStats, siteData as sites } from "~@/mock-data";
 import { Badge, Card, CardContent, CardHeader, CardTitle } from "~@/ui";
-import { DashboardShell } from "~@/views";
 
 function getStatusConfig(status: string) {
 	switch (status) {
@@ -160,71 +159,69 @@ export default function SitesPage() {
 	const criticalSites = sites.filter((s) => s.status === "critical").length;
 
 	return (
-		<DashboardShell showDomainTabs={false}>
-			<div className="space-y-6">
-				<div className="flex flex-col gap-1">
-					<h1 className="text-2xl font-bold text-foreground">Sites Overview</h1>
-					<p className="text-muted-foreground">Monitor and manage all facility locations</p>
-				</div>
-
-				{/* KPI Cards */}
-				<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-					<Card className="border-l-4 border-l-primary">
-						<CardContent className="p-4">
-							<div className="flex items-center justify-between">
-								<div>
-									<p className="text-sm text-muted-foreground">Total Sites</p>
-									<p className="text-2xl font-bold text-foreground">{totalSites}</p>
-								</div>
-								<Building2 className="size-8 text-primary/20" aria-hidden="true" />
-							</div>
-						</CardContent>
-					</Card>
-
-					<Card className="border-l-4 border-l-emerald-500">
-						<CardContent className="p-4">
-							<div className="flex items-center justify-between">
-								<div>
-									<p className="text-sm text-muted-foreground">Operational</p>
-									<p className="text-2xl font-bold text-emerald-600">{operationalSites}</p>
-								</div>
-								<CheckCircle2 className="size-8 text-emerald-500/20" aria-hidden="true" />
-							</div>
-						</CardContent>
-					</Card>
-
-					<Card className="border-l-4 border-l-amber-500">
-						<CardContent className="p-4">
-							<div className="flex items-center justify-between">
-								<div>
-									<p className="text-sm text-muted-foreground">Warning</p>
-									<p className="text-2xl font-bold text-amber-600">{warningSites}</p>
-								</div>
-								<AlertTriangle className="size-8 text-amber-500/20" aria-hidden="true" />
-							</div>
-						</CardContent>
-					</Card>
-
-					<Card className="border-l-4 border-l-red-500">
-						<CardContent className="p-4">
-							<div className="flex items-center justify-between">
-								<div>
-									<p className="text-sm text-muted-foreground">Critical</p>
-									<p className="text-2xl font-bold text-red-600">{criticalSites}</p>
-								</div>
-								<XCircle className="size-8 text-red-500/20" aria-hidden="true" />
-							</div>
-						</CardContent>
-					</Card>
-				</div>
-
-				{/* Site Cards Grid */}
-				<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-					{sitesWithStats.map((site) => (
-						<SiteCard key={site.id} site={site} />
-					))}
-				</div>
+		<div className="space-y-6">
+			<div className="flex flex-col gap-1">
+				<h1 className="text-2xl font-bold text-foreground">Sites Overview</h1>
+				<p className="text-muted-foreground">Monitor and manage all facility locations</p>
 			</div>
-		</DashboardShell>
+
+			{/* KPI Cards */}
+			<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+				<Card className="border-l-4 border-l-primary">
+					<CardContent className="p-4">
+						<div className="flex items-center justify-between">
+							<div>
+								<p className="text-sm text-muted-foreground">Total Sites</p>
+								<p className="text-2xl font-bold text-foreground">{totalSites}</p>
+							</div>
+							<Building2 className="size-8 text-primary/20" aria-hidden="true" />
+						</div>
+					</CardContent>
+				</Card>
+
+				<Card className="border-l-4 border-l-emerald-500">
+					<CardContent className="p-4">
+						<div className="flex items-center justify-between">
+							<div>
+								<p className="text-sm text-muted-foreground">Operational</p>
+								<p className="text-2xl font-bold text-emerald-600">{operationalSites}</p>
+							</div>
+							<CheckCircle2 className="size-8 text-emerald-500/20" aria-hidden="true" />
+						</div>
+					</CardContent>
+				</Card>
+
+				<Card className="border-l-4 border-l-amber-500">
+					<CardContent className="p-4">
+						<div className="flex items-center justify-between">
+							<div>
+								<p className="text-sm text-muted-foreground">Warning</p>
+								<p className="text-2xl font-bold text-amber-600">{warningSites}</p>
+							</div>
+							<AlertTriangle className="size-8 text-amber-500/20" aria-hidden="true" />
+						</div>
+					</CardContent>
+				</Card>
+
+				<Card className="border-l-4 border-l-red-500">
+					<CardContent className="p-4">
+						<div className="flex items-center justify-between">
+							<div>
+								<p className="text-sm text-muted-foreground">Critical</p>
+								<p className="text-2xl font-bold text-red-600">{criticalSites}</p>
+							</div>
+							<XCircle className="size-8 text-red-500/20" aria-hidden="true" />
+						</div>
+					</CardContent>
+				</Card>
+			</div>
+
+			{/* Site Cards Grid */}
+			<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+				{sitesWithStats.map((site) => (
+					<SiteCard key={site.id} site={site} />
+				))}
+			</div>
+		</div>
 	);
 }

@@ -13,7 +13,6 @@ import { useUsersViewModel } from "~@/view-model";
 import type { Role, RolePermissions, User } from "~@/views";
 import {
 	DashboardPanel,
-	DashboardShell,
 	RoleEditorDialog,
 	RolePermissionsEditor,
 	RolesList,
@@ -39,11 +38,9 @@ const AdminUsersPage = observer(function AdminUsersPage() {
 	// Check if current user has admin role
 	if (!vm.hasAdminRole) {
 		return (
-			<DashboardShell>
-				<DashboardPanel title="User Management" description="Manage users, roles, and permissions">
-					<UnauthorizedView />
-				</DashboardPanel>
-			</DashboardShell>
+			<DashboardPanel title="User Management" description="Manage users, roles, and permissions">
+				<UnauthorizedView />
+			</DashboardPanel>
 		);
 	}
 
@@ -66,7 +63,7 @@ const AdminUsersPage = observer(function AdminUsersPage() {
 	};
 
 	return (
-		<DashboardShell>
+		<>
 			<DashboardPanel title="User Management" description="Manage users, roles, and permissions">
 				<Tabs defaultValue="users" className="w-full">
 					<TabsList>
@@ -145,7 +142,7 @@ const AdminUsersPage = observer(function AdminUsersPage() {
 					currentUserId={vm.currentUser.id}
 				/>
 			)}
-		</DashboardShell>
+		</>
 	);
 });
 
