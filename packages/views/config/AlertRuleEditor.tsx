@@ -1,6 +1,7 @@
 import { AlertTriangle, Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
@@ -192,38 +193,38 @@ export function AlertRuleEditor({
 		const newErrors: Record<string, string> = {};
 
 		if (!formData.name.trim()) {
-			newErrors.name = "Name is required";
+			newErrors.name = t`Name is required`;
 		}
 
 		if (formData.sensorTypes.length === 0) {
-			newErrors.sensorTypes = "At least one sensor type is required";
+			newErrors.sensorTypes = t`At least one sensor type is required`;
 		}
 
 		if (!formData.minThreshold && !formData.maxThreshold) {
-			newErrors.thresholds = "At least one threshold (min or max) is required";
+			newErrors.thresholds = t`At least one threshold (min or max) is required`;
 		}
 
 		if (formData.minThreshold && formData.maxThreshold) {
 			const min = parseFloat(formData.minThreshold);
 			const max = parseFloat(formData.maxThreshold);
 			if (min >= max) {
-				newErrors.thresholds = "Min must be less than max";
+				newErrors.thresholds = t`Min must be less than max`;
 			}
 		}
 
 		if (formData.scopeType === "sites" && formData.selectedSites.length === 0) {
-			newErrors.scope = "At least one site must be selected";
+			newErrors.scope = t`At least one site must be selected`;
 		}
 
 		if (formData.scopeType === "equipment" && formData.selectedEquipment.length === 0) {
-			newErrors.scope = "At least one equipment must be selected";
+			newErrors.scope = t`At least one equipment must be selected`;
 		}
 
 		const hasValidNotification = formData.notifications.some(
 			(n) => n.recipientEmail && n.recipientEmail.includes("@"),
 		);
 		if (!hasValidNotification) {
-			newErrors.notifications = "At least one valid email recipient is required";
+			newErrors.notifications = t`At least one valid email recipient is required`;
 		}
 
 		setErrors(newErrors);
@@ -265,38 +266,38 @@ export function AlertRuleEditor({
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
 				<DialogHeader>
-					<DialogTitle>{rule ? "Edit Alert Rule" : "Create Alert Rule"}</DialogTitle>
+					<DialogTitle>{rule ? t`Edit Alert Rule` : t`Create Alert Rule`}</DialogTitle>
 					<DialogDescription>
-						Configure alert thresholds, notifications, and targeting for this rule.
+						{t`Configure alert thresholds, notifications, and targeting for this rule.`}
 					</DialogDescription>
 				</DialogHeader>
 
 				<div className="space-y-6">
 					{/* Basic Information */}
 					<div className="space-y-4">
-						<h3 className="text-sm font-medium">Basic Information</h3>
+						<h3 className="text-sm font-medium">{t`Basic Information`}</h3>
 						<div className="space-y-2">
 							<label htmlFor="rule-name" className="text-sm font-medium">
-								Rule Name <span className="text-destructive">*</span>
+								{t`Rule Name`} <span className="text-destructive">*</span>
 							</label>
 							<Input
 								id="rule-name"
 								value={formData.name}
 								onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-								placeholder="e.g., High Temperature Alert"
+								placeholder={t`e.g., High Temperature Alert`}
 								aria-invalid={!!errors.name}
 							/>
 							{errors.name && <p className="text-destructive text-sm">{errors.name}</p>}
 						</div>
 						<div className="space-y-2">
 							<label htmlFor="rule-description" className="text-sm font-medium">
-								Description
+								{t`Description`}
 							</label>
 							<Textarea
 								id="rule-description"
 								value={formData.description}
 								onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-								placeholder="Optional description..."
+								placeholder={t`Optional description...`}
 								rows={2}
 							/>
 						</div>
@@ -307,7 +308,7 @@ export function AlertRuleEditor({
 								onCheckedChange={(checked) => setFormData({ ...formData, enabled: checked })}
 							/>
 							<label htmlFor="rule-enabled" className="text-sm">
-								Enable rule
+								{t`Enable rule`}
 							</label>
 						</div>
 					</div>
@@ -317,7 +318,7 @@ export function AlertRuleEditor({
 					{/* Sensor Types */}
 					<div className="space-y-4">
 						<h3 className="text-sm font-medium">
-							Sensor Types <span className="text-destructive">*</span>
+							{t`Sensor Types`} <span className="text-destructive">*</span>
 						</h3>
 						<div className="flex flex-wrap gap-2">
 							{sensorTypeOptions.map((option) => (
@@ -338,7 +339,7 @@ export function AlertRuleEditor({
 
 					{/* Scope */}
 					<div className="space-y-4">
-						<h3 className="text-sm font-medium">Scope</h3>
+						<h3 className="text-sm font-medium">{t`Scope`}</h3>
 						<Select
 							value={formData.scopeType}
 							onValueChange={(value: AlertRuleScopeType) =>
@@ -351,12 +352,12 @@ export function AlertRuleEditor({
 							}
 						>
 							<SelectTrigger>
-								<SelectValue placeholder="Select scope" />
+								<SelectValue placeholder={t`Select scope`} />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="all">All Equipment</SelectItem>
-								<SelectItem value="sites">Specific Sites</SelectItem>
-								<SelectItem value="equipment">Specific Equipment</SelectItem>
+								<SelectItem value="all">{t`All Equipment`}</SelectItem>
+								<SelectItem value="sites">{t`Specific Sites`}</SelectItem>
+								<SelectItem value="equipment">{t`Specific Equipment`}</SelectItem>
 							</SelectContent>
 						</Select>
 
@@ -402,31 +403,31 @@ export function AlertRuleEditor({
 					{/* Thresholds */}
 					<div className="space-y-4">
 						<h3 className="text-sm font-medium">
-							Thresholds <span className="text-destructive">*</span>
+							{t`Thresholds`} <span className="text-destructive">*</span>
 						</h3>
 						<div className="grid grid-cols-2 gap-4">
 							<div className="space-y-2">
 								<label htmlFor="min-threshold" className="text-sm">
-									Min ({formData.unit})
+									{t`Min`} ({formData.unit})
 								</label>
 								<Input
 									id="min-threshold"
 									type="number"
 									value={formData.minThreshold}
 									onChange={(e) => setFormData({ ...formData, minThreshold: e.target.value })}
-									placeholder="Min value"
+									placeholder={t`Min value`}
 								/>
 							</div>
 							<div className="space-y-2">
 								<label htmlFor="max-threshold" className="text-sm">
-									Max ({formData.unit})
+									{t`Max`} ({formData.unit})
 								</label>
 								<Input
 									id="max-threshold"
 									type="number"
 									value={formData.maxThreshold}
 									onChange={(e) => setFormData({ ...formData, maxThreshold: e.target.value })}
-									placeholder="Max value"
+									placeholder={t`Max value`}
 								/>
 							</div>
 						</div>
@@ -439,7 +440,7 @@ export function AlertRuleEditor({
 					<div className="grid grid-cols-2 gap-4">
 						<div className="space-y-2">
 							<label htmlFor="time-range" className="text-sm font-medium">
-								Time Out of Range
+								{t`Time Out of Range`}
 							</label>
 							<Select
 								value={formData.minOutOfRangeSeconds.toString()}
@@ -448,7 +449,7 @@ export function AlertRuleEditor({
 								}
 							>
 								<SelectTrigger id="time-range">
-									<SelectValue placeholder="Select time" />
+									<SelectValue placeholder={t`Select time`} />
 								</SelectTrigger>
 								<SelectContent>
 									{timeOptions.map((opt) => (
@@ -461,7 +462,7 @@ export function AlertRuleEditor({
 						</div>
 						<div className="space-y-2">
 							<label htmlFor="severity" className="text-sm font-medium">
-								Severity
+								{t`Severity`}
 							</label>
 							<Select
 								value={formData.severity}
@@ -470,11 +471,11 @@ export function AlertRuleEditor({
 								}
 							>
 								<SelectTrigger id="severity">
-									<SelectValue placeholder="Select severity" />
+									<SelectValue placeholder={t`Select severity`} />
 								</SelectTrigger>
 								<SelectContent>
-									<SelectItem value="warning">Warning</SelectItem>
-									<SelectItem value="alert">Alert</SelectItem>
+									<SelectItem value="warning">{t`Warning`}</SelectItem>
+									<SelectItem value="alert">{t`Alert`}</SelectItem>
 								</SelectContent>
 							</Select>
 						</div>
@@ -486,24 +487,24 @@ export function AlertRuleEditor({
 					<div className="space-y-4">
 						<div className="flex items-center justify-between">
 							<h3 className="text-sm font-medium">
-								Notifications <span className="text-destructive">*</span>
+								{t`Notifications`} <span className="text-destructive">*</span>
 							</h3>
 							<Button variant="outline" size="sm" onClick={addNotification}>
 								<Plus className="mr-1 h-3 w-3" />
-								Add Recipient
+								{t`Add Recipient`}
 							</Button>
 						</div>
 
 						{formData.notifications.map((notification, index) => (
 							<div key={index} className="space-y-3 rounded-md border p-3">
 								<div className="flex items-center justify-between">
-									<span className="text-muted-foreground text-xs">Recipient {index + 1}</span>
+									<span className="text-muted-foreground text-xs">{t`Recipient ${index + 1}`}</span>
 									{formData.notifications.length > 1 && (
 										<Button
 											variant="ghost"
 											size="icon-sm"
 											onClick={() => removeNotification(index)}
-											aria-label="Remove recipient"
+											aria-label={t`Remove recipient`}
 										>
 											<Trash2 className="h-3 w-3" />
 										</Button>
@@ -511,19 +512,19 @@ export function AlertRuleEditor({
 								</div>
 								<div className="grid grid-cols-2 gap-3">
 									<Input
-										placeholder="Name"
+										placeholder={t`Name`}
 										value={notification.recipientName || ""}
 										onChange={(e) => updateNotification(index, "recipientName", e.target.value)}
 									/>
 									<Input
-										placeholder="Email *"
+										placeholder={t`Email *`}
 										type="email"
 										value={notification.recipientEmail}
 										onChange={(e) => updateNotification(index, "recipientEmail", e.target.value)}
 									/>
 								</div>
 								<Input
-									placeholder="Reason (optional)"
+									placeholder={t`Reason (optional)`}
 									value={notification.reason || ""}
 									onChange={(e) => updateNotification(index, "reason", e.target.value)}
 								/>
@@ -540,17 +541,17 @@ export function AlertRuleEditor({
 					{/* Cooldown */}
 					<div className="space-y-2">
 						<label htmlFor="cooldown" className="text-sm font-medium">
-							Cooldown Period (minutes)
+							{t`Cooldown Period (minutes)`}
 						</label>
 						<Input
 							id="cooldown"
 							type="number"
 							value={formData.cooldownMinutes}
 							onChange={(e) => setFormData({ ...formData, cooldownMinutes: e.target.value })}
-							placeholder="e.g., 15 (optional)"
+							placeholder={t`e.g., 15 (optional)`}
 						/>
 						<p className="text-muted-foreground text-xs">
-							Time before re-alerting after an alert is triggered.
+							{t`Time before re-alerting after an alert is triggered.`}
 						</p>
 					</div>
 
@@ -561,27 +562,27 @@ export function AlertRuleEditor({
 						<CardHeader className="pb-2">
 							<CardTitle className="flex items-center gap-2 text-sm">
 								<AlertTriangle className="h-4 w-4" />
-								Rule Preview
+								{t`Rule Preview`}
 							</CardTitle>
 						</CardHeader>
 						<CardContent>
 							<p className="text-muted-foreground text-sm">
-								{formData.name || "Untitled Rule"} will trigger a{" "}
-								<span className="font-medium">{formData.severity}</span> when{" "}
+								{formData.name || t`Untitled Rule`} {t`will trigger a`}{" "}
+								<span className="font-medium">{formData.severity}</span> {t`when`}{" "}
 								{formData.sensorTypes.length > 0
 									? formData.sensorTypes.join(", ")
-									: "selected sensors"}{" "}
-								readings are{" "}
+									: t`selected sensors`}{" "}
+								{t`readings are`}{" "}
 								{formData.minThreshold && formData.maxThreshold
-									? `outside ${formData.minThreshold} - ${formData.maxThreshold} ${formData.unit}`
+									? t`outside ${formData.minThreshold} - ${formData.maxThreshold} ${formData.unit}`
 									: formData.minThreshold
-										? `below ${formData.minThreshold} ${formData.unit}`
+										? t`below ${formData.minThreshold} ${formData.unit}`
 										: formData.maxThreshold
-											? `above ${formData.maxThreshold} ${formData.unit}`
-											: "out of range"}{" "}
-								for more than{" "}
-								{timeOptions.find((t) => t.value === formData.minOutOfRangeSeconds)?.label ||
-									"2 minutes"}
+											? t`above ${formData.maxThreshold} ${formData.unit}`
+											: t`out of range`}{" "}
+								{t`for more than`}{" "}
+								{timeOptions.find((o) => o.value === formData.minOutOfRangeSeconds)?.label ||
+									t`2 minutes`}
 								.
 							</p>
 						</CardContent>
@@ -590,9 +591,9 @@ export function AlertRuleEditor({
 
 				<DialogFooter>
 					<Button variant="outline" onClick={() => onOpenChange(false)}>
-						Cancel
+						{t`Cancel`}
 					</Button>
-					<Button onClick={handleSubmit}>{rule ? "Save Changes" : "Create Rule"}</Button>
+					<Button onClick={handleSubmit}>{rule ? t`Save Changes` : t`Create Rule`}</Button>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

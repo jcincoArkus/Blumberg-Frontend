@@ -1,6 +1,7 @@
 import { ArrowRight, CheckCircle2, Download, FileDown, Upload, XCircle } from "lucide-react";
 import { useRef, useState } from "react";
 
+import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
@@ -268,22 +269,22 @@ export function CsvUploadTab({
 			{step === "upload" && (
 				<Card>
 					<CardHeader>
-						<CardTitle>Upload CSV File</CardTitle>
+						<CardTitle>{t`Upload CSV File`}</CardTitle>
 						<CardDescription>
-							Upload a CSV file with sensor readings or download the template
+							{t`Upload a CSV file with sensor readings or download the template`}
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="text-sm font-medium mb-1">CSV Template</p>
+								<p className="text-sm font-medium mb-1">{t`CSV Template`}</p>
 								<p className="text-xs text-muted-foreground">
-									Download a template with the correct format
+									{t`Download a template with the correct format`}
 								</p>
 							</div>
 							<Button variant="outline" onClick={handleDownloadTemplate}>
 								<Download className="size-4 mr-2" aria-hidden="true" />
-								Download Template
+								{t`Download Template`}
 							</Button>
 						</div>
 
@@ -295,14 +296,14 @@ export function CsvUploadTab({
 							onDragOver={(e) => e.preventDefault()}
 							onClick={() => fileInputRef.current?.click()}
 							onKeyDown={(e) => e.key === "Enter" && fileInputRef.current?.click()}
-							aria-label="Drop CSV file here or click to browse"
+							aria-label={t`Drop CSV file here or click to browse`}
 						>
 							<Upload className="size-8 mx-auto mb-2 text-muted-foreground" aria-hidden="true" />
 							<p className="text-sm font-medium mb-1">
-								{file ? file.name : "Drop CSV file here or click to browse"}
+								{file ? file.name : t`Drop CSV file here or click to browse`}
 							</p>
 							<p className="text-xs text-muted-foreground">
-								Supported columns: sensor_id, timestamp, value, unit, reading_type
+								{t`Supported columns: sensor_id, timestamp, value, unit, reading_type`}
 							</p>
 							<input
 								ref={fileInputRef}
@@ -310,7 +311,7 @@ export function CsvUploadTab({
 								accept=".csv"
 								onChange={handleFileSelect}
 								className="hidden"
-								aria-label="Upload CSV file"
+								aria-label={t`Upload CSV file`}
 							/>
 						</div>
 					</CardContent>
@@ -321,12 +322,12 @@ export function CsvUploadTab({
 			{step === "preview" && parsedRows.length > 0 && (
 				<Card>
 					<CardHeader>
-						<CardTitle>Preview & Column Mapping</CardTitle>
-						<CardDescription>Review parsed data and map columns to expected fields</CardDescription>
+						<CardTitle>{t`Preview & Column Mapping`}</CardTitle>
+						<CardDescription>{t`Review parsed data and map columns to expected fields`}</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-4">
 						<div className="space-y-2">
-							<p className="text-sm font-medium">Column Mapping</p>
+							<p className="text-sm font-medium">{t`Column Mapping`}</p>
 							{Object.keys(parsedRows[0].data).map((header) => (
 								<div key={header} className="flex items-center gap-2">
 									<span className="text-sm text-muted-foreground w-32">{header}:</span>
@@ -337,15 +338,15 @@ export function CsvUploadTab({
 										}
 									>
 										<SelectTrigger className="w-48">
-											<SelectValue placeholder="Select field" />
+											<SelectValue placeholder={t`Select field`} />
 										</SelectTrigger>
 										<SelectContent>
-											<SelectItem value="">Not mapped</SelectItem>
-											<SelectItem value="sensorId">Sensor ID (required)</SelectItem>
-											<SelectItem value="timestamp">Timestamp (required)</SelectItem>
-											<SelectItem value="value">Value (required)</SelectItem>
-											<SelectItem value="unit">Unit (optional)</SelectItem>
-											<SelectItem value="readingType">Reading Type (optional)</SelectItem>
+											<SelectItem value="">{t`Not mapped`}</SelectItem>
+											<SelectItem value="sensorId">{t`Sensor ID (required)`}</SelectItem>
+											<SelectItem value="timestamp">{t`Timestamp (required)`}</SelectItem>
+											<SelectItem value="value">{t`Value (required)`}</SelectItem>
+											<SelectItem value="unit">{t`Unit (optional)`}</SelectItem>
+											<SelectItem value="readingType">{t`Reading Type (optional)`}</SelectItem>
 										</SelectContent>
 									</Select>
 								</div>
@@ -353,12 +354,12 @@ export function CsvUploadTab({
 						</div>
 
 						<div>
-							<p className="text-sm font-medium mb-2">Preview (first 20 rows)</p>
+							<p className="text-sm font-medium mb-2">{t`Preview (first 20 rows)`}</p>
 							<div className="border rounded-lg overflow-x-auto max-h-96">
 								<Table>
 									<TableHeader>
 										<TableRow>
-											<TableHead>Row</TableHead>
+											<TableHead>{t`Row`}</TableHead>
 											{Object.keys(parsedRows[0].data).map((header) => (
 												<TableHead key={header}>{header}</TableHead>
 											))}
@@ -380,17 +381,17 @@ export function CsvUploadTab({
 							</div>
 							{parsedRows.length > 20 && (
 								<p className="text-xs text-muted-foreground mt-2">
-									Showing first 20 of {parsedRows.length} rows
+									{t`Showing first 20 of ${parsedRows.length} rows`}
 								</p>
 							)}
 						</div>
 
 						<div className="flex justify-end gap-2">
 							<Button variant="outline" onClick={handleReset}>
-								Cancel
+								{t`Cancel`}
 							</Button>
 							<Button onClick={handleValidate}>
-								Validate
+								{t`Validate`}
 								<ArrowRight className="size-4 ml-2" aria-hidden="true" />
 							</Button>
 						</div>
@@ -402,22 +403,22 @@ export function CsvUploadTab({
 			{step === "validate" && (
 				<Card>
 					<CardHeader>
-						<CardTitle>Validation Results</CardTitle>
-						<CardDescription>Review accepted and rejected rows</CardDescription>
+						<CardTitle>{t`Validation Results`}</CardTitle>
+						<CardDescription>{t`Review accepted and rejected rows`}</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-4">
 						<div className="grid grid-cols-2 gap-4">
 							<div className="p-4 rounded-lg border bg-emerald-50 border-emerald-200">
 								<div className="flex items-center gap-2 mb-1">
 									<CheckCircle2 className="size-5 text-emerald-600" aria-hidden="true" />
-									<p className="text-sm font-semibold text-emerald-700">Accepted</p>
+									<p className="text-sm font-semibold text-emerald-700">{t`Accepted`}</p>
 								</div>
 								<p className="text-2xl font-bold text-emerald-700">{acceptedCount}</p>
 							</div>
 							<div className="p-4 rounded-lg border bg-red-50 border-red-200">
 								<div className="flex items-center gap-2 mb-1">
 									<XCircle className="size-5 text-red-600" aria-hidden="true" />
-									<p className="text-sm font-semibold text-red-700">Rejected</p>
+									<p className="text-sm font-semibold text-red-700">{t`Rejected`}</p>
 								</div>
 								<p className="text-2xl font-bold text-red-700">{rejectedCount}</p>
 							</div>
@@ -425,7 +426,7 @@ export function CsvUploadTab({
 
 						{rejectedRows.length > 0 && (
 							<div>
-								<p className="text-sm font-medium mb-2">Rejection Reasons Breakdown</p>
+								<p className="text-sm font-medium mb-2">{t`Rejection Reasons Breakdown`}</p>
 								<div className="space-y-1">
 									{Object.entries(
 										rejectedRows.reduce(
@@ -447,11 +448,11 @@ export function CsvUploadTab({
 
 						<div className="flex justify-end gap-2">
 							<Button variant="outline" onClick={() => setStep("preview")}>
-								Back
+								{t`Back`}
 							</Button>
 							{acceptedCount > 0 && (
 								<Button onClick={() => setStep("confirm")}>
-									Continue to Import
+									{t`Continue to Import`}
 									<ArrowRight className="size-4 ml-2" aria-hidden="true" />
 								</Button>
 							)}
@@ -464,30 +465,30 @@ export function CsvUploadTab({
 			{step === "confirm" && (
 				<Card>
 					<CardHeader>
-						<CardTitle>Confirm Import</CardTitle>
-						<CardDescription>Review import summary before proceeding</CardDescription>
+						<CardTitle>{t`Confirm Import`}</CardTitle>
+						<CardDescription>{t`Review import summary before proceeding`}</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-4">
 						<div className="space-y-2">
 							<div className="flex items-center justify-between">
-								<span className="text-sm text-muted-foreground">Total Rows</span>
+								<span className="text-sm text-muted-foreground">{t`Total Rows`}</span>
 								<span className="text-sm font-medium">{validatedRows.length}</span>
 							</div>
 							<div className="flex items-center justify-between">
-								<span className="text-sm text-muted-foreground">Accepted Rows</span>
+								<span className="text-sm text-muted-foreground">{t`Accepted Rows`}</span>
 								<span className="text-sm font-medium text-emerald-600">{acceptedCount}</span>
 							</div>
 							<div className="flex items-center justify-between">
-								<span className="text-sm text-muted-foreground">Rejected Rows</span>
+								<span className="text-sm text-muted-foreground">{t`Rejected Rows`}</span>
 								<span className="text-sm font-medium text-red-600">{rejectedCount}</span>
 							</div>
 						</div>
 
 						<div className="flex justify-end gap-2">
 							<Button variant="outline" onClick={() => setStep("validate")}>
-								Back
+								{t`Back`}
 							</Button>
-							<Button onClick={handleConfirmImport}>Import Accepted Rows</Button>
+							<Button onClick={handleConfirmImport}>{t`Import Accepted Rows`}</Button>
 						</div>
 					</CardContent>
 				</Card>
@@ -497,19 +498,19 @@ export function CsvUploadTab({
 			{step === "results" && ingestionRun && (
 				<Card>
 					<CardHeader>
-						<CardTitle>Import Results</CardTitle>
-						<CardDescription>Import completed successfully</CardDescription>
+						<CardTitle>{t`Import Results`}</CardTitle>
+						<CardDescription>{t`Import completed successfully`}</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-4">
 						<div className="grid grid-cols-2 gap-4">
 							<div className="p-4 rounded-lg border bg-emerald-50 border-emerald-200">
 								<p className="text-sm font-semibold text-emerald-700 mb-1">
-									Accepted Rows Imported
+									{t`Accepted Rows Imported`}
 								</p>
 								<p className="text-2xl font-bold text-emerald-700">{ingestionRun.acceptedCount}</p>
 							</div>
 							<div className="p-4 rounded-lg border bg-red-50 border-red-200">
-								<p className="text-sm font-semibold text-red-700 mb-1">Rejected Rows</p>
+								<p className="text-sm font-semibold text-red-700 mb-1">{t`Rejected Rows`}</p>
 								<p className="text-2xl font-bold text-red-700">{ingestionRun.rejectedCount}</p>
 							</div>
 						</div>
@@ -517,13 +518,13 @@ export function CsvUploadTab({
 						{rejectedRows.length > 0 && (
 							<Button variant="outline" onClick={handleDownloadRejected}>
 								<FileDown className="size-4 mr-2" aria-hidden="true" />
-								Download Rejected Rows CSV
+								{t`Download Rejected Rows CSV`}
 							</Button>
 						)}
 
 						<div className="flex justify-end gap-2">
 							<Button variant="outline" onClick={handleReset}>
-								Upload Another File
+								{t`Upload Another File`}
 							</Button>
 						</div>
 					</CardContent>

@@ -14,6 +14,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router";
 
+import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
@@ -95,15 +96,15 @@ export function SensorHealthTable({ sensors }: SensorHealthTableProps) {
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead>Sensor</TableHead>
-							<TableHead>Type</TableHead>
-							<TableHead>Site</TableHead>
-							<TableHead>Equipment</TableHead>
-							<TableHead>Status</TableHead>
-							<TableHead>Current Value</TableHead>
-							<TableHead>Battery</TableHead>
-							<TableHead>Last Reading</TableHead>
-							<TableHead className="w-[80px]">Actions</TableHead>
+							<TableHead>{t`Sensor`}</TableHead>
+							<TableHead>{t`Type`}</TableHead>
+							<TableHead>{t`Site`}</TableHead>
+							<TableHead>{t`Equipment`}</TableHead>
+							<TableHead>{t`Status`}</TableHead>
+							<TableHead>{t`Current Value`}</TableHead>
+							<TableHead>{t`Battery`}</TableHead>
+							<TableHead>{t`Last Reading`}</TableHead>
+							<TableHead className="w-20">{t`Actions`}</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
@@ -172,7 +173,7 @@ export function SensorHealthTable({ sensors }: SensorHealthTableProps) {
 										<Button variant="ghost" size="sm" asChild>
 											<Link to={`/equipment/${sensor.equipmentId}`}>
 												<ExternalLink className="h-4 w-4" aria-hidden="true" />
-												<span className="sr-only">View equipment</span>
+												<span className="sr-only">{t`View equipment`}</span>
 											</Link>
 										</Button>
 									</TableCell>
@@ -186,8 +187,7 @@ export function SensorHealthTable({ sensors }: SensorHealthTableProps) {
 			{/* Pagination */}
 			<div className="flex items-center justify-between">
 				<p className="text-sm text-muted-foreground">
-					Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
-					{Math.min(currentPage * itemsPerPage, sensors.length)} of {sensors.length} sensors
+					{t`Showing ${(currentPage - 1) * itemsPerPage + 1} to ${Math.min(currentPage * itemsPerPage, sensors.length)} of ${sensors.length} sensors`}
 				</p>
 				<div className="flex items-center gap-2">
 					<Button
@@ -197,7 +197,7 @@ export function SensorHealthTable({ sensors }: SensorHealthTableProps) {
 						disabled={currentPage === 1}
 					>
 						<ChevronLeft className="h-4 w-4" aria-hidden="true" />
-						Previous
+						{t`Previous`}
 					</Button>
 					<div className="flex items-center gap-1">
 						{Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
@@ -230,7 +230,7 @@ export function SensorHealthTable({ sensors }: SensorHealthTableProps) {
 						onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
 						disabled={currentPage === totalPages || totalPages === 0}
 					>
-						Next
+						{t`Next`}
 						<ChevronRight className="h-4 w-4" aria-hidden="true" />
 					</Button>
 				</div>

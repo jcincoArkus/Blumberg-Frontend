@@ -1,5 +1,6 @@
 import { AlertTriangle, CheckCircle2, Clock } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import { Badge, Card, CardContent } from "~@/ui";
 
 import type { Sensor } from "./SensorsTable";
@@ -25,20 +26,20 @@ function getStatusIndicator(sensor: Sensor): {
 		return {
 			icon: AlertTriangle,
 			color: "text-red-600 bg-red-50 border-red-200",
-			label: "Alert",
+			label: t`Alert`,
 		};
 	}
 	if (sensor.status === "warning") {
 		return {
 			icon: AlertTriangle,
 			color: "text-amber-600 bg-amber-50 border-amber-200",
-			label: "Warning",
+			label: t`Warning`,
 		};
 	}
 	return {
 		icon: CheckCircle2,
 		color: "text-emerald-600 bg-emerald-50 border-emerald-200",
-		label: "OK",
+		label: t`OK`,
 	};
 }
 
@@ -65,9 +66,9 @@ export function SensorReadingsGrid({ sensors }: SensorReadingsGridProps) {
 	if (allSensors.length === 0) {
 		return (
 			<div className="space-y-4">
-				<h2 className="text-lg font-semibold text-foreground">Current Sensor Readings</h2>
+				<h2 className="text-lg font-semibold text-foreground">{t`Current Sensor Readings`}</h2>
 				<p className="text-sm text-muted-foreground text-center py-8">
-					No sensors available for this equipment.
+					{t`No sensors available for this equipment.`}
 				</p>
 			</div>
 		);
@@ -75,7 +76,7 @@ export function SensorReadingsGrid({ sensors }: SensorReadingsGridProps) {
 
 	return (
 		<div className="space-y-4">
-			<h2 className="text-lg font-semibold text-foreground">Current Sensor Readings</h2>
+			<h2 className="text-lg font-semibold text-foreground">{t`Current Sensor Readings`}</h2>
 
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
 				{allSensors.map((sensor) => {
@@ -121,7 +122,7 @@ export function SensorReadingsGrid({ sensors }: SensorReadingsGridProps) {
 										{/* Limits Comparison */}
 										<div className="text-xs text-muted-foreground space-y-0.5">
 											<div className="flex items-center justify-between">
-												<span>Range:</span>
+												<span>{t`Range:`}</span>
 												<span className="font-medium text-foreground">
 													{sensor.min}
 													{sensor.unit} - {sensor.max}
@@ -130,20 +131,17 @@ export function SensorReadingsGrid({ sensors }: SensorReadingsGridProps) {
 											</div>
 											{isAboveWarning && !isAboveMax && (
 												<div className="text-amber-600">
-													Above warning threshold ({warningThreshold}
-													{sensor.unit})
+													{t`Above warning threshold (${warningThreshold}${sensor.unit})`}
 												</div>
 											)}
 											{isBelowMin && (
 												<div className="text-red-600 font-medium">
-													Below minimum ({sensor.min}
-													{sensor.unit})
+													{t`Below minimum (${sensor.min}${sensor.unit})`}
 												</div>
 											)}
 											{isAboveMax && (
 												<div className="text-red-600 font-medium">
-													Above maximum ({sensor.max}
-													{sensor.unit})
+													{t`Above maximum (${sensor.max}${sensor.unit})`}
 												</div>
 											)}
 										</div>

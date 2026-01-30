@@ -1,5 +1,6 @@
 import { Activity, AlertCircle, Clock, Database, XCircle } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import { Card, CardContent, CardHeader, CardTitle, cn } from "~@/ui";
 
 interface SensorHealthKPIsProps {
@@ -14,55 +15,57 @@ interface SensorHealthKPIsProps {
 }
 
 function SensorHealthKPIs({ kpis }: SensorHealthKPIsProps) {
-	const cards = [
+	const getCards = () => [
 		{
-			title: "Total Sensors",
+			title: t`Total Sensors`,
 			value: kpis.total,
 			icon: Activity,
 			className: "border-blue-200 bg-blue-50/50",
 			iconClassName: "text-blue-600",
 		},
 		{
-			title: "Healthy Sensors",
+			title: t`Healthy Sensors`,
 			value: kpis.healthy,
 			icon: Activity,
 			className: "border-emerald-200 bg-emerald-50/50",
 			iconClassName: "text-emerald-600",
-			subtitle: `${Math.round((kpis.healthy / kpis.total) * 100) || 0}% of total`,
+			subtitle: t`${Math.round((kpis.healthy / kpis.total) * 100) || 0}% of total`,
 		},
 		{
-			title: "Stale Sensors",
+			title: t`Stale Sensors`,
 			value: kpis.stale,
 			icon: Clock,
 			className: "border-amber-200 bg-amber-50/50",
 			iconClassName: "text-amber-600",
-			subtitle: "Late / delayed",
+			subtitle: t`Late / delayed`,
 		},
 		{
-			title: "Silent Sensors",
+			title: t`Silent Sensors`,
 			value: kpis.silent,
 			icon: XCircle,
 			className: "border-red-200 bg-red-50/50",
 			iconClassName: "text-red-600",
-			subtitle: "No data beyond threshold",
+			subtitle: t`No data beyond threshold`,
 		},
 		{
-			title: "Ingestion Errors",
+			title: t`Ingestion Errors`,
 			value: kpis.ingestionErrors,
 			icon: AlertCircle,
 			className: "border-orange-200 bg-orange-50/50",
 			iconClassName: "text-orange-600",
-			subtitle: "Last 24h",
+			subtitle: t`Last 24h`,
 		},
 		{
-			title: "Data Quality Issues",
+			title: t`Data Quality Issues`,
 			value: kpis.qualityIssues,
 			icon: Database,
 			className: "border-purple-200 bg-purple-50/50",
 			iconClassName: "text-purple-600",
-			subtitle: "Missing / inconsistent",
+			subtitle: t`Missing / inconsistent`,
 		},
 	];
+
+	const cards = getCards();
 
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">

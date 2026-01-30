@@ -9,6 +9,8 @@ import {
 	YAxis,
 } from "recharts";
 
+import { t } from "~@/i18n/macro";
+
 interface SensorChartProps {
 	data: { timestamp: string; value: number }[];
 	unit: string;
@@ -69,7 +71,7 @@ export function SensorChart({
 						fontSize: "12px",
 						boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
 					}}
-					formatter={(value: number) => [`${value}${unit}`, "Value"]}
+					formatter={(value: number) => [`${value}${unit}`, t`Value`]}
 					labelStyle={{ fontWeight: 500, marginBottom: 4 }}
 				/>
 				{warningThreshold && (
@@ -77,7 +79,7 @@ export function SensorChart({
 						y={warningThreshold}
 						stroke="#f59e0b"
 						strokeDasharray="3 3"
-						label={{ value: "Warning", position: "right", fontSize: 10, fill: "#f59e0b" }}
+						label={{ value: t`Warning`, position: "right", fontSize: 10, fill: "#f59e0b" }}
 					/>
 				)}
 				{criticalThreshold && (
@@ -85,7 +87,7 @@ export function SensorChart({
 						y={criticalThreshold}
 						stroke="#dc2626"
 						strokeDasharray="3 3"
-						label={{ value: "Critical", position: "right", fontSize: 10, fill: "#dc2626" }}
+						label={{ value: t`Critical`, position: "right", fontSize: 10, fill: "#dc2626" }}
 					/>
 				)}
 				<Line

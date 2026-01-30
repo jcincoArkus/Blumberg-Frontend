@@ -1,5 +1,6 @@
 import { Activity, AlertTriangle, Wifi, WifiOff } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import { Card, CardContent } from "~@/ui";
 
 interface SensorHealthStatsProps {
@@ -14,38 +15,38 @@ interface SensorHealthStatsProps {
 }
 
 export function SensorHealthStats({ stats }: SensorHealthStatsProps) {
-	const statCards = [
+	const getStatCards = () => [
 		{
-			label: "Total Sensors",
+			label: t`Total Sensors`,
 			value: stats.total,
 			icon: Activity,
 			color: "text-primary",
 			bgColor: "bg-primary/10",
 		},
 		{
-			label: "Active",
+			label: t`Active`,
 			value: stats.active,
-			subtitle: `${stats.activePercent}% active`,
+			subtitle: t`${stats.activePercent}% active`,
 			icon: Wifi,
 			color: "text-green-600",
 			bgColor: "bg-green-100",
 		},
 		{
-			label: "Offline/Stale",
+			label: t`Offline/Stale`,
 			value: stats.offline,
 			icon: WifiOff,
 			color: "text-red-600",
 			bgColor: "bg-red-100",
 		},
 		{
-			label: "Warning",
+			label: t`Warning`,
 			value: stats.warning,
 			icon: AlertTriangle,
 			color: "text-amber-600",
 			bgColor: "bg-amber-100",
 		},
 		{
-			label: "Error",
+			label: t`Error`,
 			value: stats.error,
 			icon: AlertTriangle,
 			color: "text-red-600",
@@ -53,11 +54,13 @@ export function SensorHealthStats({ stats }: SensorHealthStatsProps) {
 		},
 	];
 
+	const statCards = getStatCards();
+
 	return (
 		<div
 			className="grid gap-4 md:grid-cols-3 lg:grid-cols-5"
 			role="region"
-			aria-label="Sensor health statistics"
+			aria-label={t`Sensor health statistics`}
 		>
 			{statCards.map((stat) => (
 				<Card key={stat.label}>

@@ -1,5 +1,6 @@
 import { Building2, Clock, Server } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import { Badge, Card, CardContent } from "~@/ui";
 
 type OverviewStatus = "OK" | "Warning" | "Alert";
@@ -14,23 +15,24 @@ interface EquipmentOverviewHeaderProps {
 	status: OverviewStatus;
 }
 
-const statusConfig: Record<OverviewStatus, { label: string; className: string; dot: string }> = {
-	OK: {
-		label: "OK",
-		className: "bg-emerald-100 text-emerald-700 border-emerald-200",
-		dot: "bg-emerald-500",
-	},
-	Warning: {
-		label: "Warning",
-		className: "bg-amber-100 text-amber-700 border-amber-200",
-		dot: "bg-amber-500",
-	},
-	Alert: {
-		label: "Alert",
-		className: "bg-red-100 text-red-700 border-red-200",
-		dot: "bg-red-500",
-	},
-};
+const getStatusConfig = () =>
+	({
+		OK: {
+			label: t`OK`,
+			className: "bg-emerald-100 text-emerald-700 border-emerald-200",
+			dot: "bg-emerald-500",
+		},
+		Warning: {
+			label: t`Warning`,
+			className: "bg-amber-100 text-amber-700 border-amber-200",
+			dot: "bg-amber-500",
+		},
+		Alert: {
+			label: t`Alert`,
+			className: "bg-red-100 text-red-700 border-red-200",
+			dot: "bg-red-500",
+		},
+	}) as Record<OverviewStatus, { label: string; className: string; dot: string }>;
 
 function formatLastUpdate(dateStr: string): string {
 	const date = new Date(dateStr);
@@ -52,7 +54,7 @@ export function EquipmentOverviewHeader({
 	siteLocation,
 	status,
 }: EquipmentOverviewHeaderProps) {
-	const config = statusConfig[status];
+	const config = getStatusConfig()[status];
 
 	return (
 		<Card>
@@ -66,7 +68,7 @@ export function EquipmentOverviewHeader({
 							</div>
 							<div className="flex-1">
 								<h1 className="text-2xl font-semibold text-foreground">{equipmentName}</h1>
-								<p className="text-sm text-muted-foreground mt-1">Equipment ID: {equipmentId}</p>
+								<p className="text-sm text-muted-foreground mt-1">{t`Equipment ID: ${equipmentId}`}</p>
 							</div>
 							<Badge
 								variant="outline"
@@ -88,14 +90,14 @@ export function EquipmentOverviewHeader({
 							)}
 							<div className="flex items-center gap-2">
 								<Clock className="size-4" aria-hidden="true" />
-								<span>Last updated: {formatLastUpdate(lastUpdate)}</span>
+								<span>{t`Last updated: ${formatLastUpdate(lastUpdate)}`}</span>
 							</div>
 						</div>
 					</div>
 
 					{/* Equipment Type */}
 					<div className="text-right ml-6">
-						<p className="text-sm text-muted-foreground mb-1">Equipment Type</p>
+						<p className="text-sm text-muted-foreground mb-1">{t`Equipment Type`}</p>
 						<p className="font-medium text-foreground">{equipmentType}</p>
 					</div>
 				</div>

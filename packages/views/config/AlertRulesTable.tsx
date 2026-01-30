@@ -1,6 +1,7 @@
 import { Copy, Edit, MoreHorizontal, ShieldAlert, Trash2 } from "lucide-react";
 import { useState } from "react";
 
+import { t } from "~@/i18n/macro";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -69,9 +70,9 @@ export function AlertRulesTable({
 		return (
 			<div className="flex flex-col items-center justify-center py-12 text-center">
 				<ShieldAlert className="text-muted-foreground mb-4 h-12 w-12" />
-				<h3 className="text-lg font-medium">No Alert Rules</h3>
+				<h3 className="text-lg font-medium">{t`No Alert Rules`}</h3>
 				<p className="text-muted-foreground mt-1 text-sm">
-					Create your first alert rule to start monitoring your sensors.
+					{t`Create your first alert rule to start monitoring your sensors.`}
 				</p>
 			</div>
 		);
@@ -82,16 +83,16 @@ export function AlertRulesTable({
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead className="w-[80px]">Status</TableHead>
-						<TableHead>Rule Name</TableHead>
-						<TableHead>Sensor Types</TableHead>
-						<TableHead>Scope</TableHead>
-						<TableHead>Severity</TableHead>
-						<TableHead>Thresholds</TableHead>
-						<TableHead>Time</TableHead>
-						<TableHead>Recipients</TableHead>
-						<TableHead>Updated</TableHead>
-						<TableHead className="w-[70px]">Actions</TableHead>
+						<TableHead className="w-20">{t`Status`}</TableHead>
+						<TableHead>{t`Rule Name`}</TableHead>
+						<TableHead>{t`Sensor Types`}</TableHead>
+						<TableHead>{t`Scope`}</TableHead>
+						<TableHead>{t`Severity`}</TableHead>
+						<TableHead>{t`Thresholds`}</TableHead>
+						<TableHead>{t`Time`}</TableHead>
+						<TableHead>{t`Recipients`}</TableHead>
+						<TableHead>{t`Updated`}</TableHead>
+						<TableHead className="w-17.5">{t`Actions`}</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -121,7 +122,7 @@ export function AlertRulesTable({
 									))}
 								</div>
 							</TableCell>
-							<TableCell className="max-w-[200px] truncate" title={getScopeLabel(rule.scope)}>
+							<TableCell className="max-w-50 truncate" title={getScopeLabel(rule.scope)}>
 								{getScopeLabel(rule.scope)}
 							</TableCell>
 							<TableCell>
@@ -147,25 +148,25 @@ export function AlertRulesTable({
 							<TableCell>
 								<DropdownMenu>
 									<DropdownMenuTrigger asChild>
-										<Button variant="ghost" size="icon-sm" aria-label="Actions">
+										<Button variant="ghost" size="icon-sm" aria-label={t`Actions`}>
 											<MoreHorizontal className="h-4 w-4" />
 										</Button>
 									</DropdownMenuTrigger>
 									<DropdownMenuContent align="end">
 										<DropdownMenuItem onClick={() => onEdit(rule)}>
 											<Edit className="mr-2 h-4 w-4" />
-											Edit
+											{t`Edit`}
 										</DropdownMenuItem>
 										<DropdownMenuItem onClick={() => onDuplicate(rule)}>
 											<Copy className="mr-2 h-4 w-4" />
-											Duplicate
+											{t`Duplicate`}
 										</DropdownMenuItem>
 										<DropdownMenuItem
 											variant="destructive"
 											onClick={() => setDeleteConfirmId(rule.id)}
 										>
 											<Trash2 className="mr-2 h-4 w-4" />
-											Delete
+											{t`Delete`}
 										</DropdownMenuItem>
 									</DropdownMenuContent>
 								</DropdownMenu>
@@ -181,18 +182,18 @@ export function AlertRulesTable({
 			>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Delete Alert Rule</AlertDialogTitle>
+						<AlertDialogTitle>{t`Delete Alert Rule`}</AlertDialogTitle>
 						<AlertDialogDescription>
-							Are you sure you want to delete this alert rule? This action cannot be undone.
+							{t`Are you sure you want to delete this alert rule? This action cannot be undone.`}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogCancel>{t`Cancel`}</AlertDialogCancel>
 						<AlertDialogAction
 							onClick={handleDeleteConfirm}
 							className="bg-destructive text-white hover:bg-destructive/90"
 						>
-							Delete
+							{t`Delete`}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

@@ -9,6 +9,7 @@ import {
 	XCircle,
 } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
@@ -65,23 +66,23 @@ function SensorHealthDetailsDrawer({
 		if (!status) {
 			return (
 				<Badge variant="outline" className="bg-slate-100 text-slate-700 border-slate-200">
-					Unknown
+					{t`Unknown`}
 				</Badge>
 			);
 		}
 		const config = {
 			healthy: {
-				label: "Healthy",
+				label: t`Healthy`,
 				className: "bg-emerald-100 text-emerald-700 border-emerald-200",
 				icon: CheckCircle2,
 			},
 			stale: {
-				label: "Stale",
+				label: t`Stale`,
 				className: "bg-amber-100 text-amber-700 border-amber-200",
 				icon: Clock,
 			},
 			silent: {
-				label: "Silent",
+				label: t`Silent`,
 				className: "bg-red-100 text-red-700 border-red-200",
 				icon: XCircle,
 			},
@@ -113,7 +114,7 @@ function SensorHealthDetailsDrawer({
 					<div className="flex items-start justify-between">
 						<div className="flex-1">
 							<DrawerTitle className="text-xl font-semibold mb-2">
-								Sensor Health & Quality Diagnostics
+								{t`Sensor Health & Quality Diagnostics`}
 							</DrawerTitle>
 							<DrawerDescription>
 								{data.sensor.name} ({data.sensor.id})
@@ -122,7 +123,7 @@ function SensorHealthDetailsDrawer({
 						<DrawerClose asChild>
 							<Button variant="ghost" size="sm" className="h-8 w-8 p-0">
 								<X className="h-4 w-4" />
-								<span className="sr-only">Close</span>
+								<span className="sr-only">{t`Close`}</span>
 							</Button>
 						</DrawerClose>
 					</div>
@@ -137,7 +138,7 @@ function SensorHealthDetailsDrawer({
 							</Badge>
 							<span className="text-sm text-muted-foreground">•</span>
 							<span className="text-sm text-muted-foreground">
-								{data.sensor.siteName || "Unknown Site"}
+								{data.sensor.siteName || t`Unknown Site`}
 							</span>
 							{data.sensor.equipmentName && (
 								<>
@@ -193,12 +194,12 @@ function SensorHealthSection({
 }: SensorHealthSectionProps) {
 	return (
 		<div className="space-y-4">
-			<h3 className="text-sm font-semibold text-foreground">Sensor Health</h3>
+			<h3 className="text-sm font-semibold text-foreground">{t`Sensor Health`}</h3>
 
 			<div className="space-y-3">
 				<div className="flex items-center justify-between p-3 rounded-lg border bg-card">
 					<div>
-						<p className="text-xs text-muted-foreground mb-1">Health Status</p>
+						<p className="text-xs text-muted-foreground mb-1">{t`Health Status`}</p>
 						{getHealthBadge(data.health?.healthStatus)}
 					</div>
 				</div>
@@ -206,41 +207,41 @@ function SensorHealthSection({
 				{data.health && (
 					<>
 						<div>
-							<p className="text-xs text-muted-foreground mb-1">Last Reported</p>
+							<p className="text-xs text-muted-foreground mb-1">{t`Last Reported`}</p>
 							<p className="text-sm font-medium text-foreground">
 								{formatTimestamp(data.health.lastReportedAt)}
 							</p>
-							<p className="text-xs text-muted-foreground mt-0.5">{ageFormatted} ago</p>
+							<p className="text-xs text-muted-foreground mt-0.5">{t`${ageFormatted} ago`}</p>
 						</div>
 
 						<div>
-							<p className="text-xs text-muted-foreground mb-1">Expected Reporting Interval</p>
+							<p className="text-xs text-muted-foreground mb-1">{t`Expected Reporting Interval`}</p>
 							<p className="text-sm font-medium text-foreground">
-								Every {Math.floor(data.health.expectedIntervalSeconds / 60)} minutes
+								{t`Every ${Math.floor(data.health.expectedIntervalSeconds / 60)} minutes`}
 							</p>
 						</div>
 
 						<Card>
 							<CardHeader className="pb-3">
-								<CardTitle className="text-sm">Classification Logic</CardTitle>
+								<CardTitle className="text-sm">{t`Classification Logic`}</CardTitle>
 							</CardHeader>
 							<CardContent className="space-y-2 text-xs">
 								<div className="flex items-center justify-between">
-									<span className="text-muted-foreground">Healthy:</span>
+									<span className="text-muted-foreground">{t`Healthy:`}</span>
 									<span className="font-medium">
-										Reported within {Math.floor(data.health.warningThresholdSeconds / 60)} minutes
+										{t`Reported within ${Math.floor(data.health.warningThresholdSeconds / 60)} minutes`}
 									</span>
 								</div>
 								<div className="flex items-center justify-between">
-									<span className="text-muted-foreground">Stale:</span>
+									<span className="text-muted-foreground">{t`Stale:`}</span>
 									<span className="font-medium">
-										Late beyond {Math.floor(data.health.warningThresholdSeconds / 60)} minutes
+										{t`Late beyond ${Math.floor(data.health.warningThresholdSeconds / 60)} minutes`}
 									</span>
 								</div>
 								<div className="flex items-center justify-between">
-									<span className="text-muted-foreground">Silent:</span>
+									<span className="text-muted-foreground">{t`Silent:`}</span>
 									<span className="font-medium">
-										Beyond {Math.floor(data.health.criticalThresholdSeconds / 60)} minutes
+										{t`Beyond ${Math.floor(data.health.criticalThresholdSeconds / 60)} minutes`}
 									</span>
 								</div>
 							</CardContent>
@@ -263,18 +264,18 @@ function DataQualitySection({ data, timeWindow, onTimeWindowChange }: DataQualit
 	return (
 		<div className="space-y-4">
 			<div className="flex items-center justify-between">
-				<h3 className="text-sm font-semibold text-foreground">Data Quality Diagnostics</h3>
+				<h3 className="text-sm font-semibold text-foreground">{t`Data Quality Diagnostics`}</h3>
 				<Select
 					value={timeWindow}
 					onValueChange={(value) => onTimeWindowChange(value as QualityWindow)}
 				>
-					<SelectTrigger className="h-8 w-[120px]">
+					<SelectTrigger className="h-8 w-30">
 						<SelectValue />
 					</SelectTrigger>
 					<SelectContent>
-						<SelectItem value="1h">Last 1h</SelectItem>
-						<SelectItem value="24h">Last 24h</SelectItem>
-						<SelectItem value="7d">Last 7d</SelectItem>
+						<SelectItem value="1h">{t`Last 1h`}</SelectItem>
+						<SelectItem value="24h">{t`Last 24h`}</SelectItem>
+						<SelectItem value="7d">{t`Last 7d`}</SelectItem>
 					</SelectContent>
 				</Select>
 			</div>
@@ -284,21 +285,21 @@ function DataQualitySection({ data, timeWindow, onTimeWindowChange }: DataQualit
 					{/* Missing Data Summary */}
 					<Card>
 						<CardHeader className="pb-3">
-							<CardTitle className="text-sm">Missing Data Summary</CardTitle>
+							<CardTitle className="text-sm">{t`Missing Data Summary`}</CardTitle>
 						</CardHeader>
 						<CardContent className="space-y-3">
 							<div>
 								<div className="flex items-center justify-between mb-1">
-									<span className="text-xs text-muted-foreground">Missing Count</span>
-									<span className="text-sm font-medium">{data.quality.missingPoints} points</span>
+									<span className="text-xs text-muted-foreground">{t`Missing Count`}</span>
+									<span className="text-sm font-medium">{t`${data.quality.missingPoints} points`}</span>
 								</div>
 								<div className="flex items-center justify-between mb-1">
-									<span className="text-xs text-muted-foreground">Expected</span>
-									<span className="text-sm font-medium">{data.quality.expectedPoints} points</span>
+									<span className="text-xs text-muted-foreground">{t`Expected`}</span>
+									<span className="text-sm font-medium">{t`${data.quality.expectedPoints} points`}</span>
 								</div>
 								<div className="flex items-center justify-between mb-1">
-									<span className="text-xs text-muted-foreground">Received</span>
-									<span className="text-sm font-medium">{data.quality.receivedPoints} points</span>
+									<span className="text-xs text-muted-foreground">{t`Received`}</span>
+									<span className="text-sm font-medium">{t`${data.quality.receivedPoints} points`}</span>
 								</div>
 							</div>
 						</CardContent>
@@ -307,11 +308,11 @@ function DataQualitySection({ data, timeWindow, onTimeWindowChange }: DataQualit
 					{/* Inconsistency Summary */}
 					<Card>
 						<CardHeader className="pb-3">
-							<CardTitle className="text-sm">Inconsistency Summary</CardTitle>
+							<CardTitle className="text-sm">{t`Inconsistency Summary`}</CardTitle>
 						</CardHeader>
 						<CardContent className="space-y-2">
 							<div className="flex items-center justify-between">
-								<span className="text-xs text-muted-foreground">Inconsistent Points</span>
+								<span className="text-xs text-muted-foreground">{t`Inconsistent Points`}</span>
 								<span className="text-sm font-medium">{data.quality.inconsistentPoints}</span>
 							</div>
 							{data.quality.notes && (
@@ -323,12 +324,12 @@ function DataQualitySection({ data, timeWindow, onTimeWindowChange }: DataQualit
 					{/* Quality Score Indicators */}
 					<Card>
 						<CardHeader className="pb-3">
-							<CardTitle className="text-sm">Quality Score Indicators</CardTitle>
+							<CardTitle className="text-sm">{t`Quality Score Indicators`}</CardTitle>
 						</CardHeader>
 						<CardContent className="space-y-4">
 							<div>
 								<div className="flex items-center justify-between mb-1.5">
-									<span className="text-xs font-medium text-foreground">Completeness</span>
+									<span className="text-xs font-medium text-foreground">{t`Completeness`}</span>
 									<span className="text-xs font-medium text-foreground">
 										{data.quality.completenessPct.toFixed(1)}%
 									</span>
@@ -337,7 +338,7 @@ function DataQualitySection({ data, timeWindow, onTimeWindowChange }: DataQualit
 							</div>
 							<div>
 								<div className="flex items-center justify-between mb-1.5">
-									<span className="text-xs font-medium text-foreground">Consistency</span>
+									<span className="text-xs font-medium text-foreground">{t`Consistency`}</span>
 									<span className="text-xs font-medium text-foreground">
 										{data.quality.consistencyPct.toFixed(1)}%
 									</span>
@@ -346,7 +347,7 @@ function DataQualitySection({ data, timeWindow, onTimeWindowChange }: DataQualit
 							</div>
 							<div>
 								<div className="flex items-center justify-between mb-1.5">
-									<span className="text-xs font-medium text-foreground">Freshness</span>
+									<span className="text-xs font-medium text-foreground">{t`Freshness`}</span>
 									<span className="text-xs font-medium text-foreground">
 										{data.quality.freshnessPct.toFixed(1)}%
 									</span>
@@ -361,7 +362,7 @@ function DataQualitySection({ data, timeWindow, onTimeWindowChange }: DataQualit
 					<CardContent className="py-6 text-center">
 						<Database className="size-8 mx-auto mb-2 text-muted-foreground" />
 						<p className="text-sm text-muted-foreground">
-							No data quality information available for this sensor.
+							{t`No data quality information available for this sensor.`}
 						</p>
 					</CardContent>
 				</Card>
@@ -379,7 +380,7 @@ interface IngestionErrorsSectionProps {
 function IngestionErrorsSection({ data, formatTimestamp }: IngestionErrorsSectionProps) {
 	return (
 		<div className="space-y-4">
-			<h3 className="text-sm font-semibold text-foreground">Ingestion Errors</h3>
+			<h3 className="text-sm font-semibold text-foreground">{t`Ingestion Errors`}</h3>
 
 			{data.ingestionErrors.length > 0 ? (
 				<div className="space-y-2">
@@ -426,7 +427,7 @@ function IngestionErrorsSection({ data, formatTimestamp }: IngestionErrorsSectio
 					<CardContent className="py-6 text-center">
 						<CheckCircle2 className="size-8 mx-auto mb-2 text-emerald-500" />
 						<p className="text-sm text-muted-foreground">
-							No ingestion errors in the last 24 hours.
+							{t`No ingestion errors in the last 24 hours.`}
 						</p>
 					</CardContent>
 				</Card>
@@ -437,11 +438,11 @@ function IngestionErrorsSection({ data, formatTimestamp }: IngestionErrorsSectio
 				<div className="flex gap-2">
 					<Button variant="outline" size="sm" className="flex-1">
 						<RefreshCw className="size-4 mr-2" />
-						Retry Ingestion
+						{t`Retry Ingestion`}
 					</Button>
 					<Button variant="outline" size="sm" className="flex-1">
 						<AlertCircle className="size-4 mr-2" />
-						Investigate
+						{t`Investigate`}
 					</Button>
 				</div>
 			)}

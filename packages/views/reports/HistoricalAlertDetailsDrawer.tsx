@@ -1,5 +1,6 @@
 import { AlertTriangle, Bell, CheckCircle2, Clock, X } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
@@ -56,21 +57,21 @@ export function HistoricalAlertDetailsDrawer({
 	const getSeverityBadge = (severity: string) => {
 		const config = {
 			critical: {
-				label: "Critical",
+				label: t`Critical`,
 				className: "bg-red-100 text-red-700 border-red-200",
 				icon: AlertTriangle,
 			},
 			high: {
-				label: "High",
+				label: t`High`,
 				className: "bg-orange-100 text-orange-700 border-orange-200",
 				icon: AlertTriangle,
 			},
 			medium: {
-				label: "Medium",
+				label: t`Medium`,
 				className: "bg-amber-100 text-amber-700 border-amber-200",
 				icon: Bell,
 			},
-			low: { label: "Low", className: "bg-blue-100 text-blue-700 border-blue-200", icon: Bell },
+			low: { label: t`Low`, className: "bg-blue-100 text-blue-700 border-blue-200", icon: Bell },
 		};
 		const cfg = config[severity as keyof typeof config] || config.critical;
 		const Icon = cfg.icon;
@@ -85,17 +86,17 @@ export function HistoricalAlertDetailsDrawer({
 	const getStatusBadge = (status: string) => {
 		const config = {
 			active: {
-				label: "Active",
+				label: t`Active`,
 				className: "bg-red-100 text-red-700 border-red-200",
 				icon: AlertTriangle,
 			},
 			acknowledged: {
-				label: "Acknowledged",
+				label: t`Acknowledged`,
 				className: "bg-amber-100 text-amber-700 border-amber-200",
 				icon: Clock,
 			},
 			resolved: {
-				label: "Resolved",
+				label: t`Resolved`,
 				className: "bg-emerald-100 text-emerald-700 border-emerald-200",
 				icon: CheckCircle2,
 			},
@@ -116,7 +117,7 @@ export function HistoricalAlertDetailsDrawer({
 				<DrawerHeader className="border-b">
 					<div className="flex items-start justify-between">
 						<div className="flex-1">
-							<DrawerTitle className="mb-2 text-xl font-semibold">Alert Details</DrawerTitle>
+							<DrawerTitle className="mb-2 text-xl font-semibold">{t`Alert Details`}</DrawerTitle>
 							<DrawerDescription>{alert.title}</DrawerDescription>
 						</div>
 						<DrawerClose asChild>
@@ -138,27 +139,27 @@ export function HistoricalAlertDetailsDrawer({
 
 					{/* Lifecycle Timestamps */}
 					<div className="space-y-4">
-						<h3 className="text-sm font-semibold text-foreground">Lifecycle</h3>
+						<h3 className="text-sm font-semibold text-foreground">{t`Lifecycle`}</h3>
 						<div className="space-y-3">
 							<div>
-								<p className="mb-1 text-xs text-muted-foreground">Created At</p>
+								<p className="mb-1 text-xs text-muted-foreground">{t`Created At`}</p>
 								<p className="text-sm font-medium">{formatTimestamp(alert.createdAt)}</p>
 							</div>
 							{alert.acknowledgedAt && (
 								<div>
-									<p className="mb-1 text-xs text-muted-foreground">Acknowledged At</p>
+									<p className="mb-1 text-xs text-muted-foreground">{t`Acknowledged At`}</p>
 									<p className="text-sm font-medium">{formatTimestamp(alert.acknowledgedAt)}</p>
 								</div>
 							)}
 							{alert.resolvedAt && (
 								<div>
-									<p className="mb-1 text-xs text-muted-foreground">Resolved At</p>
+									<p className="mb-1 text-xs text-muted-foreground">{t`Resolved At`}</p>
 									<p className="text-sm font-medium">{formatTimestamp(alert.resolvedAt)}</p>
 								</div>
 							)}
 							{alert.durationSeconds && (
 								<div>
-									<p className="mb-1 text-xs text-muted-foreground">Duration</p>
+									<p className="mb-1 text-xs text-muted-foreground">{t`Duration`}</p>
 									<p className="text-sm font-medium">{formatDuration(alert.durationSeconds)}</p>
 								</div>
 							)}
@@ -169,15 +170,15 @@ export function HistoricalAlertDetailsDrawer({
 
 					{/* Equipment Context */}
 					<div className="space-y-4">
-						<h3 className="text-sm font-semibold text-foreground">Context</h3>
+						<h3 className="text-sm font-semibold text-foreground">{t`Context`}</h3>
 						<div className="space-y-3">
 							<div>
-								<p className="mb-1 text-xs text-muted-foreground">Equipment</p>
+								<p className="mb-1 text-xs text-muted-foreground">{t`Equipment`}</p>
 								<p className="text-sm font-medium">{equipment?.name || alert.equipmentId}</p>
 							</div>
 							{alert.sensorId && (
 								<div>
-									<p className="mb-1 text-xs text-muted-foreground">Sensor ID</p>
+									<p className="mb-1 text-xs text-muted-foreground">{t`Sensor ID`}</p>
 									<p className="font-mono text-sm">{alert.sensorId}</p>
 								</div>
 							)}

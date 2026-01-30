@@ -9,6 +9,8 @@ import {
 	YAxis,
 } from "recharts";
 
+import { t } from "~@/i18n/macro";
+
 interface AlertsTrendChartProps {
 	data: Array<{
 		date: string;
@@ -24,7 +26,7 @@ export function AlertsTrendChart({ data }: AlertsTrendChartProps) {
 	if (data.length === 0) {
 		return (
 			<div className="flex h-64 items-center justify-center text-muted-foreground">
-				No data available for chart
+				{t`No data available for chart`}
 			</div>
 		);
 	}
@@ -37,10 +39,10 @@ export function AlertsTrendChart({ data }: AlertsTrendChartProps) {
 				<YAxis tick={{ fontSize: 12 }} />
 				<Tooltip />
 				<Legend />
-				<Bar dataKey="critical" stackId="severity" fill="#ef4444" name="Critical" />
-				<Bar dataKey="high" stackId="severity" fill="#f97316" name="High" />
-				<Bar dataKey="medium" stackId="severity" fill="#f59e0b" name="Medium" />
-				<Bar dataKey="low" stackId="severity" fill="#3b82f6" name="Low" />
+				<Bar dataKey="critical" stackId="severity" fill="#ef4444" name={t`Critical`} />
+				<Bar dataKey="high" stackId="severity" fill="#f97316" name={t`High`} />
+				<Bar dataKey="medium" stackId="severity" fill="#f59e0b" name={t`Medium`} />
+				<Bar dataKey="low" stackId="severity" fill="#3b82f6" name={t`Low`} />
 			</BarChart>
 		</ResponsiveContainer>
 	);

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
+import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
@@ -36,13 +37,13 @@ import {
 
 import type { Equipment, Sensor, SensorType, Site } from "./types";
 
-const sensorTypeOptions: { value: SensorType; label: string }[] = [
-	{ value: "temperature", label: "Temperature" },
-	{ value: "humidity", label: "Humidity" },
-	{ value: "co2", label: "CO2" },
-	{ value: "o2", label: "O2" },
-	{ value: "pressure", label: "Pressure" },
-	{ value: "energy", label: "Energy" },
+const getSensorTypeOptions = (): { value: SensorType; label: string }[] => [
+	{ value: "temperature", label: t`Temperature` },
+	{ value: "humidity", label: t`Humidity` },
+	{ value: "co2", label: t`CO2` },
+	{ value: "o2", label: t`O2` },
+	{ value: "pressure", label: t`Pressure` },
+	{ value: "energy", label: t`Energy` },
 ];
 
 interface SensorsTableProps {
@@ -65,7 +66,7 @@ interface SensorsTableProps {
 }
 
 function formatTimestamp(dateString?: string): string {
-	if (!dateString) return "Never";
+	if (!dateString) return t`Never`;
 	const date = new Date(dateString);
 	return date.toLocaleString("en-US", {
 		month: "short",
@@ -75,15 +76,18 @@ function formatTimestamp(dateString?: string): string {
 	});
 }
 
+const getStatusConfig = () =>
+	({
+		active: { label: t`Active`, className: "bg-emerald-50 text-emerald-700 border-emerald-300" },
+		inactive: { label: t`Inactive`, className: "bg-slate-50 text-slate-700 border-slate-300" },
+		warning: { label: t`Warning`, className: "bg-amber-50 text-amber-700 border-amber-300" },
+		stale: { label: t`Stale`, className: "bg-orange-50 text-orange-700 border-orange-300" },
+		offline: { label: t`Offline`, className: "bg-red-50 text-red-700 border-red-300" },
+		error: { label: t`Error`, className: "bg-red-50 text-red-700 border-red-300" },
+	}) as Record<string, { label: string; className: string }>;
+
 function getStatusBadge(status: string): React.ReactNode {
-	const config: Record<string, { label: string; className: string }> = {
-		active: { label: "Active", className: "bg-emerald-50 text-emerald-700 border-emerald-300" },
-		inactive: { label: "Inactive", className: "bg-slate-50 text-slate-700 border-slate-300" },
-		warning: { label: "Warning", className: "bg-amber-50 text-amber-700 border-amber-300" },
-		stale: { label: "Stale", className: "bg-orange-50 text-orange-700 border-orange-300" },
-		offline: { label: "Offline", className: "bg-red-50 text-red-700 border-red-300" },
-		error: { label: "Error", className: "bg-red-50 text-red-700 border-red-300" },
-	};
+	const config = getStatusConfig();
 	const cfg = config[status] || config.inactive;
 	return (
 		<Badge variant="outline" className={cn("border", cfg.className)}>
@@ -121,6 +125,8 @@ export function SensorsTable({
 		equipmentFilter !== "all",
 	].filter(Boolean).length;
 
+	const sensorTypeOptions = getSensorTypeOptions();
+
 	if (sensors.length === 0) {
 		return (
 			<div className="py-12 text-center">
@@ -129,11 +135,11 @@ export function SensorsTable({
 						<XCircle className="size-8 text-muted-foreground" />
 					</div>
 				</div>
-				<p className="text-sm font-medium text-foreground mb-1">No sensors found</p>
+				<p className="text-sm font-medium text-foreground mb-1">{t`No sensors found`}</p>
 				<p className="text-xs text-muted-foreground">
 					{searchQuery || activeFiltersCount > 0
-						? "Try adjusting your search or filters"
-						: "Register your first sensor to get started"}
+						? t`Try adjusting your search or filters`
+						: t`Register your first sensor to get started`}
 				</p>
 			</div>
 		);
@@ -146,11 +152,11 @@ export function SensorsTable({
 				<div className="relative flex-1">
 					<Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
 					<Input
-						placeholder="Search by sensor ID, name, site, equipment, or type..."
+						placeholder={t`Search by sensor ID, name, site, equipment, or type...`}
 						value={searchQuery}
 						onChange={(e) => onSearchChange(e.target.value)}
 						className="pl-9"
-						aria-label="Search sensors"
+						aria-label={t`Search sensors`}
 					/>
 				</div>
 				<Button
@@ -161,7 +167,7 @@ export function SensorsTable({
 					aria-controls="filter-panel"
 				>
 					<Filter className="size-4 mr-2" />
-					Filters
+					{t`Filters`}
 					{activeFiltersCount > 0 && (
 						<Badge variant="secondary" className="ml-2 h-5 min-w-5 px-1.5 text-xs">
 							{activeFiltersCount}
@@ -176,25 +182,25 @@ export function SensorsTable({
 					id="filter-panel"
 					className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 border rounded-lg bg-muted/30"
 					role="region"
-					aria-label="Filter options"
+					aria-label={t`Filter options`}
 				>
 					<div>
 						<label
 							htmlFor="status-filter"
 							className="text-xs font-medium text-muted-foreground mb-1.5 block"
 						>
-							Status
+							{t`Status`}
 						</label>
 						<Select value={statusFilter} onValueChange={onStatusFilterChange}>
 							<SelectTrigger id="status-filter" className="h-8">
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="all">All Status</SelectItem>
-								<SelectItem value="active">Active</SelectItem>
-								<SelectItem value="inactive">Inactive</SelectItem>
-								<SelectItem value="warning">Warning</SelectItem>
-								<SelectItem value="offline">Offline</SelectItem>
+								<SelectItem value="all">{t`All Status`}</SelectItem>
+								<SelectItem value="active">{t`Active`}</SelectItem>
+								<SelectItem value="inactive">{t`Inactive`}</SelectItem>
+								<SelectItem value="warning">{t`Warning`}</SelectItem>
+								<SelectItem value="offline">{t`Offline`}</SelectItem>
 							</SelectContent>
 						</Select>
 					</div>
@@ -203,14 +209,14 @@ export function SensorsTable({
 							htmlFor="type-filter"
 							className="text-xs font-medium text-muted-foreground mb-1.5 block"
 						>
-							Sensor Type
+							{t`Sensor Type`}
 						</label>
 						<Select value={typeFilter} onValueChange={onTypeFilterChange}>
 							<SelectTrigger id="type-filter" className="h-8">
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="all">All Types</SelectItem>
+								<SelectItem value="all">{t`All Types`}</SelectItem>
 								{sensorTypeOptions.map((option) => (
 									<SelectItem key={option.value} value={option.value}>
 										{option.label}
@@ -224,14 +230,14 @@ export function SensorsTable({
 							htmlFor="site-filter"
 							className="text-xs font-medium text-muted-foreground mb-1.5 block"
 						>
-							Site
+							{t`Site`}
 						</label>
 						<Select value={siteFilter} onValueChange={onSiteFilterChange}>
 							<SelectTrigger id="site-filter" className="h-8">
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="all">All Sites</SelectItem>
+								<SelectItem value="all">{t`All Sites`}</SelectItem>
 								{sites.map((site) => (
 									<SelectItem key={site.id} value={site.id}>
 										{site.name}
@@ -245,15 +251,15 @@ export function SensorsTable({
 							htmlFor="equipment-filter"
 							className="text-xs font-medium text-muted-foreground mb-1.5 block"
 						>
-							Equipment
+							{t`Equipment`}
 						</label>
 						<Select value={equipmentFilter} onValueChange={onEquipmentFilterChange}>
 							<SelectTrigger id="equipment-filter" className="h-8">
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="all">All Equipment</SelectItem>
-								<SelectItem value="unassigned">Unassigned</SelectItem>
+								<SelectItem value="all">{t`All Equipment`}</SelectItem>
+								<SelectItem value="unassigned">{t`Unassigned`}</SelectItem>
 								{equipment.map((eq) => (
 									<SelectItem key={eq.id} value={eq.id}>
 										{eq.name}
@@ -276,7 +282,7 @@ export function SensorsTable({
 								className="h-8"
 							>
 								<X className="size-3 mr-1" />
-								Clear Filters
+								{t`Clear Filters`}
 							</Button>
 						</div>
 					)}
@@ -288,14 +294,14 @@ export function SensorsTable({
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead className="w-[50px]">Status</TableHead>
-							<TableHead>Sensor Name / ID</TableHead>
-							<TableHead>Type</TableHead>
-							<TableHead>Site</TableHead>
-							<TableHead>Equipment</TableHead>
-							<TableHead>Last Seen</TableHead>
-							<TableHead className="text-center">Mapping</TableHead>
-							<TableHead className="w-[100px] text-right">Actions</TableHead>
+							<TableHead className="w-12.5">{t`Status`}</TableHead>
+							<TableHead>{t`Sensor Name / ID`}</TableHead>
+							<TableHead>{t`Type`}</TableHead>
+							<TableHead>{t`Site`}</TableHead>
+							<TableHead>{t`Equipment`}</TableHead>
+							<TableHead>{t`Last Seen`}</TableHead>
+							<TableHead className="text-center">{t`Mapping`}</TableHead>
+							<TableHead className="w-25 text-right">{t`Actions`}</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
@@ -315,7 +321,7 @@ export function SensorsTable({
 											onToggleStatus(sensor.id, checked ? "active" : "inactive")
 										}
 										onClick={(e) => e.stopPropagation()}
-										aria-label={`Toggle ${sensor.name} status`}
+										aria-label={t`Toggle ${sensor.name} status`}
 									/>
 								</TableCell>
 								<TableCell>
@@ -332,12 +338,12 @@ export function SensorsTable({
 								<TableCell>
 									<div className="flex items-center gap-1.5">
 										<MapPin className="size-3.5 text-muted-foreground" />
-										<span className="text-sm">{sensor.siteName || "Unknown"}</span>
+										<span className="text-sm">{sensor.siteName || t`Unknown`}</span>
 									</div>
 								</TableCell>
 								<TableCell>
 									<span className="text-sm text-muted-foreground">
-										{sensor.equipmentName || "Unassigned"}
+										{sensor.equipmentName || t`Unassigned`}
 									</span>
 								</TableCell>
 								<TableCell>
@@ -352,7 +358,7 @@ export function SensorsTable({
 											className="bg-emerald-50 text-emerald-700 border-emerald-300"
 										>
 											<CheckCircle2 className="size-3 mr-1" />
-											Mapped
+											{t`Mapped`}
 										</Badge>
 									) : (
 										<Badge
@@ -360,7 +366,7 @@ export function SensorsTable({
 											className="bg-amber-50 text-amber-700 border-amber-300"
 										>
 											<XCircle className="size-3 mr-1" />
-											Unmapped
+											{t`Unmapped`}
 										</Badge>
 									)}
 								</TableCell>
@@ -369,17 +375,17 @@ export function SensorsTable({
 										<DropdownMenuTrigger asChild>
 											<Button variant="ghost" size="sm" className="h-8 w-8 p-0">
 												<MoreHorizontal className="h-4 w-4" />
-												<span className="sr-only">Open menu for {sensor.name}</span>
+												<span className="sr-only">{t`Open menu for ${sensor.name}`}</span>
 											</Button>
 										</DropdownMenuTrigger>
 										<DropdownMenuContent align="end">
 											<DropdownMenuItem onClick={() => onViewDetails(sensor)}>
 												<Eye className="mr-2 h-4 w-4" />
-												View Details
+												{t`View Details`}
 											</DropdownMenuItem>
 											<DropdownMenuItem onClick={() => onEdit(sensor)}>
 												<Edit className="mr-2 h-4 w-4" />
-												Edit
+												{t`Edit`}
 											</DropdownMenuItem>
 										</DropdownMenuContent>
 									</DropdownMenu>
@@ -392,7 +398,7 @@ export function SensorsTable({
 
 			{/* Results Count */}
 			<div className="text-sm text-muted-foreground">
-				Showing {sensors.length} sensor{sensors.length !== 1 ? "s" : ""}
+				{t`Showing ${sensors.length} sensor${sensors.length !== 1 ? "s" : ""}`}
 			</div>
 		</div>
 	);

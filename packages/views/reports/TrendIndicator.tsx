@@ -1,5 +1,6 @@
 import { ArrowDown, ArrowUp, Minus } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import { Badge, cn } from "~@/ui";
 
 interface TrendIndicatorProps {
@@ -16,17 +17,17 @@ export function TrendIndicator({ delta, label, trend }: TrendIndicatorProps) {
 		improving: {
 			icon: ArrowDown,
 			className: "bg-emerald-100 text-emerald-700 border-emerald-200",
-			label: "Improving",
+			label: t`Improving`,
 		},
 		worsening: {
 			icon: ArrowUp,
 			className: "bg-red-100 text-red-700 border-red-200",
-			label: "Worsening",
+			label: t`Worsening`,
 		},
 		stable: {
 			icon: Minus,
 			className: "bg-slate-100 text-slate-700 border-slate-200",
-			label: "Stable",
+			label: t`Stable`,
 		},
 	};
 

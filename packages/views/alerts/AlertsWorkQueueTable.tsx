@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router";
 
+import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
@@ -35,47 +36,47 @@ interface AlertsWorkQueueTableProps {
 	getSensorName: (sensorId: string) => string;
 }
 
-const severityConfig = {
+const getSeverityConfig = () => ({
 	critical: {
 		icon: AlertCircle,
-		label: "Critical",
+		label: t`Critical`,
 		className: "bg-red-100 text-red-700 border-red-300",
 		dot: "bg-red-600",
 	},
 	high: {
 		icon: AlertTriangle,
-		label: "Alert",
+		label: t`Alert`,
 		className: "bg-orange-100 text-orange-700 border-orange-300",
 		dot: "bg-orange-600",
 	},
 	medium: {
 		icon: AlertTriangle,
-		label: "Warning",
+		label: t`Warning`,
 		className: "bg-amber-100 text-amber-700 border-amber-300",
 		dot: "bg-amber-600",
 	},
 	low: {
 		icon: Info,
-		label: "Warning",
+		label: t`Warning`,
 		className: "bg-blue-100 text-blue-700 border-blue-300",
 		dot: "bg-blue-600",
 	},
-};
+});
 
-const statusConfig = {
+const getStatusConfig = () => ({
 	active: {
-		label: "Active",
+		label: t`Active`,
 		className: "bg-red-100 text-red-700 border-red-200",
 	},
 	acknowledged: {
-		label: "Acknowledged",
+		label: t`Acknowledged`,
 		className: "bg-amber-100 text-amber-700 border-amber-200",
 	},
 	resolved: {
-		label: "Resolved",
+		label: t`Resolved`,
 		className: "bg-emerald-100 text-emerald-700 border-emerald-200",
 	},
-};
+});
 
 export function AlertsWorkQueueTable({
 	alerts,
@@ -109,6 +110,9 @@ export function AlertsWorkQueueTable({
 		setSelectedAlert(alert);
 	};
 
+	const severityConfig = getSeverityConfig();
+	const statusConfig = getStatusConfig();
+
 	if (alerts.length === 0) {
 		return (
 			<div className="py-12 text-center">
@@ -117,8 +121,8 @@ export function AlertsWorkQueueTable({
 						<CheckCircle2 className="size-8 text-muted-foreground" />
 					</div>
 				</div>
-				<p className="text-sm font-medium text-foreground mb-1">No alerts found</p>
-				<p className="text-xs text-muted-foreground">All systems operating normally</p>
+				<p className="text-sm font-medium text-foreground mb-1">{t`No alerts found`}</p>
+				<p className="text-xs text-muted-foreground">{t`All systems operating normally`}</p>
 			</div>
 		);
 	}
@@ -130,14 +134,14 @@ export function AlertsWorkQueueTable({
 					<Table>
 						<TableHeader>
 							<TableRow>
-								<TableHead className="w-[120px]">Severity</TableHead>
-								<TableHead>Alert Title</TableHead>
-								<TableHead>Origin</TableHead>
-								<TableHead>Sensor</TableHead>
-								<TableHead className="w-[100px]">Duration</TableHead>
-								<TableHead className="w-[120px]">Status</TableHead>
-								<TableHead className="w-[140px]">Created</TableHead>
-								<TableHead className="w-[100px] text-right">Actions</TableHead>
+								<TableHead className="w-30">{t`Severity`}</TableHead>
+								<TableHead>{t`Alert Title`}</TableHead>
+								<TableHead>{t`Origin`}</TableHead>
+								<TableHead>{t`Sensor`}</TableHead>
+								<TableHead className="w-25">{t`Duration`}</TableHead>
+								<TableHead className="w-30">{t`Status`}</TableHead>
+								<TableHead className="w-35">{t`Created`}</TableHead>
+								<TableHead className="w-25 text-right">{t`Actions`}</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
@@ -148,11 +152,11 @@ export function AlertsWorkQueueTable({
 								const duration = calculateDuration(alert);
 								const equipmentName = alert.equipmentId
 									? getEquipmentName(alert.equipmentId)
-									: "Unknown Equipment";
-								const sensorType = alert.sensorId ? getSensorType(alert.sensorId) : "unknown";
+									: t`Unknown Equipment`;
+								const sensorType = alert.sensorId ? getSensorType(alert.sensorId) : t`unknown`;
 								const sensorName = alert.sensorId
 									? getSensorName(alert.sensorId)
-									: "Unknown Sensor";
+									: t`Unknown Sensor`;
 
 								return (
 									<TableRow
@@ -283,10 +287,10 @@ function AlertActionButtons({
 							e.stopPropagation();
 							onAlertUpdate(alert.id, "acknowledge");
 						}}
-						title="Acknowledge alert"
+						title={t`Acknowledge alert`}
 					>
 						<Check className="h-3.5 w-3.5 mr-1" />
-						Ack
+						{t`Ack`}
 					</Button>
 					<Button
 						variant="ghost"
@@ -296,10 +300,10 @@ function AlertActionButtons({
 							e.stopPropagation();
 							onAlertUpdate(alert.id, "resolve");
 						}}
-						title="Resolve alert"
+						title={t`Resolve alert`}
 					>
 						<CheckCircle2 className="h-3.5 w-3.5 mr-1" />
-						Resolve
+						{t`Resolve`}
 					</Button>
 				</>
 			)}
@@ -312,10 +316,10 @@ function AlertActionButtons({
 						e.stopPropagation();
 						onAlertUpdate(alert.id, "resolve");
 					}}
-					title="Resolve alert"
+					title={t`Resolve alert`}
 				>
 					<CheckCircle2 className="h-3.5 w-3.5 mr-1" />
-					Resolve
+					{t`Resolve`}
 				</Button>
 			)}
 			<Button
@@ -326,7 +330,7 @@ function AlertActionButtons({
 					e.stopPropagation();
 					onViewDetails();
 				}}
-				title="View details"
+				title={t`View details`}
 			>
 				<ExternalLink className="h-4 w-4" />
 			</Button>
@@ -348,11 +352,13 @@ function Pagination({
 	totalItems: number;
 	onPageChange: (page: number) => void;
 }) {
+	const from = (currentPage - 1) * itemsPerPage + 1;
+	const to = Math.min(currentPage * itemsPerPage, totalItems);
+
 	return (
 		<div className="flex items-center justify-between">
 			<p className="text-sm text-muted-foreground">
-				Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
-				{Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} alerts
+				{t`Showing ${from} to ${to} of ${totalItems} alerts`}
 			</p>
 			<div className="flex items-center gap-2">
 				<Button
@@ -362,7 +368,7 @@ function Pagination({
 					disabled={currentPage === 1}
 				>
 					<ChevronLeft className="h-4 w-4" />
-					Previous
+					{t`Previous`}
 				</Button>
 				<div className="flex items-center gap-1">
 					{Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
@@ -395,7 +401,7 @@ function Pagination({
 					onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
 					disabled={currentPage === totalPages}
 				>
-					Next
+					{t`Next`}
 					<ChevronRight className="h-4 w-4" />
 				</Button>
 			</div>

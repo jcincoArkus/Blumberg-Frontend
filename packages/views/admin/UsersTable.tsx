@@ -35,22 +35,38 @@ import {
 	TableRow,
 } from "~@/ui";
 
-import type { User, UserRole, UserStatus } from "./types";
+import type { Role, User, UserStatus } from "./types";
 import { UserEditor } from "./UserEditor";
 
 export interface UsersTableProps {
 	users: User[];
+	roles: Role[];
 	currentUserId: string;
 	onUsersChange: (users: User[]) => void;
 }
 
-export function UsersTable({ users, currentUserId, onUsersChange }: UsersTableProps) {
+export function UsersTable({ users, roles, currentUserId, onUsersChange }: UsersTableProps) {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [roleFilter, setRoleFilter] = useState<string>("all");
 	const [statusFilter, setStatusFilter] = useState<string>("all");
 	const [editingUser, setEditingUser] = useState<User | null>(null);
 	const [isEditorOpen, setIsEditorOpen] = useState(false);
 	const [showFilters, setShowFilters] = useState(false);
+
+	// Helper to get role names from roleIds
+	const getRoleNames = (user: User): string[] => {
+		return user.roleIds
+			.map((id) => roles.find((r) => r.id === id)?.name)
+			.filter((name): name is string => name !== undefined);
+	};
+
+	// Check if user has admin role
+	const hasAdminRole = (user: User): boolean => {
+		return user.roleIds.some((id) => {
+			const role = roles.find((r) => r.id === id);
+			return role?.name.toLowerCase() === "admin";
+		});
+	};
 
 	// Filtered users
 	const filteredUsers = useMemo(() => {
@@ -63,8 +79,8 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 				if (!matchesSearch) return false;
 			}
 
-			// Role filter
-			if (roleFilter !== "all" && user.role !== roleFilter) return false;
+			// Role filter - check if user has this role
+			if (roleFilter !== "all" && !user.roleIds.includes(roleFilter)) return false;
 
 			// Status filter
 			if (statusFilter !== "all" && user.status !== statusFilter) return false;
@@ -87,7 +103,7 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 		if (editingUser) {
 			// Update existing - Prevent self-lockout
 			if (editingUser.id === currentUserId) {
-				if (user.role !== "admin" || user.status === "disabled") {
+				if (!hasAdminRole(user) || user.status === "deactivated") {
 					toast.error(t`You cannot demote yourself or disable your own account`);
 					return;
 				}
@@ -111,10 +127,10 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 			return;
 		}
 
-		const newStatus: UserStatus = user.status === "active" ? "disabled" : "active";
+		const newStatus: UserStatus = user.status === "active" ? "deactivated" : "active";
 		onUsersChange(users.map((u) => (u.id === user.id ? { ...u, status: newStatus } : u)));
 		toast.success(
-			newStatus === "active" ? t`User enabled successfully` : t`User disabled successfully`,
+			newStatus === "active" ? t`User enabled successfully` : t`User deactivated successfully`,
 		);
 	};
 
@@ -130,24 +146,32 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 		});
 	};
 
-	const getRoleBadge = (role: UserRole) => {
-		const config = {
-			admin: { label: t`Admin`, className: "bg-purple-100 text-purple-700 border-purple-200" },
-			operator: { label: t`Operator`, className: "bg-blue-100 text-blue-700 border-blue-200" },
-			viewer: { label: t`Viewer`, className: "bg-slate-100 text-slate-700 border-slate-200" },
-		};
-		const cfg = config[role];
+	const getRoleBadges = (user: User) => {
+		const roleNames = getRoleNames(user);
+		if (roleNames.length === 0) {
+			return <span className="text-muted-foreground text-sm">{t`No roles`}</span>;
+		}
 		return (
-			<Badge variant="outline" className={cn("border", cfg.className)}>
-				{cfg.label}
-			</Badge>
+			<div className="flex flex-wrap gap-1">
+				{roleNames.slice(0, 2).map((name) => (
+					<Badge key={name} variant="secondary" className="text-xs">
+						{name}
+					</Badge>
+				))}
+				{roleNames.length > 2 && (
+					<Badge variant="secondary" className="text-xs">
+						+{roleNames.length - 2}
+					</Badge>
+				)}
+			</div>
 		);
 	};
 
 	const getStatusBadge = (status: UserStatus) => {
-		const config = {
+		const config: Record<UserStatus, { label: string; className: string }> = {
 			active: { label: t`Active`, className: "bg-emerald-100 text-emerald-700 border-emerald-200" },
-			disabled: { label: t`Disabled`, className: "bg-red-100 text-red-700 border-red-200" },
+			pending: { label: t`Pending`, className: "bg-amber-100 text-amber-700 border-amber-200" },
+			deactivated: { label: t`Deactivated`, className: "bg-red-100 text-red-700 border-red-200" },
 		};
 		const cfg = config[status];
 		return (
@@ -207,9 +231,11 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 								</SelectTrigger>
 								<SelectContent>
 									<SelectItem value="all">{t`All Roles`}</SelectItem>
-									<SelectItem value="admin">{t`Admin`}</SelectItem>
-									<SelectItem value="operator">{t`Operator`}</SelectItem>
-									<SelectItem value="viewer">{t`Viewer`}</SelectItem>
+									{roles.map((role) => (
+										<SelectItem key={role.id} value={role.id}>
+											{role.name}
+										</SelectItem>
+									))}
 								</SelectContent>
 							</Select>
 						</div>
@@ -225,7 +251,8 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 								<SelectContent>
 									<SelectItem value="all">{t`All Status`}</SelectItem>
 									<SelectItem value="active">{t`Active`}</SelectItem>
-									<SelectItem value="disabled">{t`Disabled`}</SelectItem>
+									<SelectItem value="pending">{t`Pending`}</SelectItem>
+									<SelectItem value="deactivated">{t`Deactivated`}</SelectItem>
 								</SelectContent>
 							</Select>
 						</div>
@@ -263,7 +290,7 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 					<UsersTableContent
 						users={filteredUsers}
 						currentUserId={currentUserId}
-						getRoleBadge={getRoleBadge}
+						getRoleBadges={getRoleBadges}
 						getStatusBadge={getStatusBadge}
 						formatTimestamp={formatTimestamp}
 						onEdit={handleEdit}
@@ -295,7 +322,7 @@ export function UsersTable({ users, currentUserId, onUsersChange }: UsersTablePr
 interface UsersTableContentProps {
 	users: User[];
 	currentUserId: string;
-	getRoleBadge: (role: UserRole) => React.ReactNode;
+	getRoleBadges: (user: User) => React.ReactNode;
 	getStatusBadge: (status: UserStatus) => React.ReactNode;
 	formatTimestamp: (dateString?: string) => string;
 	onEdit: (user: User) => void;
@@ -305,7 +332,7 @@ interface UsersTableContentProps {
 function UsersTableContent({
 	users,
 	currentUserId,
-	getRoleBadge,
+	getRoleBadges,
 	getStatusBadge,
 	formatTimestamp,
 	onEdit,
@@ -318,7 +345,7 @@ function UsersTableContent({
 					<TableRow>
 						<TableHead>{t`Name`}</TableHead>
 						<TableHead>{t`Email`}</TableHead>
-						<TableHead>{t`Role`}</TableHead>
+						<TableHead>{t`Roles`}</TableHead>
 						<TableHead>{t`Status`}</TableHead>
 						<TableHead>{t`Last Login`}</TableHead>
 						<TableHead className="text-right">{t`Actions`}</TableHead>
@@ -334,7 +361,7 @@ function UsersTableContent({
 									<span className="text-sm">{user.email}</span>
 								</div>
 							</TableCell>
-							<TableCell>{getRoleBadge(user.role)}</TableCell>
+							<TableCell>{getRoleBadges(user)}</TableCell>
 							<TableCell>{getStatusBadge(user.status)}</TableCell>
 							<TableCell className="text-sm text-muted-foreground">
 								{formatTimestamp(user.lastLoginAt)}

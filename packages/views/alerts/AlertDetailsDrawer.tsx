@@ -15,6 +15,7 @@ import {
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
+import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
@@ -40,49 +41,49 @@ interface AlertDetailsDrawerProps {
 	siteLocation?: string;
 }
 
-const severityConfig = {
+const getSeverityConfig = () => ({
 	critical: {
 		icon: AlertCircle,
-		label: "Critical",
+		label: t`Critical`,
 		className: "bg-red-100 text-red-700 border-red-300",
 		dot: "bg-red-600",
 	},
 	high: {
 		icon: AlertTriangle,
-		label: "Alert",
+		label: t`Alert`,
 		className: "bg-orange-100 text-orange-700 border-orange-300",
 		dot: "bg-orange-600",
 	},
 	medium: {
 		icon: AlertTriangle,
-		label: "Warning",
+		label: t`Warning`,
 		className: "bg-amber-100 text-amber-700 border-amber-300",
 		dot: "bg-amber-600",
 	},
 	low: {
 		icon: Info,
-		label: "Warning",
+		label: t`Warning`,
 		className: "bg-blue-100 text-blue-700 border-blue-300",
 		dot: "bg-blue-600",
 	},
-};
+});
 
-const eventTypeConfig = {
-	triggered: { icon: Activity, label: "Triggered", color: "text-red-600" },
-	escalated: { icon: AlertTriangle, label: "Escalated", color: "text-orange-600" },
-	acknowledged: { icon: CheckCircle2, label: "Acknowledged", color: "text-amber-600" },
-	resolved: { icon: CheckCircle2, label: "Resolved", color: "text-emerald-600" },
-	note: { icon: Info, label: "Note", color: "text-blue-600" },
-	system_update: { icon: Server, label: "System Update", color: "text-slate-600" },
-};
+const getEventTypeConfig = () => ({
+	triggered: { icon: Activity, label: t`Triggered`, color: "text-red-600" },
+	escalated: { icon: AlertTriangle, label: t`Escalated`, color: "text-orange-600" },
+	acknowledged: { icon: CheckCircle2, label: t`Acknowledged`, color: "text-amber-600" },
+	resolved: { icon: CheckCircle2, label: t`Resolved`, color: "text-emerald-600" },
+	note: { icon: Info, label: t`Note`, color: "text-blue-600" },
+	system_update: { icon: Server, label: t`System Update`, color: "text-slate-600" },
+});
 
-const notificationReasonLabels: Record<string, string> = {
-	escalation_rule: "Escalation Rule",
-	severity_threshold: "Severity Threshold",
-	on_call_rotation: "On-Call Rotation",
-	manual_notify: "Manual Notification",
-	system_alert: "System Alert",
-};
+const getNotificationReasonLabels = (): Record<string, string> => ({
+	escalation_rule: t`Escalation Rule`,
+	severity_threshold: t`Severity Threshold`,
+	on_call_rotation: t`On-Call Rotation`,
+	manual_notify: t`Manual Notification`,
+	system_alert: t`System Alert`,
+});
 
 function formatTimestamp(dateString: string) {
 	const date = new Date(dateString);
@@ -121,8 +122,8 @@ export function AlertDetailsDrawer({
 	open,
 	onOpenChange,
 	onAlertUpdate,
-	equipmentName = "Unknown Equipment",
-	sensorName = "Unknown Sensor",
+	equipmentName = t`Unknown Equipment`,
+	sensorName = t`Unknown Sensor`,
 	siteName,
 	siteLocation,
 }: AlertDetailsDrawerProps) {
@@ -132,11 +133,14 @@ export function AlertDetailsDrawer({
 		setCurrentAlert(alert);
 	}, [alert]);
 
+	const severityConfig = getSeverityConfig();
 	const severityInfo = severityConfig[currentAlert.severity];
 	const SeverityIcon = severityInfo.icon;
 	const duration = calculateDuration(currentAlert.createdAt, currentAlert.resolvedAt);
 	const events: AlertEvent[] = currentAlert.events || [];
 	const notifications: AlertNotification[] = currentAlert.notifications || [];
+	const eventTypeConfig = getEventTypeConfig();
+	const notificationReasonLabels = getNotificationReasonLabels();
 
 	const handleUpdate = (action: "acknowledge" | "resolve") => {
 		onAlertUpdate?.(currentAlert.id, action);
@@ -148,9 +152,9 @@ export function AlertDetailsDrawer({
 				<DrawerHeader className="border-b">
 					<div className="flex items-start justify-between">
 						<div className="flex-1">
-							<DrawerTitle className="text-xl font-semibold mb-2">Alert Details</DrawerTitle>
+							<DrawerTitle className="text-xl font-semibold mb-2">{t`Alert Details`}</DrawerTitle>
 							<DrawerDescription>
-								Complete information and event history for this alert
+								{t`Complete information and event history for this alert`}
 							</DrawerDescription>
 						</div>
 						<div className="flex items-center gap-2">
@@ -162,7 +166,7 @@ export function AlertDetailsDrawer({
 									onClick={() => onOpenChange(false)}
 								>
 									<List className="h-4 w-4 mr-1.5" />
-									View All
+									{t`View All`}
 								</Button>
 							</Link>
 							{currentAlert.status === "active" && onAlertUpdate && (
@@ -174,7 +178,7 @@ export function AlertDetailsDrawer({
 										className="h-8"
 									>
 										<Check className="h-4 w-4 mr-1.5" />
-										Acknowledge
+										{t`Acknowledge`}
 									</Button>
 									<Button
 										variant="default"
@@ -183,7 +187,7 @@ export function AlertDetailsDrawer({
 										className="h-8"
 									>
 										<CheckCircle2 className="h-4 w-4 mr-1.5" />
-										Resolve
+										{t`Resolve`}
 									</Button>
 								</>
 							)}
@@ -195,7 +199,7 @@ export function AlertDetailsDrawer({
 									className="h-8"
 								>
 									<CheckCircle2 className="h-4 w-4 mr-1.5" />
-									Resolve
+									{t`Resolve`}
 								</Button>
 							)}
 							<DrawerClose asChild>
@@ -210,7 +214,7 @@ export function AlertDetailsDrawer({
 				<div className="flex-1 overflow-y-auto p-6 space-y-6">
 					{/* Alert Summary */}
 					<div className="space-y-4">
-						<h3 className="text-sm font-semibold text-foreground">Alert Summary</h3>
+						<h3 className="text-sm font-semibold text-foreground">{t`Alert Summary`}</h3>
 						<div className="space-y-3">
 							<div className="flex items-center gap-3">
 								<Badge
@@ -242,7 +246,7 @@ export function AlertDetailsDrawer({
 
 							<div className="grid grid-cols-2 gap-4">
 								<div>
-									<p className="text-xs text-muted-foreground mb-1">Equipment</p>
+									<p className="text-xs text-muted-foreground mb-1">{t`Equipment`}</p>
 									<Link
 										to={`/equipment/${currentAlert.equipmentId}`}
 										className="text-sm font-medium text-primary hover:underline"
@@ -251,14 +255,14 @@ export function AlertDetailsDrawer({
 									</Link>
 								</div>
 								<div>
-									<p className="text-xs text-muted-foreground mb-1">Sensor</p>
+									<p className="text-xs text-muted-foreground mb-1">{t`Sensor`}</p>
 									<p className="text-sm font-medium text-foreground">{sensorName}</p>
 								</div>
 							</div>
 
 							{siteName && (
 								<div>
-									<p className="text-xs text-muted-foreground mb-1">Site</p>
+									<p className="text-xs text-muted-foreground mb-1">{t`Site`}</p>
 									<Link
 										to={`/site/${currentAlert.siteId}`}
 										className="text-sm font-medium text-primary hover:underline"
@@ -271,14 +275,14 @@ export function AlertDetailsDrawer({
 
 							<div className="grid grid-cols-2 gap-4 pt-2 border-t">
 								<div>
-									<p className="text-xs text-muted-foreground mb-1">Created</p>
+									<p className="text-xs text-muted-foreground mb-1">{t`Created`}</p>
 									<div className="flex items-center gap-1.5 text-sm">
 										<Clock className="size-3.5 text-muted-foreground" />
 										<span>{formatTimestamp(currentAlert.createdAt)}</span>
 									</div>
 								</div>
 								<div>
-									<p className="text-xs text-muted-foreground mb-1">Duration</p>
+									<p className="text-xs text-muted-foreground mb-1">{t`Duration`}</p>
 									<div className="flex items-center gap-1.5 text-sm font-medium">
 										<Clock className="size-3.5 text-muted-foreground" />
 										<span>{duration}</span>
@@ -292,10 +296,10 @@ export function AlertDetailsDrawer({
 
 					{/* Events History */}
 					<div className="space-y-4">
-						<h3 className="text-sm font-semibold text-foreground">Events History</h3>
+						<h3 className="text-sm font-semibold text-foreground">{t`Events History`}</h3>
 						{events.length === 0 ? (
 							<div className="py-4 text-center text-sm text-muted-foreground">
-								No events recorded
+								{t`No events recorded`}
 							</div>
 						) : (
 							<div className="space-y-4">
@@ -344,10 +348,10 @@ export function AlertDetailsDrawer({
 
 					{/* Notifications Audit */}
 					<div className="space-y-4">
-						<h3 className="text-sm font-semibold text-foreground">Notifications Audit</h3>
+						<h3 className="text-sm font-semibold text-foreground">{t`Notifications Audit`}</h3>
 						{notifications.length === 0 ? (
 							<div className="py-4 text-center text-sm text-muted-foreground">
-								No notifications sent
+								{t`No notifications sent`}
 							</div>
 						) : (
 							<div className="space-y-3">

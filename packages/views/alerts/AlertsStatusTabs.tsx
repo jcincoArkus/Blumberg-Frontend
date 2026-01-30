@@ -1,3 +1,4 @@
+import { t } from "~@/i18n/macro";
 import { Badge, Tabs, TabsList, TabsTrigger } from "~@/ui";
 
 import type { AlertStatus } from "./types";
@@ -21,7 +22,7 @@ export function AlertsStatusTabs({ activeTab, onTabChange, counts }: AlertsStatu
 					value="all"
 					className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
 				>
-					All
+					{t`All`}
 					{counts.all > 0 && (
 						<Badge variant="secondary" className="ml-2 h-5 min-w-5 px-1.5 text-xs">
 							{counts.all}
@@ -32,7 +33,7 @@ export function AlertsStatusTabs({ activeTab, onTabChange, counts }: AlertsStatu
 					value="active"
 					className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
 				>
-					Active
+					{t`Active`}
 					{counts.active > 0 && (
 						<Badge
 							variant="secondary"
@@ -46,7 +47,7 @@ export function AlertsStatusTabs({ activeTab, onTabChange, counts }: AlertsStatu
 					value="acknowledged"
 					className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
 				>
-					Acknowledged
+					{t`Acknowledged`}
 					{counts.acknowledged > 0 && (
 						<Badge
 							variant="secondary"
@@ -60,7 +61,7 @@ export function AlertsStatusTabs({ activeTab, onTabChange, counts }: AlertsStatu
 					value="resolved"
 					className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
 				>
-					Resolved
+					{t`Resolved`}
 					{counts.resolved > 0 && (
 						<Badge
 							variant="secondary"

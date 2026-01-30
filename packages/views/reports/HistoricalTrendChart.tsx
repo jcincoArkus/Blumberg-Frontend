@@ -9,6 +9,8 @@ import {
 	YAxis,
 } from "recharts";
 
+import { t } from "~@/i18n/macro";
+
 interface HistoricalTrendChartProps {
 	data: Array<{ timestamp: string; value: number }>;
 	previousData: Array<{ timestamp: string; value: number }> | null;
@@ -19,7 +21,7 @@ export function HistoricalTrendChart({ data, previousData, unit }: HistoricalTre
 	if (data.length === 0) {
 		return (
 			<div className="flex h-64 items-center justify-center text-muted-foreground">
-				No data available for chart
+				{t`No data available for chart`}
 			</div>
 		);
 	}
@@ -45,7 +47,7 @@ export function HistoricalTrendChart({ data, previousData, unit }: HistoricalTre
 				/>
 				<Tooltip
 					formatter={(value: number) => [`${value} ${unit}`, ""]}
-					labelFormatter={(label) => `Time: ${label}`}
+					labelFormatter={(label) => t`Time: ${label}`}
 				/>
 				<Legend />
 				<Line
@@ -53,7 +55,7 @@ export function HistoricalTrendChart({ data, previousData, unit }: HistoricalTre
 					dataKey="current"
 					stroke="#3b82f6"
 					strokeWidth={2}
-					name="Current Period"
+					name={t`Current Period`}
 					dot={false}
 				/>
 				{previousData && (
@@ -63,7 +65,7 @@ export function HistoricalTrendChart({ data, previousData, unit }: HistoricalTre
 						stroke="#94a3b8"
 						strokeWidth={2}
 						strokeDasharray="5 5"
-						name="Previous Period"
+						name={t`Previous Period`}
 						dot={false}
 					/>
 				)}

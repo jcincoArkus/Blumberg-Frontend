@@ -1,5 +1,6 @@
 import { AlertTriangle, CheckCircle2, Info } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import { Badge, Card, CardContent } from "~@/ui";
 
 import { DashboardPanel } from "../dashboard";
@@ -18,20 +19,20 @@ function getStatusInfo(sensor: Sensor): {
 		return {
 			icon: AlertTriangle,
 			color: "text-red-600 bg-red-50 border-red-200",
-			label: "Alert",
+			label: t`Alert`,
 		};
 	}
 	if (sensor.status === "warning") {
 		return {
 			icon: AlertTriangle,
 			color: "text-amber-600 bg-amber-50 border-amber-200",
-			label: "Warning",
+			label: t`Warning`,
 		};
 	}
 	return {
 		icon: CheckCircle2,
 		color: "text-emerald-600 bg-emerald-50 border-emerald-200",
-		label: "OK",
+		label: t`OK`,
 	};
 }
 
@@ -51,11 +52,11 @@ export function LimitsComparisonPanel({ sensors }: LimitsComparisonPanelProps) {
 	if (sensors.length === 0) {
 		return (
 			<DashboardPanel
-				title="Sensor Limits Comparison"
-				description="Current values compared against defined thresholds"
+				title={t`Sensor Limits Comparison`}
+				description={t`Current values compared against defined thresholds`}
 			>
 				<p className="text-sm text-muted-foreground text-center py-8">
-					No sensors available for comparison.
+					{t`No sensors available for comparison.`}
 				</p>
 			</DashboardPanel>
 		);
@@ -63,13 +64,13 @@ export function LimitsComparisonPanel({ sensors }: LimitsComparisonPanelProps) {
 
 	return (
 		<DashboardPanel
-			title="Sensor Limits Comparison"
-			description="Current values compared against defined thresholds"
+			title={t`Sensor Limits Comparison`}
+			description={t`Current values compared against defined thresholds`}
 		>
 			<div className="space-y-4">
 				{Object.entries(sensorsByType).map(([type, typeSensors]) => (
 					<div key={type} className="space-y-2">
-						<h4 className="text-sm font-medium text-foreground capitalize">{type} Sensors</h4>
+						<h4 className="text-sm font-medium text-foreground capitalize">{t`${type} Sensors`}</h4>
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
 							{typeSensors.map((sensor) => {
 								const statusInfo = getStatusInfo(sensor);
@@ -120,7 +121,7 @@ export function LimitsComparisonPanel({ sensors }: LimitsComparisonPanelProps) {
 															className={`p-2 rounded border ${isInNormalRange ? "bg-emerald-50 border-emerald-200" : "bg-slate-50 border-slate-200"}`}
 														>
 															<div className="flex items-center justify-between">
-																<span className="text-muted-foreground">Normal Range:</span>
+																<span className="text-muted-foreground">{t`Normal Range:`}</span>
 																<span className="font-medium text-foreground">
 																	{warningMin.toFixed(1)} - {warningMax.toFixed(1)} {sensor.unit}
 																</span>
@@ -132,7 +133,7 @@ export function LimitsComparisonPanel({ sensors }: LimitsComparisonPanelProps) {
 															className={`p-2 rounded border ${isInWarningRange && !isInAlertRange ? "bg-amber-50 border-amber-200" : "bg-slate-50 border-slate-200"}`}
 														>
 															<div className="flex items-center justify-between">
-																<span className="text-muted-foreground">Warning Range:</span>
+																<span className="text-muted-foreground">{t`Warning Range:`}</span>
 																<span className="font-medium text-foreground">
 																	{sensor.min.toFixed(1)} - {criticalMax.toFixed(1)} {sensor.unit}
 																</span>
@@ -148,7 +149,7 @@ export function LimitsComparisonPanel({ sensors }: LimitsComparisonPanelProps) {
 																aria-hidden="true"
 															/>
 															<p className="text-xs text-red-700">
-																Current value is outside acceptable range
+																{t`Current value is outside acceptable range`}
 															</p>
 														</div>
 													)}
@@ -158,7 +159,7 @@ export function LimitsComparisonPanel({ sensors }: LimitsComparisonPanelProps) {
 																className="size-4 text-amber-600 shrink-0 mt-0.5"
 																aria-hidden="true"
 															/>
-															<p className="text-xs text-amber-700">Approaching threshold limits</p>
+															<p className="text-xs text-amber-700">{t`Approaching threshold limits`}</p>
 														</div>
 													)}
 													{isInNormalRange && (
@@ -168,7 +169,7 @@ export function LimitsComparisonPanel({ sensors }: LimitsComparisonPanelProps) {
 																aria-hidden="true"
 															/>
 															<p className="text-xs text-emerald-700">
-																Operating within normal parameters
+																{t`Operating within normal parameters`}
 															</p>
 														</div>
 													)}

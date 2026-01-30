@@ -1,5 +1,6 @@
 import { CheckCircle2, FileText, X, XCircle } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
@@ -56,14 +57,19 @@ export function IngestionRunDetailsDrawer({
 					<div className="flex items-start justify-between">
 						<div className="flex-1">
 							<DrawerTitle className="text-xl font-semibold mb-2">
-								Ingestion Run Details
+								{t`Ingestion Run Details`}
 							</DrawerTitle>
 							<DrawerDescription>
 								{run.id} • {run.source.toUpperCase()}
 							</DrawerDescription>
 						</div>
 						<DrawerClose asChild>
-							<Button variant="ghost" size="sm" className="h-8 w-8 p-0" aria-label="Close drawer">
+							<Button
+								variant="ghost"
+								size="sm"
+								className="h-8 w-8 p-0"
+								aria-label={t`Close drawer`}
+							>
 								<X className="h-4 w-4" aria-hidden="true" />
 							</Button>
 						</DrawerClose>
@@ -75,7 +81,7 @@ export function IngestionRunDetailsDrawer({
 					<div className="grid grid-cols-2 gap-4">
 						<Card>
 							<CardHeader className="pb-3">
-								<CardTitle className="text-sm">Accepted</CardTitle>
+								<CardTitle className="text-sm">{t`Accepted`}</CardTitle>
 							</CardHeader>
 							<CardContent>
 								<div className="flex items-center gap-2">
@@ -87,7 +93,7 @@ export function IngestionRunDetailsDrawer({
 
 						<Card>
 							<CardHeader className="pb-3">
-								<CardTitle className="text-sm">Rejected</CardTitle>
+								<CardTitle className="text-sm">{t`Rejected`}</CardTitle>
 							</CardHeader>
 							<CardContent>
 								<div className="flex items-center gap-2">
@@ -103,28 +109,28 @@ export function IngestionRunDetailsDrawer({
 					{/* Run Info */}
 					<div className="space-y-3">
 						<div>
-							<p className="text-xs text-muted-foreground mb-1">Run ID</p>
+							<p className="text-xs text-muted-foreground mb-1">{t`Run ID`}</p>
 							<p className="text-sm font-mono font-medium">{run.id}</p>
 						</div>
 						<div>
-							<p className="text-xs text-muted-foreground mb-1">Source</p>
+							<p className="text-xs text-muted-foreground mb-1">{t`Source`}</p>
 							<Badge variant="outline" className="capitalize">
 								{run.source}
 							</Badge>
 						</div>
 						<div>
-							<p className="text-xs text-muted-foreground mb-1">Created At</p>
+							<p className="text-xs text-muted-foreground mb-1">{t`Created At`}</p>
 							<p className="text-sm">{formatTimestamp(run.createdAt)}</p>
 						</div>
 						{run.requestId && (
 							<div>
-								<p className="text-xs text-muted-foreground mb-1">Request ID</p>
+								<p className="text-xs text-muted-foreground mb-1">{t`Request ID`}</p>
 								<p className="text-sm font-mono">{run.requestId}</p>
 							</div>
 						)}
 						{run.fileName && (
 							<div>
-								<p className="text-xs text-muted-foreground mb-1">File Name</p>
+								<p className="text-xs text-muted-foreground mb-1">{t`File Name`}</p>
 								<div className="flex items-center gap-2">
 									<FileText className="size-4 text-muted-foreground" aria-hidden="true" />
 									<p className="text-sm">{run.fileName}</p>
@@ -132,7 +138,7 @@ export function IngestionRunDetailsDrawer({
 							</div>
 						)}
 						<div>
-							<p className="text-xs text-muted-foreground mb-1">Status</p>
+							<p className="text-xs text-muted-foreground mb-1">{t`Status`}</p>
 							<Badge
 								variant="outline"
 								className={cn(
@@ -151,15 +157,15 @@ export function IngestionRunDetailsDrawer({
 						<>
 							<Separator />
 							<div className="space-y-4">
-								<h3 className="text-sm font-semibold text-foreground">Error Breakdown</h3>
+								<h3 className="text-sm font-semibold text-foreground">{t`Error Breakdown`}</h3>
 								<Card>
 									<CardContent className="p-4">
 										<Table>
 											<TableHeader>
 												<TableRow>
-													<TableHead>Error Code</TableHead>
-													<TableHead>Message</TableHead>
-													<TableHead className="text-right">Count</TableHead>
+													<TableHead>{t`Error Code`}</TableHead>
+													<TableHead>{t`Message`}</TableHead>
+													<TableHead className="text-right">{t`Count`}</TableHead>
 												</TableRow>
 											</TableHeader>
 											<TableBody>
@@ -185,12 +191,12 @@ export function IngestionRunDetailsDrawer({
 						<>
 							<Separator />
 							<div className="space-y-4">
-								<h3 className="text-sm font-semibold text-foreground">Rejected Rows Sample</h3>
+								<h3 className="text-sm font-semibold text-foreground">{t`Rejected Rows Sample`}</h3>
 								<Card>
 									<CardHeader className="pb-3">
-										<CardTitle className="text-sm">Sample of Rejected Rows</CardTitle>
+										<CardTitle className="text-sm">{t`Sample of Rejected Rows`}</CardTitle>
 										<CardDescription>
-											Showing first {run.rejectedRowsSample.length} rejected rows
+											{t`Showing first ${run.rejectedRowsSample.length} rejected rows`}
 										</CardDescription>
 									</CardHeader>
 									<CardContent>
@@ -198,9 +204,9 @@ export function IngestionRunDetailsDrawer({
 											<Table>
 												<TableHeader>
 													<TableRow>
-														<TableHead>Row #</TableHead>
-														<TableHead>Reason</TableHead>
-														<TableHead>Data</TableHead>
+														<TableHead>{t`Row #`}</TableHead>
+														<TableHead>{t`Reason`}</TableHead>
+														<TableHead>{t`Data`}</TableHead>
 													</TableRow>
 												</TableHeader>
 												<TableBody>

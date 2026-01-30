@@ -1,6 +1,7 @@
 import { AlertTriangle, Bell, CheckCircle2, Clock, Eye } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
@@ -92,10 +93,10 @@ export function AlertsHistoryTab({
 
 	const getSeverityBadge = (severity: AlertSeverity) => {
 		const config = {
-			critical: { label: "Critical", className: "bg-red-100 text-red-700 border-red-200" },
-			high: { label: "High", className: "bg-orange-100 text-orange-700 border-orange-200" },
-			medium: { label: "Medium", className: "bg-amber-100 text-amber-700 border-amber-200" },
-			low: { label: "Low", className: "bg-blue-100 text-blue-700 border-blue-200" },
+			critical: { label: t`Critical`, className: "bg-red-100 text-red-700 border-red-200" },
+			high: { label: t`High`, className: "bg-orange-100 text-orange-700 border-orange-200" },
+			medium: { label: t`Medium`, className: "bg-amber-100 text-amber-700 border-amber-200" },
+			low: { label: t`Low`, className: "bg-blue-100 text-blue-700 border-blue-200" },
 		};
 		const cfg = config[severity];
 		return (
@@ -108,17 +109,17 @@ export function AlertsHistoryTab({
 	const getStatusBadge = (status: string) => {
 		const config = {
 			active: {
-				label: "Active",
+				label: t`Active`,
 				className: "bg-red-100 text-red-700 border-red-200",
 				icon: AlertTriangle,
 			},
 			acknowledged: {
-				label: "Acknowledged",
+				label: t`Acknowledged`,
 				className: "bg-amber-100 text-amber-700 border-amber-200",
 				icon: Clock,
 			},
 			resolved: {
-				label: "Resolved",
+				label: t`Resolved`,
 				className: "bg-emerald-100 text-emerald-700 border-emerald-200",
 				icon: CheckCircle2,
 			},
@@ -172,9 +173,9 @@ export function AlertsHistoryTab({
 		return (
 			<div className="py-12 text-center">
 				<Bell className="mx-auto mb-2 size-8 text-muted-foreground" />
-				<p className="mb-1 text-sm font-medium text-foreground">No alerts found</p>
+				<p className="mb-1 text-sm font-medium text-foreground">{t`No alerts found`}</p>
 				<p className="text-xs text-muted-foreground">
-					No alerts available for the selected period and filters
+					{t`No alerts available for the selected period and filters`}
 				</p>
 			</div>
 		);
@@ -187,7 +188,7 @@ export function AlertsHistoryTab({
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 					<Card>
 						<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-							<CardTitle className="text-sm font-medium">Total Alerts</CardTitle>
+							<CardTitle className="text-sm font-medium">{t`Total Alerts`}</CardTitle>
 							<Bell className="h-4 w-4 text-muted-foreground" />
 						</CardHeader>
 						<CardContent>
@@ -195,7 +196,7 @@ export function AlertsHistoryTab({
 							{comparison && (
 								<TrendIndicator
 									delta={comparison.delta}
-									label="vs previous period"
+									label={t`vs previous period`}
 									trend={comparison.trend}
 								/>
 							)}
@@ -204,30 +205,30 @@ export function AlertsHistoryTab({
 
 					<Card>
 						<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-							<CardTitle className="text-sm font-medium">By Severity</CardTitle>
+							<CardTitle className="text-sm font-medium">{t`By Severity`}</CardTitle>
 						</CardHeader>
 						<CardContent>
 							<div className="flex flex-wrap gap-1.5">
 								<Badge variant="outline" className="border bg-red-100 text-red-700 border-red-200">
-									{metrics.bySeverity.critical} Critical
+									{t`${metrics.bySeverity.critical} Critical`}
 								</Badge>
 								<Badge
 									variant="outline"
 									className="border bg-orange-100 text-orange-700 border-orange-200"
 								>
-									{metrics.bySeverity.high} High
+									{t`${metrics.bySeverity.high} High`}
 								</Badge>
 								<Badge
 									variant="outline"
 									className="border bg-amber-100 text-amber-700 border-amber-200"
 								>
-									{metrics.bySeverity.medium} Medium
+									{t`${metrics.bySeverity.medium} Medium`}
 								</Badge>
 								<Badge
 									variant="outline"
 									className="border bg-blue-100 text-blue-700 border-blue-200"
 								>
-									{metrics.bySeverity.low} Low
+									{t`${metrics.bySeverity.low} Low`}
 								</Badge>
 							</div>
 						</CardContent>
@@ -235,25 +236,24 @@ export function AlertsHistoryTab({
 
 					<Card>
 						<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-							<CardTitle className="text-sm font-medium">Avg Duration</CardTitle>
+							<CardTitle className="text-sm font-medium">{t`Avg Duration`}</CardTitle>
 							<Clock className="h-4 w-4 text-muted-foreground" />
 						</CardHeader>
 						<CardContent>
 							<div className="text-2xl font-bold">{metrics.avgDuration}m</div>
-							<p className="mt-1 text-xs text-muted-foreground">Time to resolution</p>
+							<p className="mt-1 text-xs text-muted-foreground">{t`Time to resolution`}</p>
 						</CardContent>
 					</Card>
 
 					<Card>
 						<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-							<CardTitle className="text-sm font-medium">Resolved</CardTitle>
+							<CardTitle className="text-sm font-medium">{t`Resolved`}</CardTitle>
 							<CheckCircle2 className="h-4 w-4 text-muted-foreground" />
 						</CardHeader>
 						<CardContent>
 							<div className="text-2xl font-bold">{metrics.resolved}</div>
 							<p className="mt-1 text-xs text-muted-foreground">
-								{metrics.total > 0 ? Math.round((metrics.resolved / metrics.total) * 100) : 0}%
-								resolution rate
+								{t`${metrics.total > 0 ? Math.round((metrics.resolved / metrics.total) * 100) : 0}% resolution rate`}
 							</p>
 						</CardContent>
 					</Card>
@@ -262,8 +262,8 @@ export function AlertsHistoryTab({
 				{/* Alerts Trend Chart */}
 				<Card>
 					<CardHeader>
-						<CardTitle>Alerts Trend</CardTitle>
-						<CardDescription>Alert distribution by severity over time</CardDescription>
+						<CardTitle>{t`Alerts Trend`}</CardTitle>
+						<CardDescription>{t`Alert distribution by severity over time`}</CardDescription>
 					</CardHeader>
 					<CardContent>
 						<AlertsTrendChart data={chartData} />
@@ -273,21 +273,21 @@ export function AlertsHistoryTab({
 				{/* Alerts Table */}
 				<Card>
 					<CardHeader>
-						<CardTitle>Alerts Table</CardTitle>
-						<CardDescription>Historical alert records (showing first 100)</CardDescription>
+						<CardTitle>{t`Alerts Table`}</CardTitle>
+						<CardDescription>{t`Historical alert records (showing first 100)`}</CardDescription>
 					</CardHeader>
 					<CardContent>
 						<div className="overflow-x-auto rounded-lg border bg-card">
 							<Table>
 								<TableHeader>
 									<TableRow>
-										<TableHead>Created</TableHead>
-										<TableHead>Title</TableHead>
-										<TableHead>Severity</TableHead>
-										<TableHead>Status</TableHead>
-										<TableHead>Equipment</TableHead>
-										<TableHead>Duration</TableHead>
-										<TableHead className="text-right">Actions</TableHead>
+										<TableHead>{t`Created`}</TableHead>
+										<TableHead>{t`Title`}</TableHead>
+										<TableHead>{t`Severity`}</TableHead>
+										<TableHead>{t`Status`}</TableHead>
+										<TableHead>{t`Equipment`}</TableHead>
+										<TableHead>{t`Duration`}</TableHead>
+										<TableHead className="text-right">{t`Actions`}</TableHead>
 									</TableRow>
 								</TableHeader>
 								<TableBody>
@@ -317,7 +317,7 @@ export function AlertsHistoryTab({
 														onClick={() => handleViewDetails(alert)}
 													>
 														<Eye className="mr-1 size-3" />
-														View
+														{t`View`}
 													</Button>
 												</TableCell>
 											</TableRow>
@@ -328,7 +328,7 @@ export function AlertsHistoryTab({
 						</div>
 						{alerts.length > 100 && (
 							<p className="mt-2 text-xs text-muted-foreground">
-								Showing first 100 of {alerts.length.toLocaleString()} alerts
+								{t`Showing first 100 of ${alerts.length.toLocaleString()} alerts`}
 							</p>
 						)}
 					</CardContent>

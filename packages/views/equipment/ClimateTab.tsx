@@ -11,6 +11,7 @@ import {
 	YAxis,
 } from "recharts";
 
+import { t } from "~@/i18n/macro";
 import { Badge, Card, CardContent, CardHeader, CardTitle } from "~@/ui";
 
 import type { Sensor } from "./SensorsTable";
@@ -86,9 +87,9 @@ export function ClimateTab({ sensors }: ClimateTabProps) {
 						className="mx-auto mb-4 size-12 text-muted-foreground/50"
 						aria-hidden="true"
 					/>
-					<h3 className="mb-2 text-lg font-medium">No Climate Sensors</h3>
+					<h3 className="mb-2 text-lg font-medium">{t`No Climate Sensors`}</h3>
 					<p className="text-muted-foreground">
-						This equipment does not have climate monitoring sensors installed.
+						{t`This equipment does not have climate monitoring sensors installed.`}
 					</p>
 				</CardContent>
 			</Card>
@@ -107,11 +108,9 @@ export function ClimateTab({ sensors }: ClimateTabProps) {
 					<Thermometer className="size-6 text-white" aria-hidden="true" />
 				</div>
 				<div>
-					<h2 className="text-lg font-semibold text-teal-900">Climate Control</h2>
+					<h2 className="text-lg font-semibold text-teal-900">{t`Climate Control`}</h2>
 					<p className="text-sm text-teal-700">
-						Showing {climateSensors.length} climate sensor{climateSensors.length !== 1 ? "s" : ""} -
-						Temperature ({temperatureSensors.length}), Humidity ({humiditySensors.length}), CO2 (
-						{co2Sensors.length})
+						{t`Showing ${climateSensors.length} climate sensor${climateSensors.length !== 1 ? "s" : ""} - Temperature (${temperatureSensors.length}), Humidity (${humiditySensors.length}), CO2 (${co2Sensors.length})`}
 					</p>
 				</div>
 			</div>
@@ -162,12 +161,12 @@ function ClimateSummaryCards({
 							<Thermometer className="size-5 text-blue-600" aria-hidden="true" />
 						</div>
 						<div className="flex-1">
-							<p className="text-sm text-muted-foreground">Temperature Sensors</p>
+							<p className="text-sm text-muted-foreground">{t`Temperature Sensors`}</p>
 							<p className="text-2xl font-semibold">{temperatureSensors.length}</p>
 						</div>
 						{temperatureSensors.length > 0 && (
 							<div className="text-right">
-								<p className="text-xs text-muted-foreground">Avg</p>
+								<p className="text-xs text-muted-foreground">{t`Avg`}</p>
 								<p className="font-semibold">
 									{calcAvg(temperatureSensors)}
 									{temperatureSensors[0]?.unit}
@@ -185,12 +184,12 @@ function ClimateSummaryCards({
 							<Droplets className="size-5 text-cyan-600" aria-hidden="true" />
 						</div>
 						<div className="flex-1">
-							<p className="text-sm text-muted-foreground">Humidity Sensors</p>
+							<p className="text-sm text-muted-foreground">{t`Humidity Sensors`}</p>
 							<p className="text-2xl font-semibold">{humiditySensors.length}</p>
 						</div>
 						{humiditySensors.length > 0 && (
 							<div className="text-right">
-								<p className="text-xs text-muted-foreground">Avg</p>
+								<p className="text-xs text-muted-foreground">{t`Avg`}</p>
 								<p className="font-semibold">
 									{calcAvg(humiditySensors)}
 									{humiditySensors[0]?.unit}
@@ -208,12 +207,12 @@ function ClimateSummaryCards({
 							<Wind className="size-5 text-purple-600" aria-hidden="true" />
 						</div>
 						<div className="flex-1">
-							<p className="text-sm text-muted-foreground">CO2 Sensors</p>
+							<p className="text-sm text-muted-foreground">{t`CO2 Sensors`}</p>
 							<p className="text-2xl font-semibold">{co2Sensors.length}</p>
 						</div>
 						{co2Sensors.length > 0 && (
 							<div className="text-right">
-								<p className="text-xs text-muted-foreground">Avg</p>
+								<p className="text-xs text-muted-foreground">{t`Avg`}</p>
 								<p className="font-semibold">
 									{Math.round(
 										co2Sensors.reduce((a, s) => a + (s.value ?? 0), 0) / co2Sensors.length,
@@ -234,7 +233,7 @@ function ClimateSensorsList({ sensors }: { sensors: Sensor[] }) {
 		<Card>
 			<CardHeader className="pb-2">
 				<CardTitle className="text-base font-medium">
-					Climate Sensors Detail ({sensors.length})
+					{t`Climate Sensors Detail (${sensors.length})`}
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
@@ -280,7 +279,7 @@ function ClimateSensorsList({ sensors }: { sensors: Sensor[] }) {
 											/>
 										</div>
 										<div className="w-32 text-xs text-muted-foreground">
-											Range: {min} - {max} {sensor.unit}
+											{t`Range: ${min} - ${max} ${sensor.unit}`}
 										</div>
 									</div>
 								</div>
@@ -296,7 +295,7 @@ function ClimateSensorsList({ sensors }: { sensors: Sensor[] }) {
 									</div>
 									{sensor.threshold && (
 										<p className="text-xs text-muted-foreground">
-											Warning: {sensor.threshold.warning} | Critical: {sensor.threshold.critical}
+											{t`Warning: ${sensor.threshold.warning} | Critical: ${sensor.threshold.critical}`}
 										</p>
 									)}
 								</div>
@@ -316,11 +315,11 @@ function TemperatureChart({ sensors }: { sensors: Sensor[] }) {
 			<CardHeader className="pb-2">
 				<CardTitle className="flex items-center gap-2 text-base font-medium">
 					<Thermometer className="size-5 text-blue-500" aria-hidden="true" />
-					Temperature Trends (24h)
+					{t`Temperature Trends (24h)`}
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<div className="h-[250px]">
+				<div className="h-62.5">
 					<ResponsiveContainer width="100%" height="100%">
 						<LineChart>
 							<CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -377,11 +376,11 @@ function HumidityChart({ sensor }: { sensor: Sensor }) {
 			<CardHeader className="pb-2">
 				<CardTitle className="flex items-center gap-2 text-base font-medium">
 					<Droplets className="size-5 text-cyan-500" aria-hidden="true" />
-					Humidity Trends (24h)
+					{t`Humidity Trends (24h)`}
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<div className="h-[220px]">
+				<div className="h-55">
 					<ResponsiveContainer width="100%" height="100%">
 						<AreaChart data={history}>
 							<defs>
@@ -405,7 +404,7 @@ function HumidityChart({ sensor }: { sensor: Sensor }) {
 									border: "1px solid #e2e8f0",
 									borderRadius: "8px",
 								}}
-								formatter={(value: number) => [`${value}%`, "Humidity"]}
+								formatter={(value: number) => [`${value}%`, t`Humidity`]}
 							/>
 							<Area
 								type="monotone"
@@ -431,7 +430,7 @@ function ClimateAlerts({ sensors }: { sensors: Sensor[] }) {
 			<CardHeader className="pb-2">
 				<CardTitle className="flex items-center gap-2 text-base font-medium text-amber-700">
 					<AlertTriangle className="size-5" aria-hidden="true" />
-					Climate Alerts
+					{t`Climate Alerts`}
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
@@ -447,8 +446,9 @@ function ClimateAlerts({ sensors }: { sensors: Sensor[] }) {
 								<div className="flex-1">
 									<p className="text-sm font-medium">{sensor.name}</p>
 									<p className="text-xs text-muted-foreground">
-										Current: {sensor.value} {sensor.unit}
-										{sensor.threshold && ` | Threshold: ${sensor.threshold.warning} ${sensor.unit}`}
+										{t`Current: ${sensor.value} ${sensor.unit}`}
+										{sensor.threshold &&
+											t` | Threshold: ${sensor.threshold.warning} ${sensor.unit}`}
 									</p>
 								</div>
 								<Badge
@@ -459,7 +459,7 @@ function ClimateAlerts({ sensors }: { sensors: Sensor[] }) {
 											: "bg-amber-100 text-amber-700"
 									}
 								>
-									{sensor.status === "error" ? "Critical" : "Warning"}
+									{sensor.status === "error" ? t`Critical` : t`Warning`}
 								</Badge>
 							</div>
 						);

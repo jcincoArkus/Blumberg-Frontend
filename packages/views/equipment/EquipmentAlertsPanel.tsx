@@ -1,6 +1,7 @@
 import { AlertCircle, AlertTriangle, CheckCircle2, Clock } from "lucide-react";
 import { useState } from "react";
 
+import { t } from "~@/i18n/macro";
 import { Badge, Button, cn, Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
 
 import type { Alert } from "../alerts";
@@ -21,14 +22,17 @@ function formatTimestamp(dateStr: string) {
 	});
 }
 
+const getSeverityConfig = () =>
+	({
+		critical: { label: t`Critical`, className: "bg-red-100 text-red-700 border-red-200" },
+		high: { label: t`High`, className: "bg-orange-100 text-orange-700 border-orange-200" },
+		medium: { label: t`Medium`, className: "bg-amber-100 text-amber-700 border-amber-200" },
+		low: { label: t`Low`, className: "bg-slate-100 text-slate-700 border-slate-200" },
+	}) as Record<string, { label: string; className: string }>;
+
 function getSeverityBadge(severity: string) {
-	const config = {
-		critical: { label: "Critical", className: "bg-red-100 text-red-700 border-red-200" },
-		high: { label: "High", className: "bg-orange-100 text-orange-700 border-orange-200" },
-		medium: { label: "Medium", className: "bg-amber-100 text-amber-700 border-amber-200" },
-		low: { label: "Low", className: "bg-slate-100 text-slate-700 border-slate-200" },
-	};
-	const severityKey = severity.toLowerCase() as keyof typeof config;
+	const config = getSeverityConfig();
+	const severityKey = severity.toLowerCase();
 	const cfg = config[severityKey] || config.low;
 
 	return (
@@ -65,28 +69,28 @@ export function EquipmentAlertsPanel({ activeAlerts, recentAlerts }: EquipmentAl
 	const acknowledgedAlerts = recentAlerts.filter((a) => a.status === "acknowledged");
 
 	return (
-		<DashboardPanel title="Alerts" description="Active and recent alerts for this equipment">
+		<DashboardPanel title={t`Alerts`} description={t`Active and recent alerts for this equipment`}>
 			<Tabs defaultValue="active" className="w-full">
 				<TabsList className="mb-4 grid w-full grid-cols-2">
 					<TabsTrigger value="active" className="text-xs">
-						Active ({activeAlerts.length})
+						{t`Active (${activeAlerts.length})`}
 					</TabsTrigger>
 					<TabsTrigger value="recent" className="text-xs">
-						Recent ({recentAlerts.length})
+						{t`Recent (${recentAlerts.length})`}
 					</TabsTrigger>
 				</TabsList>
 
 				<TabsContent value="active" className="space-y-3">
 					{activeAlerts.length > 0 && (
 						<div className="mb-3 flex items-center gap-2">
-							<span className="text-xs text-muted-foreground">Filter:</span>
+							<span className="text-xs text-muted-foreground">{t`Filter:`}</span>
 							<Button
 								variant={severityFilter === "all" ? "default" : "outline"}
 								size="sm"
 								onClick={() => setSeverityFilter("all")}
 								className="h-6 text-xs"
 							>
-								All
+								{t`All`}
 							</Button>
 							<Button
 								variant={severityFilter === "Alert" ? "default" : "outline"}
@@ -94,7 +98,7 @@ export function EquipmentAlertsPanel({ activeAlerts, recentAlerts }: EquipmentAl
 								onClick={() => setSeverityFilter("Alert")}
 								className="h-6 text-xs"
 							>
-								Alert
+								{t`Alert`}
 							</Button>
 							<Button
 								variant={severityFilter === "Warning" ? "default" : "outline"}
@@ -102,7 +106,7 @@ export function EquipmentAlertsPanel({ activeAlerts, recentAlerts }: EquipmentAl
 								onClick={() => setSeverityFilter("Warning")}
 								className="h-6 text-xs"
 							>
-								Warning
+								{t`Warning`}
 							</Button>
 						</div>
 					)}
@@ -112,8 +116,8 @@ export function EquipmentAlertsPanel({ activeAlerts, recentAlerts }: EquipmentAl
 							icon={<CheckCircle2 className="size-6 text-muted-foreground" />}
 							message={
 								activeAlerts.length === 0
-									? "No active alerts"
-									: "No alerts match the selected filter"
+									? t`No active alerts`
+									: t`No alerts match the selected filter`
 							}
 						/>
 					) : (
@@ -125,20 +129,20 @@ export function EquipmentAlertsPanel({ activeAlerts, recentAlerts }: EquipmentAl
 					{recentAlerts.length === 0 ? (
 						<EmptyState
 							icon={<AlertTriangle className="size-6 text-muted-foreground" />}
-							message="No recent alerts"
+							message={t`No recent alerts`}
 						/>
 					) : (
-						<div className="max-h-[400px] space-y-3 overflow-y-auto">
+						<div className="max-h-100 space-y-3 overflow-y-auto">
 							{acknowledgedAlerts.length > 0 && (
 								<AlertGroup
-									title={`Acknowledged (${acknowledgedAlerts.length})`}
+									title={t`Acknowledged (${acknowledgedAlerts.length})`}
 									alerts={acknowledgedAlerts}
 									borderClass="border-amber-200 bg-amber-50"
 								/>
 							)}
 							{resolvedAlerts.length > 0 && (
 								<AlertGroup
-									title={`Resolved (${resolvedAlerts.length})`}
+									title={t`Resolved (${resolvedAlerts.length})`}
 									alerts={resolvedAlerts}
 									borderClass="border-slate-200 bg-slate-50"
 								/>
@@ -187,11 +191,11 @@ function AlertCard({
 							<Clock className="size-3" aria-hidden="true" />
 							{formatTimestamp(alert.createdAt)}
 						</span>
-						{showDuration && <span>Duration: {alert.duration}</span>}
+						{showDuration && <span>{t`Duration: ${alert.duration}`}</span>}
 						{alert.acknowledgedAt && (
-							<span>Acknowledged: {formatTimestamp(alert.acknowledgedAt)}</span>
+							<span>{t`Acknowledged: ${formatTimestamp(alert.acknowledgedAt)}`}</span>
 						)}
-						{alert.resolvedAt && <span>Resolved: {formatTimestamp(alert.resolvedAt)}</span>}
+						{alert.resolvedAt && <span>{t`Resolved: ${formatTimestamp(alert.resolvedAt)}`}</span>}
 					</div>
 				</div>
 			</div>
@@ -201,7 +205,7 @@ function AlertCard({
 
 function AlertsList({ alerts, showDuration }: { alerts: Alert[]; showDuration?: boolean }) {
 	return (
-		<div className="max-h-[400px] space-y-2 overflow-y-auto">
+		<div className="max-h-100 space-y-2 overflow-y-auto">
 			{alerts.map((alert) => (
 				<AlertCard
 					key={alert.id}

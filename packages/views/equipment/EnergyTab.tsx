@@ -11,6 +11,7 @@ import {
 	YAxis,
 } from "recharts";
 
+import { t } from "~@/i18n/macro";
 import { Badge, Card, CardContent, CardHeader, CardTitle } from "~@/ui";
 
 import type { Sensor } from "./SensorsTable";
@@ -62,9 +63,9 @@ export function EnergyTab({ sensors }: EnergyTabProps) {
 			<Card className="border-amber-200 bg-amber-50">
 				<CardContent className="py-12 text-center">
 					<Zap className="mx-auto mb-4 size-12 text-amber-300" aria-hidden="true" />
-					<h3 className="mb-2 text-lg font-medium text-amber-900">No Energy Sensors</h3>
+					<h3 className="mb-2 text-lg font-medium text-amber-900">{t`No Energy Sensors`}</h3>
 					<p className="text-amber-700">
-						This equipment does not have energy monitoring sensors installed.
+						{t`This equipment does not have energy monitoring sensors installed.`}
 					</p>
 				</CardContent>
 			</Card>
@@ -85,10 +86,9 @@ export function EnergyTab({ sensors }: EnergyTabProps) {
 					<Zap className="size-6 text-white" aria-hidden="true" />
 				</div>
 				<div className="flex-1">
-					<h2 className="text-lg font-semibold text-amber-900">Energy Monitoring</h2>
+					<h2 className="text-lg font-semibold text-amber-900">{t`Energy Monitoring`}</h2>
 					<p className="text-sm text-amber-700">
-						Showing {energySensors.length} energy sensor{energySensors.length !== 1 ? "s" : ""}:
-						{energySensors.map((s) => ` ${s.name} (${s.value}${s.unit})`).join(",")}
+						{t`Showing ${energySensors.length} energy sensor${energySensors.length !== 1 ? "s" : ""}: ${energySensors.map((s) => `${s.name} (${s.value}${s.unit})`).join(", ")}`}
 					</p>
 				</div>
 			</div>
@@ -123,8 +123,8 @@ export function EnergyTab({ sensors }: EnergyTabProps) {
 								/>
 							</div>
 							<div className="mt-2 flex justify-between text-xs text-muted-foreground">
-								<span>Min: {sensor.min}</span>
-								<span>Max: {sensor.max}</span>
+								<span>{t`Min: ${sensor.min}`}</span>
+								<span>{t`Max: ${sensor.max}`}</span>
 							</div>
 						</CardContent>
 					</Card>
@@ -158,7 +158,7 @@ function EnergyKPIs({
 			<Card className="border-amber-100 bg-amber-50">
 				<CardContent className="pt-4">
 					<Activity className="mb-2 size-8 text-amber-500" aria-hidden="true" />
-					<p className="text-xs text-amber-700">Current Load</p>
+					<p className="text-xs text-amber-700">{t`Current Load`}</p>
 					<p className="text-2xl font-bold text-amber-900">
 						{primarySensor.value} {primarySensor.unit}
 					</p>
@@ -167,21 +167,21 @@ function EnergyKPIs({
 			<Card className="border-amber-100 bg-amber-50">
 				<CardContent className="pt-4">
 					<Zap className="mb-2 size-8 text-amber-500" aria-hidden="true" />
-					<p className="text-xs text-amber-700">Daily Estimate</p>
+					<p className="text-xs text-amber-700">{t`Daily Estimate`}</p>
 					<p className="text-2xl font-bold text-amber-900">{dailyTotal} kWh</p>
 				</CardContent>
 			</Card>
 			<Card className="border-amber-100 bg-amber-50">
 				<CardContent className="pt-4">
 					<TrendingDown className="mb-2 size-8 text-amber-500" aria-hidden="true" />
-					<p className="text-xs text-amber-700">Efficiency</p>
+					<p className="text-xs text-amber-700">{t`Efficiency`}</p>
 					<p className="text-2xl font-bold text-amber-900">{avgEfficiency}%</p>
 				</CardContent>
 			</Card>
 			<Card className="border-amber-100 bg-amber-50">
 				<CardContent className="pt-4">
 					<Leaf className="mb-2 size-8 text-amber-500" aria-hidden="true" />
-					<p className="text-xs text-amber-700">CO2 Saved</p>
+					<p className="text-xs text-amber-700">{t`CO2 Saved`}</p>
 					<p className="text-2xl font-bold text-amber-900">{Math.round(dailyTotal * 0.42)} kg</p>
 				</CardContent>
 			</Card>
@@ -201,11 +201,11 @@ function EnergyCharts({
 			<Card>
 				<CardHeader className="pb-2">
 					<CardTitle className="text-sm font-medium text-amber-900">
-						24h Power Consumption
+						{t`24h Power Consumption`}
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<div className="h-[200px]">
+					<div className="h-50">
 						<ResponsiveContainer width="100%" height="100%">
 							<AreaChart data={sensorHistory}>
 								<defs>
@@ -234,19 +234,19 @@ function EnergyCharts({
 			<Card>
 				<CardHeader className="pb-2">
 					<CardTitle className="text-sm font-medium text-amber-900">
-						Weekly Consumption vs Target
+						{t`Weekly Consumption vs Target`}
 					</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<div className="h-[200px]">
+					<div className="h-50">
 						<ResponsiveContainer width="100%" height="100%">
 							<BarChart data={weeklyData}>
 								<CartesianGrid strokeDasharray="3 3" stroke="#fef3c7" />
 								<XAxis dataKey="day" tick={{ fontSize: 10 }} />
 								<YAxis tick={{ fontSize: 10 }} />
 								<Tooltip />
-								<Bar dataKey="consumption" fill="#f59e0b" radius={[4, 4, 0, 0]} name="Actual" />
-								<Bar dataKey="target" fill="#fde68a" radius={[4, 4, 0, 0]} name="Target" />
+								<Bar dataKey="consumption" fill="#f59e0b" radius={[4, 4, 0, 0]} name={t`Actual`} />
+								<Bar dataKey="target" fill="#fde68a" radius={[4, 4, 0, 0]} name={t`Target`} />
 							</BarChart>
 						</ResponsiveContainer>
 					</div>

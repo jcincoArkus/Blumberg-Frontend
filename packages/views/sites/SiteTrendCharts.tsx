@@ -2,6 +2,7 @@ import { Minus, TrendingDown, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
+import { t } from "~@/i18n/macro";
 import { Card, CardContent, CardHeader, CardTitle } from "~@/ui";
 
 // Generate mock trend data for the last 24 hours
@@ -47,7 +48,7 @@ export function SiteTrendCharts() {
 			<Card>
 				<CardHeader className="pb-2">
 					<div className="flex items-center justify-between">
-						<CardTitle className="text-sm font-medium">Alerts Volume (24h)</CardTitle>
+						<CardTitle className="text-sm font-medium">{t`Alerts Volume (24h)`}</CardTitle>
 						<div className="flex items-center gap-1">
 							{alertsTrend > 0 ? (
 								<TrendingUp className="size-4 text-red-500" />
@@ -71,7 +72,7 @@ export function SiteTrendCharts() {
 					</div>
 				</CardHeader>
 				<CardContent>
-					<div className="h-[120px]">
+					<div className="h-30">
 						<ResponsiveContainer width="100%" height="100%">
 							<AreaChart data={alertsTrendData}>
 								<defs>
@@ -113,7 +114,7 @@ export function SiteTrendCharts() {
 			<Card>
 				<CardHeader className="pb-2">
 					<div className="flex items-center justify-between">
-						<CardTitle className="text-sm font-medium">Site Health (24h)</CardTitle>
+						<CardTitle className="text-sm font-medium">{t`Site Health (24h)`}</CardTitle>
 						<div className="flex items-center gap-1">
 							{healthTrend > 0 ? (
 								<TrendingUp className="size-4 text-emerald-500" />
@@ -137,7 +138,7 @@ export function SiteTrendCharts() {
 					</div>
 				</CardHeader>
 				<CardContent>
-					<div className="h-[120px]">
+					<div className="h-30">
 						<ResponsiveContainer width="100%" height="100%">
 							<AreaChart data={healthTrendData}>
 								<defs>
@@ -161,7 +162,7 @@ export function SiteTrendCharts() {
 										borderRadius: "6px",
 										fontSize: "12px",
 									}}
-									formatter={(value) => [`${value}%`, "Health"]}
+									formatter={(value) => [`${value}%`, t`Health`]}
 								/>
 								<Area
 									type="monotone"

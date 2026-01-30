@@ -1,6 +1,7 @@
 import { Database } from "lucide-react";
 import { useMemo } from "react";
 
+import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Card,
@@ -141,9 +142,9 @@ export function ReadingsHistoryTab({
 		return (
 			<div className="py-12 text-center">
 				<Database className="mx-auto mb-2 size-8 text-muted-foreground" />
-				<p className="mb-1 text-sm font-medium text-foreground">No readings found</p>
+				<p className="mb-1 text-sm font-medium text-foreground">{t`No readings found`}</p>
 				<p className="text-xs text-muted-foreground">
-					No sensor readings available for the selected period and filters
+					{t`No sensor readings available for the selected period and filters`}
 				</p>
 			</div>
 		);
@@ -155,7 +156,7 @@ export function ReadingsHistoryTab({
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 				<Card>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-sm font-medium">Total Readings</CardTitle>
+						<CardTitle className="text-sm font-medium">{t`Total Readings`}</CardTitle>
 						<Database className="h-4 w-4 text-muted-foreground" />
 					</CardHeader>
 					<CardContent>
@@ -163,7 +164,7 @@ export function ReadingsHistoryTab({
 						{comparison && (
 							<TrendIndicator
 								delta={((metrics.total - previousReadings.length) / previousReadings.length) * 100}
-								label="vs previous period"
+								label={t`vs previous period`}
 							/>
 						)}
 					</CardContent>
@@ -171,7 +172,7 @@ export function ReadingsHistoryTab({
 
 				<Card>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-sm font-medium">Average Value</CardTitle>
+						<CardTitle className="text-sm font-medium">{t`Average Value`}</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold">
@@ -180,7 +181,7 @@ export function ReadingsHistoryTab({
 						{comparison && (
 							<TrendIndicator
 								delta={comparison.delta}
-								label="vs previous period"
+								label={t`vs previous period`}
 								trend={comparison.trend}
 							/>
 						)}
@@ -189,7 +190,7 @@ export function ReadingsHistoryTab({
 
 				<Card>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-sm font-medium">Min / Max</CardTitle>
+						<CardTitle className="text-sm font-medium">{t`Min / Max`}</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold">
@@ -201,11 +202,11 @@ export function ReadingsHistoryTab({
 
 				<Card>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-sm font-medium">Data Gaps</CardTitle>
+						<CardTitle className="text-sm font-medium">{t`Data Gaps`}</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold">{metrics.missingPct}%</div>
-						<p className="mt-1 text-xs text-muted-foreground">Missing or gaps</p>
+						<p className="mt-1 text-xs text-muted-foreground">{t`Missing or gaps`}</p>
 					</CardContent>
 				</Card>
 			</div>
@@ -213,9 +214,11 @@ export function ReadingsHistoryTab({
 			{/* Historical Trend Chart */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Historical Trend</CardTitle>
+					<CardTitle>{t`Historical Trend`}</CardTitle>
 					<CardDescription>
-						Sensor readings over time {comparePrevious && "(with previous period comparison)"}
+						{comparePrevious
+							? t`Sensor readings over time (with previous period comparison)`
+							: t`Sensor readings over time`}
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
@@ -230,20 +233,20 @@ export function ReadingsHistoryTab({
 			{/* Readings Table */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Readings Table</CardTitle>
-					<CardDescription>Detailed sensor readings (showing first 100)</CardDescription>
+					<CardTitle>{t`Readings Table`}</CardTitle>
+					<CardDescription>{t`Detailed sensor readings (showing first 100)`}</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<div className="overflow-x-auto rounded-lg border bg-card">
 						<Table>
 							<TableHeader>
 								<TableRow>
-									<TableHead>Timestamp</TableHead>
-									<TableHead>Sensor</TableHead>
-									<TableHead>Type</TableHead>
-									<TableHead>Value</TableHead>
-									<TableHead>Site</TableHead>
-									<TableHead>Equipment</TableHead>
+									<TableHead>{t`Timestamp`}</TableHead>
+									<TableHead>{t`Sensor`}</TableHead>
+									<TableHead>{t`Type`}</TableHead>
+									<TableHead>{t`Value`}</TableHead>
+									<TableHead>{t`Site`}</TableHead>
+									<TableHead>{t`Equipment`}</TableHead>
 								</TableRow>
 							</TableHeader>
 							<TableBody>
@@ -269,10 +272,10 @@ export function ReadingsHistoryTab({
 											{reading.value} {reading.unit}
 										</TableCell>
 										<TableCell className="text-sm text-muted-foreground">
-											{reading.siteName || "Unknown"}
+											{reading.siteName || t`Unknown`}
 										</TableCell>
 										<TableCell className="text-sm text-muted-foreground">
-											{reading.equipmentName || "Unassigned"}
+											{reading.equipmentName || t`Unassigned`}
 										</TableCell>
 									</TableRow>
 								))}
@@ -281,7 +284,7 @@ export function ReadingsHistoryTab({
 					</div>
 					{readings.length > 100 && (
 						<p className="mt-2 text-xs text-muted-foreground">
-							Showing first 100 of {readings.length.toLocaleString()} readings
+							{t`Showing first 100 of ${readings.length.toLocaleString()} readings`}
 						</p>
 					)}
 				</CardContent>

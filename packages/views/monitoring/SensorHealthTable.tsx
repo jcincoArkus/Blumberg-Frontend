@@ -1,6 +1,7 @@
 import { Eye, Filter, MapPin, Search, X } from "lucide-react";
 import { useState } from "react";
 
+import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
@@ -44,13 +45,13 @@ interface SensorHealthTableProps {
 	onViewDetails: (data: SensorHealthData) => void;
 }
 
-const sensorTypeOptions = [
-	{ value: "temperature", label: "Temperature" },
-	{ value: "humidity", label: "Humidity" },
-	{ value: "co2", label: "CO2" },
-	{ value: "o2", label: "O2" },
-	{ value: "pressure", label: "Pressure" },
-	{ value: "energy", label: "Energy" },
+const getSensorTypeOptions = () => [
+	{ value: "temperature", label: t`Temperature` },
+	{ value: "humidity", label: t`Humidity` },
+	{ value: "co2", label: t`CO2` },
+	{ value: "o2", label: t`O2` },
+	{ value: "pressure", label: t`Pressure` },
+	{ value: "energy", label: t`Energy` },
 ];
 
 function SensorHealthTable({
@@ -78,7 +79,7 @@ function SensorHealthTable({
 	const [showFilters, setShowFilters] = useState(false);
 
 	const formatTimestamp = (dateString?: string) => {
-		if (!dateString) return "Never";
+		if (!dateString) return t`Never`;
 		const date = new Date(dateString);
 		return date.toLocaleString("en-US", {
 			month: "short",
@@ -92,17 +93,17 @@ function SensorHealthTable({
 		if (!status) {
 			return (
 				<Badge variant="outline" className="bg-slate-100 text-slate-700 border-slate-200">
-					Unknown
+					{t`Unknown`}
 				</Badge>
 			);
 		}
 		const config = {
 			healthy: {
-				label: "Healthy",
+				label: t`Healthy`,
 				className: "bg-emerald-100 text-emerald-700 border-emerald-200",
 			},
-			stale: { label: "Stale", className: "bg-amber-100 text-amber-700 border-amber-200" },
-			silent: { label: "Silent", className: "bg-red-100 text-red-700 border-red-200" },
+			stale: { label: t`Stale`, className: "bg-amber-100 text-amber-700 border-amber-200" },
+			silent: { label: t`Silent`, className: "bg-red-100 text-red-700 border-red-200" },
 		};
 		const cfg = config[status];
 		return (
@@ -116,14 +117,14 @@ function SensorHealthTable({
 		if (!status) {
 			return (
 				<Badge variant="outline" className="bg-slate-100 text-slate-700 border-slate-200">
-					Unknown
+					{t`Unknown`}
 				</Badge>
 			);
 		}
 		const config = {
-			good: { label: "Good", className: "bg-emerald-100 text-emerald-700 border-emerald-200" },
-			missing: { label: "Missing", className: "bg-amber-100 text-amber-700 border-amber-200" },
-			inconsistent: { label: "Inconsistent", className: "bg-red-100 text-red-700 border-red-200" },
+			good: { label: t`Good`, className: "bg-emerald-100 text-emerald-700 border-emerald-200" },
+			missing: { label: t`Missing`, className: "bg-amber-100 text-amber-700 border-amber-200" },
+			inconsistent: { label: t`Inconsistent`, className: "bg-red-100 text-red-700 border-red-200" },
 		};
 		const cfg = config[status];
 		return (
@@ -135,10 +136,10 @@ function SensorHealthTable({
 
 	const getIngestionBadge = (status: "ok" | "api_error" | "csv_error") => {
 		const config = {
-			ok: { label: "OK", className: "bg-emerald-100 text-emerald-700 border-emerald-200" },
-			api_error: { label: "API Error", className: "bg-red-100 text-red-700 border-red-200" },
+			ok: { label: t`OK`, className: "bg-emerald-100 text-emerald-700 border-emerald-200" },
+			api_error: { label: t`API Error`, className: "bg-red-100 text-red-700 border-red-200" },
 			csv_error: {
-				label: "CSV Error",
+				label: t`CSV Error`,
 				className: "bg-orange-100 text-orange-700 border-orange-200",
 			},
 		};
@@ -168,11 +169,11 @@ function SensorHealthTable({
 						<X className="size-8 text-muted-foreground" />
 					</div>
 				</div>
-				<p className="text-sm font-medium text-foreground mb-1">No sensors found</p>
+				<p className="text-sm font-medium text-foreground mb-1">{t`No sensors found`}</p>
 				<p className="text-xs text-muted-foreground">
 					{searchQuery || activeFiltersCount > 0
-						? "Try adjusting your search or filters"
-						: "No sensor data available"}
+						? t`Try adjusting your search or filters`
+						: t`No sensor data available`}
 				</p>
 			</div>
 		);
@@ -185,7 +186,7 @@ function SensorHealthTable({
 				<div className="relative flex-1">
 					<Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
 					<Input
-						placeholder="Search by sensor ID, name, site, equipment, or type..."
+						placeholder={t`Search by sensor ID, name, site, equipment, or type...`}
 						value={searchQuery}
 						onChange={(e) => onSearchChange(e.target.value)}
 						className="pl-9"
@@ -196,13 +197,13 @@ function SensorHealthTable({
 						value={timeWindow}
 						onValueChange={(value) => onTimeWindowChange(value as QualityWindow)}
 					>
-						<SelectTrigger className="w-[140px]">
+						<SelectTrigger className="w-35">
 							<SelectValue />
 						</SelectTrigger>
 						<SelectContent>
-							<SelectItem value="1h">Last 1h</SelectItem>
-							<SelectItem value="24h">Last 24h</SelectItem>
-							<SelectItem value="7d">Last 7d</SelectItem>
+							<SelectItem value="1h">{t`Last 1h`}</SelectItem>
+							<SelectItem value="24h">{t`Last 24h`}</SelectItem>
+							<SelectItem value="7d">{t`Last 7d`}</SelectItem>
 						</SelectContent>
 					</Select>
 					<Button
@@ -211,7 +212,7 @@ function SensorHealthTable({
 						className="sm:w-auto"
 					>
 						<Filter className="size-4 mr-2" />
-						Filters
+						{t`Filters`}
 						{activeFiltersCount > 0 && (
 							<Badge variant="secondary" className="ml-2 h-5 min-w-5 px-1.5 text-xs">
 								{activeFiltersCount}
@@ -226,66 +227,66 @@ function SensorHealthTable({
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 p-4 border rounded-lg bg-muted/30">
 					<div>
 						<label className="text-xs font-medium text-muted-foreground mb-1.5 block">
-							Health Status
+							{t`Health Status`}
 						</label>
 						<Select value={healthFilter} onValueChange={onHealthFilterChange}>
 							<SelectTrigger className="h-8">
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="all">All Status</SelectItem>
-								<SelectItem value="healthy">Healthy</SelectItem>
-								<SelectItem value="stale">Stale</SelectItem>
-								<SelectItem value="silent">Silent</SelectItem>
+								<SelectItem value="all">{t`All Status`}</SelectItem>
+								<SelectItem value="healthy">{t`Healthy`}</SelectItem>
+								<SelectItem value="stale">{t`Stale`}</SelectItem>
+								<SelectItem value="silent">{t`Silent`}</SelectItem>
 							</SelectContent>
 						</Select>
 					</div>
 
 					<div>
 						<label className="text-xs font-medium text-muted-foreground mb-1.5 block">
-							Data Quality
+							{t`Data Quality`}
 						</label>
 						<Select value={qualityFilter} onValueChange={onQualityFilterChange}>
 							<SelectTrigger className="h-8">
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="all">All Quality</SelectItem>
-								<SelectItem value="good">Good</SelectItem>
-								<SelectItem value="missing">Missing</SelectItem>
-								<SelectItem value="inconsistent">Inconsistent</SelectItem>
+								<SelectItem value="all">{t`All Quality`}</SelectItem>
+								<SelectItem value="good">{t`Good`}</SelectItem>
+								<SelectItem value="missing">{t`Missing`}</SelectItem>
+								<SelectItem value="inconsistent">{t`Inconsistent`}</SelectItem>
 							</SelectContent>
 						</Select>
 					</div>
 
 					<div>
 						<label className="text-xs font-medium text-muted-foreground mb-1.5 block">
-							Ingestion Source
+							{t`Ingestion Source`}
 						</label>
 						<Select value={ingestionFilter} onValueChange={onIngestionFilterChange}>
 							<SelectTrigger className="h-8">
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="all">All Sources</SelectItem>
-								<SelectItem value="ok">OK</SelectItem>
-								<SelectItem value="api_error">API Error</SelectItem>
-								<SelectItem value="csv_error">CSV Error</SelectItem>
+								<SelectItem value="all">{t`All Sources`}</SelectItem>
+								<SelectItem value="ok">{t`OK`}</SelectItem>
+								<SelectItem value="api_error">{t`API Error`}</SelectItem>
+								<SelectItem value="csv_error">{t`CSV Error`}</SelectItem>
 							</SelectContent>
 						</Select>
 					</div>
 
 					<div>
 						<label className="text-xs font-medium text-muted-foreground mb-1.5 block">
-							Sensor Type
+							{t`Sensor Type`}
 						</label>
 						<Select value={typeFilter} onValueChange={onTypeFilterChange}>
 							<SelectTrigger className="h-8">
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="all">All Types</SelectItem>
-								{sensorTypeOptions.map((option) => (
+								<SelectItem value="all">{t`All Types`}</SelectItem>
+								{getSensorTypeOptions().map((option) => (
 									<SelectItem key={option.value} value={option.value}>
 										{option.label}
 									</SelectItem>
@@ -295,13 +296,13 @@ function SensorHealthTable({
 					</div>
 
 					<div>
-						<label className="text-xs font-medium text-muted-foreground mb-1.5 block">Site</label>
+						<label className="text-xs font-medium text-muted-foreground mb-1.5 block">{t`Site`}</label>
 						<Select value={siteFilter} onValueChange={onSiteFilterChange}>
 							<SelectTrigger className="h-8">
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="all">All Sites</SelectItem>
+								<SelectItem value="all">{t`All Sites`}</SelectItem>
 								{sites.map((site) => (
 									<SelectItem key={site.id} value={site.id}>
 										{site.name}
@@ -313,15 +314,15 @@ function SensorHealthTable({
 
 					<div>
 						<label className="text-xs font-medium text-muted-foreground mb-1.5 block">
-							Equipment
+							{t`Equipment`}
 						</label>
 						<Select value={equipmentFilter} onValueChange={onEquipmentFilterChange}>
 							<SelectTrigger className="h-8">
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="all">All Equipment</SelectItem>
-								<SelectItem value="unassigned">Unassigned</SelectItem>
+								<SelectItem value="all">{t`All Equipment`}</SelectItem>
+								<SelectItem value="unassigned">{t`Unassigned`}</SelectItem>
 								{equipment.map((eq) => (
 									<SelectItem key={eq.id} value={eq.id}>
 										{eq.name}
@@ -347,7 +348,7 @@ function SensorHealthTable({
 								className="h-8"
 							>
 								<X className="size-3 mr-1" />
-								Clear Filters
+								{t`Clear Filters`}
 							</Button>
 						</div>
 					)}
@@ -366,7 +367,7 @@ function SensorHealthTable({
 
 			{/* Results Count */}
 			<div className="text-sm text-muted-foreground">
-				Showing {data.length} sensor{data.length !== 1 ? "s" : ""}
+				{data.length === 1 ? t`Showing 1 sensor` : t`Showing ${data.length} sensors`}
 			</div>
 		</div>
 	);
@@ -395,16 +396,16 @@ function TableContent({
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead className="w-[200px]">Sensor</TableHead>
-						<TableHead className="w-[100px]">Type</TableHead>
-						<TableHead className="w-[120px]">Site</TableHead>
-						<TableHead className="w-[140px]">Equipment</TableHead>
-						<TableHead className="w-[140px]">Last Reported</TableHead>
-						<TableHead className="w-[100px]">Health</TableHead>
-						<TableHead className="w-[120px]">Quality</TableHead>
-						<TableHead className="w-[120px]">Ingestion</TableHead>
-						<TableHead>Issues</TableHead>
-						<TableHead className="w-[80px] text-right">Actions</TableHead>
+						<TableHead className="w-50">{t`Sensor`}</TableHead>
+						<TableHead className="w-25">{t`Type`}</TableHead>
+						<TableHead className="w-30">{t`Site`}</TableHead>
+						<TableHead className="w-35">{t`Equipment`}</TableHead>
+						<TableHead className="w-35">{t`Last Reported`}</TableHead>
+						<TableHead className="w-25">{t`Health`}</TableHead>
+						<TableHead className="w-30">{t`Quality`}</TableHead>
+						<TableHead className="w-30">{t`Ingestion`}</TableHead>
+						<TableHead>{t`Issues`}</TableHead>
+						<TableHead className="w-20 text-right">{t`Actions`}</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -432,12 +433,12 @@ function TableContent({
 							<TableCell>
 								<div className="flex items-center gap-1.5">
 									<MapPin className="size-3.5 text-muted-foreground" />
-									<span className="text-sm">{item.sensor.siteName || "Unknown"}</span>
+									<span className="text-sm">{item.sensor.siteName || t`Unknown`}</span>
 								</div>
 							</TableCell>
 							<TableCell>
 								<span className="text-sm text-muted-foreground">
-									{item.sensor.equipmentName || "Unassigned"}
+									{item.sensor.equipmentName || t`Unassigned`}
 								</span>
 							</TableCell>
 							<TableCell>
@@ -461,7 +462,7 @@ function TableContent({
 									className="h-8"
 								>
 									<Eye className="h-4 w-4" />
-									<span className="sr-only">View details</span>
+									<span className="sr-only">{t`View details`}</span>
 								</Button>
 							</TableCell>
 						</TableRow>

@@ -18,6 +18,7 @@ import {
 	YAxis,
 } from "recharts";
 
+import { t } from "~@/i18n/macro";
 import { Badge, Card, CardContent, CardHeader, CardTitle } from "~@/ui";
 
 import type { Sensor } from "./SensorsTable";
@@ -64,9 +65,9 @@ export function RefrigerationTab({ sensors }: RefrigerationTabProps) {
 			<Card>
 				<CardContent className="py-12 text-center">
 					<Snowflake className="mx-auto mb-4 size-12 text-muted-foreground/50" aria-hidden="true" />
-					<h3 className="mb-2 text-lg font-medium">No Refrigeration Sensors</h3>
+					<h3 className="mb-2 text-lg font-medium">{t`No Refrigeration Sensors`}</h3>
 					<p className="text-muted-foreground">
-						This equipment does not have refrigeration monitoring sensors installed.
+						{t`This equipment does not have refrigeration monitoring sensors installed.`}
 					</p>
 				</CardContent>
 			</Card>
@@ -98,12 +99,9 @@ export function RefrigerationTab({ sensors }: RefrigerationTabProps) {
 					<Snowflake className="size-6 text-white" aria-hidden="true" />
 				</div>
 				<div>
-					<h2 className="text-lg font-semibold text-cyan-900">Refrigeration System</h2>
+					<h2 className="text-lg font-semibold text-cyan-900">{t`Refrigeration System`}</h2>
 					<p className="text-sm text-cyan-700">
-						Showing {refrigerationSensors.length} refrigeration sensor
-						{refrigerationSensors.length !== 1 ? "s" : ""} - Temperature (
-						{temperatureSensors.length}
-						), Pressure ({pressureSensors.length})
+						{t`Showing ${refrigerationSensors.length} refrigeration sensor${refrigerationSensors.length !== 1 ? "s" : ""} - Temperature (${temperatureSensors.length}), Pressure (${pressureSensors.length})`}
 					</p>
 				</div>
 			</div>
@@ -155,7 +153,7 @@ function RefrigerationKPIs({
 							<Snowflake className="size-5 text-cyan-600" aria-hidden="true" />
 						</div>
 						<div>
-							<p className="text-sm text-muted-foreground">Temp Sensors</p>
+							<p className="text-sm text-muted-foreground">{t`Temp Sensors`}</p>
 							<p className="text-2xl font-semibold">{tempCount}</p>
 						</div>
 					</div>
@@ -169,7 +167,7 @@ function RefrigerationKPIs({
 							<ThermometerSnowflake className="size-5 text-blue-600" aria-hidden="true" />
 						</div>
 						<div>
-							<p className="text-sm text-muted-foreground">Avg Temp</p>
+							<p className="text-sm text-muted-foreground">{t`Avg Temp`}</p>
 							<p className="text-2xl font-semibold">
 								{avgTemp.toFixed(1)}
 								<span className="text-sm font-normal text-muted-foreground">°C</span>
@@ -186,7 +184,7 @@ function RefrigerationKPIs({
 							<Gauge className="size-5 text-indigo-600" aria-hidden="true" />
 						</div>
 						<div>
-							<p className="text-sm text-muted-foreground">Avg Pressure</p>
+							<p className="text-sm text-muted-foreground">{t`Avg Pressure`}</p>
 							<p className="text-2xl font-semibold">
 								{avgPressure.toFixed(0)}
 								<span className="text-sm font-normal text-muted-foreground"> psi</span>
@@ -203,7 +201,7 @@ function RefrigerationKPIs({
 							<Activity className="size-5 text-green-600" aria-hidden="true" />
 						</div>
 						<div>
-							<p className="text-sm text-muted-foreground">Efficiency</p>
+							<p className="text-sm text-muted-foreground">{t`Efficiency`}</p>
 							<p className="text-2xl font-semibold">
 								{efficiencyRate}
 								<span className="text-sm font-normal text-muted-foreground">%</span>
@@ -235,7 +233,7 @@ function SensorCard({ sensor, colorClass }: { sensor: Sensor; colorClass: string
 							<AlertTriangle className="size-4 text-amber-500" aria-hidden="true" />
 						)}
 					</div>
-					<p className="text-xs text-muted-foreground">ID: {sensor.id}</p>
+					<p className="text-xs text-muted-foreground">{t`ID: ${sensor.id}`}</p>
 				</div>
 				<Badge variant="secondary" className={getSensorStatusColor(sensor.status)}>
 					{sensor.status}
@@ -259,17 +257,17 @@ function SensorCard({ sensor, colorClass }: { sensor: Sensor; colorClass: string
 			</div>
 			<div className="flex justify-between text-xs text-muted-foreground">
 				<span>
-					Min: {min}
+					{t`Min:`} {min}
 					{sensor.unit}
 				</span>
 				{sensor.threshold && (
 					<span className="text-amber-600">
-						Warn: {sensor.threshold.warning}
+						{t`Warn:`} {sensor.threshold.warning}
 						{sensor.unit}
 					</span>
 				)}
 				<span>
-					Max: {max}
+					{t`Max:`} {max}
 					{sensor.unit}
 				</span>
 			</div>
@@ -283,7 +281,7 @@ function TemperatureSensorsList({ sensors }: { sensors: Sensor[] }) {
 			<CardHeader className="pb-2">
 				<CardTitle className="flex items-center gap-2 text-base font-medium">
 					<ThermometerSnowflake className="size-5 text-blue-500" aria-hidden="true" />
-					Temperature Sensors ({sensors.length})
+					{t`Temperature Sensors (${sensors.length})`}
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
@@ -303,7 +301,7 @@ function PressureSensorsList({ sensors }: { sensors: Sensor[] }) {
 			<CardHeader className="pb-2">
 				<CardTitle className="flex items-center gap-2 text-base font-medium">
 					<Gauge className="size-5 text-indigo-500" aria-hidden="true" />
-					Pressure Sensors ({sensors.length})
+					{t`Pressure Sensors (${sensors.length})`}
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
@@ -322,7 +320,7 @@ function TemperatureTrendChart({ sensors }: { sensors: Sensor[] }) {
 	return (
 		<Card>
 			<CardHeader className="pb-2">
-				<CardTitle className="text-base font-medium">Temperature Trend (24h)</CardTitle>
+				<CardTitle className="text-base font-medium">{t`Temperature Trend (24h)`}</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<div className="h-55">
@@ -380,7 +378,7 @@ function PressureTrendChart({ sensor }: { sensor: Sensor }) {
 	return (
 		<Card>
 			<CardHeader className="pb-2">
-				<CardTitle className="text-base font-medium">Pressure Trend (24h)</CardTitle>
+				<CardTitle className="text-base font-medium">{t`Pressure Trend (24h)`}</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<div className="h-55">
@@ -401,7 +399,7 @@ function PressureTrendChart({ sensor }: { sensor: Sensor }) {
 									border: "1px solid #e2e8f0",
 									borderRadius: "8px",
 								}}
-								formatter={(value: number) => [`${value} psi`, "Pressure"]}
+								formatter={(value: number) => [`${value} psi`, t`Pressure`]}
 							/>
 							<Area
 								type="monotone"
@@ -427,7 +425,7 @@ function RefrigerationAlerts({ sensors }: { sensors: Sensor[] }) {
 			<CardHeader className="pb-2">
 				<CardTitle className="flex items-center gap-2 text-base font-medium text-amber-700">
 					<AlertTriangle className="size-5" aria-hidden="true" />
-					Refrigeration Alerts
+					{t`Refrigeration Alerts`}
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
@@ -445,8 +443,8 @@ function RefrigerationAlerts({ sensors }: { sensors: Sensor[] }) {
 							<div className="flex-1">
 								<p className="text-sm font-medium">{sensor.name}</p>
 								<p className="text-xs text-muted-foreground">
-									Current: {sensor.value} {sensor.unit}
-									{sensor.threshold && ` | Threshold: ${sensor.threshold.warning} ${sensor.unit}`}
+									{t`Current:`} {sensor.value} {sensor.unit}
+									{sensor.threshold && t` | Threshold: ${sensor.threshold.warning} ${sensor.unit}`}
 								</p>
 							</div>
 							<Badge
@@ -457,7 +455,7 @@ function RefrigerationAlerts({ sensors }: { sensors: Sensor[] }) {
 										: "bg-amber-100 text-amber-700"
 								}
 							>
-								{sensor.status === "error" ? "Critical" : "Warning"}
+								{sensor.status === "error" ? t`Critical` : t`Warning`}
 							</Badge>
 						</div>
 					))}

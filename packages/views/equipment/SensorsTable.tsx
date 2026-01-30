@@ -1,5 +1,6 @@
 import { Clock, Droplets, Gauge, Thermometer, Wind, Zap } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import { Badge, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~@/ui";
 
 export type SensorType = "temperature" | "humidity" | "co2" | "pressure" | "energy" | "o2";
@@ -52,17 +53,17 @@ function getValueStatus(sensor: Sensor): "danger" | "warning" | "success" {
 function getStatusBadgeConfig(status: SensorStatus) {
 	switch (status) {
 		case "active":
-			return { label: "Active", className: "bg-emerald-100 text-emerald-700 border-emerald-200" };
+			return { label: t`Active`, className: "bg-emerald-100 text-emerald-700 border-emerald-200" };
 		case "warning":
-			return { label: "Warning", className: "bg-amber-100 text-amber-700 border-amber-200" };
+			return { label: t`Warning`, className: "bg-amber-100 text-amber-700 border-amber-200" };
 		case "stale":
-			return { label: "Stale", className: "bg-orange-100 text-orange-700 border-orange-200" };
+			return { label: t`Stale`, className: "bg-orange-100 text-orange-700 border-orange-200" };
 		case "offline":
-			return { label: "Offline", className: "bg-red-100 text-red-700 border-red-200" };
+			return { label: t`Offline`, className: "bg-red-100 text-red-700 border-red-200" };
 		case "error":
-			return { label: "Error", className: "bg-red-100 text-red-700 border-red-200" };
+			return { label: t`Error`, className: "bg-red-100 text-red-700 border-red-200" };
 		case "inactive":
-			return { label: "Inactive", className: "bg-slate-100 text-slate-700 border-slate-200" };
+			return { label: t`Inactive`, className: "bg-slate-100 text-slate-700 border-slate-200" };
 		default:
 			return { label: status, className: "bg-slate-100 text-slate-700 border-slate-200" };
 	}
@@ -73,12 +74,12 @@ export function SensorsTable({ sensors }: SensorsTableProps) {
 		<Table>
 			<TableHeader>
 				<TableRow>
-					<TableHead>Sensor</TableHead>
-					<TableHead>Type</TableHead>
-					<TableHead className="text-right">Current Value</TableHead>
-					<TableHead className="text-center">Status</TableHead>
-					<TableHead>Thresholds</TableHead>
-					<TableHead>Last Seen</TableHead>
+					<TableHead>{t`Sensor`}</TableHead>
+					<TableHead>{t`Type`}</TableHead>
+					<TableHead className="text-right">{t`Current Value`}</TableHead>
+					<TableHead className="text-center">{t`Status`}</TableHead>
+					<TableHead>{t`Thresholds`}</TableHead>
+					<TableHead>{t`Last Seen`}</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
@@ -117,11 +118,11 @@ export function SensorsTable({ sensors }: SensorsTableProps) {
 								{sensor.threshold ? (
 									<div className="flex items-center gap-2 text-xs text-muted-foreground">
 										<span className="px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">
-											W: {sensor.threshold.warning}
+											{t`W:`} {sensor.threshold.warning}
 											{sensor.unit}
 										</span>
 										<span className="px-1.5 py-0.5 rounded bg-red-100 text-red-700">
-											C: {sensor.threshold.critical}
+											{t`C:`} {sensor.threshold.critical}
 											{sensor.unit}
 										</span>
 									</div>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { t } from "~@/i18n/macro";
 import { Button } from "~@/ui";
 
 import { DashboardPanel } from "../dashboard";
@@ -69,8 +70,12 @@ export function HistoricalCharts({
 
 	return (
 		<DashboardPanel
-			title="Historical Sensor Readings"
-			description={`Showing data for the last ${timeRange === "24h" ? "24 hours" : "7 days"}`}
+			title={t`Historical Sensor Readings`}
+			description={
+				timeRange === "24h"
+					? t`Showing data for the last 24 hours`
+					: t`Showing data for the last 7 days`
+			}
 			action={
 				<div className="flex items-center gap-2">
 					<Button
@@ -79,7 +84,7 @@ export function HistoricalCharts({
 						onClick={() => setTimeRange("24h")}
 						className="h-7 text-xs"
 					>
-						Last 24h
+						{t`Last 24h`}
 					</Button>
 					<Button
 						variant={timeRange === "7d" ? "default" : "outline"}
@@ -87,7 +92,7 @@ export function HistoricalCharts({
 						onClick={() => setTimeRange("7d")}
 						className="h-7 text-xs"
 					>
-						Last 7d
+						{t`Last 7d`}
 					</Button>
 				</div>
 			}
@@ -95,7 +100,7 @@ export function HistoricalCharts({
 			<div className="space-y-6">
 				{primarySensors.length === 0 ? (
 					<div className="py-8 text-center text-muted-foreground">
-						<p>No sensor data available for charting</p>
+						<p>{t`No sensor data available for charting`}</p>
 					</div>
 				) : (
 					primarySensors.map((sensor) => {
@@ -115,7 +120,7 @@ export function HistoricalCharts({
 												? `${sensor.value.toFixed(1)}${sensor.unit}`
 												: "—"}
 										</span>
-										<p className="text-xs text-muted-foreground">Current</p>
+										<p className="text-xs text-muted-foreground">{t`Current`}</p>
 									</div>
 								</div>
 								<SensorChart

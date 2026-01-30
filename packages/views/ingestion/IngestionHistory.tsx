@@ -1,6 +1,7 @@
 import { Eye } from "lucide-react";
 import { useState } from "react";
 
+import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
@@ -43,7 +44,7 @@ export function IngestionHistory({ runs }: IngestionHistoryProps) {
 	if (runs.length === 0) {
 		return (
 			<div className="py-12 text-center">
-				<p className="text-sm text-muted-foreground">No ingestion runs found</p>
+				<p className="text-sm text-muted-foreground">{t`No ingestion runs found`}</p>
 			</div>
 		);
 	}
@@ -53,14 +54,14 @@ export function IngestionHistory({ runs }: IngestionHistoryProps) {
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead>Run ID</TableHead>
-						<TableHead>Source</TableHead>
-						<TableHead>Timestamp</TableHead>
-						<TableHead>Total Records</TableHead>
-						<TableHead>Accepted</TableHead>
-						<TableHead>Rejected</TableHead>
-						<TableHead>Status</TableHead>
-						<TableHead className="text-right">Actions</TableHead>
+						<TableHead>{t`Run ID`}</TableHead>
+						<TableHead>{t`Source`}</TableHead>
+						<TableHead>{t`Timestamp`}</TableHead>
+						<TableHead>{t`Total Records`}</TableHead>
+						<TableHead>{t`Accepted`}</TableHead>
+						<TableHead>{t`Rejected`}</TableHead>
+						<TableHead>{t`Status`}</TableHead>
+						<TableHead className="text-right">{t`Actions`}</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>

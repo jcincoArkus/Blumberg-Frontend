@@ -1,6 +1,7 @@
 import { AlertCircle, CheckCircle2, Copy, Database, Send, XCircle } from "lucide-react";
 import { useState } from "react";
 
+import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
@@ -141,16 +142,16 @@ export function ApiIngestionTab({
 			{/* API Endpoint Summary */}
 			<Card>
 				<CardHeader>
-					<CardTitle>API Endpoint Summary</CardTitle>
-					<CardDescription>Documentation for the sensor data ingestion API</CardDescription>
+					<CardTitle>{t`API Endpoint Summary`}</CardTitle>
+					<CardDescription>{t`Documentation for the sensor data ingestion API`}</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
 					<div>
-						<p className="text-sm font-medium text-muted-foreground mb-1">Endpoint URL</p>
+						<p className="text-sm font-medium text-muted-foreground mb-1">{t`Endpoint URL`}</p>
 						<code className="text-sm bg-muted px-2 py-1 rounded">POST /api/ingestion/readings</code>
 					</div>
 					<div>
-						<p className="text-sm font-medium text-muted-foreground mb-1">Expected Payload</p>
+						<p className="text-sm font-medium text-muted-foreground mb-1">{t`Expected Payload`}</p>
 						<pre className="text-xs bg-muted p-3 rounded overflow-x-auto">
 							{JSON.stringify(examplePayload, null, 2)}
 						</pre>
@@ -161,45 +162,45 @@ export function ApiIngestionTab({
 			{/* Test Payload Panel */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Test Payload</CardTitle>
-					<CardDescription>Test the API endpoint with a sample payload</CardDescription>
+					<CardTitle>{t`Test Payload`}</CardTitle>
+					<CardDescription>{t`Test the API endpoint with a sample payload`}</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
 					<div className="flex items-center justify-between">
-						<p className="text-sm font-medium">Payload JSON</p>
+						<p className="text-sm font-medium">{t`Payload JSON`}</p>
 						<Button variant="outline" size="sm" onClick={handleCopyExample}>
 							<Copy className="size-4 mr-1.5" aria-hidden="true" />
-							Copy Example
+							{t`Copy Example`}
 						</Button>
 					</div>
 					<Textarea
 						value={testPayload}
 						onChange={(e) => setTestPayload(e.target.value)}
 						className="font-mono text-sm min-h-[200px]"
-						placeholder="Enter JSON payload..."
-						aria-label="JSON payload input"
+						placeholder={t`Enter JSON payload...`}
+						aria-label={t`JSON payload input`}
 					/>
 					<Button onClick={handleTestPayload} disabled={isTesting}>
 						<Send className="size-4 mr-2" aria-hidden="true" />
-						{isTesting ? "Sending..." : "Send Test"}
+						{isTesting ? t`Sending...` : t`Send Test`}
 					</Button>
 
 					{testResult && (
 						<div className="p-4 rounded-lg border bg-card space-y-3">
-							<h4 className="text-sm font-semibold">Test Results</h4>
+							<h4 className="text-sm font-semibold">{t`Test Results`}</h4>
 							<div className="grid grid-cols-2 gap-4">
 								<div>
-									<p className="text-xs text-muted-foreground mb-1">Accepted</p>
+									<p className="text-xs text-muted-foreground mb-1">{t`Accepted`}</p>
 									<p className="text-lg font-semibold text-emerald-600">{testResult.accepted}</p>
 								</div>
 								<div>
-									<p className="text-xs text-muted-foreground mb-1">Rejected</p>
+									<p className="text-xs text-muted-foreground mb-1">{t`Rejected`}</p>
 									<p className="text-lg font-semibold text-red-600">{testResult.rejected}</p>
 								</div>
 							</div>
 							{testResult.errors.length > 0 && (
 								<div>
-									<p className="text-xs text-muted-foreground mb-2">Errors</p>
+									<p className="text-xs text-muted-foreground mb-2">{t`Errors`}</p>
 									<div className="space-y-1">
 										{testResult.errors.map((error, idx) => (
 											<div key={idx} className="flex items-center justify-between text-xs">
@@ -219,48 +220,46 @@ export function ApiIngestionTab({
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 				<Card>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-sm font-medium">Total Records</CardTitle>
+						<CardTitle className="text-sm font-medium">{t`Total Records`}</CardTitle>
 						<Database className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold">{kpis.totalRecords}</div>
-						<p className="text-xs text-muted-foreground mt-1">Last 24h</p>
+						<p className="text-xs text-muted-foreground mt-1">{t`Last 24h`}</p>
 					</CardContent>
 				</Card>
 				<Card>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-sm font-medium">Accepted</CardTitle>
+						<CardTitle className="text-sm font-medium">{t`Accepted`}</CardTitle>
 						<CheckCircle2 className="h-4 w-4 text-emerald-600" aria-hidden="true" />
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold text-emerald-600">{kpis.accepted}</div>
 						<p className="text-xs text-muted-foreground mt-1">
-							{kpis.totalRecords > 0 ? Math.round((kpis.accepted / kpis.totalRecords) * 100) : 0}%
-							success rate
+							{t`${kpis.totalRecords > 0 ? Math.round((kpis.accepted / kpis.totalRecords) * 100) : 0}% success rate`}
 						</p>
 					</CardContent>
 				</Card>
 				<Card>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-sm font-medium">Rejected</CardTitle>
+						<CardTitle className="text-sm font-medium">{t`Rejected`}</CardTitle>
 						<XCircle className="h-4 w-4 text-red-600" aria-hidden="true" />
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold text-red-600">{kpis.rejected}</div>
 						<p className="text-xs text-muted-foreground mt-1">
-							{kpis.totalRecords > 0 ? Math.round((kpis.rejected / kpis.totalRecords) * 100) : 0}%
-							rejection rate
+							{t`${kpis.totalRecords > 0 ? Math.round((kpis.rejected / kpis.totalRecords) * 100) : 0}% rejection rate`}
 						</p>
 					</CardContent>
 				</Card>
 				<Card>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-sm font-medium">Error Types</CardTitle>
+						<CardTitle className="text-sm font-medium">{t`Error Types`}</CardTitle>
 						<AlertCircle className="h-4 w-4 text-orange-600" aria-hidden="true" />
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold text-orange-600">{kpis.errors}</div>
-						<p className="text-xs text-muted-foreground mt-1">Unique error types</p>
+						<p className="text-xs text-muted-foreground mt-1">{t`Unique error types`}</p>
 					</CardContent>
 				</Card>
 			</div>
@@ -268,27 +267,27 @@ export function ApiIngestionTab({
 			{/* Recent Ingestion Log */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Recent Ingestion Log (Last 24h)</CardTitle>
-					<CardDescription>API ingestion runs from the last 24 hours</CardDescription>
+					<CardTitle>{t`Recent Ingestion Log (Last 24h)`}</CardTitle>
+					<CardDescription>{t`API ingestion runs from the last 24 hours`}</CardDescription>
 				</CardHeader>
 				<CardContent>
 					{apiRuns24h.length === 0 ? (
 						<div className="py-8 text-center">
 							<Database className="size-8 mx-auto mb-2 text-muted-foreground" aria-hidden="true" />
 							<p className="text-sm text-muted-foreground">
-								No API ingestion runs in the last 24 hours
+								{t`No API ingestion runs in the last 24 hours`}
 							</p>
 						</div>
 					) : (
 						<Table>
 							<TableHeader>
 								<TableRow>
-									<TableHead>Timestamp</TableHead>
-									<TableHead>Source</TableHead>
-									<TableHead>Total Records</TableHead>
-									<TableHead>Accepted</TableHead>
-									<TableHead>Rejected</TableHead>
-									<TableHead>Status</TableHead>
+									<TableHead>{t`Timestamp`}</TableHead>
+									<TableHead>{t`Source`}</TableHead>
+									<TableHead>{t`Total Records`}</TableHead>
+									<TableHead>{t`Accepted`}</TableHead>
+									<TableHead>{t`Rejected`}</TableHead>
+									<TableHead>{t`Status`}</TableHead>
 								</TableRow>
 							</TableHeader>
 							<TableBody>
