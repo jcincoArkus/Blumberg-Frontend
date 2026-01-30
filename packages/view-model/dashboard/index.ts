@@ -1,2 +1,2 @@
-// DashboardViewModel exports will be added here
-export {};
+export { DashboardViewModel } from "./DashboardViewModel";
+export { useDashboardViewModel } from "./useDashboardViewModel";
