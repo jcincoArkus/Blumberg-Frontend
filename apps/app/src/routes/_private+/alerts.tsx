@@ -1,6 +1,5 @@
-import { useCallback, useState } from "react";
-
-import type { Alert, AlertStatus } from "~@/views";
+import { observer } from "~@/mobx";
+import { useAlertsViewModel } from "~@/view-model";
 import {
 	AlertsStatusTabs,
 	AlertsWorkQueueTable,
@@ -17,62 +16,8 @@ import {
 	getSensorType,
 } from "../../mock-data/alerts";
 
-export default function AlertsPage() {
-	const [activeTab, setActiveTab] = useState<AlertStatus | "all">("all");
-	const [alertsState, setAlertsState] = useState<Alert[]>(alertsData);
-
-	// Filter alerts based on active tab
-	const filteredAlerts =
-		activeTab === "all" ? alertsState : alertsState.filter((a) => a.status === activeTab);
-
-	// Handler to update alert status
-	const handleAlertUpdate = useCallback((alertId: string, action: "acknowledge" | "resolve") => {
-		setAlertsState((prev) =>
-			prev.map((alert) => {
-				if (alert.id !== alertId) return alert;
-
-				if (action === "acknowledge" && alert.status === "active") {
-					return {
-						...alert,
-						status: "acknowledged" as const,
-						acknowledgedAt: new Date().toISOString(),
-					};
-				}
-
-				if (action === "resolve" && alert.status !== "resolved") {
-					return {
-						...alert,
-						status: "resolved" as const,
-						resolvedAt: new Date().toISOString(),
-					};
-				}
-
-				return alert;
-			}),
-		);
-	}, []);
-
-	// Calculate counts for tabs
-	const activeAlerts = alertsState.filter((a) => a.status === "active");
-	const criticalAlerts = alertsState.filter(
-		(a) => a.severity === "critical" && a.status === "active",
-	);
-	const highAlerts = alertsState.filter((a) => a.severity === "high" && a.status === "active");
-	const acknowledgedAlerts = alertsState.filter((a) => a.status === "acknowledged");
-	const resolvedAlerts = alertsState.filter((a) => a.status === "resolved");
-	const resolvedToday = alertsState.filter((a) => {
-		if (a.status !== "resolved" || !a.resolvedAt) return false;
-		const resolved = new Date(a.resolvedAt);
-		const today = new Date();
-		return resolved.toDateString() === today.toDateString();
-	});
-
-	const statusCounts = {
-		all: alertsState.length,
-		active: activeAlerts.length,
-		acknowledged: acknowledgedAlerts.length,
-		resolved: resolvedAlerts.length,
-	};
+const AlertsPage = observer(function AlertsPage() {
+	const vm = useAlertsViewModel(alertsData);
 
 	return (
 		<DashboardShell>
@@ -93,11 +38,15 @@ export default function AlertsPage() {
 					>
 						<KPIGauge
 							label="Total Active"
-							value={activeAlerts.length}
+							value={vm.activeAlerts.length}
 							unit=""
 							maxValue={20}
 							status={
-								activeAlerts.length > 5 ? "danger" : activeAlerts.length > 2 ? "warning" : "success"
+								vm.activeAlerts.length > 5
+									? "danger"
+									: vm.activeAlerts.length > 2
+										? "warning"
+										: "success"
 							}
 							size="sm"
 						/>
@@ -109,10 +58,10 @@ export default function AlertsPage() {
 					>
 						<KPIGauge
 							label="Critical"
-							value={criticalAlerts.length}
+							value={vm.criticalAlerts.length}
 							unit=""
 							maxValue={10}
-							status={criticalAlerts.length > 0 ? "danger" : "success"}
+							status={vm.criticalAlerts.length > 0 ? "danger" : "success"}
 							size="sm"
 						/>
 					</DashboardPanel>
@@ -123,11 +72,15 @@ export default function AlertsPage() {
 					>
 						<KPIGauge
 							label="High"
-							value={highAlerts.length}
+							value={vm.highAlerts.length}
 							unit=""
 							maxValue={10}
 							status={
-								highAlerts.length > 2 ? "danger" : highAlerts.length > 0 ? "warning" : "success"
+								vm.highAlerts.length > 2
+									? "danger"
+									: vm.highAlerts.length > 0
+										? "warning"
+										: "success"
 							}
 							size="sm"
 						/>
@@ -139,7 +92,7 @@ export default function AlertsPage() {
 					>
 						<KPIGauge
 							label="In Progress"
-							value={acknowledgedAlerts.length}
+							value={vm.acknowledgedAlerts.length}
 							unit=""
 							maxValue={15}
 							status="warning"
@@ -153,7 +106,7 @@ export default function AlertsPage() {
 					>
 						<KPIGauge
 							label="Resolved"
-							value={resolvedToday.length}
+							value={vm.resolvedToday.length}
 							unit=""
 							maxValue={10}
 							status="success"
@@ -169,13 +122,13 @@ export default function AlertsPage() {
 				>
 					<div className="space-y-4">
 						<AlertsStatusTabs
-							activeTab={activeTab}
-							onTabChange={setActiveTab}
-							counts={statusCounts}
+							activeTab={vm.activeTab}
+							onTabChange={vm.setActiveTab}
+							counts={vm.statusCounts}
 						/>
 						<AlertsWorkQueueTable
-							alerts={filteredAlerts}
-							onAlertUpdate={handleAlertUpdate}
+							alerts={vm.filteredAlerts}
+							onAlertUpdate={vm.updateAlert}
 							calculateDuration={calculateAlertDuration}
 							getEquipmentName={getEquipmentName}
 							getSensorType={getSensorType}
@@ -186,4 +139,6 @@ export default function AlertsPage() {
 			</div>
 		</DashboardShell>
 	);
-}
+});
+
+export default AlertsPage;
