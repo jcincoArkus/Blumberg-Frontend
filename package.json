@@ -86,6 +86,8 @@
 		"zod": "^4.3.6"
 	},
 	"devDependencies": {
+		"@babel/preset-react": "^7.28.5",
+		"@babel/preset-typescript": "^7.28.5",
 		"@biomejs/biome": "2.3.11",
 		"@hey-api/openapi-ts": "^0.91.0",
 		"@lingui/babel-plugin-lingui-macro": "^5.8.0",
@@ -109,7 +111,7 @@
 		"tsx": "^4.21.0",
 		"typescript": "^5.9.2",
 		"vite": "^7.1.7",
-		"vite-plugin-babel-macros": "^1.0.6",
+		"vite-plugin-babel": "^1.4.1",
 		"vite-plugin-devtools-json": "^1.0.0",
 		"vite-tsconfig-paths": "^5.1.4"
 	}

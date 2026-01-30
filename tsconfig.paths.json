@@ -3,6 +3,7 @@
 		"paths": {
 			"~@/config": ["./packages/config/index.ts"],
 			"~@/i18n": ["./packages/i18n/index.ts"],
+			"~@/i18n/macro": ["./packages/i18n/macro.ts"],
 			"~@/authorization": ["./packages/authorization/index.ts"],
 			"~@/api": ["./packages/api/index.ts"],
 			"~@/query-client": ["./packages/query-client/index.ts"],
