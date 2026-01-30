@@ -133,7 +133,7 @@ export function DashboardShell({
 	const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>(() => {
 		const initial: Record<string, boolean> = {};
 		for (const section of navSections) {
-			initial[section.section] = hasActiveItem(section);
+			initial[section.section] = true; // All sections expanded by default
 		}
 		return initial;
 	});
