@@ -1,13 +1,7 @@
-import { useState } from "react";
-
-import {
-	getAllIngestionRuns,
-	getIngestionRunsLast24h,
-	ingestionRuns,
-	siteSensors,
-	validateSensorReading,
-} from "~@/mock-data";
+import { observer } from "~@/mobx";
+import { validateSensorReading } from "~@/mock-data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
+import { useIngestionViewModel } from "~@/view-model";
 import {
 	ApiIngestionTab,
 	CsvUploadTab,
@@ -16,23 +10,11 @@ import {
 	type IngestionRun,
 } from "~@/views";
 
-export default function DataIngestionPage() {
-	const [activeTab, setActiveTab] = useState("api");
-	const [, setRefreshKey] = useState(0);
+const DataIngestionPage = observer(function DataIngestionPage() {
+	const vm = useIngestionViewModel();
 
-	// Get valid sensor IDs from mock data
-	const validSensorIds = siteSensors.map((s) => s.id);
-
-	// Get ingestion runs filtered by source
-	const allRuns = getAllIngestionRuns();
-	const apiRuns24h = getIngestionRunsLast24h().filter((r) => r.source === "api");
-
-	// Handle new ingestion run from CSV upload
 	const handleIngestionComplete = (run: IngestionRun) => {
-		// Add to mock data array (in real app would be persisted to backend)
-		ingestionRuns.unshift(run);
-		// Force refresh
-		setRefreshKey((k) => k + 1);
+		vm.handleIngestionComplete(run);
 	};
 
 	return (
@@ -47,7 +29,7 @@ export default function DataIngestionPage() {
 			</div>
 
 			{/* Tabs */}
-			<Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+			<Tabs value={vm.activeTab} onValueChange={vm.setActiveTab} className="space-y-6">
 				<TabsList className="grid w-full grid-cols-2">
 					<TabsTrigger value="api">API Ingestion</TabsTrigger>
 					<TabsTrigger value="csv">CSV Upload</TabsTrigger>
@@ -55,15 +37,15 @@ export default function DataIngestionPage() {
 
 				<TabsContent value="api" className="space-y-6">
 					<ApiIngestionTab
-						apiRuns24h={apiRuns24h}
-						validSensorIds={validSensorIds}
+						apiRuns24h={vm.apiRuns24h}
+						validSensorIds={vm.validSensorIds}
 						onValidateReading={validateSensorReading}
 					/>
 				</TabsContent>
 
 				<TabsContent value="csv" className="space-y-6">
 					<CsvUploadTab
-						validSensorIds={validSensorIds}
+						validSensorIds={vm.validSensorIds}
 						onValidateReading={validateSensorReading}
 						onIngestionComplete={handleIngestionComplete}
 					/>
@@ -75,8 +57,10 @@ export default function DataIngestionPage() {
 				title="Ingestion History"
 				description="View all ingestion runs from API and CSV sources"
 			>
-				<IngestionHistory runs={allRuns} />
+				<IngestionHistory runs={vm.allRuns} />
 			</DashboardPanel>
 		</div>
 	);
-}
+});
+
+export default DataIngestionPage;

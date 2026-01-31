@@ -6,4 +6,8 @@ export * from "./alerts";
 export * from "./auth";
 export * from "./config";
 export * from "./dashboard";
+export * from "./ingestion";
+export * from "./monitoring";
+export * from "./reports";
+export * from "./sensor-health";
 export * from "./types";
