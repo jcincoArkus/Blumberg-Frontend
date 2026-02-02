@@ -46,12 +46,12 @@ export function HistoricalAlertDetailsDrawer({
 	};
 
 	const formatDuration = (seconds?: number) => {
-		if (!seconds) return "N/A";
+		if (!seconds) return t`N/A`;
 		const minutes = Math.floor(seconds / 60);
-		if (minutes < 60) return `${minutes} minutes`;
+		if (minutes < 60) return t`${minutes} minutes`;
 		const hours = Math.floor(minutes / 60);
 		const mins = minutes % 60;
-		return `${hours} hours ${mins} minutes`;
+		return t`${hours} hours ${mins} minutes`;
 	};
 
 	const getSeverityBadge = (severity: string) => {

@@ -1,4 +1,5 @@
-import type { AgentInsight, Alert, AlertEvent, AlertNotification, Sensor, Site } from "~@/views";
+import type { Alert, AlertEvent, AlertNotification } from "~@/models";
+import type { AgentInsight, Sensor, Site } from "~@/views";
 
 // Mock Sites
 export const sites: Site[] = [

@@ -77,7 +77,7 @@ export function ApiIngestionTab({
 			const payload = JSON.parse(testPayload);
 
 			if (!payload.readings || !Array.isArray(payload.readings)) {
-				throw new Error('Payload must contain a "readings" array');
+				throw new Error(t`Payload must contain a "readings" array`);
 			}
 
 			let accepted = 0;
@@ -112,7 +112,7 @@ export function ApiIngestionTab({
 
 			setTestResult({ accepted, rejected, errors });
 		} catch (error: unknown) {
-			const message = error instanceof Error ? error.message : "Invalid JSON payload";
+			const message = error instanceof Error ? error.message : t`Invalid JSON payload`;
 			setTestResult({
 				accepted: 0,
 				rejected: 0,
@@ -148,7 +148,9 @@ export function ApiIngestionTab({
 				<CardContent className="space-y-4">
 					<div>
 						<p className="text-sm font-medium text-muted-foreground mb-1">{t`Endpoint URL`}</p>
-						<code className="text-sm bg-muted px-2 py-1 rounded">POST /api/ingestion/readings</code>
+						<code className="text-sm bg-muted px-2 py-1 rounded">
+							{t`POST /api/ingestion/readings`}
+						</code>
 					</div>
 					<div>
 						<p className="text-sm font-medium text-muted-foreground mb-1">{t`Expected Payload`}</p>

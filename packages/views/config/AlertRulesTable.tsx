@@ -102,7 +102,7 @@ export function AlertRulesTable({
 								<Switch
 									checked={rule.enabled}
 									onCheckedChange={(checked) => onToggle(rule.id, checked)}
-									aria-label={rule.enabled ? "Disable rule" : "Enable rule"}
+									aria-label={rule.enabled ? t`Disable rule` : t`Enable rule`}
 								/>
 							</TableCell>
 							<TableCell className="font-medium">

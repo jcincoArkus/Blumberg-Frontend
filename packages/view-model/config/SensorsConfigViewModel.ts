@@ -1,13 +1,24 @@
 import { makeAutoObservable } from "~@/mobx";
-import type { ConfigEquipment, ConfigSensor, ConfigSensorStatus, ConfigSite } from "~@/views";
+import type {
+	Equipment,
+	Sensor,
+	SensorStatus,
+	SensorType,
+	SensorTypeOption,
+	Site,
+	TransformTypeOption,
+} from "~@/models";
+import {
+	getEquipment,
+	getEquipmentBySiteId,
+	getSensors,
+	getSensorTypeOptions,
+	getSites,
+	getTransformTypeOptions,
+	getUnitForSensor,
+} from "~@/models";
 
 import type { Disposable, FilterableViewModel } from "../types";
-
-interface SensorsConfigViewModelData {
-	sensors: ConfigSensor[];
-	sites: ConfigSite[];
-	equipment: ConfigEquipment[];
-}
 
 /**
  * ViewModel for the Sensors Configuration page.
@@ -15,15 +26,17 @@ interface SensorsConfigViewModelData {
  */
 export class SensorsConfigViewModel implements Disposable, FilterableViewModel {
 	// Observable state - data
-	sensors: ConfigSensor[];
+	sensors: Sensor[];
 
 	// Readonly reference data
-	readonly sites: ConfigSite[];
-	readonly equipment: ConfigEquipment[];
+	readonly sites: Site[];
+	readonly equipment: Equipment[];
+	readonly sensorTypeOptions: SensorTypeOption[];
+	readonly transformTypeOptions: TransformTypeOption[];
 
 	// Observable state - selection/editing
-	selectedSensor: ConfigSensor | null = null;
-	editingSensor: ConfigSensor | null = null;
+	selectedSensor: Sensor | null = null;
+	editingSensor: Sensor | null = null;
 	isEditorOpen = false;
 	isDetailsOpen = false;
 
@@ -34,15 +47,21 @@ export class SensorsConfigViewModel implements Disposable, FilterableViewModel {
 	siteFilter = "all";
 	equipmentFilter = "all";
 
-	constructor(data: SensorsConfigViewModelData) {
+	constructor() {
 		makeAutoObservable(this);
-		this.sensors = data.sensors;
-		this.sites = data.sites;
-		this.equipment = data.equipment;
+		this.sensors = getSensors();
+		this.sites = getSites();
+		this.equipment = getEquipment();
+		this.sensorTypeOptions = getSensorTypeOptions();
+		this.transformTypeOptions = getTransformTypeOptions();
 	}
 
+	getEquipmentBySite = (siteId: string): Equipment[] => getEquipmentBySiteId(siteId);
+
+	getUnitForSensorType = (type: SensorType): string => getUnitForSensor(type);
+
 	// Computed: filtered sensors based on all active filters
-	get filteredSensors(): ConfigSensor[] {
+	get filteredSensors(): Sensor[] {
 		return this.sensors.filter((sensor) => {
 			// Search filter
 			const matchesSearch =
@@ -113,7 +132,7 @@ export class SensorsConfigViewModel implements Disposable, FilterableViewModel {
 	};
 
 	// CRUD actions
-	openEditor = (sensor: ConfigSensor | null) => {
+	openEditor = (sensor: Sensor | null) => {
 		this.editingSensor = sensor;
 		this.isEditorOpen = true;
 	};
@@ -123,7 +142,7 @@ export class SensorsConfigViewModel implements Disposable, FilterableViewModel {
 		this.editingSensor = null;
 	};
 
-	viewDetails = (sensor: ConfigSensor) => {
+	viewDetails = (sensor: Sensor) => {
 		this.selectedSensor = sensor;
 		this.isDetailsOpen = true;
 	};
@@ -132,7 +151,7 @@ export class SensorsConfigViewModel implements Disposable, FilterableViewModel {
 		this.isDetailsOpen = false;
 	};
 
-	saveSensor = (sensor: ConfigSensor) => {
+	saveSensor = (sensor: Sensor) => {
 		if (this.editingSensor) {
 			// Update existing sensor
 			this.sensors = this.sensors.map((s) => (s.id === sensor.id ? sensor : s));
@@ -145,11 +164,11 @@ export class SensorsConfigViewModel implements Disposable, FilterableViewModel {
 
 	toggleSensorStatus = (id: string, status: string) => {
 		this.sensors = this.sensors.map((s) =>
-			s.id === id ? { ...s, status: status as ConfigSensorStatus } : s,
+			s.id === id ? { ...s, status: status as SensorStatus } : s,
 		);
 		// Also update selected sensor if viewing details
 		if (this.selectedSensor?.id === id) {
-			this.selectedSensor = { ...this.selectedSensor, status: status as ConfigSensorStatus };
+			this.selectedSensor = { ...this.selectedSensor, status: status as SensorStatus };
 		}
 	};
 

@@ -1,15 +1,14 @@
 import { makeAutoObservable } from "~@/mobx";
-import type { PermissionCategory, Role, RolePermissions, User } from "~@/views";
+import type { PermissionCategory, Role, RolePermissions, User } from "~@/models";
+import {
+	getCurrentUser,
+	getPermissionCategories,
+	getRolePermissions,
+	getRoles,
+	getUsers,
+} from "~@/models";
 
 import type { Disposable } from "../types";
-
-interface UsersViewModelData {
-	users: User[];
-	roles: Role[];
-	rolePermissions: RolePermissions[];
-	permissionCategories: PermissionCategory[];
-	currentUser: User;
-}
 
 /**
  * ViewModel for the Admin Users page.
@@ -31,13 +30,13 @@ export class UsersViewModel implements Disposable {
 	isRoleEditorOpen = false;
 	editingRole: Role | null = null;
 
-	constructor(data: UsersViewModelData) {
+	constructor() {
 		makeAutoObservable(this);
-		this.users = data.users;
-		this.roles = data.roles;
-		this.rolePermissions = data.rolePermissions;
-		this.permissionCategories = data.permissionCategories;
-		this.currentUser = data.currentUser;
+		this.users = getUsers();
+		this.roles = getRoles();
+		this.rolePermissions = getRolePermissions();
+		this.permissionCategories = getPermissionCategories();
+		this.currentUser = getCurrentUser();
 	}
 
 	// Computed: check if current user has admin role

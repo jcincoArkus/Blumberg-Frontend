@@ -1,3 +1,4 @@
+import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { siteEquipment as equipment, siteData as sites } from "~@/mock-data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
@@ -11,10 +12,9 @@ const HistoricalReportsPage = observer(function HistoricalReportsPage() {
 		<div className="space-y-6">
 			{/* Page Header */}
 			<div>
-				<h1 className="text-xl font-semibold text-foreground">Historical Data & Reporting</h1>
+				<h1 className="text-xl font-semibold text-foreground">{t`Historical Data & Reporting`}</h1>
 				<p className="text-sm text-muted-foreground">
-					Retrospective analysis of system behavior. Answer: "Has this happened before?" and "Is the
-					situation getting better or worse over time?"
+					{t`Retrospective analysis of system behavior. Answer: "Has this happened before?" and "Is the situation getting better or worse over time?"`}
 				</p>
 			</div>
 
@@ -43,8 +43,8 @@ const HistoricalReportsPage = observer(function HistoricalReportsPage() {
 			{/* Tabs */}
 			<Tabs value={vm.activeTab} onValueChange={vm.setActiveTab} className="space-y-6">
 				<TabsList className="grid w-full grid-cols-2">
-					<TabsTrigger value="readings">Readings History</TabsTrigger>
-					<TabsTrigger value="alerts">Alerts History</TabsTrigger>
+					<TabsTrigger value="readings">{t`Readings History`}</TabsTrigger>
+					<TabsTrigger value="alerts">{t`Alerts History`}</TabsTrigger>
 				</TabsList>
 
 				<TabsContent value="readings" className="space-y-6">

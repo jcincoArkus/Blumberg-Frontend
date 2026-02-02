@@ -1,3 +1,4 @@
+import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { useMonitoringSensorHealthViewModel } from "~@/view-model";
 import {
@@ -14,10 +15,9 @@ const SensorHealthPage = observer(function SensorHealthPage() {
 		<div className="space-y-6">
 			{/* Page Header */}
 			<div>
-				<h1 className="text-xl font-semibold text-foreground">Sensor Health & Data Quality</h1>
+				<h1 className="text-xl font-semibold text-foreground">{t`Sensor Health & Data Quality`}</h1>
 				<p className="text-sm text-muted-foreground">
-					Monitor sensor health, data quality, and ingestion status. Identify technical issues
-					affecting data reliability.
+					{t`Monitor sensor health, data quality, and ingestion status. Identify technical issues affecting data reliability.`}
 				</p>
 			</div>
 
@@ -26,8 +26,8 @@ const SensorHealthPage = observer(function SensorHealthPage() {
 
 			{/* Sensor Health Table */}
 			<DashboardPanel
-				title="Sensor Health & Quality Work Table"
-				description="Search and filter sensors by health status, data quality, ingestion source, site, equipment, or type"
+				title={t`Sensor Health & Quality Work Table`}
+				description={t`Search and filter sensors by health status, data quality, ingestion source, site, equipment, or type`}
 			>
 				<MonitoringSensorHealthTable
 					data={vm.sortedData}

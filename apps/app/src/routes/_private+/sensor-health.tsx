@@ -1,3 +1,4 @@
+import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { useSensorHealthViewModel } from "~@/view-model";
 import {
@@ -14,9 +15,9 @@ const SensorHealthPage = observer(function SensorHealthPage() {
 		<div className="space-y-6">
 			{/* Page Header */}
 			<div>
-				<h1 className="text-2xl font-semibold text-foreground">Sensor Health</h1>
+				<h1 className="text-2xl font-semibold text-foreground">{t`Sensor Health`}</h1>
 				<p className="text-sm text-muted-foreground">
-					Monitor sensor status, battery levels, and connectivity across all sites
+					{t`Monitor sensor status, battery levels, and connectivity across all sites`}
 				</p>
 			</div>
 
@@ -24,7 +25,7 @@ const SensorHealthPage = observer(function SensorHealthPage() {
 			<SensorHealthStats stats={vm.stats} />
 
 			{/* Filters */}
-			<DashboardPanel title="Filters">
+			<DashboardPanel title={t`Filters`}>
 				<SensorHealthFilters
 					statusFilter={vm.statusFilter}
 					setStatusFilter={vm.setStatusFilter}
@@ -39,8 +40,8 @@ const SensorHealthPage = observer(function SensorHealthPage() {
 
 			{/* Sensors Table */}
 			<DashboardPanel
-				title="All Sensors"
-				description={`Showing ${vm.filteredSensors.length} of ${vm.enrichedSensors.length} sensors`}
+				title={t`All Sensors`}
+				description={t`Showing ${vm.filteredSensors.length} of ${vm.enrichedSensors.length} sensors`}
 			>
 				<SensorHealthTable sensors={vm.filteredSensors} />
 			</DashboardPanel>

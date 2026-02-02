@@ -1,4 +1,4 @@
-import type { Alert, AlertEvent, AlertNotification } from "~@/views";
+import type { Alert, AlertEvent, AlertNotification } from "~@/models";
 
 // Equipment lookup
 const equipmentMap: Record<string, string> = {

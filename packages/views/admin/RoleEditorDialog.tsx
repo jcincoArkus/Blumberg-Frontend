@@ -277,7 +277,7 @@ export function RoleEditorDialog({
 																handleSelectAllCategory(category.id, checked === true)
 															}
 															className="size-3.5"
-															aria-label={`Select all permissions in ${category.name}`}
+															aria-label={t`Select all permissions in ${category.name}`}
 														/>
 													</label>
 												</div>

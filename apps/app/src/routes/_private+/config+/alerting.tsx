@@ -1,16 +1,7 @@
 import { Plus } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import {
-	alertingEquipment as equipment,
-	formatDuration,
-	getScopeLabel,
-	getThresholdsSummary,
-	alertRules as initialRules,
-	alertingSensorTypeOptions as sensorTypeOptions,
-	alertingSites as sites,
-	timeOptions,
-} from "~@/mock-data";
 import { Button } from "~@/ui";
 import { useAlertRulesViewModel } from "~@/view-model";
 import { AlertRuleEditor, AlertRulesTable } from "~@/views";
@@ -20,20 +11,20 @@ import { AlertRuleEditor, AlertRulesTable } from "~@/views";
  * Uses AlertRulesViewModel for all state management and CRUD operations.
  */
 const AlertingConfigPage = observer(function AlertingConfigPage() {
-	const vm = useAlertRulesViewModel({ rules: initialRules });
+	const vm = useAlertRulesViewModel();
 
 	return (
 		<div className="container py-6">
 			<div className="mb-6 flex items-center justify-between">
 				<div>
-					<h1 className="text-2xl font-semibold tracking-tight">Alert Rules</h1>
+					<h1 className="text-2xl font-semibold tracking-tight">{t`Alert Rules`}</h1>
 					<p className="text-muted-foreground text-sm">
-						Configure automatic alerts for sensor readings that exceed defined thresholds.
+						{t`Configure automatic alerts for sensor readings that exceed defined thresholds.`}
 					</p>
 				</div>
 				<Button onClick={() => vm.openEditor(null)}>
 					<Plus className="mr-2 h-4 w-4" />
-					Create Rule
+					{t`Create Rule`}
 				</Button>
 			</div>
 
@@ -43,9 +34,9 @@ const AlertingConfigPage = observer(function AlertingConfigPage() {
 				onDelete={vm.deleteRule}
 				onToggle={vm.toggleRule}
 				onDuplicate={vm.duplicateRule}
-				formatDuration={formatDuration}
-				getScopeLabel={getScopeLabel}
-				getThresholdsSummary={getThresholdsSummary}
+				formatDuration={vm.formatDuration}
+				getScopeLabel={vm.getScopeLabel}
+				getThresholdsSummary={vm.getThresholdsSummary}
 			/>
 
 			<AlertRuleEditor
@@ -53,10 +44,10 @@ const AlertingConfigPage = observer(function AlertingConfigPage() {
 				onOpenChange={(open) => !open && vm.closeEditor()}
 				rule={vm.editingRule}
 				onSave={vm.saveRule}
-				sensorTypeOptions={sensorTypeOptions}
-				sites={sites}
-				equipment={equipment}
-				timeOptions={timeOptions}
+				sensorTypeOptions={vm.sensorTypeOptions}
+				sites={vm.sites}
+				equipment={vm.equipment}
+				timeOptions={vm.timeOptions}
 			/>
 		</div>
 	);

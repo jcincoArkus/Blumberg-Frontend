@@ -4,7 +4,7 @@ import type {
 	Role,
 	RolePermissions,
 	User,
-} from "~@/views";
+} from "~@/models";
 
 // Mock Roles
 export const roles: Role[] = [

@@ -1,7 +1,4 @@
-// Re-export types from mock data
-// Sensor types
 export type {
-	AlertingSensorType as SensorType,
 	AlertRule,
 	AlertRuleNotification,
 	AlertRuleScope,
@@ -15,11 +12,9 @@ export type {
 	NotificationChannel,
 	Sensor,
 	SensorStatus,
+	SensorType,
+	SensorTypeOption,
 	Site,
-} from "~@/mock-data";
-export {
-	getEquipmentBySite,
-	getUnitForSensorType,
-	sensorTypeOptions,
-	transformTypeOptions,
-} from "~@/mock-data";
+	TimeOption,
+	TransformTypeOption,
+} from "~@/models";

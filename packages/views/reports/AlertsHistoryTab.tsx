@@ -83,7 +83,7 @@ export function AlertsHistoryTab({
 	};
 
 	const formatDuration = (seconds?: number) => {
-		if (!seconds) return "N/A";
+		if (!seconds) return t`N/A`;
 		const minutes = Math.floor(seconds / 60);
 		if (minutes < 60) return `${minutes}m`;
 		const hours = Math.floor(minutes / 60);

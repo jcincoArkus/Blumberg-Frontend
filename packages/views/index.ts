@@ -62,8 +62,6 @@ export {
 	type DataMappingTransform,
 	type DataMappingTransformType,
 	type Equipment as ConfigEquipment,
-	getEquipmentBySite,
-	getUnitForSensorType,
 	type NotificationChannel,
 	type Sensor as ConfigSensor,
 	SensorDetailsDrawer,
@@ -72,8 +70,6 @@ export {
 	SensorsTable as ConfigSensorsTable,
 	type SensorType as AlertSensorType,
 	type Site as ConfigSite,
-	sensorTypeOptions,
-	transformTypeOptions,
 } from "./config";
 export {
 	ActiveAlertsPanel,

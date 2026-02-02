@@ -117,7 +117,7 @@ export function RolePermissionsEditor({
 									variant="ghost"
 									size="icon-sm"
 									onClick={() => onEditRole(role)}
-									aria-label="Edit role"
+									aria-label={t`Edit role`}
 								>
 									<Pencil className="size-4" />
 								</Button>
@@ -129,7 +129,7 @@ export function RolePermissionsEditor({
 											variant="ghost"
 											size="icon-sm"
 											className="text-destructive hover:text-destructive"
-											aria-label="Delete role"
+											aria-label={t`Delete role`}
 										>
 											<Trash2 className="size-4" />
 										</Button>

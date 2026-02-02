@@ -1,18 +1,9 @@
 import { Plus } from "lucide-react";
 
+import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import {
-	equipment,
-	getAllSensorsEnriched,
-	getEquipmentBySite,
-	getUnitForSensorType,
-	sensorTypeOptions,
-	sites,
-	transformTypeOptions,
-} from "~@/mock-data";
 import { Button } from "~@/ui";
 import { useSensorsConfigViewModel } from "~@/view-model";
-import type { ConfigEquipment, ConfigSensor, ConfigSite } from "~@/views";
 import { ConfigSensorsTable, SensorDetailsDrawer, SensorEditor } from "~@/views";
 
 /**
@@ -20,24 +11,20 @@ import { ConfigSensorsTable, SensorDetailsDrawer, SensorEditor } from "~@/views"
  * Uses SensorsConfigViewModel for all state management and filtering.
  */
 const SensorsConfigPage = observer(function SensorsConfigPage() {
-	const vm = useSensorsConfigViewModel({
-		sensors: getAllSensorsEnriched(),
-		sites: sites as ConfigSite[],
-		equipment: equipment as ConfigEquipment[],
-	});
+	const vm = useSensorsConfigViewModel();
 
 	return (
 		<div className="container py-6">
 			<div className="mb-6 flex items-center justify-between">
 				<div>
-					<h1 className="text-2xl font-semibold tracking-tight">Sensor Management</h1>
+					<h1 className="text-2xl font-semibold tracking-tight">{t`Sensor Management`}</h1>
 					<p className="text-muted-foreground text-sm">
-						Register, configure, and manage sensors across all sites.
+						{t`Register, configure, and manage sensors across all sites.`}
 					</p>
 				</div>
 				<Button onClick={() => vm.openEditor(null)}>
 					<Plus className="mr-2 h-4 w-4" />
-					Register Sensor
+					{t`Register Sensor`}
 				</Button>
 			</div>
 
@@ -55,7 +42,6 @@ const SensorsConfigPage = observer(function SensorsConfigPage() {
 				onSiteFilterChange={vm.setSiteFilter}
 				equipmentFilter={vm.equipmentFilter}
 				onEquipmentFilterChange={vm.setEquipmentFilter}
-				onClearFilters={vm.clearFilters}
 				onViewDetails={vm.viewDetails}
 				onEdit={vm.openEditor}
 				onToggleStatus={vm.toggleSensorStatus}
@@ -68,10 +54,10 @@ const SensorsConfigPage = observer(function SensorsConfigPage() {
 				onSave={vm.saveSensor}
 				sites={vm.sites}
 				equipment={vm.equipment}
-				sensorTypeOptions={sensorTypeOptions}
-				transformTypeOptions={transformTypeOptions}
-				getEquipmentBySite={getEquipmentBySite}
-				getUnitForSensorType={getUnitForSensorType}
+				sensorTypeOptions={vm.sensorTypeOptions}
+				transformTypeOptions={vm.transformTypeOptions}
+				getEquipmentBySite={vm.getEquipmentBySite}
+				getUnitForSensorType={vm.getUnitForSensorType}
 			/>
 
 			{vm.selectedSensor && (

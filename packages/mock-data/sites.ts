@@ -1,4 +1,5 @@
-import type { Alert, Site } from "~@/views";
+import type { Alert } from "~@/models";
+import type { Site } from "~@/views";
 
 // Equipment type for sites
 export interface Equipment {

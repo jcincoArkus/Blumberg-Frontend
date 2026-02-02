@@ -98,7 +98,7 @@ function SensorHealthDetailsDrawer({
 	};
 
 	const getAgeFormatted = () => {
-		if (!data.health?.lastReportedAt) return "N/A";
+		if (!data.health?.lastReportedAt) return t`N/A`;
 		const now = Date.now();
 		const lastReported = new Date(data.health.lastReportedAt).getTime();
 		const ageMinutes = Math.floor((now - lastReported) / (60 * 1000));

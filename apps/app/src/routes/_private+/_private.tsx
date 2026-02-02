@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Outlet } from "react-router";
 
 import { authorizationController } from "~@/authorization";
+import { t } from "~@/i18n/macro";
 import { DashboardShell } from "~@/views";
 
 class PrivateRouteController {
@@ -42,7 +43,7 @@ export default function Private() {
 	}, []);
 
 	if (authorizationController.isLoading) {
-		return <div>Loading...</div>;
+		return <div>{t`Loading...`}</div>;
 	}
 
 	return (

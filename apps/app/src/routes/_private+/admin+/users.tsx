@@ -1,13 +1,7 @@
 import { toast } from "sonner";
 
+import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import {
-	currentUser,
-	rolePermissions as initialRolePermissions,
-	roles as initialRoles,
-	users as initialUsers,
-	permissionCategories,
-} from "~@/mock-data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
 import { useUsersViewModel } from "~@/view-model";
 import type { Role, RolePermissions, User } from "~@/views";
@@ -27,18 +21,15 @@ import {
  * Uses UsersViewModel for all state management and CRUD operations.
  */
 const AdminUsersPage = observer(function AdminUsersPage() {
-	const vm = useUsersViewModel({
-		users: initialUsers,
-		roles: initialRoles,
-		rolePermissions: initialRolePermissions,
-		permissionCategories,
-		currentUser,
-	});
+	const vm = useUsersViewModel();
 
 	// Check if current user has admin role
 	if (!vm.hasAdminRole) {
 		return (
-			<DashboardPanel title="User Management" description="Manage users, roles, and permissions">
+			<DashboardPanel
+				title={t`User Management`}
+				description={t`Manage users, roles, and permissions`}
+			>
 				<UnauthorizedView />
 			</DashboardPanel>
 		);
@@ -48,27 +39,30 @@ const AdminUsersPage = observer(function AdminUsersPage() {
 	const handleSaveUser = (user: User) => {
 		const isUpdate = vm.editingUser !== null;
 		vm.saveUser(user);
-		toast.success(isUpdate ? "User updated successfully" : "User created successfully");
+		toast.success(isUpdate ? t`User updated successfully` : t`User created successfully`);
 	};
 
 	const handleSaveRole = (role: Role, permissions: RolePermissions) => {
 		const isUpdate = vm.editingRole !== null;
 		vm.saveRole(role, permissions);
-		toast.success(isUpdate ? "Role updated successfully" : "Role created successfully");
+		toast.success(isUpdate ? t`Role updated successfully` : t`Role created successfully`);
 	};
 
 	const handleDeleteRole = (roleId: string) => {
 		vm.deleteRole(roleId);
-		toast.success("Role deleted successfully");
+		toast.success(t`Role deleted successfully`);
 	};
 
 	return (
 		<>
-			<DashboardPanel title="User Management" description="Manage users, roles, and permissions">
+			<DashboardPanel
+				title={t`User Management`}
+				description={t`Manage users, roles, and permissions`}
+			>
 				<Tabs defaultValue="users" className="w-full">
 					<TabsList>
-						<TabsTrigger value="users">Users</TabsTrigger>
-						<TabsTrigger value="roles">Roles &amp; Permissions</TabsTrigger>
+						<TabsTrigger value="users">{t`Users`}</TabsTrigger>
+						<TabsTrigger value="roles">{t`Roles & Permissions`}</TabsTrigger>
 					</TabsList>
 
 					<TabsContent value="users" className="mt-4 relative">
@@ -123,7 +117,7 @@ const AdminUsersPage = observer(function AdminUsersPage() {
 									/>
 								) : (
 									<div className="flex items-center justify-center h-64 text-muted-foreground text-sm">
-										Select a role to view its permissions
+										{t`Select a role to view its permissions`}
 									</div>
 								)}
 							</div>

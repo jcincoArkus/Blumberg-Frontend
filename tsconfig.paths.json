@@ -8,7 +8,8 @@
 			"~@/api": ["./packages/api/index.ts"],
 			"~@/query-client": ["./packages/query-client/index.ts"],
 			"~@/mobx": ["./packages/mobx/index.ts"],
-			"~@/mock-data": ["./packages/mock-data/index.ts"],
+			"~@/mock-data": ["./packages/mock-data/index.ts"], // TODO: will be removed
+			"~@/models": ["./packages/models/index.ts"],
 			"~@/ui": ["./packages/ui/index.ts"],
 			"~@/view-model": ["./packages/view-model/index.ts"],
 			"~@/views": ["./packages/views/index.ts"]

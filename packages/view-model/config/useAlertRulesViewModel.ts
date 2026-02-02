@@ -1,21 +1,16 @@
 import { useEffect, useState } from "react";
 
-import { type AlertRule, AlertRulesViewModel } from "./AlertRulesViewModel";
-
-interface AlertRulesViewModelData {
-	rules: AlertRule[];
-}
+import { AlertRulesViewModel } from "./AlertRulesViewModel";
 
 /**
  * Factory hook that creates and manages an AlertRulesViewModel instance.
  * Handles cleanup on unmount via the dispose method.
  *
- * @param data - Alert rules data (rules array)
  * @returns AlertRulesViewModel instance
  *
  * @example
  * ```tsx
- * const vm = useAlertRulesViewModel({ rules: initialRules });
+ * const vm = useAlertRulesViewModel();
  *
  * return (
  *   <AlertRulesTable
@@ -28,8 +23,8 @@ interface AlertRulesViewModelData {
  * );
  * ```
  */
-export function useAlertRulesViewModel(data: AlertRulesViewModelData): AlertRulesViewModel {
-	const [vm] = useState(() => new AlertRulesViewModel(data));
+export function useAlertRulesViewModel(): AlertRulesViewModel {
+	const [vm] = useState(() => new AlertRulesViewModel());
 
 	useEffect(() => {
 		return () => vm.dispose();

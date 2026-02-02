@@ -1,35 +1,29 @@
+import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import {
-	alertsData,
-	calculateAlertDuration,
-	getAlertsEquipmentName as getEquipmentName,
-	getSensorName,
-	getSensorType,
-} from "~@/mock-data";
 import { useAlertsViewModel } from "~@/view-model";
 import { AlertsStatusTabs, AlertsWorkQueueTable, DashboardPanel, KPIGauge } from "~@/views";
 
 const AlertsPage = observer(function AlertsPage() {
-	const vm = useAlertsViewModel(alertsData);
+	const vm = useAlertsViewModel();
 
 	return (
 		<div className="space-y-6">
 			{/* Page Header */}
 			<div>
-				<h1 className="text-xl font-semibold text-foreground">Alerts & Events</h1>
+				<h1 className="text-xl font-semibold text-foreground">{t`Alerts & Events`}</h1>
 				<p className="text-sm text-muted-foreground">
-					Operational work queue - Track alerts through their lifecycle and review event history
+					{t`Operational work queue - Track alerts through their lifecycle and review event history`}
 				</p>
 			</div>
 
 			{/* KPI Row */}
 			<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
 				<DashboardPanel
-					title="Active Alerts"
+					title={t`Active Alerts`}
 					className="flex flex-col items-center justify-center py-4"
 				>
 					<KPIGauge
-						label="Total Active"
+						label={t`Total Active`}
 						value={vm.activeAlerts.length}
 						unit=""
 						maxValue={20}
@@ -44,9 +38,12 @@ const AlertsPage = observer(function AlertsPage() {
 					/>
 				</DashboardPanel>
 
-				<DashboardPanel title="Critical" className="flex flex-col items-center justify-center py-4">
+				<DashboardPanel
+					title={t`Critical`}
+					className="flex flex-col items-center justify-center py-4"
+				>
 					<KPIGauge
-						label="Critical"
+						label={t`Critical`}
 						value={vm.criticalAlerts.length}
 						unit=""
 						maxValue={10}
@@ -56,11 +53,11 @@ const AlertsPage = observer(function AlertsPage() {
 				</DashboardPanel>
 
 				<DashboardPanel
-					title="High Priority"
+					title={t`High Priority`}
 					className="flex flex-col items-center justify-center py-4"
 				>
 					<KPIGauge
-						label="High"
+						label={t`High`}
 						value={vm.highAlerts.length}
 						unit=""
 						maxValue={10}
@@ -72,11 +69,11 @@ const AlertsPage = observer(function AlertsPage() {
 				</DashboardPanel>
 
 				<DashboardPanel
-					title="Acknowledged"
+					title={t`Acknowledged`}
 					className="flex flex-col items-center justify-center py-4"
 				>
 					<KPIGauge
-						label="In Progress"
+						label={t`In Progress`}
 						value={vm.acknowledgedAlerts.length}
 						unit=""
 						maxValue={15}
@@ -86,11 +83,11 @@ const AlertsPage = observer(function AlertsPage() {
 				</DashboardPanel>
 
 				<DashboardPanel
-					title="Resolved Today"
+					title={t`Resolved Today`}
 					className="flex flex-col items-center justify-center py-4"
 				>
 					<KPIGauge
-						label="Resolved"
+						label={t`Resolved`}
 						value={vm.resolvedToday.length}
 						unit=""
 						maxValue={10}
@@ -102,8 +99,8 @@ const AlertsPage = observer(function AlertsPage() {
 
 			{/* Alerts Work Queue */}
 			<DashboardPanel
-				title="Alerts Work Queue"
-				description="Click on any alert to view details, event history, and notification audit"
+				title={t`Alerts Work Queue`}
+				description={t`Click on any alert to view details, event history, and notification audit`}
 			>
 				<div className="space-y-4">
 					<AlertsStatusTabs
@@ -114,10 +111,10 @@ const AlertsPage = observer(function AlertsPage() {
 					<AlertsWorkQueueTable
 						alerts={vm.filteredAlerts}
 						onAlertUpdate={vm.updateAlert}
-						calculateDuration={calculateAlertDuration}
-						getEquipmentName={getEquipmentName}
-						getSensorType={getSensorType}
-						getSensorName={getSensorName}
+						calculateDuration={vm.calculateDuration}
+						getEquipmentName={vm.getEquipmentName}
+						getSensorType={vm.getSensorType}
+						getSensorName={vm.getSensorName}
 					/>
 				</div>
 			</DashboardPanel>

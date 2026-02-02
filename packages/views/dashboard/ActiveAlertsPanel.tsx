@@ -78,8 +78,8 @@ function getTextColor(severity: string) {
 
 export function ActiveAlertsPanel({
 	alerts,
-	getEquipmentName = () => "Unknown",
-	getSiteName = () => "Unknown",
+	getEquipmentName = () => t`Unknown`,
+	getSiteName = () => t`Unknown`,
 }: ActiveAlertsPanelProps) {
 	const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -129,7 +129,7 @@ export function ActiveAlertsPanel({
 										].includes(word),
 									) ||
 								alert.name.split(" ")[0] ||
-								"System";
+								t`System`;
 							const zone = getEquipmentName(alert.equipmentId) || getSiteName(alert.siteId);
 
 							return (

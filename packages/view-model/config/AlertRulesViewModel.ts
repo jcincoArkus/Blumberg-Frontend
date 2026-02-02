@@ -1,41 +1,23 @@
 import { makeAutoObservable } from "~@/mobx";
+import type {
+	AlertingEquipment,
+	AlertingSite,
+	AlertRule,
+	SensorTypeOption,
+	TimeOption,
+} from "~@/models";
+import {
+	getAlertDuration,
+	getAlertingEquipment,
+	getAlertingSensorTypeOptions,
+	getAlertingSites,
+	getAlertingTimeOptions,
+	getAlertRules,
+	getAlertScopeLabel,
+	getAlertThresholdsSummary,
+} from "~@/models";
 
 import type { Disposable } from "../types";
-
-/**
- * AlertRule type from mock data.
- * This mirrors the AlertRule interface from the alerting mock data.
- */
-export interface AlertRule {
-	id: string;
-	name: string;
-	description: string;
-	enabled: boolean;
-	sensorType: string;
-	scope: {
-		type: "all" | "site" | "equipment" | "sensor";
-		siteIds?: string[];
-		equipmentIds?: string[];
-		sensorIds?: string[];
-	};
-	thresholds: {
-		warning?: { min?: number; max?: number };
-		critical?: { min?: number; max?: number };
-	};
-	timeWindow: number;
-	consecutiveReadings: number;
-	notifications: {
-		channels: string[];
-		escalation: boolean;
-		escalationDelay?: number;
-	};
-	createdAt: string;
-	updatedAt: string;
-}
-
-interface AlertRulesViewModelData {
-	rules: AlertRule[];
-}
 
 /**
  * ViewModel for managing alert rules configuration.
@@ -45,7 +27,7 @@ interface AlertRulesViewModelData {
  *
  * @example
  * ```tsx
- * const vm = useAlertRulesViewModel({ rules: initialRules });
+ * const vm = useAlertRulesViewModel();
  *
  * return (
  *   <AlertRulesTable
@@ -61,12 +43,23 @@ interface AlertRulesViewModelData {
 export class AlertRulesViewModel implements Disposable {
 	// Observable state
 	rules: AlertRule[];
+	readonly sensorTypeOptions: SensorTypeOption[];
+	readonly sites: AlertingSite[];
+	readonly equipment: AlertingEquipment[];
+	readonly timeOptions: TimeOption[];
+	readonly formatDuration = getAlertDuration;
+	readonly getScopeLabel = getAlertScopeLabel;
+	readonly getThresholdsSummary = getAlertThresholdsSummary;
 	editingRule: AlertRule | null = null;
 	isEditorOpen = false;
 
-	constructor(data: AlertRulesViewModelData) {
+	constructor() {
 		makeAutoObservable(this);
-		this.rules = data.rules;
+		this.rules = getAlertRules();
+		this.sensorTypeOptions = getAlertingSensorTypeOptions();
+		this.sites = getAlertingSites();
+		this.equipment = getAlertingEquipment();
+		this.timeOptions = getAlertingTimeOptions();
 	}
 
 	// Editor actions

@@ -1,6 +1,7 @@
 import { ArrowLeft, XCircle } from "lucide-react";
 import { Link, useParams } from "react-router";
 
+import { t } from "~@/i18n/macro";
 import {
 	getAlertsByEquipment,
 	getSiteEquipmentById as getEquipmentById,
@@ -66,10 +67,10 @@ export default function EquipmentOverviewPage() {
 		return (
 			<div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
 				<XCircle className="size-16 text-muted-foreground" aria-hidden="true" />
-				<h1 className="text-xl font-semibold">Equipment Not Found</h1>
-				<p className="text-muted-foreground">The equipment you're looking for doesn't exist.</p>
+				<h1 className="text-xl font-semibold">{t`Equipment Not Found`}</h1>
+				<p className="text-muted-foreground">{t`The equipment you're looking for doesn't exist.`}</p>
 				<Button asChild>
-					<Link to="/sites">Back to Sites</Link>
+					<Link to="/sites">{t`Back to Sites`}</Link>
 				</Button>
 			</div>
 		);
@@ -94,7 +95,7 @@ export default function EquipmentOverviewPage() {
 					<Button variant="ghost" size="sm" asChild className="h-8 px-2">
 						<Link to={`/equipment/${id}`}>
 							<ArrowLeft className="size-4 mr-1" aria-hidden="true" />
-							Back to Equipment Details
+							{t`Back to Equipment Details`}
 						</Link>
 					</Button>
 				</div>

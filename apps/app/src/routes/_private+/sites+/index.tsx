@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router";
 
+import { t } from "~@/i18n/macro";
 import { getAllSitesWithStats, type SiteWithStats, siteData as sites } from "~@/mock-data";
 import { Badge, Card, CardContent, CardHeader, CardTitle } from "~@/ui";
 
@@ -19,7 +20,7 @@ function getStatusConfig(status: string) {
 	switch (status) {
 		case "operational":
 			return {
-				label: "Operational",
+				label: t`Operational`,
 				bgColor: "bg-emerald-50 border-emerald-200",
 				textColor: "text-emerald-700",
 				borderColor: "border-t-emerald-500",
@@ -27,7 +28,7 @@ function getStatusConfig(status: string) {
 			};
 		case "warning":
 			return {
-				label: "Warning",
+				label: t`Warning`,
 				bgColor: "bg-amber-50 border-amber-200",
 				textColor: "text-amber-700",
 				borderColor: "border-t-amber-500",
@@ -35,7 +36,7 @@ function getStatusConfig(status: string) {
 			};
 		case "critical":
 			return {
-				label: "Critical",
+				label: t`Critical`,
 				bgColor: "bg-red-50 border-red-200",
 				textColor: "text-red-700",
 				borderColor: "border-t-red-500",
@@ -43,7 +44,7 @@ function getStatusConfig(status: string) {
 			};
 		default:
 			return {
-				label: "Unknown",
+				label: t`Unknown`,
 				bgColor: "bg-gray-50 border-gray-200",
 				textColor: "text-gray-700",
 				borderColor: "border-t-gray-500",
@@ -85,11 +86,11 @@ function SiteCard({ site }: { site: SiteWithStats }) {
 				<div className="grid grid-cols-3 gap-2 text-center">
 					<div className="p-2 rounded-lg bg-muted/50">
 						<p className="text-lg font-bold text-foreground">{site.equipmentCount}</p>
-						<p className="text-xs text-muted-foreground">Equipment</p>
+						<p className="text-xs text-muted-foreground">{t`Equipment`}</p>
 					</div>
 					<div className="p-2 rounded-lg bg-muted/50">
 						<p className="text-lg font-bold text-foreground">{site.sensorCount}</p>
-						<p className="text-xs text-muted-foreground">Sensors</p>
+						<p className="text-xs text-muted-foreground">{t`Sensors`}</p>
 					</div>
 					<div className={`p-2 rounded-lg ${site.activeAlerts > 0 ? "bg-red-50" : "bg-muted/50"}`}>
 						<p
@@ -97,7 +98,7 @@ function SiteCard({ site }: { site: SiteWithStats }) {
 						>
 							{site.activeAlerts}
 						</p>
-						<p className="text-xs text-muted-foreground">Alerts</p>
+						<p className="text-xs text-muted-foreground">{t`Alerts`}</p>
 					</div>
 				</div>
 
@@ -122,7 +123,7 @@ function SiteCard({ site }: { site: SiteWithStats }) {
 
 				<div>
 					<div className="flex items-center justify-between text-xs mb-1">
-						<span className="text-muted-foreground">Sensor Health</span>
+						<span className="text-muted-foreground">{t`Sensor Health`}</span>
 						<span className="font-medium text-foreground">{site.healthyPercent}%</span>
 					</div>
 					<div className="h-2 rounded-full bg-muted overflow-hidden">
@@ -143,7 +144,7 @@ function SiteCard({ site }: { site: SiteWithStats }) {
 					to={`/sites/${site.id}`}
 					className="flex items-center justify-end text-sm text-primary font-medium pt-2 border-t hover:text-primary/80 transition-colors"
 				>
-					View Details
+					{t`View Details`}
 					<ChevronRight className="size-4 ml-1" />
 				</Link>
 			</CardContent>
@@ -161,8 +162,8 @@ export default function SitesPage() {
 	return (
 		<div className="space-y-6">
 			<div className="flex flex-col gap-1">
-				<h1 className="text-2xl font-bold text-foreground">Sites Overview</h1>
-				<p className="text-muted-foreground">Monitor and manage all facility locations</p>
+				<h1 className="text-2xl font-bold text-foreground">{t`Sites Overview`}</h1>
+				<p className="text-muted-foreground">{t`Monitor and manage all facility locations`}</p>
 			</div>
 
 			{/* KPI Cards */}
@@ -171,7 +172,7 @@ export default function SitesPage() {
 					<CardContent className="p-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="text-sm text-muted-foreground">Total Sites</p>
+								<p className="text-sm text-muted-foreground">{t`Total Sites`}</p>
 								<p className="text-2xl font-bold text-foreground">{totalSites}</p>
 							</div>
 							<Building2 className="size-8 text-primary/20" aria-hidden="true" />
@@ -183,7 +184,7 @@ export default function SitesPage() {
 					<CardContent className="p-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="text-sm text-muted-foreground">Operational</p>
+								<p className="text-sm text-muted-foreground">{t`Operational`}</p>
 								<p className="text-2xl font-bold text-emerald-600">{operationalSites}</p>
 							</div>
 							<CheckCircle2 className="size-8 text-emerald-500/20" aria-hidden="true" />
@@ -195,7 +196,7 @@ export default function SitesPage() {
 					<CardContent className="p-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="text-sm text-muted-foreground">Warning</p>
+								<p className="text-sm text-muted-foreground">{t`Warning`}</p>
 								<p className="text-2xl font-bold text-amber-600">{warningSites}</p>
 							</div>
 							<AlertTriangle className="size-8 text-amber-500/20" aria-hidden="true" />
@@ -207,7 +208,7 @@ export default function SitesPage() {
 					<CardContent className="p-4">
 						<div className="flex items-center justify-between">
 							<div>
-								<p className="text-sm text-muted-foreground">Critical</p>
+								<p className="text-sm text-muted-foreground">{t`Critical`}</p>
 								<p className="text-2xl font-bold text-red-600">{criticalSites}</p>
 							</div>
 							<XCircle className="size-8 text-red-500/20" aria-hidden="true" />

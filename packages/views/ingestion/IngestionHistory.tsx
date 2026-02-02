@@ -96,7 +96,7 @@ export function IngestionHistory({ runs }: IngestionHistoryProps) {
 									size="sm"
 									onClick={() => handleViewDetails(run)}
 									className="h-8"
-									aria-label={`View details for run ${run.id}`}
+									aria-label={t`View details for run ${run.id}`}
 								>
 									<Eye className="h-4 w-4" aria-hidden="true" />
 								</Button>

@@ -1,5 +1,12 @@
 import { makeAutoObservable } from "~@/mobx";
-import type { Alert, AlertStatus } from "~@/views";
+import type { Alert, AlertStatus } from "~@/models";
+import {
+	getAlertDuration,
+	getAlertSensorName,
+	getAlertSensorType,
+	getAlerts,
+	getEquipmentName,
+} from "~@/models";
 
 import type { Disposable } from "../types";
 
@@ -11,10 +18,14 @@ export class AlertsViewModel implements Disposable {
 	// Observable state
 	alerts: Alert[] = [];
 	activeTab: AlertStatus | "all" = "all";
+	readonly calculateDuration = getAlertDuration;
+	readonly getEquipmentName = getEquipmentName;
+	readonly getSensorName = getAlertSensorName;
+	readonly getSensorType = getAlertSensorType;
 
-	constructor(initialAlerts: Alert[] = []) {
+	constructor() {
 		makeAutoObservable(this);
-		this.alerts = initialAlerts;
+		this.alerts = getAlerts();
 	}
 
 	// Computed: filtered alerts based on active tab

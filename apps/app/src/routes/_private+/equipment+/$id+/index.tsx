@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Link, useParams } from "react-router";
 
+import { t } from "~@/i18n/macro";
 import {
 	getAlertsByEquipment,
 	getSiteEquipmentById as getEquipmentById,
@@ -31,19 +32,19 @@ function getStatusConfig(status: string) {
 	switch (status) {
 		case "online":
 			return {
-				label: "Online",
+				label: t`Online`,
 				icon: CheckCircle2,
 				color: "text-emerald-700",
 				bg: "bg-emerald-50",
 			};
 		case "warning":
-			return { label: "Warning", icon: AlertTriangle, color: "text-amber-700", bg: "bg-amber-50" };
+			return { label: t`Warning`, icon: AlertTriangle, color: "text-amber-700", bg: "bg-amber-50" };
 		case "offline":
-			return { label: "Offline", icon: XCircle, color: "text-red-700", bg: "bg-red-50" };
+			return { label: t`Offline`, icon: XCircle, color: "text-red-700", bg: "bg-red-50" };
 		case "maintenance":
-			return { label: "Maintenance", icon: Clock, color: "text-slate-700", bg: "bg-slate-50" };
+			return { label: t`Maintenance`, icon: Clock, color: "text-slate-700", bg: "bg-slate-50" };
 		default:
-			return { label: "Unknown", icon: Activity, color: "text-gray-700", bg: "bg-gray-50" };
+			return { label: t`Unknown`, icon: Activity, color: "text-gray-700", bg: "bg-gray-50" };
 	}
 }
 
@@ -92,10 +93,10 @@ export default function EquipmentDetailPage() {
 		return (
 			<div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
 				<XCircle className="size-16 text-muted-foreground" aria-hidden="true" />
-				<h1 className="text-xl font-semibold">Equipment Not Found</h1>
-				<p className="text-muted-foreground">The equipment you're looking for doesn't exist.</p>
+				<h1 className="text-xl font-semibold">{t`Equipment Not Found`}</h1>
+				<p className="text-muted-foreground">{t`The equipment you're looking for doesn't exist.`}</p>
 				<Button asChild>
-					<Link to="/sites">Back to Sites</Link>
+					<Link to="/sites">{t`Back to Sites`}</Link>
 				</Button>
 			</div>
 		);
@@ -135,9 +136,9 @@ export default function EquipmentDetailPage() {
 				<div>
 					<div className="flex items-center gap-3 mb-2">
 						<Button variant="ghost" size="sm" asChild className="h-8 px-2">
-							<Link to={`/sites/${equipment.siteId}`} aria-label="Back to site">
+							<Link to={`/sites/${equipment.siteId}`} aria-label={t`Back to site`}>
 								<ArrowLeft className="size-4 mr-1" aria-hidden="true" />
-								Back to Site
+								{t`Back to Site`}
 							</Link>
 						</Button>
 					</div>
@@ -151,16 +152,16 @@ export default function EquipmentDetailPage() {
 					<div className="flex items-center gap-4 mt-1 text-sm text-muted-foreground">
 						<span className="flex items-center gap-1.5">
 							<Building2 className="size-4" aria-hidden="true" />
-							{site?.name ?? "Unknown Site"}
+							{site?.name ?? t`Unknown Site`}
 						</span>
 						<span className="flex items-center gap-1.5">
 							<Clock className="size-4" aria-hidden="true" />
-							Last update: {formatLastUpdate(equipment.lastUpdate)}
+							{t`Last update: ${formatLastUpdate(equipment.lastUpdate)}`}
 						</span>
 					</div>
 				</div>
 				<div className="text-right">
-					<p className="text-sm text-muted-foreground">Equipment Type</p>
+					<p className="text-sm text-muted-foreground">{t`Equipment Type`}</p>
 					<p className="font-medium text-foreground">{equipment.type}</p>
 				</div>
 			</div>
@@ -170,19 +171,19 @@ export default function EquipmentDetailPage() {
 				<Card className="bg-emerald-50 border-emerald-100">
 					<CardContent className="p-4 text-center">
 						<p className="text-2xl font-semibold text-emerald-700">{activeSensors}</p>
-						<p className="text-xs text-emerald-600">Active Sensors</p>
+						<p className="text-xs text-emerald-600">{t`Active Sensors`}</p>
 					</CardContent>
 				</Card>
 				<Card className="bg-amber-50 border-amber-100">
 					<CardContent className="p-4 text-center">
 						<p className="text-2xl font-semibold text-amber-700">{warningSensors}</p>
-						<p className="text-xs text-amber-600">Warning</p>
+						<p className="text-xs text-amber-600">{t`Warning`}</p>
 					</CardContent>
 				</Card>
 				<Card className="bg-red-50 border-red-100">
 					<CardContent className="p-4 text-center">
 						<p className="text-2xl font-semibold text-red-700">{alerts.length}</p>
-						<p className="text-xs text-red-600">Active Alerts</p>
+						<p className="text-xs text-red-600">{t`Active Alerts`}</p>
 					</CardContent>
 				</Card>
 			</div>
@@ -220,43 +221,43 @@ export default function EquipmentDetailPage() {
 
 			{/* Tabbed Content */}
 			<Tabs defaultValue="energy" className="space-y-4">
-				<TabsList className="bg-muted/50 p-1" aria-label="Equipment monitoring tabs">
+				<TabsList className="bg-muted/50 p-1" aria-label={t`Equipment monitoring tabs`}>
 					<TabsTrigger
 						value="energy"
 						className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
 					>
-						Energy
+						{t`Energy`}
 					</TabsTrigger>
 					<TabsTrigger
 						value="climate"
 						className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
 					>
-						Climate
+						{t`Climate`}
 					</TabsTrigger>
 					<TabsTrigger
 						value="refrigeration"
 						className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
 					>
-						Refrigeration
+						{t`Refrigeration`}
 					</TabsTrigger>
 					<TabsTrigger
 						value="equipment"
 						className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
 					>
-						Equipment
+						{t`Equipment`}
 					</TabsTrigger>
 				</TabsList>
 
 				<TabsContent value="energy">
-					<EnergyTab equipmentId={equipment.id} sensors={equipmentSensors} />
+					<EnergyTab sensors={equipmentSensors} />
 				</TabsContent>
 
 				<TabsContent value="climate">
-					<ClimateTab equipmentId={equipment.id} sensors={equipmentSensors} />
+					<ClimateTab sensors={equipmentSensors} />
 				</TabsContent>
 
 				<TabsContent value="refrigeration">
-					<RefrigerationTab equipmentId={equipment.id} sensors={equipmentSensors} />
+					<RefrigerationTab sensors={equipmentSensors} />
 				</TabsContent>
 
 				<TabsContent value="equipment">

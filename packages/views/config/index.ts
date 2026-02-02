@@ -18,11 +18,6 @@ export type {
 	Sensor,
 	SensorStatus,
 	SensorType,
+	SensorTypeOption,
 	Site,
-} from "./types";
-export {
-	getEquipmentBySite,
-	getUnitForSensorType,
-	sensorTypeOptions,
-	transformTypeOptions,
 } from "./types";

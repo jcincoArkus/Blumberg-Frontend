@@ -31,13 +31,9 @@ import type {
 	Equipment,
 	Sensor,
 	SensorType,
+	SensorTypeOption,
 	Site,
-} from "./types";
-import {
-	getEquipmentBySite,
-	getUnitForSensorType,
-	sensorTypeOptions,
-	transformTypeOptions,
+	TransformTypeOption,
 } from "./types";
 
 interface SensorEditorProps {
@@ -47,6 +43,10 @@ interface SensorEditorProps {
 	onSave: (sensor: Sensor) => void;
 	sites: Site[];
 	equipment: Equipment[];
+	sensorTypeOptions: SensorTypeOption[];
+	transformTypeOptions: TransformTypeOption[];
+	getEquipmentBySite: (siteId: string) => Equipment[];
+	getUnitForSensorType: (type: SensorType) => string;
 }
 
 interface DataMappingState {
@@ -74,6 +74,10 @@ export function SensorEditor({
 	onSave,
 	sites,
 	equipment,
+	sensorTypeOptions,
+	transformTypeOptions,
+	getEquipmentBySite,
+	getUnitForSensorType,
 }: SensorEditorProps) {
 	// Form state
 	const [id, setId] = useState("");

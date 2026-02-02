@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Link, useParams } from "react-router";
 
+import { t } from "~@/i18n/macro";
 import {
 	type SiteEquipmentType as Equipment,
 	getAlertsBySite,
@@ -37,7 +38,7 @@ import { SiteTrendCharts } from "~@/views";
 function getSiteStatusConfig(status: string, hasActiveAlerts: boolean, hasCritical: boolean) {
 	if (status === "critical" || hasCritical) {
 		return {
-			label: "Alert",
+			label: t`Alert`,
 			color: "bg-red-500",
 			textColor: "text-red-700",
 			bgLight: "bg-red-50",
@@ -47,7 +48,7 @@ function getSiteStatusConfig(status: string, hasActiveAlerts: boolean, hasCritic
 	}
 	if (status === "warning" || hasActiveAlerts) {
 		return {
-			label: "Warning",
+			label: t`Warning`,
 			color: "bg-amber-500",
 			textColor: "text-amber-700",
 			bgLight: "bg-amber-50",
@@ -56,7 +57,7 @@ function getSiteStatusConfig(status: string, hasActiveAlerts: boolean, hasCritic
 		};
 	}
 	return {
-		label: "OK",
+		label: t`OK`,
 		color: "bg-emerald-500",
 		textColor: "text-emerald-700",
 		bgLight: "bg-emerald-50",
@@ -69,25 +70,25 @@ function getEquipmentStatusConfig(status: string) {
 	switch (status) {
 		case "warning":
 			return {
-				label: "Warning",
+				label: t`Warning`,
 				color: "bg-amber-100 text-amber-800 border-amber-200",
 				dotColor: "bg-amber-500",
 			};
 		case "offline":
 			return {
-				label: "Alert",
+				label: t`Alert`,
 				color: "bg-red-100 text-red-800 border-red-200",
 				dotColor: "bg-red-500",
 			};
 		case "maintenance":
 			return {
-				label: "Maintenance",
+				label: t`Maintenance`,
 				color: "bg-slate-100 text-slate-800 border-slate-200",
 				dotColor: "bg-slate-500",
 			};
 		default:
 			return {
-				label: "OK",
+				label: t`OK`,
 				color: "bg-emerald-100 text-emerald-800 border-emerald-200",
 				dotColor: "bg-emerald-500",
 			};
@@ -169,7 +170,7 @@ function EquipmentRow({ eq }: { eq: Equipment }) {
 			</TableCell>
 			<TableCell className="text-right">
 				<Button variant="ghost" size="sm" asChild>
-					<Link to={`/equipment/${eq.id}`} aria-label={`View ${eq.name} details`}>
+					<Link to={`/equipment/${eq.id}`} aria-label={t`View ${eq.name} details`}>
 						<ExternalLink className="size-4" />
 					</Link>
 				</Button>
@@ -185,12 +186,12 @@ export default function SiteDetailPage() {
 	if (!site) {
 		return (
 			<div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
-				<h1 className="text-2xl font-bold text-foreground">Site Not Found</h1>
-				<p className="text-muted-foreground">The site you're looking for doesn't exist.</p>
+				<h1 className="text-2xl font-bold text-foreground">{t`Site Not Found`}</h1>
+				<p className="text-muted-foreground">{t`The site you're looking for doesn't exist.`}</p>
 				<Button asChild>
-					<Link to="/sites" aria-label="Back to sites list">
+					<Link to="/sites" aria-label={t`Back to sites list`}>
 						<ArrowLeft className="size-4 mr-2" />
-						Back to Sites
+						{t`Back to Sites`}
 					</Link>
 				</Button>
 			</div>
@@ -218,7 +219,7 @@ export default function SiteDetailPage() {
 					<Button variant="ghost" size="sm" asChild>
 						<Link to="/sites">
 							<ArrowLeft className="size-4 mr-2" />
-							Back
+							{t`Back`}
 						</Link>
 					</Button>
 					<div>
@@ -243,19 +244,19 @@ export default function SiteDetailPage() {
 			<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 				<Card>
 					<CardContent className="p-4">
-						<p className="text-sm text-muted-foreground">Equipment</p>
+						<p className="text-sm text-muted-foreground">{t`Equipment`}</p>
 						<p className="text-2xl font-bold">{siteEquipment.length}</p>
 					</CardContent>
 				</Card>
 				<Card>
 					<CardContent className="p-4">
-						<p className="text-sm text-muted-foreground">Sensors</p>
+						<p className="text-sm text-muted-foreground">{t`Sensors`}</p>
 						<p className="text-2xl font-bold">{sensors.length}</p>
 					</CardContent>
 				</Card>
 				<Card className={activeAlerts.length > 0 ? "border-red-200 bg-red-50/50" : ""}>
 					<CardContent className="p-4">
-						<p className="text-sm text-muted-foreground">Active Alerts</p>
+						<p className="text-sm text-muted-foreground">{t`Active Alerts`}</p>
 						<p className={`text-2xl font-bold ${activeAlerts.length > 0 ? "text-red-600" : ""}`}>
 							{activeAlerts.length}
 						</p>
@@ -263,7 +264,7 @@ export default function SiteDetailPage() {
 				</Card>
 				<Card>
 					<CardContent className="p-4">
-						<p className="text-sm text-muted-foreground">Sensor Health</p>
+						<p className="text-sm text-muted-foreground">{t`Sensor Health`}</p>
 						<p className="text-2xl font-bold">
 							{sensors.length > 0
 								? Math.round(
@@ -282,7 +283,7 @@ export default function SiteDetailPage() {
 					<CardHeader className="pb-3">
 						<CardTitle className="text-red-700 flex items-center gap-2">
 							<AlertTriangle className="size-5" aria-hidden="true" />
-							Active Alerts ({activeAlerts.length})
+							{t`Active Alerts (${activeAlerts.length})`}
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
@@ -328,19 +329,19 @@ export default function SiteDetailPage() {
 			{/* Equipment Table */}
 			<Card>
 				<CardHeader>
-					<CardTitle>Equipment</CardTitle>
+					<CardTitle>{t`Equipment`}</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<Table>
 						<TableHeader>
 							<TableRow>
-								<TableHead>Name</TableHead>
-								<TableHead>Type</TableHead>
-								<TableHead>Status</TableHead>
-								<TableHead className="text-center">Sensors</TableHead>
-								<TableHead className="text-center">Alerts</TableHead>
-								<TableHead>Last Update</TableHead>
-								<TableHead className="text-right">Actions</TableHead>
+								<TableHead>{t`Name`}</TableHead>
+								<TableHead>{t`Type`}</TableHead>
+								<TableHead>{t`Status`}</TableHead>
+								<TableHead className="text-center">{t`Sensors`}</TableHead>
+								<TableHead className="text-center">{t`Alerts`}</TableHead>
+								<TableHead>{t`Last Update`}</TableHead>
+								<TableHead className="text-right">{t`Actions`}</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>

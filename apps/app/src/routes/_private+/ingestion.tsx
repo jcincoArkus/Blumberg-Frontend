@@ -1,3 +1,4 @@
+import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { validateSensorReading } from "~@/mock-data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
@@ -21,18 +22,21 @@ const DataIngestionPage = observer(function DataIngestionPage() {
 		<div className="space-y-6">
 			{/* Page Header */}
 			<div>
-				<h1 className="text-xl font-semibold text-foreground">Data Ingestion</h1>
+				<h1 className="text-xl font-semibold text-foreground">{t`Data Ingestion`}</h1>
 				<p className="text-sm text-muted-foreground">
-					Receive sensor readings from multiple sources. Support API automatic data and CSV file
-					uploads.
+					{t`Receive sensor readings from multiple sources. Support API automatic data and CSV file uploads.`}
 				</p>
 			</div>
 
 			{/* Tabs */}
-			<Tabs value={vm.activeTab} onValueChange={vm.setActiveTab} className="space-y-6">
+			<Tabs
+				value={vm.activeTab}
+				onValueChange={vm.setActiveTab as (value: string) => void}
+				className="space-y-6"
+			>
 				<TabsList className="grid w-full grid-cols-2">
-					<TabsTrigger value="api">API Ingestion</TabsTrigger>
-					<TabsTrigger value="csv">CSV Upload</TabsTrigger>
+					<TabsTrigger value="api">{t`API Ingestion`}</TabsTrigger>
+					<TabsTrigger value="csv">{t`CSV Upload`}</TabsTrigger>
 				</TabsList>
 
 				<TabsContent value="api" className="space-y-6">
@@ -54,8 +58,8 @@ const DataIngestionPage = observer(function DataIngestionPage() {
 
 			{/* Ingestion History (shared section) */}
 			<DashboardPanel
-				title="Ingestion History"
-				description="View all ingestion runs from API and CSV sources"
+				title={t`Ingestion History`}
+				description={t`View all ingestion runs from API and CSV sources`}
 			>
 				<IngestionHistory runs={vm.allRuns} />
 			</DashboardPanel>

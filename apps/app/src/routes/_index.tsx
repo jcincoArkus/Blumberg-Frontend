@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
+import { t } from "~@/i18n/macro";
 import { authViewModel } from "~@/view-model";
 
 import type { Route } from "./+types/_index";
@@ -21,5 +22,5 @@ export default function Index({ loaderData }: Route.ComponentProps) {
 		}
 	}, [isAuthenticated, navigate]);
 
-	return <div>Loading...</div>;
+	return <div>{t`Loading...`}</div>;
 }

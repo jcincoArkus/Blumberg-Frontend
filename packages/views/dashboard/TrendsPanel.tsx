@@ -38,7 +38,7 @@ export function TrendsPanel({ data }: TrendsPanelProps) {
 							className="h-7 px-3 text-xs"
 							onClick={() => setTimeRange("24h")}
 						>
-							24h
+							{t`24h`}
 						</Button>
 						<Button
 							variant={timeRange === "7d" ? "default" : "ghost"}
@@ -46,7 +46,7 @@ export function TrendsPanel({ data }: TrendsPanelProps) {
 							className="h-7 px-3 text-xs"
 							onClick={() => setTimeRange("7d")}
 						>
-							7d
+							{t`7d`}
 						</Button>
 					</div>
 				</div>
