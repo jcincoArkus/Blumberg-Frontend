@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 
 import { t } from "~@/i18n/macro";
 import {
-	Badge,
 	Button,
 	Card,
 	CardContent,
@@ -73,7 +72,6 @@ export function SensorEditor({
 	onOpenChange,
 	onSave,
 	sites,
-	equipment,
 	sensorTypeOptions,
 	transformTypeOptions,
 	getEquipmentBySite,

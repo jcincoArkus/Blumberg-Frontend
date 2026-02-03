@@ -104,7 +104,7 @@ export class ObservedMutation<
 	 * Returns null if there's no error, making it safe to use in templates.
 	 */
 	get error(): Error | null {
-		return this.mutation?.state?.error as Error | null;
+		return this.mutation?.state?.error ?? null;
 	}
 
 	/**
@@ -112,7 +112,7 @@ export class ObservedMutation<
 	 * Returns null if no data is available, making it safe for conditional rendering.
 	 */
 	get response(): ExtractMutationData<T> | null {
-		return this.mutation?.state?.data as ExtractMutationData<T> | null;
+		return this.mutation?.state?.data ?? null;
 	}
 
 	/**
@@ -151,7 +151,7 @@ export class ObservedMutation<
 		const mergedArgs = mergeDefaults(this._defaultValues, args) as Parameters<T>;
 
 		this.mutation = makeObserver(this._apiMutationSdkFn, mergedArgs, this._observerOptions);
-		return this.mutation.mutateAsync(mergedArgs) as Promise<ExtractMutationData<T>>;
+		return await this.mutation.mutateAsync(mergedArgs);
 	};
 
 	/**

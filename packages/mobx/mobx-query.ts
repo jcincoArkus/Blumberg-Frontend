@@ -32,9 +32,10 @@ class _MobxQuery<
 
 	_queryOptions: () => QueryObserverOptions<TQueryFnData, TError, TData, TQueryData, TQueryKey>;
 
-	qObserver!: QueryObserver<TQueryFnData, TError, TData, TQueryData, TQueryKey>;
+	qObserver: QueryObserver<TQueryFnData, TError, TData, TQueryData, TQueryKey> | undefined =
+		undefined;
 
-	public state!: QueryObserverResult<TData, TError>;
+	public state: QueryObserverResult<TData, TError> | undefined = undefined;
 
 	private disposables: (() => void)[] = [];
 
@@ -88,7 +89,7 @@ class _MobxQuery<
 				},
 			),
 			() => {
-				this.qObserver.destroy();
+				this.qObserver?.destroy();
 			},
 		);
 	};
@@ -98,7 +99,7 @@ class _MobxQuery<
 	 * This is an action that can be called to manually refresh the query.
 	 */
 	refetch = (): void => {
-		this.qObserver.refetch();
+		this.qObserver?.refetch();
 	};
 
 	/**
@@ -124,7 +125,7 @@ class _MobxQuery<
 	 * This is called reactively when query options change.
 	 */
 	_updateOptions = (): void => {
-		this.qObserver.setOptions(this.queryOptions);
+		this.qObserver?.setOptions(this.queryOptions);
 	};
 
 	/**
@@ -192,8 +193,8 @@ export class MobxQuery<
 	 * Gets the current query state with loading, error, and data information.
 	 * This is a reactive property that will trigger re-renders when the state changes.
 	 */
-	get state(): QueryObserverResult<TData, TError> {
-		return this.query.state || {};
+	get state(): _MobxQuery<TQueryFnData, TError, TData, TQueryData, TQueryKey>["state"] {
+		return this.query.state;
 	}
 
 	/**

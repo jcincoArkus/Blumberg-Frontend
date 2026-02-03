@@ -155,7 +155,7 @@ export class ObservedQuery<
 	loadAsync = async (...args: Partial<Parameters<T>>): Promise<ExtractQueryData<T>> => {
 		this.load(...args);
 
-		return new Promise((resolve, reject) => {
+		return await new Promise((resolve, reject) => {
 			if (!this.query) {
 				reject(new Error("Query failed to initialize"));
 				return;
@@ -163,10 +163,10 @@ export class ObservedQuery<
 
 			const disposer = reaction(
 				() => ({
-					isSuccess: this.query?.state.isSuccess,
-					isError: this.query?.state.isError,
-					data: this.query?.state.data,
-					error: this.query?.state.error,
+					isSuccess: this.query?.state?.isSuccess,
+					isError: this.query?.state?.isError,
+					data: this.query?.state?.data,
+					error: this.query?.state?.error,
 				}),
 				(result) => {
 					if (result.isSuccess) {
