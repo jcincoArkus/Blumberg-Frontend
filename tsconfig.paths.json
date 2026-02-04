@@ -10,6 +10,7 @@
 			"~@/mobx": ["./packages/mobx/index.ts"],
 			"~@/mock-data": ["./packages/mock-data/index.ts"], // TODO: will be removed
 			"~@/models": ["./packages/models/index.ts"],
+			"~@/data-table": ["./packages/data-table/index.ts"],
 			"~@/ui": ["./packages/ui/index.ts"],
 			"~@/view-model": ["./packages/view-model/index.ts"],
 			"~@/views": ["./packages/views/index.ts"]
