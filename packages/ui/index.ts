@@ -68,6 +68,16 @@ export {
 	DropdownMenuShortcut,
 	DropdownMenuTrigger,
 } from "./DropdownMenu";
+// DataTable Components
+export {
+	AppDataTableProvider,
+	EmptyState,
+	ErrorState,
+	Loading,
+	Pagination,
+	SearchInput,
+	TableView,
+} from "./datatable";
 export {
 	Form,
 	FormControl,
