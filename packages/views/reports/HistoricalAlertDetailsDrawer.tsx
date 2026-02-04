@@ -4,8 +4,6 @@ import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
-	Card,
-	CardContent,
 	cn,
 	Drawer,
 	DrawerClose,

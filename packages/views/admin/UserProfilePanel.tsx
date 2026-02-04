@@ -1,19 +1,7 @@
-import {
-	Calendar,
-	Clock,
-	Edit,
-	Key,
-	LogIn,
-	Mail,
-	Shield,
-	ShieldCheck,
-	User as UserIcon,
-	Users,
-	X,
-} from "lucide-react";
+import { Edit, LogIn, Mail, Shield, User as UserIcon, X } from "lucide-react";
 
 import { t } from "~@/i18n/macro";
-import { Avatar, AvatarFallback, AvatarImage, Badge, Button, cn, Separator } from "~@/ui";
+import { Avatar, AvatarFallback, AvatarImage, Badge, Button, cn } from "~@/ui";
 
 import type { LoginMethod, Role, User, UserStatus } from "./types";
 

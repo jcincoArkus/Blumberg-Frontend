@@ -42,7 +42,7 @@ function defaultGenerateTimeSeriesData(
 }
 
 export function HistoricalCharts({
-	equipmentId,
+	equipmentId: _equipmentId,
 	sensors,
 	generateTimeSeriesData = defaultGenerateTimeSeriesData,
 }: HistoricalChartsProps) {

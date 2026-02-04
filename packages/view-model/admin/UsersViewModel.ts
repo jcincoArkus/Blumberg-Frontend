@@ -47,13 +47,15 @@ export class UsersViewModel implements Disposable {
 	// Computed: get permissions for selected role
 	get selectedRolePermissions(): RolePermissions | null {
 		if (!this.selectedRole) return null;
-		return this.rolePermissions.find((rp) => rp.roleId === this.selectedRole!.id) ?? null;
+		const selectedRoleId = this.selectedRole.id;
+		return this.rolePermissions.find((rp) => rp.roleId === selectedRoleId) ?? null;
 	}
 
 	// Computed: get permissions for editing role
 	get editingRolePermissions(): RolePermissions | null {
 		if (!this.editingRole) return null;
-		return this.rolePermissions.find((rp) => rp.roleId === this.editingRole!.id) ?? null;
+		const editingRoleId = this.editingRole.id;
+		return this.rolePermissions.find((rp) => rp.roleId === editingRoleId) ?? null;
 	}
 
 	// User actions

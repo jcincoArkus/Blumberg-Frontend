@@ -19,7 +19,7 @@ import {
 
 import { HistoricalTrendChart } from "./HistoricalTrendChart";
 import { TrendIndicator } from "./TrendIndicator";
-import type { DateRange, HistoricalReading, SensorType } from "./types";
+import type { HistoricalReading } from "./types";
 
 interface ReadingsHistoryTabProps {
 	readings: HistoricalReading[];
@@ -98,7 +98,8 @@ export function ReadingsHistoryTab({
 				grouped.set(hourKey, { timestamp, value: 0, count: 0 });
 			}
 
-			const entry = grouped.get(hourKey)!;
+			const entry = grouped.get(hourKey);
+			if (!entry) return;
 			entry.value += reading.value;
 			entry.count += 1;
 		});
@@ -125,7 +126,8 @@ export function ReadingsHistoryTab({
 				grouped.set(hourKey, { timestamp, value: 0, count: 0 });
 			}
 
-			const entry = grouped.get(hourKey)!;
+			const entry = grouped.get(hourKey);
+			if (!entry) return;
 			entry.value += reading.value;
 			entry.count += 1;
 		});

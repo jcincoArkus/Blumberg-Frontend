@@ -137,7 +137,7 @@ export function SensorEditor({
 	// Update unit when type changes
 	useEffect(() => {
 		setUnit(getUnitForSensorType(type));
-	}, [type]);
+	}, [type, getUnitForSensorType]);
 
 	// Clear equipment when site changes
 	useEffect(() => {

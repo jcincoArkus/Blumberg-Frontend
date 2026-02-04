@@ -10,8 +10,6 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-	cn,
-	Progress,
 	Select,
 	SelectContent,
 	SelectItem,

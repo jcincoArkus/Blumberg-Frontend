@@ -16,7 +16,7 @@ import {
 	X,
 } from "lucide-react";
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router";
 
 import { t } from "~@/i18n/macro";
@@ -75,47 +75,50 @@ export function DashboardShell({
 		icon: <LayoutDashboard className="size-5" />,
 	};
 
-	const navSections: NavSection[] = [
-		{
-			section: t`OPERATIONS`,
-			items: [
-				{
-					label: t`Monitoring`,
-					href: "/monitoring/sensor-health",
-					icon: <Activity className="size-5" />,
-				},
-				{ label: t`Alerts`, href: "/alerts", icon: <Bell className="size-5" /> },
-				{ label: t`Sites`, href: "/sites", icon: <Building2 className="size-5" /> },
-				{
-					label: t`Equipment Overview`,
-					href: "/equipment-overview",
-					icon: <Server className="size-5" />,
-				},
-			],
-		},
-		{
-			section: t`ANALYTICS`,
-			items: [
-				{
-					label: t`Historical Reports`,
-					href: "/reports/history",
-					icon: <FileText className="size-5" />,
-				},
-			],
-		},
-		{
-			section: t`PLATFORM`,
-			items: [
-				{ label: t`Data Ingestion`, href: "/ingestion", icon: <Upload className="size-5" /> },
-				{
-					label: t`Configuration`,
-					href: "/config/sensors",
-					icon: <Settings className="size-5" />,
-				},
-				{ label: t`User Management`, href: "/admin/users", icon: <Users className="size-5" /> },
-			],
-		},
-	];
+	const navSections: NavSection[] = useMemo(
+		() => [
+			{
+				section: t`OPERATIONS`,
+				items: [
+					{
+						label: t`Monitoring`,
+						href: "/monitoring/sensor-health",
+						icon: <Activity className="size-5" />,
+					},
+					{ label: t`Alerts`, href: "/alerts", icon: <Bell className="size-5" /> },
+					{ label: t`Sites`, href: "/sites", icon: <Building2 className="size-5" /> },
+					{
+						label: t`Equipment Overview`,
+						href: "/equipment-overview",
+						icon: <Server className="size-5" />,
+					},
+				],
+			},
+			{
+				section: t`ANALYTICS`,
+				items: [
+					{
+						label: t`Historical Reports`,
+						href: "/reports/history",
+						icon: <FileText className="size-5" />,
+					},
+				],
+			},
+			{
+				section: t`PLATFORM`,
+				items: [
+					{ label: t`Data Ingestion`, href: "/ingestion", icon: <Upload className="size-5" /> },
+					{
+						label: t`Configuration`,
+						href: "/config/sensors",
+						icon: <Settings className="size-5" />,
+					},
+					{ label: t`User Management`, href: "/admin/users", icon: <Users className="size-5" /> },
+				],
+			},
+		],
+		[],
+	);
 
 	// Domain tab labels with i18n
 	const domainLabels: Record<DomainKey, string> = {
@@ -144,19 +147,24 @@ export function DashboardShell({
 		}
 	}, [sidebarCollapsed]);
 
-	const isItemActive = (itemHref: string): boolean => {
-		if (itemHref === "/") return pathname === "/" || pathname.startsWith("/equipment/");
-		if (itemHref === "/sites") return pathname === "/sites" || pathname.startsWith("/site/");
-		if (itemHref === "/monitoring/sensor-health") return pathname.startsWith("/monitoring");
-		if (itemHref.startsWith("/config")) return pathname.startsWith("/config");
-		if (itemHref === "/ingestion") return pathname.startsWith("/ingestion");
-		if (itemHref.startsWith("/admin")) return pathname.startsWith("/admin");
-		if (itemHref.startsWith("/reports")) return pathname.startsWith("/reports");
-		return pathname === itemHref;
-	};
+	const isItemActive = useCallback(
+		(itemHref: string): boolean => {
+			if (itemHref === "/") return pathname === "/" || pathname.startsWith("/equipment/");
+			if (itemHref === "/sites") return pathname === "/sites" || pathname.startsWith("/site/");
+			if (itemHref === "/monitoring/sensor-health") return pathname.startsWith("/monitoring");
+			if (itemHref.startsWith("/config")) return pathname.startsWith("/config");
+			if (itemHref === "/ingestion") return pathname.startsWith("/ingestion");
+			if (itemHref.startsWith("/admin")) return pathname.startsWith("/admin");
+			if (itemHref.startsWith("/reports")) return pathname.startsWith("/reports");
+			return pathname === itemHref;
+		},
+		[pathname],
+	);
 
-	const hasActiveItem = (section: NavSection) =>
-		section.items.some((item) => isItemActive(item.href));
+	const hasActiveItem = useCallback(
+		(section: NavSection) => section.items.some((item) => isItemActive(item.href)),
+		[isItemActive],
+	);
 
 	const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>(() => {
 		const initial: Record<string, boolean> = {};
@@ -174,7 +182,7 @@ export function DashboardShell({
 			}
 			return updated;
 		});
-	}, [pathname]);
+	}, [pathname, hasActiveItem, navSections]);
 
 	const toggleSection = (section: string) => {
 		setExpandedSections((prev) => ({ ...prev, [section]: !prev[section] }));

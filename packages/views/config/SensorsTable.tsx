@@ -86,7 +86,7 @@ const getStatusConfig = () =>
 		error: { label: t`Error`, className: "bg-red-50 text-red-700 border-red-300" },
 	}) as Record<string, { label: string; className: string }>;
 
-function getStatusBadge(status: string): React.ReactNode {
+function _getStatusBadge(status: string): React.ReactNode {
 	const config = getStatusConfig();
 	const cfg = config[status] || config.inactive;
 	return (

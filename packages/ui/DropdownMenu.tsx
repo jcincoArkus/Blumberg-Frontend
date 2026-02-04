@@ -1,5 +1,5 @@
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
-import { Check, ChevronRight, Circle } from "lucide-react";
+import { Check, Circle } from "lucide-react";
 import type { ComponentProps } from "react";
 
 import { cn } from "./utils";
@@ -65,8 +65,7 @@ function DropdownMenuItem({
 	);
 }
 
-interface DropdownMenuCheckboxItemProps
-	extends ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem> {}
+type DropdownMenuCheckboxItemProps = ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem>;
 
 function DropdownMenuCheckboxItem({
 	className,

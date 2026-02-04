@@ -13,7 +13,6 @@ import {
 	Checkbox,
 	cn,
 	Input,
-	Label,
 } from "~@/ui";
 
 import type { Role, User, UserStatus } from "./types";

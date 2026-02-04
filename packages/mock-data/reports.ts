@@ -155,10 +155,12 @@ export function getHistoricalReadings(params: {
 	let filtered = [...historicalReadings];
 
 	if (params.startDate) {
-		filtered = filtered.filter((r) => new Date(r.timestamp) >= params.startDate!);
+		const startDate = params.startDate;
+		filtered = filtered.filter((r) => new Date(r.timestamp) >= startDate);
 	}
 	if (params.endDate) {
-		filtered = filtered.filter((r) => new Date(r.timestamp) <= params.endDate!);
+		const endDate = params.endDate;
+		filtered = filtered.filter((r) => new Date(r.timestamp) <= endDate);
 	}
 	if (params.siteId) {
 		filtered = filtered.filter((r) => r.siteId === params.siteId);
@@ -182,10 +184,12 @@ export function getHistoricalAlerts(params: {
 	let filtered = [...historicalAlerts];
 
 	if (params.startDate) {
-		filtered = filtered.filter((a) => new Date(a.createdAt) >= params.startDate!);
+		const startDate = params.startDate;
+		filtered = filtered.filter((a) => new Date(a.createdAt) >= startDate);
 	}
 	if (params.endDate) {
-		filtered = filtered.filter((a) => new Date(a.createdAt) <= params.endDate!);
+		const endDate = params.endDate;
+		filtered = filtered.filter((a) => new Date(a.createdAt) <= endDate);
 	}
 	if (params.equipmentId) {
 		filtered = filtered.filter((a) => a.equipmentId === params.equipmentId);

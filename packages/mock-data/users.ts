@@ -1,10 +1,4 @@
-import type {
-	LegacyRolePermissions,
-	PermissionCategory,
-	Role,
-	RolePermissions,
-	User,
-} from "~@/models";
+import type { PermissionCategory, Role, RolePermissions, User } from "~@/models";
 
 // Mock Roles
 export const roles: Role[] = [

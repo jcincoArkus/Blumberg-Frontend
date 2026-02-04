@@ -149,7 +149,8 @@ export function AlertsHistoryTab({
 				grouped.set(dateKey, { date: dateKey, count: 0, critical: 0, high: 0, medium: 0, low: 0 });
 			}
 
-			const entry = grouped.get(dateKey)!;
+			const entry = grouped.get(dateKey);
+			if (!entry) return;
 			entry.count += 1;
 			if (alert.severity === "critical") entry.critical += 1;
 			else if (alert.severity === "high") entry.high += 1;
