@@ -1,3 +1,10 @@
+---
+name: API Pattern with hey-api and MobX
+description: Pattern for auto-generating TypeScript API SDK from OpenAPI specs using hey-api with automatic MobX integration
+version: 1.0.0
+tags: [api, hey-api, mobx, openapi, typescript, observedquery, observedmutation]
+---
+
 # API Pattern with hey-api and MobX
 
 ## Overview
@@ -192,5 +199,4 @@ class ObservedMutation<T, V> {
 - **Don't access data without null check** - Always use `?.` or `??` operators
 - **Don't create multiple instances** - Reuse the same instance
 - **Don't use public fields** - Use `#query` (private) not `query` (public)
-
 

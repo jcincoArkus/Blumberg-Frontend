@@ -3,6 +3,7 @@
 /node_modules/
 *.log
 .claude/
+.augment/
 
 # React Router
 /**/.react-router/

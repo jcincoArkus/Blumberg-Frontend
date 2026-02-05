@@ -1,3 +1,10 @@
+---
+name: ViewModel + API Pattern
+description: Pattern for integrating ViewModels with ObservedQuery and ObservedMutation from the auto-generated API
+version: 1.0.0
+tags: [viewmodel, api, observedquery, observedmutation, mobx, typescript]
+---
+
 # ViewModel + API Pattern
 
 ## Overview
