@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 import { Trans, t } from "~@/i18n/macro";
+import { observer } from "~@/mobx";
 import {
 	Button,
 	Card,
@@ -13,7 +14,7 @@ import {
 	Input,
 	Label,
 } from "~@/ui";
-import { authViewModel } from "~@/view-model";
+import { authViewModel, useLoginViewModel } from "~@/view-model";
 
 import type { Route } from "./+types/login";
 
@@ -33,18 +34,22 @@ export async function clientLoader() {
 	return { isAuthenticated: authViewModel.isAuthenticated };
 }
 
-export default function Login({ loaderData }: Route.ComponentProps) {
+function Login({ loaderData }: Route.ComponentProps) {
 	const navigate = useNavigate();
+	const loginViewModel = useLoginViewModel();
 	const { isAuthenticated } = loaderData;
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	useEffect(() => {
 		if (isAuthenticated) {
 			navigate("/home", { replace: true });
 		}
 	}, [isAuthenticated, navigate]);
+
+	useEffect(() => {
+		loginViewModel.reset();
+	}, [email, password]);
 
 	if (isAuthenticated) {
 		return (
@@ -61,8 +66,11 @@ export default function Login({ loaderData }: Route.ComponentProps) {
 			toast.error(t`Please enter email and password`);
 			return;
 		}
-		setIsSubmitting(true);
 		try {
+			await loginViewModel.login(trimmedEmail, password);
+			navigate("/home", { replace: true });
+		} catch {
+			// Fallback to demo credentials when API is unavailable (e.g. no backend)
 			if (validateDemoCredentials(trimmedEmail, password)) {
 				authViewModel.setAuthenticatedSession({
 					accessToken: `demo-${trimmedEmail}`,
@@ -70,10 +78,11 @@ export default function Login({ loaderData }: Route.ComponentProps) {
 				});
 				navigate("/home", { replace: true });
 			} else {
-				toast.error(t`Invalid email or password. Use one of the demo credentials below.`);
+				const message =
+					loginViewModel.error?.message ??
+					t`Invalid email or password. Use one of the demo credentials below.`;
+				toast.error(message);
 			}
-		} finally {
-			setIsSubmitting(false);
 		}
 	};
 
@@ -126,9 +135,9 @@ export default function Login({ loaderData }: Route.ComponentProps) {
 							<Button
 								type="submit"
 								className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-								disabled={isSubmitting}
+								disabled={loginViewModel.isPending}
 							>
-								{isSubmitting ? t`Signing in...` : t`Sign in`}
+								{loginViewModel.isPending ? t`Signing in...` : t`Sign in`}
 							</Button>
 						</form>
 
@@ -173,3 +182,5 @@ export default function Login({ loaderData }: Route.ComponentProps) {
 		</div>
 	);
 }
+
+export default observer(Login);
