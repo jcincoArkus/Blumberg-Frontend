@@ -8,7 +8,7 @@ import { authViewModel } from "./AuthViewModel";
  * Integrates login API mutation and sets auth session on success.
  */
 class LoginViewModel {
-	private readonly _loginMutation = loginV1ObservedMutation();
+	#loginMutation = loginV1ObservedMutation();
 
 	constructor() {
 		makeAutoObservable(this);
