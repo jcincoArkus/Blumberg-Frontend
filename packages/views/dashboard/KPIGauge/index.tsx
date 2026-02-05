@@ -3,16 +3,10 @@ import { Minus, TrendingDown, TrendingUp } from "lucide-react";
 import { t } from "~@/i18n/macro";
 import { cn } from "~@/ui";
 
-interface KPIGaugeProps {
-	label: string;
-	value: number;
-	unit?: string;
-	trend?: number;
-	trendLabel?: string;
-	status?: "success" | "warning" | "danger" | "neutral";
-	size?: "sm" | "md" | "lg";
-	maxValue?: number;
-}
+import { bgColors, getGaugePercentage, getGaugeStyles, sizeClasses, statusColors } from "./helpers";
+import type { KPIGaugeProps } from "./types";
+
+export type { KPIGaugeProps } from "./types";
 
 export function KPIGauge({
 	label,
@@ -24,31 +18,9 @@ export function KPIGauge({
 	size = "md",
 	maxValue = 100,
 }: KPIGaugeProps) {
-	const percentage = Math.min((value / maxValue) * 100, 100);
-	const radius = size === "sm" ? 36 : size === "md" ? 44 : 52;
-	const strokeWidth = size === "sm" ? 6 : size === "md" ? 7 : 8;
-	const circumference = 2 * Math.PI * radius;
+	const percentage = getGaugePercentage(value, maxValue);
+	const { radius, strokeWidth, circumference } = getGaugeStyles(size);
 	const strokeDashoffset = circumference - (percentage / 100) * circumference;
-
-	const statusColors = {
-		success: "stroke-success",
-		warning: "stroke-warning",
-		danger: "stroke-danger",
-		neutral: "stroke-primary",
-	};
-
-	const bgColors = {
-		success: "stroke-success/20",
-		warning: "stroke-warning/20",
-		danger: "stroke-danger/20",
-		neutral: "stroke-muted",
-	};
-
-	const sizeClasses = {
-		sm: { svg: "size-20", value: "text-lg", label: "text-[10px]" },
-		md: { svg: "size-28", value: "text-2xl", label: "text-xs" },
-		lg: { svg: "size-32", value: "text-3xl", label: "text-sm" },
-	};
 
 	return (
 		<div className="flex flex-col items-center">
@@ -58,7 +30,6 @@ export function KPIGauge({
 					viewBox={`0 0 ${(radius + strokeWidth) * 2} ${(radius + strokeWidth) * 2}`}
 					aria-hidden="true"
 				>
-					{/* Background circle */}
 					<circle
 						cx={radius + strokeWidth}
 						cy={radius + strokeWidth}
@@ -67,7 +38,6 @@ export function KPIGauge({
 						className={bgColors[status]}
 						strokeWidth={strokeWidth}
 					/>
-					{/* Progress circle */}
 					<circle
 						cx={radius + strokeWidth}
 						cy={radius + strokeWidth}
@@ -81,7 +51,6 @@ export function KPIGauge({
 						style={{ transition: "stroke-dashoffset 0.5s ease-in-out" }}
 					/>
 				</svg>
-				{/* Value in center */}
 				<div className="absolute inset-0 flex flex-col items-center justify-center">
 					<span className={cn("font-semibold text-foreground", sizeClasses[size].value)}>
 						{value.toLocaleString()}
@@ -90,12 +59,10 @@ export function KPIGauge({
 				</div>
 			</div>
 
-			{/* Label */}
 			<p className={cn("mt-2 text-center font-medium text-foreground", sizeClasses[size].label)}>
 				{label}
 			</p>
 
-			{/* Trend */}
 			{trend !== undefined && (
 				<div
 					className={cn(

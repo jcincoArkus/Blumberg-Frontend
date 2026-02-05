@@ -1,33 +1,16 @@
 import { Minus, TrendingDown, TrendingUp } from "lucide-react";
 
-import { t } from "~@/i18n/macro";
 import { cn } from "~@/ui";
 
-interface MetricData {
-	value: number;
-	unit: string;
-	trend: "up" | "down" | "stable";
-	status: "stable" | "rising" | "improving";
-}
+import type { MetricData } from "./types";
 
-export interface KeyMetricsCardsProps {
-	aqi: MetricData;
-	co2: MetricData;
-	temperature: MetricData;
-	humidity: MetricData;
-}
-
-type StatusKey = "stable" | "rising" | "improving";
-
-function MetricCard({
-	label,
-	metric,
-	statusLabel,
-}: {
+interface MetricCardProps {
 	label: string;
 	metric: MetricData;
 	statusLabel: string;
-}) {
+}
+
+export function MetricCard({ label, metric, statusLabel }: MetricCardProps) {
 	const trendConfig = {
 		up: { icon: TrendingUp, color: "text-red-600" },
 		down: { icon: TrendingDown, color: "text-emerald-600" },
@@ -60,31 +43,6 @@ function MetricCard({
 					</div>
 				</div>
 			</div>
-		</div>
-	);
-}
-
-export function KeyMetricsCards({ aqi, co2, temperature, humidity }: KeyMetricsCardsProps) {
-	const statusLabels: Record<StatusKey, string> = {
-		stable: t`Stable`,
-		rising: t`Rising`,
-		improving: t`Improving`,
-	};
-
-	return (
-		<div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
-			<MetricCard label={t`AQI`} metric={aqi} statusLabel={statusLabels[aqi.status]} />
-			<MetricCard label={t`CO₂`} metric={co2} statusLabel={statusLabels[co2.status]} />
-			<MetricCard
-				label={t`Temperature`}
-				metric={temperature}
-				statusLabel={statusLabels[temperature.status]}
-			/>
-			<MetricCard
-				label={t`Humidity`}
-				metric={humidity}
-				statusLabel={statusLabels[humidity.status]}
-			/>
 		</div>
 	);
 }
