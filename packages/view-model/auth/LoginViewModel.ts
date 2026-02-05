@@ -8,22 +8,22 @@ import { authViewModel } from "./AuthViewModel";
  * Integrates login API mutation and sets auth session on success.
  */
 class LoginViewModel {
-	#loginMutation = loginV1ObservedMutation();
+	private readonly _loginMutation = loginV1ObservedMutation();
 
 	constructor() {
 		makeAutoObservable(this);
 	}
 
 	get isPending(): boolean {
-		return this._loginMutation.isPending;
+		return this._loginMutation?.isPending ?? false;
 	}
 
 	get hasError(): boolean {
-		return this._loginMutation.hasError;
+		return this._loginMutation?.hasError ?? false;
 	}
 
 	get error(): Error | null {
-		return this._loginMutation.error ?? null;
+		return this._loginMutation?.error ?? null;
 	}
 
 	/**
@@ -49,7 +49,7 @@ class LoginViewModel {
 
 	/** Clear mutation state (e.g. error). */
 	reset = (): void => {
-		this._loginMutation.dispose();
+		this._loginMutation?.dispose();
 	};
 }
 

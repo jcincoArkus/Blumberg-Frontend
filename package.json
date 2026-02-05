@@ -24,7 +24,7 @@
 		"api:scripts": "npx tsx scripts/hey-api.ts",
 		"api:gen": "pnpm openapi:gen && pnpm api:scripts && pnpm format:openapi",
 		"    APP    ": "",
-		"start:admin": "node scripts/start-admin.js --mode develop",
+		"start:admin": "node scripts/start-admin.js",
 		"    SKILLS    ": "",
 		"skills:claude": "mkdir -p .claude && ln -sfn ../.llm/skills .claude/skills"
 	},

@@ -1,3 +1,4 @@
+import { client } from "~@/api";
 import { makeAutoObservable } from "~@/mobx";
 
 const AUTH_SESSION_KEY = "authenticatedSession";
@@ -17,8 +18,12 @@ class AuthViewModel {
 
 	_loadSessionFromStorage() {
 		try {
-			const storedSession = localStorage.getItem(AUTH_SESSION_KEY);
-			this._authenticatedSession = storedSession ? JSON.parse(storedSession) : null;
+			const storedSession = sessionStorage.getItem(AUTH_SESSION_KEY);
+			if (!storedSession) {
+				this._authenticatedSession = null;
+				return;
+			}
+			this.setAuthenticatedSession(JSON.parse(storedSession) as AuthenticatedSession);
 		} catch {
 			this._authenticatedSession = null;
 		}
@@ -33,11 +38,22 @@ class AuthViewModel {
 	}
 
 	setAuthenticatedSession = (session: AuthenticatedSession) => {
+		sessionStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(session));
+		client.setConfig({
+			headers: {
+				Authorization: `Bearer ${session.accessToken}`,
+			},
+		});
 		this._authenticatedSession = session;
-		localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(session));
 	};
 
 	clearSession = () => {
+		sessionStorage.removeItem(AUTH_SESSION_KEY);
+		client.setConfig({
+			headers: {
+				Authorization: undefined,
+			},
+		});
 		this._authenticatedSession = null;
 	};
 }
