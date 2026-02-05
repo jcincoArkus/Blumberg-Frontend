@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable } from "~@/mobx";
 
 const AUTH_SESSION_KEY = "authenticatedSession";
 
@@ -44,3 +44,7 @@ class AuthViewModel {
 }
 
 export const authViewModel = new AuthViewModel();
+
+export function useAuthViewModel() {
+	return authViewModel;
+}

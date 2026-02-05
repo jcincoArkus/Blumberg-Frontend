@@ -1,1 +1,1 @@
-export { type AuthenticatedSession, authViewModel } from "./AuthViewModel";
+export { type AuthenticatedSession, authViewModel, useAuthViewModel } from "./AuthViewModel";

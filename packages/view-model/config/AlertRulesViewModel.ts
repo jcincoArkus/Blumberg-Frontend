@@ -111,3 +111,9 @@ export class AlertRulesViewModel implements Disposable {
 		// No subscriptions to clean up currently
 	}
 }
+
+export const alertRulesViewModel = new AlertRulesViewModel();
+
+export function useAlertRulesViewModel() {
+	return alertRulesViewModel;
+}

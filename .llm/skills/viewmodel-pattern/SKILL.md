@@ -1,8 +1,6 @@
 ---
-name: ViewModel Pattern with MobX
+name: viewmodel-pattern
 description: Pattern for implementing ViewModels using a Singleton + Hook Pattern with MobX for reactive state management
-version: 1.0.0
-tags: [mobx, viewmodel, typescript, singleton, hooks, reactive]
 ---
 
 # ViewModel Pattern with MobX

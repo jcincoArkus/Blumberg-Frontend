@@ -1,8 +1,6 @@
 ---
-name: API Pattern with hey-api and MobX
+name: api-pattern
 description: Pattern for auto-generating TypeScript API SDK from OpenAPI specs using hey-api with automatic MobX integration
-version: 1.0.0
-tags: [api, hey-api, mobx, openapi, typescript, observedquery, observedmutation]
 ---
 
 # API Pattern with hey-api and MobX

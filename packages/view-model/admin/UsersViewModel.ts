@@ -147,3 +147,9 @@ export class UsersViewModel implements Disposable {
 		// No subscriptions to clean up currently
 	}
 }
+
+export const usersViewModel = new UsersViewModel();
+
+export function useUsersViewModel() {
+	return usersViewModel;
+}

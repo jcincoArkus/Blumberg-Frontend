@@ -1,8 +1,6 @@
 ---
-name: DataTable Pattern with MobX
+name: datatable-pattern
 description: Pattern for implementing a headless DataTable with MobX controllers
-version: 1.0.0
-tags: [datatable, mobx, controller, headless, typescript, observedquery]
 ---
 
 # DataTable Pattern with MobX

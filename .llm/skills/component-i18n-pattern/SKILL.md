@@ -1,8 +1,6 @@
 ---
-name: Component i18n Pattern with Lingui
+name: component-i18n-pattern
 description: Pattern for implementing internationalization in React components using Lingui macros and the global i18n module
-version: 1.0.0
-tags: [react, i18n, lingui, translation, internationalization, typescript]
 ---
 
 # Component i18n Pattern with Lingui

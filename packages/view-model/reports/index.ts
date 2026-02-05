@@ -1,2 +1,5 @@
-export { HistoricalReportsViewModel } from "./HistoricalReportsViewModel";
-export { useHistoricalReportsViewModel } from "./useHistoricalReportsViewModel";
+export {
+	HistoricalReportsViewModel,
+	historicalReportsViewModel,
+	useHistoricalReportsViewModel,
+} from "./HistoricalReportsViewModel";

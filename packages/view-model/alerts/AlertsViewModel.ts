@@ -114,3 +114,9 @@ export class AlertsViewModel implements Disposable {
 		// Future: cancel API requests, clear timers, etc.
 	}
 }
+
+export const alertsViewModel = new AlertsViewModel();
+
+export function useAlertsViewModel() {
+	return alertsViewModel;
+}

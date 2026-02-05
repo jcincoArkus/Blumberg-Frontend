@@ -24,11 +24,7 @@ export const ActiveAlertsPanel = observer(function ActiveAlertsPanel() {
 	const vm = useActiveAlertsPanelViewModel();
 	const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-	const sortedAlerts = useMemo((): AlertItem[] => {
-		return vm.sortedAlerts.map((alert) => ({ ...alert }));
-	}, [vm.sortedAlerts]);
-
-	const controller = useMemo(() => new ActiveAlertsController(sortedAlerts), [sortedAlerts]);
+	const controller = useMemo(() => new ActiveAlertsController(), []);
 	const columns = useMemo(() => getColumns(), []);
 
 	const handleAlertClick = (alert: Alert) => {

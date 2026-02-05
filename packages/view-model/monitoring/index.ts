@@ -1,2 +1,5 @@
-export { MonitoringSensorHealthViewModel } from "./MonitoringSensorHealthViewModel";
-export { useMonitoringSensorHealthViewModel } from "./useMonitoringSensorHealthViewModel";
+export {
+	MonitoringSensorHealthViewModel,
+	monitoringSensorHealthViewModel,
+	useMonitoringSensorHealthViewModel,
+} from "./MonitoringSensorHealthViewModel";

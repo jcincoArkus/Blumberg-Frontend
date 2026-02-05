@@ -274,3 +274,9 @@ export class MonitoringSensorHealthViewModel {
 		// No subscriptions to clean up.
 	}
 }
+
+export const monitoringSensorHealthViewModel = new MonitoringSensorHealthViewModel();
+
+export function useMonitoringSensorHealthViewModel() {
+	return monitoringSensorHealthViewModel;
+}

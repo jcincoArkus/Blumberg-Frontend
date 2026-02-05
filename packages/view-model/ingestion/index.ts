@@ -1,2 +1,5 @@
-export { IngestionViewModel } from "./IngestionViewModel";
-export { useIngestionViewModel } from "./useIngestionViewModel";
+export {
+	IngestionViewModel,
+	ingestionViewModel,
+	useIngestionViewModel,
+} from "./IngestionViewModel";

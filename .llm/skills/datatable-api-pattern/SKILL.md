@@ -1,8 +1,6 @@
 ---
-name: DataTable + API Pattern
+name: datatable-api-pattern
 description: Pattern for integrating DataTable Controllers with ObservedQuery from the auto-generated API
-version: 1.0.0
-tags: [datatable, api, observedquery, mobx, controller, typescript]
 ---
 
 # DataTable + API Pattern

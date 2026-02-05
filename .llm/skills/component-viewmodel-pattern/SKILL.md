@@ -1,8 +1,6 @@
 ---
-name: Component + ViewModel Pattern
+name: component-viewmodel-pattern
 description: Pattern for integrating React Components with ViewModels using the Observer Pattern with MobX
-version: 1.0.0
-tags: [react, mobx, viewmodel, observer, integration, typescript]
 ---
 
 # Component + ViewModel Pattern

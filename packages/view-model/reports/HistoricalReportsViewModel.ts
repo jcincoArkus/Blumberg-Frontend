@@ -130,3 +130,9 @@ export class HistoricalReportsViewModel {
 		// No subscriptions to clean up.
 	}
 }
+
+export const historicalReportsViewModel = new HistoricalReportsViewModel();
+
+export function useHistoricalReportsViewModel() {
+	return historicalReportsViewModel;
+}

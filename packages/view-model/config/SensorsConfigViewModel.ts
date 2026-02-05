@@ -176,3 +176,9 @@ export class SensorsConfigViewModel implements Disposable, FilterableViewModel {
 		// No subscriptions to clean up currently
 	}
 }
+
+export const sensorsConfigViewModel = new SensorsConfigViewModel();
+
+export function useSensorsConfigViewModel() {
+	return sensorsConfigViewModel;
+}

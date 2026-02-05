@@ -93,3 +93,9 @@ export class SensorHealthViewModel {
 		// No subscriptions to clean up.
 	}
 }
+
+export const sensorHealthViewModel = new SensorHealthViewModel();
+
+export function useSensorHealthViewModel() {
+	return sensorHealthViewModel;
+}

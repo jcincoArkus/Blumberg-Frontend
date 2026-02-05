@@ -40,3 +40,9 @@ export class IngestionViewModel {
 		// No subscriptions to clean up.
 	}
 }
+
+export const ingestionViewModel = new IngestionViewModel();
+
+export function useIngestionViewModel() {
+	return ingestionViewModel;
+}

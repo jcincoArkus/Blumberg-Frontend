@@ -1,8 +1,6 @@
 ---
-name: React Component Pattern with MobX
+name: component-pattern
 description: Pattern for implementing React components using the Observer Pattern with MobX and hooks for accessing ViewModels
-version: 1.0.0
-tags: [react, mobx, typescript, observer, hooks, components]
 ---
 
 # React Component Pattern with MobX
