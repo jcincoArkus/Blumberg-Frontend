@@ -16,6 +16,14 @@ export interface AppConfig {
 		/** WebSocket URL */
 		wsUrl: string;
 	};
+
+	/** Logger configuration */
+	logger?: {
+		/** Console adapter configuration */
+		console?: {
+			enabled?: boolean;
+		};
+	};
 }
 
 /**

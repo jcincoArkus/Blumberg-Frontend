@@ -24,7 +24,7 @@ Pattern for implementing a **headless DataTable** with **MobX controllers**. The
 ```typescript
 import { makeAutoObservable } from "mobx";
 import type { IDataTableController, ErrorInfo } from "@/data-table";
-import { type GetAllItemsV1Data, getAllItemsV1ObservedQuery } from "@/api/generated";
+import { type GetAllItemsV1Data, getAllItemsV1ObservedQuery } from "@/api";
 import type { Item } from "@/models";
 
 export class ItemsDataTableController implements IDataTableController<Item> {

@@ -22,7 +22,7 @@ Pattern for implementing ViewModels using a **Singleton + Hook Pattern** with **
 
 ```typescript
 import { makeAutoObservable } from "@/mobx";
-import { getAllItemsV1ObservedQuery } from "@/api/generated";
+import { getAllItemsV1ObservedQuery } from "@/api";
 import type { Item } from "@/models";
 
 /**

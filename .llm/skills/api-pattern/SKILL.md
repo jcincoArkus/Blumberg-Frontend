@@ -23,7 +23,7 @@ Pattern for auto-generating TypeScript API SDK from OpenAPI specs using **hey-ap
 **For GET requests (queries).**
 
 ```typescript
-import { getAllItemsV1ObservedQuery, type GetAllItemsV1Data } from "@/api/generated";
+import { getAllItemsV1ObservedQuery, type GetAllItemsV1Data } from "@/api";
 
 // Create instance
 const query = getAllItemsV1ObservedQuery();
@@ -56,7 +56,7 @@ query.dispose();
 **For queries with path params or query params.**
 
 ```typescript
-import { getItemDetailsV1ObservedQuery, type GetItemDetailsV1Data } from "@/api/generated";
+import { getItemDetailsV1ObservedQuery, type GetItemDetailsV1Data } from "@/api";
 
 // Create instance
 const detailsQuery = getItemDetailsV1ObservedQuery();
@@ -83,8 +83,8 @@ import {
   createItemV1ObservedMutation,
   updateItemV1ObservedMutation,
   deleteItemV1ObservedMutation,
-} from "@/api/generated";
-import type { ItemRequest } from "@/api/generated";
+} from "@/api";
+import type { ItemRequest } from "@/api";
 
 // Create instances
 const createMutation = createItemV1ObservedMutation();

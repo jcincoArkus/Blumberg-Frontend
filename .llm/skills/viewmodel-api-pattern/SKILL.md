@@ -21,7 +21,7 @@ Pattern for integrating **ViewModels** with **ObservedQuery** and **ObservedMuta
 
 ```typescript
 import { makeAutoObservable } from "@/mobx";
-import { getAllItemsV1ObservedQuery } from "@/api/generated";
+import { getAllItemsV1ObservedQuery } from "@/api";
 import type { Item } from "@/models";
 
 class ItemsViewModel {
@@ -108,7 +108,7 @@ import {
   createItemV1ObservedMutation,
   updateItemV1ObservedMutation,
   deleteItemV1ObservedMutation,
-} from "@/api/generated";
+} from "@/api";
 import type { Item, ItemRequest } from "@/models";
 
 class ItemsViewModel {
@@ -195,7 +195,7 @@ export function useItemsViewModel() {
 
 ```typescript
 import { makeAutoObservable } from "@/mobx";
-import { type GetItemDetailsV1Data, getItemDetailsV1ObservedQuery } from "@/api/generated";
+import { type GetItemDetailsV1Data, getItemDetailsV1ObservedQuery } from "@/api";
 import type { ItemDetail } from "@/models";
 
 class ItemDetailsViewModel {

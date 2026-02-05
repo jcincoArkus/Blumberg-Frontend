@@ -26,8 +26,7 @@
 		"    APP    ": "",
 		"start:admin": "node scripts/start-admin.js --mode develop",
 		"    SKILLS    ": "",
-		"skills:augment": "ln -sfn ../.llm/skills .augment/skills",
-		"skills:claude": "ln -sfn ../.llm/skills .claude/skills"
+		"skills:claude": "mkdir -p .claude && ln -sfn ../.llm/skills .claude/skills"
 	},
 	"engines": {
 		"node": ">=24.13.0 <25.0.0",

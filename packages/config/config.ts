@@ -11,4 +11,10 @@ export default {
 		url: import.meta.env.VITE_API_URL,
 		wsUrl: import.meta.env.VITE_WSS_URL,
 	},
+
+	logger: {
+		console: {
+			enabled: import.meta.env.VITE_LOGGER_CONSOLE_ENABLED !== "false",
+		},
+	},
 } as AppConfig;
