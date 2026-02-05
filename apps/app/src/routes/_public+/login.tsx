@@ -18,18 +18,6 @@ import { authViewModel, useLoginViewModel } from "~@/view-model";
 
 import type { Route } from "./+types/login";
 
-const DEMO_CREDENTIALS = [
-	{ role: "Admin", email: "john.admin@blumberg.com", password: "admin" },
-	{ role: "Operator", email: "sarah.operator@blumberg.com", password: "operator" },
-	{ role: "Viewer", email: "mike.viewer@blumberg.com", password: "viewer" },
-] as const;
-
-function validateDemoCredentials(email: string, password: string): boolean {
-	return DEMO_CREDENTIALS.some(
-		(c) => c.email.toLowerCase() === email.toLowerCase().trim() && c.password === password,
-	);
-}
-
 export async function clientLoader() {
 	return { isAuthenticated: authViewModel.isAuthenticated };
 }
@@ -40,12 +28,6 @@ function Login({ loaderData }: Route.ComponentProps) {
 	const { isAuthenticated } = loaderData;
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-
-	useEffect(() => {
-		if (isAuthenticated) {
-			navigate("/home", { replace: true });
-		}
-	}, [isAuthenticated, navigate]);
 
 	useEffect(() => {
 		loginViewModel.reset();
@@ -61,34 +43,17 @@ function Login({ loaderData }: Route.ComponentProps) {
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		const trimmedEmail = email.trim();
-		if (!trimmedEmail || !password) {
+		if (!email.trim() || !password) {
 			toast.error(t`Please enter email and password`);
 			return;
 		}
 		try {
-			await loginViewModel.login(trimmedEmail, password);
+			await loginViewModel.login(email, password);
 			navigate("/home", { replace: true });
 		} catch {
-			// Fallback to demo credentials when API is unavailable (e.g. no backend)
-			if (validateDemoCredentials(trimmedEmail, password)) {
-				authViewModel.setAuthenticatedSession({
-					accessToken: `demo-${trimmedEmail}`,
-					refreshToken: "demo-refresh",
-				});
-				navigate("/home", { replace: true });
-			} else {
-				const message =
-					loginViewModel.error?.message ??
-					t`Invalid email or password. Use one of the demo credentials below.`;
-				toast.error(message);
-			}
+			const message = loginViewModel.error?.message ?? t`Invalid email or password`;
+			toast.error(message);
 		}
-	};
-
-	const fillDemo = (cred: (typeof DEMO_CREDENTIALS)[number]) => {
-		setEmail(cred.email);
-		setPassword(cred.password);
 	};
 
 	return (
@@ -140,42 +105,6 @@ function Login({ loaderData }: Route.ComponentProps) {
 								{loginViewModel.isPending ? t`Signing in...` : t`Sign in`}
 							</Button>
 						</form>
-
-						<div className="relative">
-							<div className="absolute inset-0 flex items-center">
-								<span className="w-full border-t border-border" />
-							</div>
-							<div className="relative flex justify-center text-xs uppercase">
-								<span className="bg-card px-2 text-muted-foreground">
-									<Trans>Demo credentials (for testing)</Trans>
-								</span>
-							</div>
-						</div>
-
-						<div className="rounded-lg border border-border bg-muted/30 p-3 space-y-2">
-							<p className="text-sm font-medium text-foreground">
-								<Trans>Use any of these accounts to sign in:</Trans>
-							</p>
-							<ul className="space-y-1.5 text-sm text-muted-foreground">
-								{DEMO_CREDENTIALS.map((cred) => (
-									<li key={cred.email} className="flex flex-wrap items-center gap-2">
-										<span className="font-medium text-foreground">{cred.role}:</span>
-										<code className="rounded bg-muted px-1.5 py-0.5 text-xs">{cred.email}</code>
-										<span>/</span>
-										<code className="rounded bg-muted px-1.5 py-0.5 text-xs">{cred.password}</code>
-										<Button
-											type="button"
-											variant="ghost"
-											size="sm"
-											className="h-6 px-2 text-xs text-primary hover:text-primary hover:bg-primary/10"
-											onClick={() => fillDemo(cred)}
-										>
-											<Trans>Fill</Trans>
-										</Button>
-									</li>
-								))}
-							</ul>
-						</div>
 					</CardContent>
 				</Card>
 			</div>

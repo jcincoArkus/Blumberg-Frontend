@@ -7,8 +7,10 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 // @ts-ignore (babelConfig is a module)
 import babelConfig from "./babel.config.mjs";
+import { envDir } from "./packages/config/vite-env-dir";
 
 export default defineConfig({
+	envDir: envDir,
 	plugins: [
 		tsconfigPaths(),
 		devtoolsJson(),
