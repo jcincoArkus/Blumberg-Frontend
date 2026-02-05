@@ -2,22 +2,23 @@ import { t } from "~@/i18n/macro";
 import { makeAutoObservable } from "~@/mobx";
 import type { Alert } from "~@/views";
 
-import { dashboardAlertsViewModel } from "../dashboard/DashboardAlertsViewModel";
+import { dashboardAlertsViewModel } from "./DashboardAlertsViewModel";
 
 /**
- * Singleton ViewModel for the Active Alerts Panel.
- * Gets alert data from the DashboardAlertsViewModel singleton.
+ * Singleton ViewModel for the ActiveAlertsPanel component.
+ * Provides sorted active alerts and helper methods.
  */
-class ActiveAlertsViewModel {
+class ActiveAlertsPanelViewModel {
 	constructor() {
 		makeAutoObservable(this);
 	}
 
-	// Get alerts from DashboardAlertsViewModel
+	// Get active alerts from DashboardAlertsViewModel
 	get alerts(): Alert[] {
 		return dashboardAlertsViewModel.activeAlerts;
 	}
 
+	// Get alerts sorted by severity and time
 	get sortedAlerts(): Alert[] {
 		const severityOrder = { critical: 0, high: 1, medium: 2, low: 3 } as const;
 		return [...this.alerts].sort((a, b) => {
@@ -32,20 +33,31 @@ class ActiveAlertsViewModel {
 		});
 	}
 
+	// Helper: Get equipment name (placeholder for now)
 	getEquipmentName(_equipmentId?: string): string {
 		// TODO: Implement equipment name lookup when equipment data is available
 		return t`Unknown`;
 	}
 
+	// Helper: Get site name (placeholder for now)
 	getSiteName(_siteId?: string): string {
 		// TODO: Implement site name lookup when site data is available
 		return t`Unknown`;
 	}
 
+	// Helper: Get alert zone (equipment or site name)
 	getAlertZone(alert: Alert) {
 		return this.getEquipmentName(alert.equipmentId) || this.getSiteName(alert.siteId);
 	}
 }
 
 // Export singleton instance
-export const activeAlertsViewModel = new ActiveAlertsViewModel();
+export const activeAlertsPanelViewModel = new ActiveAlertsPanelViewModel();
+
+/**
+ * Hook to access the ActiveAlertsPanelViewModel singleton.
+ * @returns The singleton instance of ActiveAlertsPanelViewModel
+ */
+export function useActiveAlertsPanelViewModel() {
+	return activeAlertsPanelViewModel;
+}

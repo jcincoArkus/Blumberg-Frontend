@@ -1,15 +1,9 @@
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { validateSensorReading } from "~@/mock-data";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
+import { DashboardPanel, Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
 import { useIngestionViewModel } from "~@/view-model";
-import {
-	ApiIngestionTab,
-	CsvUploadTab,
-	DashboardPanel,
-	IngestionHistory,
-	type IngestionRun,
-} from "~@/views";
+import { ApiIngestionTab, CsvUploadTab, IngestionHistory, type IngestionRun } from "~@/views";
 
 const DataIngestionPage = observer(function DataIngestionPage() {
 	const vm = useIngestionViewModel();

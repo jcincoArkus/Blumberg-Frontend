@@ -76,7 +76,6 @@ export {
 	type AgentInsight,
 	AIInsightsPanel,
 	type AIInsightsPanelProps,
-	DashboardPanel,
 	DashboardShell,
 	type Domain,
 	GlobalStatusBar,

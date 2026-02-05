@@ -1,14 +1,16 @@
 import { useState } from "react";
 
 import { t } from "~@/i18n/macro";
+import { observer } from "~@/mobx";
 import { Button, Card, CardContent, CardHeader, CardTitle } from "~@/ui";
+import { useTrendsPanelViewModel } from "~@/view-model";
 
 import { SparklineRow } from "./SparklineRow";
-import type { TrendsPanelProps } from "./types";
 
-export type { TrendPoint, TrendsPanelProps } from "./types";
+export type { TrendPoint } from "./types";
 
-export function TrendsPanel({ data }: TrendsPanelProps) {
+export const TrendsPanel = observer(function TrendsPanel() {
+	const vm = useTrendsPanelViewModel();
 	const [timeRange, setTimeRange] = useState<"24h" | "7d">("24h");
 
 	return (
@@ -38,11 +40,16 @@ export function TrendsPanel({ data }: TrendsPanelProps) {
 			</CardHeader>
 			<CardContent className="pt-0">
 				<div className="space-y-3">
-					<SparklineRow label={t`AQI`} color="#ef4444" data={data.aqi} />
-					<SparklineRow label={t`CO₂`} color="#f97316" data={data.co2} unit="ppm" />
-					<SparklineRow label={t`Temperature`} color="#3b82f6" data={data.temperature} unit="°C" />
+					<SparklineRow label={t`AQI`} color="#ef4444" data={vm.data.aqi} />
+					<SparklineRow label={t`CO₂`} color="#f97316" data={vm.data.co2} unit="ppm" />
+					<SparklineRow
+						label={t`Temperature`}
+						color="#3b82f6"
+						data={vm.data.temperature}
+						unit="°C"
+					/>
 				</div>
 			</CardContent>
 		</Card>
 	);
-}
+});

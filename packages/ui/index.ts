@@ -30,6 +30,7 @@ export {
 } from "./Card";
 export { Checkbox } from "./Checkbox";
 export { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./Collapsible";
+export { DashboardPanel } from "./DashboardPanel";
 export {
 	Dialog,
 	DialogClose,

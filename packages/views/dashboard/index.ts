@@ -2,17 +2,12 @@
 
 // Panels
 export { ActiveAlertsPanel } from "./ActiveAlertsPanel";
-export { type AgentInsight, AIInsightsPanel, type AIInsightsPanelProps } from "./AIInsightsPanel";
-export { DashboardPanel } from "./DashboardPanel";
+export { type AgentInsight, AIInsightsPanel } from "./AIInsightsPanel";
 export { DashboardShell, type Domain } from "./DashboardShell";
 export { GlobalStatusBar } from "./GlobalStatusBar";
-export { KeyMetricsCards, type KeyMetricsCardsProps } from "./KeyMetricsCards";
+export { KeyMetricsCards } from "./KeyMetricsCards";
 // Components
 export { KPIGauge } from "./KPIGauge";
-export {
-	type Sensor,
-	SensorReliabilityPanel,
-	type SensorReliabilityPanelProps,
-} from "./SensorReliabilityPanel";
-export { TrendsPanel, type TrendsPanelProps } from "./TrendsPanel";
-export { type Site, ZonesOverviewPanel, type ZonesOverviewPanelProps } from "./ZonesOverviewPanel";
+export { type Sensor, SensorReliabilityPanel } from "./SensorReliabilityPanel";
+export { TrendsPanel } from "./TrendsPanel";
+export { type Site, ZonesOverviewPanel } from "./ZonesOverviewPanel";

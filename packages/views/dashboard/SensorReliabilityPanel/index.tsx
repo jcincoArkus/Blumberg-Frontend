@@ -1,29 +1,24 @@
 import { useState } from "react";
 
+import { observer } from "~@/mobx";
+import { useSensorReliabilityPanelViewModel } from "~@/view-model";
+
 import { AllHealthyState } from "./AllHealthyState";
 import { FlappingList } from "./FlappingList";
 import { getHealthyStats } from "./helpers";
 import { IssueList } from "./IssueList";
 import { StatusStats } from "./StatusStats";
 import { StatusSummary } from "./StatusSummary";
-import type { SensorReliabilityPanelProps } from "./types";
 
-export type { Sensor, SensorReliabilityPanelProps } from "./types";
+export type { Sensor } from "./types";
 
-export function SensorReliabilityPanel({
-	offlineCount,
-	staleCount,
-	flappingCount,
-	totalSensors,
-	offlineSensors,
-	staleSensors,
-	flappingSensors,
-}: SensorReliabilityPanelProps) {
+export const SensorReliabilityPanel = observer(function SensorReliabilityPanel() {
+	const vm = useSensorReliabilityPanelViewModel();
 	const { healthyPercentage, hasIssues } = getHealthyStats({
-		totalSensors,
-		offlineCount,
-		staleCount,
-		flappingCount,
+		totalSensors: vm.totalSensors,
+		offlineCount: vm.offlineCount,
+		staleCount: vm.staleCount,
+		flappingCount: vm.flappingCount,
 	});
 	const [isFlappingOpen, setIsFlappingOpen] = useState(false);
 
@@ -34,21 +29,21 @@ export function SensorReliabilityPanel({
 			</div>
 			<div className="px-3 pb-3 space-y-2">
 				<StatusStats
-					offlineCount={offlineCount}
-					staleCount={staleCount}
-					flappingCount={flappingCount}
+					offlineCount={vm.offlineCount}
+					staleCount={vm.staleCount}
+					flappingCount={vm.flappingCount}
 				/>
 
-				<IssueList offlineSensors={offlineSensors} staleSensors={staleSensors} />
+				<IssueList offlineSensors={vm.offlineSensors} staleSensors={vm.staleSensors} />
 
 				<FlappingList
-					flappingSensors={flappingSensors}
+					flappingSensors={vm.flappingSensors}
 					isOpen={isFlappingOpen}
 					onToggle={setIsFlappingOpen}
 				/>
 
-				{!hasIssues && <AllHealthyState totalSensors={totalSensors} />}
+				{!hasIssues && <AllHealthyState totalSensors={vm.totalSensors} />}
 			</div>
 		</div>
 	);
-}
+});

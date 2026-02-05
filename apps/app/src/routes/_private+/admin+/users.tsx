@@ -2,11 +2,10 @@ import { toast } from "sonner";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
+import { DashboardPanel, Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
 import { useUsersViewModel } from "~@/view-model";
 import type { Role, RolePermissions, User } from "~@/views";
 import {
-	DashboardPanel,
 	RoleEditorDialog,
 	RolePermissionsEditor,
 	RolesList,

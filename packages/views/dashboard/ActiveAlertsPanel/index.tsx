@@ -3,7 +3,8 @@ import { useMemo, useState } from "react";
 import type { ColumnDef } from "~@/data-table";
 import { DataTable } from "~@/data-table";
 import { t } from "~@/i18n/macro";
-import { useActiveAlertsViewModel } from "~@/view-model";
+import { observer } from "~@/mobx";
+import { useActiveAlertsPanelViewModel } from "~@/view-model";
 
 import { AlertDetailsDrawer } from "../../alerts/AlertDetailsDrawer";
 import type { Alert } from "../../alerts/types";
@@ -12,12 +13,6 @@ import { ActiveAlertsController } from "./ActiveAlertsController";
 import { ActiveAlertListItem } from "./ActiveAlertsListItem";
 import { ActiveAlertsListView } from "./ActiveAlertsListView";
 
-interface ActiveAlertsPanelProps {
-	alerts: Alert[];
-	getEquipmentName?: (equipmentId?: string) => string;
-	getSiteName?: (siteId?: string) => string;
-}
-
 const getColumns = (): ColumnDef<AlertItem>[] => [
 	{
 		accessorKey: "name",
@@ -25,15 +20,10 @@ const getColumns = (): ColumnDef<AlertItem>[] => [
 	},
 ];
 
-export function ActiveAlertsPanel({
-	alerts,
-	getEquipmentName = () => t`Unknown`,
-	getSiteName = () => t`Unknown`,
-}: ActiveAlertsPanelProps) {
+export const ActiveAlertsPanel = observer(function ActiveAlertsPanel() {
+	const vm = useActiveAlertsPanelViewModel();
 	const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-	const vm = useActiveAlertsViewModel({ alerts, getEquipmentName, getSiteName });
 	const sortedAlerts = useMemo((): AlertItem[] => {
 		return vm.sortedAlerts.map((alert) => ({ ...alert }));
 	}, [vm.sortedAlerts]);
@@ -87,9 +77,9 @@ export function ActiveAlertsPanel({
 						setIsDrawerOpen(open);
 						if (!open) setSelectedAlert(null);
 					}}
-					equipmentName={getEquipmentName(selectedAlert.equipmentId)}
+					equipmentName={vm.getEquipmentName(selectedAlert.equipmentId)}
 				/>
 			)}
 		</>
 	);
-}
+});

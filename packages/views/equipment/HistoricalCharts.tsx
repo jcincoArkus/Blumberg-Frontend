@@ -1,9 +1,8 @@
 import { useState } from "react";
 
 import { t } from "~@/i18n/macro";
-import { Button } from "~@/ui";
+import { Button, DashboardPanel } from "~@/ui";
 
-import { DashboardPanel } from "../dashboard";
 import { SensorChart } from "./SensorChart";
 import type { Sensor } from "./SensorsTable";
 

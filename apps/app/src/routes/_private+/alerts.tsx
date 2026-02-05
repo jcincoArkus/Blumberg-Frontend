@@ -1,7 +1,8 @@
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
+import { DashboardPanel } from "~@/ui";
 import { useAlertsViewModel } from "~@/view-model";
-import { AlertsStatusTabs, AlertsWorkQueueTable, DashboardPanel, KPIGauge } from "~@/views";
+import { AlertsStatusTabs, AlertsWorkQueueTable, KPIGauge } from "~@/views";
 
 const AlertsPage = observer(function AlertsPage() {
 	const vm = useAlertsViewModel();

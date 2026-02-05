@@ -1,12 +1,14 @@
 import { t } from "~@/i18n/macro";
+import { observer } from "~@/mobx";
+import { useZonesOverviewPanelViewModel } from "~@/view-model";
 
 import { SiteTile } from "./SiteTile";
-import type { ZonesOverviewPanelProps } from "./types";
 
-export type { Site, ZonesOverviewPanelProps } from "./types";
+export type { Site } from "./types";
 
-export function ZonesOverviewPanel({ sites }: ZonesOverviewPanelProps) {
-	const locationCount = sites.length;
+export const ZonesOverviewPanel = observer(function ZonesOverviewPanel() {
+	const vm = useZonesOverviewPanelViewModel();
+	const locationCount = vm.sites.length;
 
 	return (
 		<div className="bg-card text-card-foreground rounded-xl border shadow-sm">
@@ -20,11 +22,11 @@ export function ZonesOverviewPanel({ sites }: ZonesOverviewPanelProps) {
 			</div>
 			<div className="px-3 pb-3">
 				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
-					{sites.map((site) => (
+					{vm.sites.map((site) => (
 						<SiteTile key={site.id} site={site} />
 					))}
 				</div>
 			</div>
 		</div>
 	);
-}
+});

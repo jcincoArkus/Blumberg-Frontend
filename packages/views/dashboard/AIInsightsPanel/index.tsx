@@ -3,14 +3,15 @@ import { useMemo } from "react";
 import type { ColumnDef } from "~@/data-table";
 import { DataTable } from "~@/data-table";
 import { t } from "~@/i18n/macro";
+import { observer } from "~@/mobx";
+import { useAIInsightsPanelViewModel } from "~@/view-model";
 
 import type { InsightItem } from "./AIInsightsController";
 import { AIInsightsController } from "./AIInsightsController";
 import { AIInsightsListItem } from "./AIInsightsListItem";
 import { AIInsightsListView } from "./AIInsightsListView";
-import type { AIInsightsPanelProps } from "./types";
 
-export type { AgentInsight, AIInsightsPanelProps } from "./types";
+export type { AgentInsight } from "./types";
 
 const getColumns = (): ColumnDef<InsightItem>[] => [
 	{
@@ -19,10 +20,11 @@ const getColumns = (): ColumnDef<InsightItem>[] => [
 	},
 ];
 
-export function AIInsightsPanel({ insights }: AIInsightsPanelProps) {
+export const AIInsightsPanel = observer(function AIInsightsPanel() {
+	const vm = useAIInsightsPanelViewModel();
 	const displayInsights = useMemo((): InsightItem[] => {
-		return insights.slice(0, 4).map((insight) => ({ ...insight }));
-	}, [insights]);
+		return vm.insights.map((insight) => ({ ...insight }));
+	}, [vm.insights]);
 
 	const controller = useMemo(() => new AIInsightsController(displayInsights), [displayInsights]);
 	const columns = useMemo(() => getColumns(), []);
@@ -57,4 +59,4 @@ export function AIInsightsPanel({ insights }: AIInsightsPanelProps) {
 			/>
 		</div>
 	);
-}
+});

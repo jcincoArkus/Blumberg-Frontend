@@ -2,10 +2,9 @@ import { AlertCircle, AlertTriangle, CheckCircle2, Clock } from "lucide-react";
 import { useState } from "react";
 
 import { t } from "~@/i18n/macro";
-import { Badge, Button, cn, Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
+import { Badge, Button, cn, DashboardPanel, Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
 
 import type { Alert } from "../alerts";
-import { DashboardPanel } from "../dashboard";
 
 interface EquipmentAlertsPanelProps {
 	activeAlerts: Alert[];

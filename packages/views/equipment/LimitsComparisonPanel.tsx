@@ -1,9 +1,8 @@
 import { AlertTriangle, CheckCircle2, Info } from "lucide-react";
 
 import { t } from "~@/i18n/macro";
-import { Badge, Card, CardContent } from "~@/ui";
+import { Badge, Card, CardContent, DashboardPanel } from "~@/ui";
 
-import { DashboardPanel } from "../dashboard";
 import type { Sensor } from "./SensorsTable";
 
 interface LimitsComparisonPanelProps {

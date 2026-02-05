@@ -1,11 +1,3 @@
-import { observer } from "~@/mobx";
-import {
-	agentInsights,
-	dashboardAlerts as alerts,
-	dashboardSensors as sensors,
-	dashboardSites as sites,
-} from "~@/mock-data";
-import { useDashboardViewModel } from "~@/view-model";
 import {
 	ActiveAlertsPanel,
 	AIInsightsPanel,
@@ -18,60 +10,38 @@ import {
 
 /**
  * Dashboard/Home page component.
- * Uses DashboardViewModel for all state management and derived computations.
  * Layout (sidebar + header) is provided by the parent _private layout.
  */
-const Home = observer(function Home() {
-	const vm = useDashboardViewModel({
-		sensors,
-		alerts,
-		sites,
-		insights: agentInsights,
-	});
-
+function Home() {
 	return (
 		<div className="space-y-4">
-			<GlobalStatusBar
-				systemStatus={vm.systemStatus}
-				activeAlerts={vm.alertsBySeverity}
-				sensorsOnline={vm.sensorsOnline}
-				totalSensors={vm.domainSensors.length}
-				alerts={vm.activeAlerts}
-			/>
+			<GlobalStatusBar />
 
 			<div className="space-y-3 p-4 lg:p-6">
 				<div className="grid gap-3 lg:grid-cols-12">
 					<div className="lg:col-span-3">
-						<ActiveAlertsPanel alerts={vm.activeAlerts} />
+						<ActiveAlertsPanel />
 					</div>
 					<div className="lg:col-span-6 space-y-3">
-						<KeyMetricsCards {...vm.keyMetrics} />
-						<TrendsPanel data={vm.trendData} />
+						<KeyMetricsCards />
+						<TrendsPanel />
 					</div>
 					<div className="lg:col-span-3">
-						<AIInsightsPanel insights={vm.displayInsights} />
+						<AIInsightsPanel />
 					</div>
 				</div>
 
 				<div className="grid gap-3 lg:grid-cols-12 items-start">
 					<div className="lg:col-span-9">
-						<ZonesOverviewPanel sites={vm.sites} />
+						<ZonesOverviewPanel />
 					</div>
 					<div className="lg:col-span-3">
-						<SensorReliabilityPanel
-							offlineCount={vm.sensorReliability.offline}
-							staleCount={vm.sensorReliability.stale}
-							flappingCount={vm.sensorReliability.flapping}
-							totalSensors={vm.domainSensors.length}
-							offlineSensors={vm.sensorReliability.offlineSensors}
-							staleSensors={vm.sensorReliability.staleSensors}
-							flappingSensors={vm.sensorReliability.flappingSensors}
-						/>
+						<SensorReliabilityPanel />
 					</div>
 				</div>
 			</div>
 		</div>
 	);
-});
+}
 
 export default Home;

@@ -1,12 +1,8 @@
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
+import { DashboardPanel } from "~@/ui";
 import { useMonitoringSensorHealthViewModel } from "~@/view-model";
-import {
-	DashboardPanel,
-	MonitoringSensorHealthTable,
-	SensorHealthDetailsDrawer,
-	SensorHealthKPIs,
-} from "~@/views";
+import { MonitoringSensorHealthTable, SensorHealthDetailsDrawer, SensorHealthKPIs } from "~@/views";
 
 const SensorHealthPage = observer(function SensorHealthPage() {
 	const vm = useMonitoringSensorHealthViewModel();

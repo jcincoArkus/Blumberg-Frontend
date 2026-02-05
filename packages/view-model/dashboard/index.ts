@@ -1,2 +1,41 @@
-export { DashboardViewModel } from "./DashboardViewModel";
-export { useDashboardViewModel } from "./useDashboardViewModel";
+// Component ViewModels (proxies)
+export {
+	activeAlertsPanelViewModel,
+	useActiveAlertsPanelViewModel,
+} from "./ActiveAlertsPanelViewModel";
+export { aiInsightsPanelViewModel, useAIInsightsPanelViewModel } from "./AIInsightsPanelViewModel";
+// Domain ViewModels (data sources)
+export {
+	dashboardAlertsViewModel,
+	useDashboardAlertsViewModel,
+} from "./DashboardAlertsViewModel";
+export {
+	dashboardInsightsViewModel,
+	useDashboardInsightsViewModel,
+} from "./DashboardInsightsViewModel";
+export {
+	dashboardSensorsViewModel,
+	useDashboardSensorsViewModel,
+} from "./DashboardSensorsViewModel";
+export { dashboardSitesViewModel, useDashboardSitesViewModel } from "./DashboardSitesViewModel";
+export {
+	dashboardTrendsViewModel,
+	useDashboardTrendsViewModel,
+} from "./DashboardTrendsViewModel";
+export {
+	globalStatusBarViewModel,
+	useGlobalStatusBarViewModel,
+} from "./GlobalStatusBarViewModel";
+export {
+	keyMetricsCardsViewModel,
+	useKeyMetricsCardsViewModel,
+} from "./KeyMetricsCardsViewModel";
+export {
+	sensorReliabilityPanelViewModel,
+	useSensorReliabilityPanelViewModel,
+} from "./SensorReliabilityPanelViewModel";
+export { trendsPanelViewModel, useTrendsPanelViewModel } from "./TrendsPanelViewModel";
+export {
+	useZonesOverviewPanelViewModel,
+	zonesOverviewPanelViewModel,
+} from "./ZonesOverviewPanelViewModel";

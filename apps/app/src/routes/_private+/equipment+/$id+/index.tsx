@@ -17,10 +17,19 @@ import {
 	getSiteDataById as getSiteById,
 	type SiteSensor,
 } from "~@/mock-data";
-import { Badge, Button, Card, CardContent, Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
+import {
+	Badge,
+	Button,
+	Card,
+	CardContent,
+	DashboardPanel,
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "~@/ui";
 import {
 	ClimateTab,
-	DashboardPanel,
 	EnergyTab,
 	EquipmentDetailsTab,
 	type EquipmentSensor,
