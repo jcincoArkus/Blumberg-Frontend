@@ -39,6 +39,13 @@ export async function clientLoader() {
  */
 function Private() {
 	const navigate = useNavigate();
+	const { isAuthenticated } = authViewModel;
+
+	useEffect(() => {
+		if (!isAuthenticated) {
+			navigate("/", { replace: true });
+		}
+	}, [isAuthenticated]);
 
 	useEffect(() => {
 		return () => {
@@ -46,15 +53,9 @@ function Private() {
 		};
 	}, []);
 
-	useEffect(() => {
-		if (!authorizationController.isLoading && !authViewModel.isAuthenticated) {
-			navigate("/login", { replace: true });
-		}
-	}, [authorizationController.isLoading, authViewModel.isAuthenticated, navigate]);
-
-	if (authorizationController.isLoading) {
-		return <div>{t`Loading...`}</div>;
-	}
+if (authorizationController.isLoading) {
+return <div>{t`Loading...`}</div>;
+}
 
 	if (!authViewModel.isAuthenticated) {
 		return (
