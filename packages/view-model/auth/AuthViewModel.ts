@@ -25,8 +25,7 @@ class AuthViewModel {
 	}
 
 	get isAuthenticated() {
-		return true;
-		// return this._authenticatedSession != null;
+		return this._authenticatedSession != null;
 	}
 
 	get accessToken() {
