@@ -1,9 +1,11 @@
 import { makeAutoObservable } from "mobx";
 import { useEffect } from "react";
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 
 import { authorizationController } from "~@/authorization";
 import { t } from "~@/i18n/macro";
+import { observer } from "~@/mobx";
+import { authViewModel } from "~@/view-model";
 import { DashboardShell } from "~@/views";
 
 class PrivateRouteController {
@@ -35,15 +37,32 @@ export async function clientLoader() {
  * Wraps all private routes with DashboardShell (sidebar + header).
  * This ensures consistent navigation across all authenticated pages.
  */
-export default function Private() {
+function Private() {
+	const navigate = useNavigate();
+	const { isAuthenticated } = authViewModel;
+
+	useEffect(() => {
+		if (!isAuthenticated) {
+			navigate("/", { replace: true });
+		}
+	}, [isAuthenticated]);
+
 	useEffect(() => {
 		return () => {
 			privateRouteController.dispose();
 		};
 	}, []);
 
-	if (authorizationController.isLoading) {
-		return <div>{t`Loading...`}</div>;
+if (authorizationController.isLoading) {
+return <div>{t`Loading...`}</div>;
+}
+
+	if (!authViewModel.isAuthenticated) {
+		return (
+			<div className="min-h-screen flex items-center justify-center bg-background">
+				<p className="text-muted-foreground">{t`Redirecting to sign in...`}</p>
+			</div>
+		);
 	}
 
 	return (
@@ -52,3 +71,5 @@ export default function Private() {
 		</DashboardShell>
 	);
 }
+
+export default observer(Private);
