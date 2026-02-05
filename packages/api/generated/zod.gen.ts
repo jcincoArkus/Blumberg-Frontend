@@ -2,12 +2,72 @@
 
 import { z } from "zod";
 
+export const zActionsResponse = z.object({
+	actions: z.union([z.array(z.string()), z.null()]),
+});
+
+export const zAdminRequest = z.object({
+	email: z.optional(z.union([z.string(), z.null()])),
+	password: z.optional(z.union([z.string(), z.null()])),
+	firstName: z.optional(z.union([z.string(), z.null()])),
+	lastName: z.optional(z.union([z.string(), z.null()])),
+});
+
+export const zAdminResponse = z.object({
+	id: z.optional(z.uuid()),
+	email: z.optional(z.union([z.string(), z.null()])),
+	firstName: z.optional(z.union([z.string(), z.null()])),
+	lastName: z.optional(z.union([z.string(), z.null()])),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+});
+
+export const zAssignRolesToUserRequest = z.object({
+	roles: z.union([z.array(z.string()), z.null()]),
+});
+
 export const zAuthResponse = z.object({
 	token: z.optional(z.union([z.string(), z.null()])),
 	email: z.optional(z.union([z.string(), z.null()])),
 	firstName: z.optional(z.union([z.string(), z.null()])),
 	lastName: z.optional(z.union([z.string(), z.null()])),
+	organizationId: z.optional(z.uuid()),
 	expiresAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+});
+
+export const zCheckPermissionRequest = z.object({
+	resource: z.union([z.string(), z.null()]),
+	action: z.union([z.string(), z.null()]),
+});
+
+export const zCheckPermissionResponse = z.object({
+	hasPermission: z.boolean(),
+});
+
+export const zCreateRoleRequest = z.object({
+	name: z.union([z.string(), z.null()]),
+	displayName: z.union([z.string(), z.null()]),
+	description: z.union([z.string(), z.null()]),
+	color: z.union([z.string(), z.null()]),
+	isDefault: z.optional(z.boolean()),
+});
+
+export const zEquipmentRequest = z.object({
+	name: z.optional(z.union([z.string(), z.null()])),
+	equipmentType: z.optional(z.union([z.string(), z.null()])),
+	siteId: z.optional(z.uuid()),
+});
+
+export const zEquipmentResponse = z.object({
+	id: z.optional(z.uuid()),
+	name: z.optional(z.union([z.string(), z.null()])),
+	equipmentType: z.optional(z.union([z.string(), z.null()])),
+	organizationId: z.optional(z.uuid()),
+	organizationName: z.optional(z.union([z.string(), z.null()])),
+	siteId: z.optional(z.uuid()),
+	siteName: z.optional(z.union([z.string(), z.null()])),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
 });
 
 export const zLoginRequest = z.object({
@@ -31,8 +91,501 @@ export const zProblemDetails = z.object({
 	instance: z.optional(z.union([z.string(), z.null()])),
 });
 
-export const zPostApiV1AuthLoginData = z.object({
+export const zRemoveRolesFromUserRequest = z.object({
+	roles: z.union([z.array(z.string()), z.null()]),
+});
+
+export const zResourceDto = z.object({
+	name: z.union([z.string(), z.null()]),
+	actions: z.union([z.array(z.string()), z.null()]),
+});
+
+export const zResourcesResponse = z.object({
+	resources: z.union([z.array(zResourceDto), z.null()]),
+});
+
+export const zRoleDto = z.object({
+	name: z.union([z.string(), z.null()]),
+	displayName: z.union([z.string(), z.null()]),
+	description: z.union([z.string(), z.null()]),
+	color: z.union([z.string(), z.null()]),
+	isDefault: z.boolean(),
+});
+
+export const zRolePermissionDto = z.object({
+	resource: z.union([z.string(), z.null()]),
+	action: z.union([z.string(), z.null()]),
+});
+
+export const zAssignPermissionsToRoleRequest = z.object({
+	permissions: z.union([z.array(zRolePermissionDto), z.null()]),
+});
+
+export const zRemovePermissionsFromRoleRequest = z.object({
+	permissions: z.union([z.array(zRolePermissionDto), z.null()]),
+});
+
+export const zRolePermissionsResponse = z.object({
+	roleName: z.union([z.string(), z.null()]),
+	permissions: z.union([z.array(zRolePermissionDto), z.null()]),
+});
+
+export const zRoleResponse = z.object({
+	role: zRoleDto,
+});
+
+export const zRoleUsersResponse = z.object({
+	roleName: z.union([z.string(), z.null()]),
+	userIds: z.union([z.array(z.string()), z.null()]),
+});
+
+export const zRolesListResponse = z.object({
+	roles: z.union([z.array(zRoleDto), z.null()]),
+});
+
+export const zSensorStatus = z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]);
+
+export const zSensorRequest = z.object({
+	serial: z.optional(z.union([z.string(), z.null()])),
+	status: z.optional(zSensorStatus),
+	equipmentId: z.optional(z.uuid()),
+	sensorTypeId: z.optional(z.uuid()),
+	thresholdId: z.optional(z.uuid()),
+});
+
+export const zSensorResponse = z.object({
+	id: z.optional(z.uuid()),
+	serial: z.optional(z.union([z.string(), z.null()])),
+	status: z.optional(zSensorStatus),
+	organizationId: z.optional(z.uuid()),
+	organizationName: z.optional(z.union([z.string(), z.null()])),
+	equipmentId: z.optional(z.uuid()),
+	equipmentName: z.optional(z.union([z.string(), z.null()])),
+	sensorTypeId: z.optional(z.uuid()),
+	sensorTypeName: z.optional(z.union([z.string(), z.null()])),
+	thresholdId: z.optional(z.uuid()),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+});
+
+export const zSiteRequest = z.object({
+	name: z.optional(z.union([z.string(), z.null()])),
+	address: z.optional(z.union([z.string(), z.null()])),
+	city: z.optional(z.union([z.string(), z.null()])),
+	state: z.optional(z.union([z.string(), z.null()])),
+	postalCode: z.optional(z.union([z.string(), z.null()])),
+	country: z.optional(z.union([z.string(), z.null()])),
+});
+
+export const zSiteResponse = z.object({
+	id: z.optional(z.uuid()),
+	name: z.optional(z.union([z.string(), z.null()])),
+	address: z.optional(z.union([z.string(), z.null()])),
+	city: z.optional(z.union([z.string(), z.null()])),
+	state: z.optional(z.union([z.string(), z.null()])),
+	postalCode: z.optional(z.union([z.string(), z.null()])),
+	country: z.optional(z.union([z.string(), z.null()])),
+	organizationId: z.optional(z.uuid()),
+	organizationName: z.optional(z.union([z.string(), z.null()])),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+});
+
+export const zUnit = z.union([
+	z.literal(0),
+	z.literal(1),
+	z.literal(2),
+	z.literal(3),
+	z.literal(4),
+	z.literal(5),
+	z.literal(6),
+	z.literal(7),
+	z.literal(8),
+]);
+
+export const zSensorReadingResponse = z.object({
+	id: z.optional(z.uuid()),
+	sensorId: z.optional(z.uuid()),
+	value: z.optional(z.number()),
+	timestampUtc: z.optional(z.iso.datetime({ offset: true, local: true })),
+	unit: z.optional(zUnit),
+	organizationId: z.optional(z.uuid()),
+	ingestionRunId: z.optional(z.union([z.uuid(), z.null()])),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+});
+
+export const zSensorReadingResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zSensorReadingResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
+});
+
+export const zUpdateRoleRequest = z.object({
+	displayName: z.union([z.string(), z.null()]),
+	description: z.union([z.string(), z.null()]),
+	color: z.union([z.string(), z.null()]),
+	isDefault: z.optional(z.boolean()),
+});
+
+export const zUserRolesResponse = z.object({
+	userId: z.union([z.string(), z.null()]),
+	roles: z.union([z.array(z.string()), z.null()]),
+});
+
+export const zSensorReadingResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zSensorReadingResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
+export const zGetAllAdminsV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zCreateAdminV1Data = z.object({
+	body: z.optional(zAdminRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zDeleteAdminV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetAdminByIdV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zUpdateAdminV1Data = z.object({
+	body: z.optional(zAdminRequest),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zLoginV1Data = z.object({
 	body: z.optional(zLoginRequest),
 	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zGetAllEquipmentV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zCreateEquipmentV1Data = z.object({
+	body: z.optional(zEquipmentRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zDeleteEquipmentV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetEquipmentByIdV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zUpdateEquipmentV1Data = z.object({
+	body: z.optional(zEquipmentRequest),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetPermissionResourcesV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zGetPermissionActionsV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zCheckPermissionCurrentUserV1Data = z.object({
+	body: z.optional(zCheckPermissionRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zCheckPermissionUserV1Data = z.object({
+	body: z.optional(zCheckPermissionRequest),
+	path: z.object({
+		userId: z.string(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zRemoveRolePermissionsV1Data = z.object({
+	body: z.optional(zRemovePermissionsFromRoleRequest),
+	path: z.object({
+		roleName: z.string(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetRolePermissionsV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		roleName: z.string(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zAssignRolePermissionsV1Data = z.object({
+	body: z.optional(zAssignPermissionsToRoleRequest),
+	path: z.object({
+		roleName: z.string(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zReplaceRolePermissionsV1Data = z.object({
+	body: z.optional(zAssignPermissionsToRoleRequest),
+	path: z.object({
+		roleName: z.string(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetAllRolesV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zCreateRoleV1Data = z.object({
+	body: z.optional(zCreateRoleRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zDeleteRoleV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		roleName: z.string(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetRoleByNameV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		roleName: z.string(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zUpdateRoleV1Data = z.object({
+	body: z.optional(zUpdateRoleRequest),
+	path: z.object({
+		roleName: z.string(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetRoleUsersV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		roleName: z.string(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetAllSensorsV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zCreateSensorV1Data = z.object({
+	body: z.optional(zSensorRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zGetSensorReadingsV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(
+		z.object({
+			from: z.optional(z.iso.datetime({ offset: true, local: true })),
+			to: z.optional(z.iso.datetime({ offset: true, local: true })),
+			page: z
+				.optional(
+					z
+						.int()
+						.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+						.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+				)
+				.default(1),
+			pageSize: z
+				.optional(
+					z
+						.int()
+						.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+						.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+				)
+				.default(20),
+		}),
+	),
+});
+
+export const zDeleteSensorV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetSensorByIdV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zUpdateSensorV1Data = z.object({
+	body: z.optional(zSensorRequest),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetAllSitesV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zCreateSiteV1Data = z.object({
+	body: z.optional(zSiteRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zDeleteSiteV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetSiteByIdV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zUpdateSiteV1Data = z.object({
+	body: z.optional(zSiteRequest),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zRemoveUserRolesV1Data = z.object({
+	body: z.optional(zRemoveRolesFromUserRequest),
+	path: z.object({
+		userId: z.string(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetUserRolesV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		userId: z.string(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zAssignUserRolesV1Data = z.object({
+	body: z.optional(zAssignRolesToUserRequest),
+	path: z.object({
+		userId: z.string(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zReplaceUserRolesV1Data = z.object({
+	body: z.optional(zAssignRolesToUserRequest),
+	path: z.object({
+		userId: z.string(),
+	}),
 	query: z.optional(z.never()),
 });

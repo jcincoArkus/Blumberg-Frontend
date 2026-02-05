@@ -2,13 +2,169 @@
 
 import type { Client, Options as Options2, TDataShape } from "./client";
 import { client } from "./client.gen";
-import { postApiV1AuthLoginResponseTransformer } from "./transformers.gen";
+import {
+	createAdminV1ResponseTransformer,
+	createEquipmentV1ResponseTransformer,
+	createSensorV1ResponseTransformer,
+	createSiteV1ResponseTransformer,
+	getAdminByIdV1ResponseTransformer,
+	getAllAdminsV1ResponseTransformer,
+	getAllEquipmentV1ResponseTransformer,
+	getAllSensorsV1ResponseTransformer,
+	getAllSitesV1ResponseTransformer,
+	getEquipmentByIdV1ResponseTransformer,
+	getSensorByIdV1ResponseTransformer,
+	getSensorReadingsV1ResponseTransformer,
+	getSiteByIdV1ResponseTransformer,
+	loginV1ResponseTransformer,
+	updateAdminV1ResponseTransformer,
+	updateEquipmentV1ResponseTransformer,
+	updateSensorV1ResponseTransformer,
+	updateSiteV1ResponseTransformer,
+} from "./transformers.gen";
 import type {
-	PostApiV1AuthLoginData,
-	PostApiV1AuthLoginErrors,
-	PostApiV1AuthLoginResponses,
+	AssignRolePermissionsV1Data,
+	AssignRolePermissionsV1Responses,
+	AssignUserRolesV1Data,
+	AssignUserRolesV1Responses,
+	CheckPermissionCurrentUserV1Data,
+	CheckPermissionCurrentUserV1Responses,
+	CheckPermissionUserV1Data,
+	CheckPermissionUserV1Responses,
+	CreateAdminV1Data,
+	CreateAdminV1Errors,
+	CreateAdminV1Responses,
+	CreateEquipmentV1Data,
+	CreateEquipmentV1Errors,
+	CreateEquipmentV1Responses,
+	CreateRoleV1Data,
+	CreateRoleV1Responses,
+	CreateSensorV1Data,
+	CreateSensorV1Errors,
+	CreateSensorV1Responses,
+	CreateSiteV1Data,
+	CreateSiteV1Errors,
+	CreateSiteV1Responses,
+	DeleteAdminV1Data,
+	DeleteAdminV1Errors,
+	DeleteAdminV1Responses,
+	DeleteEquipmentV1Data,
+	DeleteEquipmentV1Errors,
+	DeleteEquipmentV1Responses,
+	DeleteRoleV1Data,
+	DeleteRoleV1Responses,
+	DeleteSensorV1Data,
+	DeleteSensorV1Errors,
+	DeleteSensorV1Responses,
+	DeleteSiteV1Data,
+	DeleteSiteV1Errors,
+	DeleteSiteV1Responses,
+	GetAdminByIdV1Data,
+	GetAdminByIdV1Errors,
+	GetAdminByIdV1Responses,
+	GetAllAdminsV1Data,
+	GetAllAdminsV1Errors,
+	GetAllAdminsV1Responses,
+	GetAllEquipmentV1Data,
+	GetAllEquipmentV1Responses,
+	GetAllRolesV1Data,
+	GetAllRolesV1Responses,
+	GetAllSensorsV1Data,
+	GetAllSensorsV1Responses,
+	GetAllSitesV1Data,
+	GetAllSitesV1Responses,
+	GetEquipmentByIdV1Data,
+	GetEquipmentByIdV1Errors,
+	GetEquipmentByIdV1Responses,
+	GetPermissionActionsV1Data,
+	GetPermissionActionsV1Responses,
+	GetPermissionResourcesV1Data,
+	GetPermissionResourcesV1Responses,
+	GetRoleByNameV1Data,
+	GetRoleByNameV1Responses,
+	GetRolePermissionsV1Data,
+	GetRolePermissionsV1Responses,
+	GetRoleUsersV1Data,
+	GetRoleUsersV1Responses,
+	GetSensorByIdV1Data,
+	GetSensorByIdV1Errors,
+	GetSensorByIdV1Responses,
+	GetSensorReadingsV1Data,
+	GetSensorReadingsV1Errors,
+	GetSensorReadingsV1Responses,
+	GetSiteByIdV1Data,
+	GetSiteByIdV1Errors,
+	GetSiteByIdV1Responses,
+	GetUserRolesV1Data,
+	GetUserRolesV1Responses,
+	LoginV1Data,
+	LoginV1Errors,
+	LoginV1Responses,
+	RemoveRolePermissionsV1Data,
+	RemoveRolePermissionsV1Responses,
+	RemoveUserRolesV1Data,
+	RemoveUserRolesV1Responses,
+	ReplaceRolePermissionsV1Data,
+	ReplaceRolePermissionsV1Responses,
+	ReplaceUserRolesV1Data,
+	ReplaceUserRolesV1Responses,
+	UpdateAdminV1Data,
+	UpdateAdminV1Errors,
+	UpdateAdminV1Responses,
+	UpdateEquipmentV1Data,
+	UpdateEquipmentV1Errors,
+	UpdateEquipmentV1Responses,
+	UpdateRoleV1Data,
+	UpdateRoleV1Responses,
+	UpdateSensorV1Data,
+	UpdateSensorV1Errors,
+	UpdateSensorV1Responses,
+	UpdateSiteV1Data,
+	UpdateSiteV1Errors,
+	UpdateSiteV1Responses,
 } from "./types.gen";
-import { zPostApiV1AuthLoginData } from "./zod.gen";
+import {
+	zAssignRolePermissionsV1Data,
+	zAssignUserRolesV1Data,
+	zCheckPermissionCurrentUserV1Data,
+	zCheckPermissionUserV1Data,
+	zCreateAdminV1Data,
+	zCreateEquipmentV1Data,
+	zCreateRoleV1Data,
+	zCreateSensorV1Data,
+	zCreateSiteV1Data,
+	zDeleteAdminV1Data,
+	zDeleteEquipmentV1Data,
+	zDeleteRoleV1Data,
+	zDeleteSensorV1Data,
+	zDeleteSiteV1Data,
+	zGetAdminByIdV1Data,
+	zGetAllAdminsV1Data,
+	zGetAllEquipmentV1Data,
+	zGetAllRolesV1Data,
+	zGetAllSensorsV1Data,
+	zGetAllSitesV1Data,
+	zGetEquipmentByIdV1Data,
+	zGetPermissionActionsV1Data,
+	zGetPermissionResourcesV1Data,
+	zGetRoleByNameV1Data,
+	zGetRolePermissionsV1Data,
+	zGetRoleUsersV1Data,
+	zGetSensorByIdV1Data,
+	zGetSensorReadingsV1Data,
+	zGetSiteByIdV1Data,
+	zGetUserRolesV1Data,
+	zLoginV1Data,
+	zRemoveRolePermissionsV1Data,
+	zRemoveUserRolesV1Data,
+	zReplaceRolePermissionsV1Data,
+	zReplaceUserRolesV1Data,
+	zUpdateAdminV1Data,
+	zUpdateEquipmentV1Data,
+	zUpdateRoleV1Data,
+	zUpdateSensorV1Data,
+	zUpdateSiteV1Data,
+} from "./zod.gen";
 
 export type Options<
 	TData extends TDataShape = TDataShape,
@@ -27,21 +183,542 @@ export type Options<
 	meta?: Record<string, unknown>;
 };
 
-export const postApiV1AuthLogin = <ThrowOnError extends boolean = false>(
-	options?: Options<PostApiV1AuthLoginData, ThrowOnError>,
+export const getAllAdminsV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetAllAdminsV1Data, ThrowOnError>,
 ) =>
-	(options?.client ?? client).post<
-		PostApiV1AuthLoginResponses,
-		PostApiV1AuthLoginErrors,
-		ThrowOnError
-	>({
-		requestValidator: async (data) => await zPostApiV1AuthLoginData.parseAsync(data),
-		responseTransformer: postApiV1AuthLoginResponseTransformer,
+	(options?.client ?? client).get<GetAllAdminsV1Responses, GetAllAdminsV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zGetAllAdminsV1Data.parseAsync(data),
+		responseTransformer: getAllAdminsV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/admins",
+		...options,
+	});
+
+export const createAdminV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<CreateAdminV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<CreateAdminV1Responses, CreateAdminV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zCreateAdminV1Data.parseAsync(data),
+		responseTransformer: createAdminV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/admins",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const deleteAdminV1 = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteAdminV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).delete<DeleteAdminV1Responses, DeleteAdminV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zDeleteAdminV1Data.parseAsync(data),
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/admins/{id}",
+		...options,
+	});
+
+export const getAdminByIdV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetAdminByIdV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<GetAdminByIdV1Responses, GetAdminByIdV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zGetAdminByIdV1Data.parseAsync(data),
+		responseTransformer: getAdminByIdV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/admins/{id}",
+		...options,
+	});
+
+export const updateAdminV1 = <ThrowOnError extends boolean = false>(
+	options: Options<UpdateAdminV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).put<UpdateAdminV1Responses, UpdateAdminV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zUpdateAdminV1Data.parseAsync(data),
+		responseTransformer: updateAdminV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/admins/{id}",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const loginV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<LoginV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<LoginV1Responses, LoginV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zLoginV1Data.parseAsync(data),
+		responseTransformer: loginV1ResponseTransformer,
 		responseType: "json",
 		url: "/api/v1/auth/login",
 		...options,
 		headers: {
 			"Content-Type": "application/json",
 			...options?.headers,
+		},
+	});
+
+export const getAllEquipmentV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetAllEquipmentV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<GetAllEquipmentV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetAllEquipmentV1Data.parseAsync(data),
+		responseTransformer: getAllEquipmentV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/equipment",
+		...options,
+	});
+
+export const createEquipmentV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<CreateEquipmentV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<
+		CreateEquipmentV1Responses,
+		CreateEquipmentV1Errors,
+		ThrowOnError
+	>({
+		requestValidator: async (data) => await zCreateEquipmentV1Data.parseAsync(data),
+		responseTransformer: createEquipmentV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/equipment",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const deleteEquipmentV1 = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteEquipmentV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).delete<
+		DeleteEquipmentV1Responses,
+		DeleteEquipmentV1Errors,
+		ThrowOnError
+	>({
+		requestValidator: async (data) => await zDeleteEquipmentV1Data.parseAsync(data),
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/equipment/{id}",
+		...options,
+	});
+
+export const getEquipmentByIdV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetEquipmentByIdV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<
+		GetEquipmentByIdV1Responses,
+		GetEquipmentByIdV1Errors,
+		ThrowOnError
+	>({
+		requestValidator: async (data) => await zGetEquipmentByIdV1Data.parseAsync(data),
+		responseTransformer: getEquipmentByIdV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/equipment/{id}",
+		...options,
+	});
+
+export const updateEquipmentV1 = <ThrowOnError extends boolean = false>(
+	options: Options<UpdateEquipmentV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).put<UpdateEquipmentV1Responses, UpdateEquipmentV1Errors, ThrowOnError>(
+		{
+			requestValidator: async (data) => await zUpdateEquipmentV1Data.parseAsync(data),
+			responseTransformer: updateEquipmentV1ResponseTransformer,
+			responseType: "json",
+			security: [{ scheme: "bearer", type: "http" }],
+			url: "/api/v1/equipment/{id}",
+			...options,
+			headers: {
+				"Content-Type": "application/json",
+				...options.headers,
+			},
+		},
+	);
+
+export const getPermissionResourcesV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetPermissionResourcesV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<GetPermissionResourcesV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetPermissionResourcesV1Data.parseAsync(data),
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/permissions/resources",
+		...options,
+	});
+
+export const getPermissionActionsV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetPermissionActionsV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<GetPermissionActionsV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetPermissionActionsV1Data.parseAsync(data),
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/permissions/actions",
+		...options,
+	});
+
+export const checkPermissionCurrentUserV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<CheckPermissionCurrentUserV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<CheckPermissionCurrentUserV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zCheckPermissionCurrentUserV1Data.parseAsync(data),
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/permissions/check",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const checkPermissionUserV1 = <ThrowOnError extends boolean = false>(
+	options: Options<CheckPermissionUserV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).post<CheckPermissionUserV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zCheckPermissionUserV1Data.parseAsync(data),
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/permissions/check/{userId}",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const removeRolePermissionsV1 = <ThrowOnError extends boolean = false>(
+	options: Options<RemoveRolePermissionsV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).delete<RemoveRolePermissionsV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zRemoveRolePermissionsV1Data.parseAsync(data),
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/roles/{roleName}/permissions",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const getRolePermissionsV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetRolePermissionsV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<GetRolePermissionsV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetRolePermissionsV1Data.parseAsync(data),
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/roles/{roleName}/permissions",
+		...options,
+	});
+
+export const assignRolePermissionsV1 = <ThrowOnError extends boolean = false>(
+	options: Options<AssignRolePermissionsV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).post<AssignRolePermissionsV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zAssignRolePermissionsV1Data.parseAsync(data),
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/roles/{roleName}/permissions",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const replaceRolePermissionsV1 = <ThrowOnError extends boolean = false>(
+	options: Options<ReplaceRolePermissionsV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).put<ReplaceRolePermissionsV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zReplaceRolePermissionsV1Data.parseAsync(data),
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/roles/{roleName}/permissions",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const getAllRolesV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetAllRolesV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<GetAllRolesV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetAllRolesV1Data.parseAsync(data),
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/roles",
+		...options,
+	});
+
+export const createRoleV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<CreateRoleV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<CreateRoleV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zCreateRoleV1Data.parseAsync(data),
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/roles",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const deleteRoleV1 = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteRoleV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).delete<DeleteRoleV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zDeleteRoleV1Data.parseAsync(data),
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/roles/{roleName}",
+		...options,
+	});
+
+export const getRoleByNameV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetRoleByNameV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<GetRoleByNameV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetRoleByNameV1Data.parseAsync(data),
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/roles/{roleName}",
+		...options,
+	});
+
+export const updateRoleV1 = <ThrowOnError extends boolean = false>(
+	options: Options<UpdateRoleV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).put<UpdateRoleV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zUpdateRoleV1Data.parseAsync(data),
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/roles/{roleName}",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const getRoleUsersV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetRoleUsersV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<GetRoleUsersV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetRoleUsersV1Data.parseAsync(data),
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/roles/{roleName}/users",
+		...options,
+	});
+
+export const getAllSensorsV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetAllSensorsV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<GetAllSensorsV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetAllSensorsV1Data.parseAsync(data),
+		responseTransformer: getAllSensorsV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/sensors",
+		...options,
+	});
+
+export const createSensorV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<CreateSensorV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<CreateSensorV1Responses, CreateSensorV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zCreateSensorV1Data.parseAsync(data),
+		responseTransformer: createSensorV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/sensors",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const getSensorReadingsV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetSensorReadingsV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<
+		GetSensorReadingsV1Responses,
+		GetSensorReadingsV1Errors,
+		ThrowOnError
+	>({
+		requestValidator: async (data) => await zGetSensorReadingsV1Data.parseAsync(data),
+		responseTransformer: getSensorReadingsV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/sensors/{id}/readings",
+		...options,
+	});
+
+export const deleteSensorV1 = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteSensorV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).delete<DeleteSensorV1Responses, DeleteSensorV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zDeleteSensorV1Data.parseAsync(data),
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/sensors/{id}",
+		...options,
+	});
+
+export const getSensorByIdV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetSensorByIdV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<GetSensorByIdV1Responses, GetSensorByIdV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zGetSensorByIdV1Data.parseAsync(data),
+		responseTransformer: getSensorByIdV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/sensors/{id}",
+		...options,
+	});
+
+export const updateSensorV1 = <ThrowOnError extends boolean = false>(
+	options: Options<UpdateSensorV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).put<UpdateSensorV1Responses, UpdateSensorV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zUpdateSensorV1Data.parseAsync(data),
+		responseTransformer: updateSensorV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/sensors/{id}",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const getAllSitesV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetAllSitesV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<GetAllSitesV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetAllSitesV1Data.parseAsync(data),
+		responseTransformer: getAllSitesV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/sites",
+		...options,
+	});
+
+export const createSiteV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<CreateSiteV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<CreateSiteV1Responses, CreateSiteV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zCreateSiteV1Data.parseAsync(data),
+		responseTransformer: createSiteV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/sites",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const deleteSiteV1 = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteSiteV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).delete<DeleteSiteV1Responses, DeleteSiteV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zDeleteSiteV1Data.parseAsync(data),
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/sites/{id}",
+		...options,
+	});
+
+export const getSiteByIdV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetSiteByIdV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<GetSiteByIdV1Responses, GetSiteByIdV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zGetSiteByIdV1Data.parseAsync(data),
+		responseTransformer: getSiteByIdV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/sites/{id}",
+		...options,
+	});
+
+export const updateSiteV1 = <ThrowOnError extends boolean = false>(
+	options: Options<UpdateSiteV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).put<UpdateSiteV1Responses, UpdateSiteV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zUpdateSiteV1Data.parseAsync(data),
+		responseTransformer: updateSiteV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/sites/{id}",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const removeUserRolesV1 = <ThrowOnError extends boolean = false>(
+	options: Options<RemoveUserRolesV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).delete<RemoveUserRolesV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zRemoveUserRolesV1Data.parseAsync(data),
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/users/{userId}/roles",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const getUserRolesV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetUserRolesV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<GetUserRolesV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetUserRolesV1Data.parseAsync(data),
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/users/{userId}/roles",
+		...options,
+	});
+
+export const assignUserRolesV1 = <ThrowOnError extends boolean = false>(
+	options: Options<AssignUserRolesV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).post<AssignUserRolesV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zAssignUserRolesV1Data.parseAsync(data),
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/users/{userId}/roles",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const replaceUserRolesV1 = <ThrowOnError extends boolean = false>(
+	options: Options<ReplaceUserRolesV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).put<ReplaceUserRolesV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zReplaceUserRolesV1Data.parseAsync(data),
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/users/{userId}/roles",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
 		},
 	});

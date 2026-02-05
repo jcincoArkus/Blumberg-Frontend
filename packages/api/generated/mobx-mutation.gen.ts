@@ -2,10 +2,175 @@
 
 import { type MutationOptions, ObservedMutation } from "~@/mobx";
 
-import { postApiV1AuthLoginMutation } from "./@tanstack/react-query.gen";
-import type { PostApiV1AuthLoginData } from "./types.gen";
+import {
+	assignRolePermissionsV1Mutation,
+	assignUserRolesV1Mutation,
+	checkPermissionCurrentUserV1Mutation,
+	checkPermissionUserV1Mutation,
+	createAdminV1Mutation,
+	createEquipmentV1Mutation,
+	createRoleV1Mutation,
+	createSensorV1Mutation,
+	createSiteV1Mutation,
+	deleteAdminV1Mutation,
+	deleteEquipmentV1Mutation,
+	deleteRoleV1Mutation,
+	deleteSensorV1Mutation,
+	deleteSiteV1Mutation,
+	loginV1Mutation,
+	removeRolePermissionsV1Mutation,
+	removeUserRolesV1Mutation,
+	replaceRolePermissionsV1Mutation,
+	replaceUserRolesV1Mutation,
+	updateAdminV1Mutation,
+	updateEquipmentV1Mutation,
+	updateRoleV1Mutation,
+	updateSensorV1Mutation,
+	updateSiteV1Mutation,
+} from "./@tanstack/react-query.gen";
+import type {
+	AssignRolePermissionsV1Data,
+	AssignUserRolesV1Data,
+	CheckPermissionCurrentUserV1Data,
+	CheckPermissionUserV1Data,
+	CreateAdminV1Data,
+	CreateEquipmentV1Data,
+	CreateRoleV1Data,
+	CreateSensorV1Data,
+	CreateSiteV1Data,
+	DeleteAdminV1Data,
+	DeleteEquipmentV1Data,
+	DeleteRoleV1Data,
+	DeleteSensorV1Data,
+	DeleteSiteV1Data,
+	LoginV1Data,
+	RemoveRolePermissionsV1Data,
+	RemoveUserRolesV1Data,
+	ReplaceRolePermissionsV1Data,
+	ReplaceUserRolesV1Data,
+	UpdateAdminV1Data,
+	UpdateEquipmentV1Data,
+	UpdateRoleV1Data,
+	UpdateSensorV1Data,
+	UpdateSiteV1Data,
+} from "./types.gen";
 
-export const postApiV1AuthLoginObservedMutation = (
-	defaultValues?: Partial<PostApiV1AuthLoginData>,
-	observerOptions?: MutationOptions<typeof postApiV1AuthLoginMutation>,
-) => new ObservedMutation(postApiV1AuthLoginMutation, defaultValues, observerOptions);
+export const createAdminV1ObservedMutation = (
+	defaultValues?: Partial<CreateAdminV1Data>,
+	observerOptions?: MutationOptions<typeof createAdminV1Mutation>,
+) => new ObservedMutation(createAdminV1Mutation, defaultValues, observerOptions);
+
+export const deleteAdminV1ObservedMutation = (
+	defaultValues?: Partial<DeleteAdminV1Data>,
+	observerOptions?: MutationOptions<typeof deleteAdminV1Mutation>,
+) => new ObservedMutation(deleteAdminV1Mutation, defaultValues, observerOptions);
+
+export const updateAdminV1ObservedMutation = (
+	defaultValues?: Partial<UpdateAdminV1Data>,
+	observerOptions?: MutationOptions<typeof updateAdminV1Mutation>,
+) => new ObservedMutation(updateAdminV1Mutation, defaultValues, observerOptions);
+
+export const loginV1ObservedMutation = (
+	defaultValues?: Partial<LoginV1Data>,
+	observerOptions?: MutationOptions<typeof loginV1Mutation>,
+) => new ObservedMutation(loginV1Mutation, defaultValues, observerOptions);
+
+export const createEquipmentV1ObservedMutation = (
+	defaultValues?: Partial<CreateEquipmentV1Data>,
+	observerOptions?: MutationOptions<typeof createEquipmentV1Mutation>,
+) => new ObservedMutation(createEquipmentV1Mutation, defaultValues, observerOptions);
+
+export const deleteEquipmentV1ObservedMutation = (
+	defaultValues?: Partial<DeleteEquipmentV1Data>,
+	observerOptions?: MutationOptions<typeof deleteEquipmentV1Mutation>,
+) => new ObservedMutation(deleteEquipmentV1Mutation, defaultValues, observerOptions);
+
+export const updateEquipmentV1ObservedMutation = (
+	defaultValues?: Partial<UpdateEquipmentV1Data>,
+	observerOptions?: MutationOptions<typeof updateEquipmentV1Mutation>,
+) => new ObservedMutation(updateEquipmentV1Mutation, defaultValues, observerOptions);
+
+export const checkPermissionCurrentUserV1ObservedMutation = (
+	defaultValues?: Partial<CheckPermissionCurrentUserV1Data>,
+	observerOptions?: MutationOptions<typeof checkPermissionCurrentUserV1Mutation>,
+) => new ObservedMutation(checkPermissionCurrentUserV1Mutation, defaultValues, observerOptions);
+
+export const checkPermissionUserV1ObservedMutation = (
+	defaultValues?: Partial<CheckPermissionUserV1Data>,
+	observerOptions?: MutationOptions<typeof checkPermissionUserV1Mutation>,
+) => new ObservedMutation(checkPermissionUserV1Mutation, defaultValues, observerOptions);
+
+export const removeRolePermissionsV1ObservedMutation = (
+	defaultValues?: Partial<RemoveRolePermissionsV1Data>,
+	observerOptions?: MutationOptions<typeof removeRolePermissionsV1Mutation>,
+) => new ObservedMutation(removeRolePermissionsV1Mutation, defaultValues, observerOptions);
+
+export const assignRolePermissionsV1ObservedMutation = (
+	defaultValues?: Partial<AssignRolePermissionsV1Data>,
+	observerOptions?: MutationOptions<typeof assignRolePermissionsV1Mutation>,
+) => new ObservedMutation(assignRolePermissionsV1Mutation, defaultValues, observerOptions);
+
+export const replaceRolePermissionsV1ObservedMutation = (
+	defaultValues?: Partial<ReplaceRolePermissionsV1Data>,
+	observerOptions?: MutationOptions<typeof replaceRolePermissionsV1Mutation>,
+) => new ObservedMutation(replaceRolePermissionsV1Mutation, defaultValues, observerOptions);
+
+export const createRoleV1ObservedMutation = (
+	defaultValues?: Partial<CreateRoleV1Data>,
+	observerOptions?: MutationOptions<typeof createRoleV1Mutation>,
+) => new ObservedMutation(createRoleV1Mutation, defaultValues, observerOptions);
+
+export const deleteRoleV1ObservedMutation = (
+	defaultValues?: Partial<DeleteRoleV1Data>,
+	observerOptions?: MutationOptions<typeof deleteRoleV1Mutation>,
+) => new ObservedMutation(deleteRoleV1Mutation, defaultValues, observerOptions);
+
+export const updateRoleV1ObservedMutation = (
+	defaultValues?: Partial<UpdateRoleV1Data>,
+	observerOptions?: MutationOptions<typeof updateRoleV1Mutation>,
+) => new ObservedMutation(updateRoleV1Mutation, defaultValues, observerOptions);
+
+export const createSensorV1ObservedMutation = (
+	defaultValues?: Partial<CreateSensorV1Data>,
+	observerOptions?: MutationOptions<typeof createSensorV1Mutation>,
+) => new ObservedMutation(createSensorV1Mutation, defaultValues, observerOptions);
+
+export const deleteSensorV1ObservedMutation = (
+	defaultValues?: Partial<DeleteSensorV1Data>,
+	observerOptions?: MutationOptions<typeof deleteSensorV1Mutation>,
+) => new ObservedMutation(deleteSensorV1Mutation, defaultValues, observerOptions);
+
+export const updateSensorV1ObservedMutation = (
+	defaultValues?: Partial<UpdateSensorV1Data>,
+	observerOptions?: MutationOptions<typeof updateSensorV1Mutation>,
+) => new ObservedMutation(updateSensorV1Mutation, defaultValues, observerOptions);
+
+export const createSiteV1ObservedMutation = (
+	defaultValues?: Partial<CreateSiteV1Data>,
+	observerOptions?: MutationOptions<typeof createSiteV1Mutation>,
+) => new ObservedMutation(createSiteV1Mutation, defaultValues, observerOptions);
+
+export const deleteSiteV1ObservedMutation = (
+	defaultValues?: Partial<DeleteSiteV1Data>,
+	observerOptions?: MutationOptions<typeof deleteSiteV1Mutation>,
+) => new ObservedMutation(deleteSiteV1Mutation, defaultValues, observerOptions);
+
+export const updateSiteV1ObservedMutation = (
+	defaultValues?: Partial<UpdateSiteV1Data>,
+	observerOptions?: MutationOptions<typeof updateSiteV1Mutation>,
+) => new ObservedMutation(updateSiteV1Mutation, defaultValues, observerOptions);
+
+export const removeUserRolesV1ObservedMutation = (
+	defaultValues?: Partial<RemoveUserRolesV1Data>,
+	observerOptions?: MutationOptions<typeof removeUserRolesV1Mutation>,
+) => new ObservedMutation(removeUserRolesV1Mutation, defaultValues, observerOptions);
+
+export const assignUserRolesV1ObservedMutation = (
+	defaultValues?: Partial<AssignUserRolesV1Data>,
+	observerOptions?: MutationOptions<typeof assignUserRolesV1Mutation>,
+) => new ObservedMutation(assignUserRolesV1Mutation, defaultValues, observerOptions);
+
+export const replaceUserRolesV1ObservedMutation = (
+	defaultValues?: Partial<ReplaceUserRolesV1Data>,
+	observerOptions?: MutationOptions<typeof replaceUserRolesV1Mutation>,
+) => new ObservedMutation(replaceUserRolesV1Mutation, defaultValues, observerOptions);

@@ -4,12 +4,76 @@ export type ClientOptions = {
 	baseURL: `${string}://${string}` | (string & {});
 };
 
+export type ActionsResponse = {
+	actions: Array<string> | null;
+};
+
+export type AdminRequest = {
+	email?: string | null;
+	password?: string | null;
+	firstName?: string | null;
+	lastName?: string | null;
+};
+
+export type AdminResponse = {
+	id?: string;
+	email?: string | null;
+	firstName?: string | null;
+	lastName?: string | null;
+	createdAt?: Date;
+	updatedAt?: Date | null;
+};
+
+export type AssignPermissionsToRoleRequest = {
+	permissions: Array<RolePermissionDto> | null;
+};
+
+export type AssignRolesToUserRequest = {
+	roles: Array<string> | null;
+};
+
 export type AuthResponse = {
 	token?: string | null;
 	email?: string | null;
 	firstName?: string | null;
 	lastName?: string | null;
+	organizationId?: string;
 	expiresAt?: Date;
+};
+
+export type CheckPermissionRequest = {
+	resource: string | null;
+	action: string | null;
+};
+
+export type CheckPermissionResponse = {
+	hasPermission: boolean;
+};
+
+export type CreateRoleRequest = {
+	name: string | null;
+	displayName: string | null;
+	description: string | null;
+	color: string | null;
+	isDefault?: boolean;
+};
+
+export type EquipmentRequest = {
+	name?: string | null;
+	equipmentType?: string | null;
+	siteId?: string;
+};
+
+export type EquipmentResponse = {
+	id?: string;
+	name?: string | null;
+	equipmentType?: string | null;
+	organizationId?: string;
+	organizationName?: string | null;
+	siteId?: string;
+	siteName?: string | null;
+	createdAt?: Date;
+	updatedAt?: Date | null;
 };
 
 export type LoginRequest = {
@@ -38,28 +102,1019 @@ export type ProblemDetails = {
 		| undefined;
 };
 
-export type PostApiV1AuthLoginData = {
+export type RemovePermissionsFromRoleRequest = {
+	permissions: Array<RolePermissionDto> | null;
+};
+
+export type RemoveRolesFromUserRequest = {
+	roles: Array<string> | null;
+};
+
+export type ResourceDto = {
+	name: string | null;
+	actions: Array<string> | null;
+};
+
+export type ResourcesResponse = {
+	resources: Array<ResourceDto> | null;
+};
+
+export type RoleDto = {
+	name: string | null;
+	displayName: string | null;
+	description: string | null;
+	color: string | null;
+	isDefault: boolean;
+};
+
+export type RolePermissionDto = {
+	resource: string | null;
+	action: string | null;
+};
+
+export type RolePermissionsResponse = {
+	roleName: string | null;
+	permissions: Array<RolePermissionDto> | null;
+};
+
+export type RoleResponse = {
+	role: RoleDto;
+};
+
+export type RoleUsersResponse = {
+	roleName: string | null;
+	userIds: Array<string> | null;
+};
+
+export type RolesListResponse = {
+	roles: Array<RoleDto> | null;
+};
+
+export type SensorReadingResponse = {
+	id?: string;
+	sensorId?: string;
+	value?: number;
+	timestampUtc?: Date;
+	unit?: Unit;
+	organizationId?: string;
+	ingestionRunId?: string | null;
+	createdAt?: Date;
+};
+
+export type SensorReadingResponsePagedResponse = {
+	items?: Array<SensorReadingResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+	readonly totalPages?: number;
+};
+
+export type SensorRequest = {
+	serial?: string | null;
+	status?: SensorStatus;
+	equipmentId?: string;
+	sensorTypeId?: string;
+	thresholdId?: string;
+};
+
+export type SensorResponse = {
+	id?: string;
+	serial?: string | null;
+	status?: SensorStatus;
+	organizationId?: string;
+	organizationName?: string | null;
+	equipmentId?: string;
+	equipmentName?: string | null;
+	sensorTypeId?: string;
+	sensorTypeName?: string | null;
+	thresholdId?: string;
+	createdAt?: Date;
+	updatedAt?: Date | null;
+};
+
+export enum SensorStatus {
+	_0 = 0,
+	_1 = 1,
+	_2 = 2,
+	_3 = 3,
+}
+
+export type SiteRequest = {
+	name?: string | null;
+	address?: string | null;
+	city?: string | null;
+	state?: string | null;
+	postalCode?: string | null;
+	country?: string | null;
+};
+
+export type SiteResponse = {
+	id?: string;
+	name?: string | null;
+	address?: string | null;
+	city?: string | null;
+	state?: string | null;
+	postalCode?: string | null;
+	country?: string | null;
+	organizationId?: string;
+	organizationName?: string | null;
+	createdAt?: Date;
+	updatedAt?: Date | null;
+};
+
+export enum Unit {
+	_0 = 0,
+	_1 = 1,
+	_2 = 2,
+	_3 = 3,
+	_4 = 4,
+	_5 = 5,
+	_6 = 6,
+	_7 = 7,
+	_8 = 8,
+}
+
+export type UpdateRoleRequest = {
+	displayName: string | null;
+	description: string | null;
+	color: string | null;
+	isDefault?: boolean;
+};
+
+export type UserRolesResponse = {
+	userId: string | null;
+	roles: Array<string> | null;
+};
+
+export type SensorReadingResponsePagedResponseWritable = {
+	items?: Array<SensorReadingResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+};
+
+export type GetAllAdminsV1Data = {
+	body?: never;
+	path?: never;
+	query?: never;
+	url: "/api/v1/admins";
+};
+
+export type GetAllAdminsV1Errors = {
+	/**
+	 * Internal Server Error
+	 */
+	500: unknown;
+};
+
+export type GetAllAdminsV1Responses = {
+	/**
+	 * OK
+	 */
+	200: Array<AdminResponse>;
+};
+
+export type GetAllAdminsV1Response = GetAllAdminsV1Responses[keyof GetAllAdminsV1Responses];
+
+export type CreateAdminV1Data = {
+	body?: AdminRequest;
+	path?: never;
+	query?: never;
+	url: "/api/v1/admins";
+};
+
+export type CreateAdminV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: ProblemDetails;
+};
+
+export type CreateAdminV1Error = CreateAdminV1Errors[keyof CreateAdminV1Errors];
+
+export type CreateAdminV1Responses = {
+	/**
+	 * Created
+	 */
+	201: AdminResponse;
+};
+
+export type CreateAdminV1Response = CreateAdminV1Responses[keyof CreateAdminV1Responses];
+
+export type DeleteAdminV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/admins/{id}";
+};
+
+export type DeleteAdminV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+};
+
+export type DeleteAdminV1Error = DeleteAdminV1Errors[keyof DeleteAdminV1Errors];
+
+export type DeleteAdminV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetAdminByIdV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/admins/{id}";
+};
+
+export type GetAdminByIdV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+};
+
+export type GetAdminByIdV1Error = GetAdminByIdV1Errors[keyof GetAdminByIdV1Errors];
+
+export type GetAdminByIdV1Responses = {
+	/**
+	 * OK
+	 */
+	200: AdminResponse;
+};
+
+export type GetAdminByIdV1Response = GetAdminByIdV1Responses[keyof GetAdminByIdV1Responses];
+
+export type UpdateAdminV1Data = {
+	body?: AdminRequest;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/admins/{id}";
+};
+
+export type UpdateAdminV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: ProblemDetails;
+};
+
+export type UpdateAdminV1Error = UpdateAdminV1Errors[keyof UpdateAdminV1Errors];
+
+export type UpdateAdminV1Responses = {
+	/**
+	 * OK
+	 */
+	200: AdminResponse;
+};
+
+export type UpdateAdminV1Response = UpdateAdminV1Responses[keyof UpdateAdminV1Responses];
+
+export type LoginV1Data = {
 	body?: LoginRequest;
 	path?: never;
 	query?: never;
 	url: "/api/v1/auth/login";
 };
 
-export type PostApiV1AuthLoginErrors = {
+export type LoginV1Errors = {
 	/**
 	 * Unauthorized
 	 */
 	401: ProblemDetails;
 };
 
-export type PostApiV1AuthLoginError = PostApiV1AuthLoginErrors[keyof PostApiV1AuthLoginErrors];
+export type LoginV1Error = LoginV1Errors[keyof LoginV1Errors];
 
-export type PostApiV1AuthLoginResponses = {
+export type LoginV1Responses = {
 	/**
 	 * OK
 	 */
 	200: AuthResponse;
 };
 
-export type PostApiV1AuthLoginResponse =
-	PostApiV1AuthLoginResponses[keyof PostApiV1AuthLoginResponses];
+export type LoginV1Response = LoginV1Responses[keyof LoginV1Responses];
+
+export type GetAllEquipmentV1Data = {
+	body?: never;
+	path?: never;
+	query?: never;
+	url: "/api/v1/equipment";
+};
+
+export type GetAllEquipmentV1Responses = {
+	/**
+	 * OK
+	 */
+	200: Array<EquipmentResponse>;
+};
+
+export type GetAllEquipmentV1Response =
+	GetAllEquipmentV1Responses[keyof GetAllEquipmentV1Responses];
+
+export type CreateEquipmentV1Data = {
+	body?: EquipmentRequest;
+	path?: never;
+	query?: never;
+	url: "/api/v1/equipment";
+};
+
+export type CreateEquipmentV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: ProblemDetails;
+};
+
+export type CreateEquipmentV1Error = CreateEquipmentV1Errors[keyof CreateEquipmentV1Errors];
+
+export type CreateEquipmentV1Responses = {
+	/**
+	 * Created
+	 */
+	201: EquipmentResponse;
+};
+
+export type CreateEquipmentV1Response =
+	CreateEquipmentV1Responses[keyof CreateEquipmentV1Responses];
+
+export type DeleteEquipmentV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/equipment/{id}";
+};
+
+export type DeleteEquipmentV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+};
+
+export type DeleteEquipmentV1Error = DeleteEquipmentV1Errors[keyof DeleteEquipmentV1Errors];
+
+export type DeleteEquipmentV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetEquipmentByIdV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/equipment/{id}";
+};
+
+export type GetEquipmentByIdV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+};
+
+export type GetEquipmentByIdV1Error = GetEquipmentByIdV1Errors[keyof GetEquipmentByIdV1Errors];
+
+export type GetEquipmentByIdV1Responses = {
+	/**
+	 * OK
+	 */
+	200: EquipmentResponse;
+};
+
+export type GetEquipmentByIdV1Response =
+	GetEquipmentByIdV1Responses[keyof GetEquipmentByIdV1Responses];
+
+export type UpdateEquipmentV1Data = {
+	body?: EquipmentRequest;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/equipment/{id}";
+};
+
+export type UpdateEquipmentV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: ProblemDetails;
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+};
+
+export type UpdateEquipmentV1Error = UpdateEquipmentV1Errors[keyof UpdateEquipmentV1Errors];
+
+export type UpdateEquipmentV1Responses = {
+	/**
+	 * OK
+	 */
+	200: EquipmentResponse;
+};
+
+export type UpdateEquipmentV1Response =
+	UpdateEquipmentV1Responses[keyof UpdateEquipmentV1Responses];
+
+export type GetPermissionResourcesV1Data = {
+	body?: never;
+	path?: never;
+	query?: never;
+	url: "/api/permissions/resources";
+};
+
+export type GetPermissionResourcesV1Responses = {
+	/**
+	 * OK
+	 */
+	200: ResourcesResponse;
+};
+
+export type GetPermissionResourcesV1Response =
+	GetPermissionResourcesV1Responses[keyof GetPermissionResourcesV1Responses];
+
+export type GetPermissionActionsV1Data = {
+	body?: never;
+	path?: never;
+	query?: never;
+	url: "/api/permissions/actions";
+};
+
+export type GetPermissionActionsV1Responses = {
+	/**
+	 * OK
+	 */
+	200: ActionsResponse;
+};
+
+export type GetPermissionActionsV1Response =
+	GetPermissionActionsV1Responses[keyof GetPermissionActionsV1Responses];
+
+export type CheckPermissionCurrentUserV1Data = {
+	body?: CheckPermissionRequest;
+	path?: never;
+	query?: never;
+	url: "/api/permissions/check";
+};
+
+export type CheckPermissionCurrentUserV1Responses = {
+	/**
+	 * OK
+	 */
+	200: CheckPermissionResponse;
+};
+
+export type CheckPermissionCurrentUserV1Response =
+	CheckPermissionCurrentUserV1Responses[keyof CheckPermissionCurrentUserV1Responses];
+
+export type CheckPermissionUserV1Data = {
+	body?: CheckPermissionRequest;
+	path: {
+		userId: string;
+	};
+	query?: never;
+	url: "/api/permissions/check/{userId}";
+};
+
+export type CheckPermissionUserV1Responses = {
+	/**
+	 * OK
+	 */
+	200: CheckPermissionResponse;
+};
+
+export type CheckPermissionUserV1Response =
+	CheckPermissionUserV1Responses[keyof CheckPermissionUserV1Responses];
+
+export type RemoveRolePermissionsV1Data = {
+	body?: RemovePermissionsFromRoleRequest;
+	path: {
+		roleName: string;
+	};
+	query?: never;
+	url: "/api/roles/{roleName}/permissions";
+};
+
+export type RemoveRolePermissionsV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetRolePermissionsV1Data = {
+	body?: never;
+	path: {
+		roleName: string;
+	};
+	query?: never;
+	url: "/api/roles/{roleName}/permissions";
+};
+
+export type GetRolePermissionsV1Responses = {
+	/**
+	 * OK
+	 */
+	200: RolePermissionsResponse;
+};
+
+export type GetRolePermissionsV1Response =
+	GetRolePermissionsV1Responses[keyof GetRolePermissionsV1Responses];
+
+export type AssignRolePermissionsV1Data = {
+	body?: AssignPermissionsToRoleRequest;
+	path: {
+		roleName: string;
+	};
+	query?: never;
+	url: "/api/roles/{roleName}/permissions";
+};
+
+export type AssignRolePermissionsV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type ReplaceRolePermissionsV1Data = {
+	body?: AssignPermissionsToRoleRequest;
+	path: {
+		roleName: string;
+	};
+	query?: never;
+	url: "/api/roles/{roleName}/permissions";
+};
+
+export type ReplaceRolePermissionsV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetAllRolesV1Data = {
+	body?: never;
+	path?: never;
+	query?: never;
+	url: "/api/roles";
+};
+
+export type GetAllRolesV1Responses = {
+	/**
+	 * OK
+	 */
+	200: RolesListResponse;
+};
+
+export type GetAllRolesV1Response = GetAllRolesV1Responses[keyof GetAllRolesV1Responses];
+
+export type CreateRoleV1Data = {
+	body?: CreateRoleRequest;
+	path?: never;
+	query?: never;
+	url: "/api/roles";
+};
+
+export type CreateRoleV1Responses = {
+	/**
+	 * OK
+	 */
+	200: RoleResponse;
+};
+
+export type CreateRoleV1Response = CreateRoleV1Responses[keyof CreateRoleV1Responses];
+
+export type DeleteRoleV1Data = {
+	body?: never;
+	path: {
+		roleName: string;
+	};
+	query?: never;
+	url: "/api/roles/{roleName}";
+};
+
+export type DeleteRoleV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetRoleByNameV1Data = {
+	body?: never;
+	path: {
+		roleName: string;
+	};
+	query?: never;
+	url: "/api/roles/{roleName}";
+};
+
+export type GetRoleByNameV1Responses = {
+	/**
+	 * OK
+	 */
+	200: RoleResponse;
+};
+
+export type GetRoleByNameV1Response = GetRoleByNameV1Responses[keyof GetRoleByNameV1Responses];
+
+export type UpdateRoleV1Data = {
+	body?: UpdateRoleRequest;
+	path: {
+		roleName: string;
+	};
+	query?: never;
+	url: "/api/roles/{roleName}";
+};
+
+export type UpdateRoleV1Responses = {
+	/**
+	 * OK
+	 */
+	200: RoleResponse;
+};
+
+export type UpdateRoleV1Response = UpdateRoleV1Responses[keyof UpdateRoleV1Responses];
+
+export type GetRoleUsersV1Data = {
+	body?: never;
+	path: {
+		roleName: string;
+	};
+	query?: never;
+	url: "/api/roles/{roleName}/users";
+};
+
+export type GetRoleUsersV1Responses = {
+	/**
+	 * OK
+	 */
+	200: RoleUsersResponse;
+};
+
+export type GetRoleUsersV1Response = GetRoleUsersV1Responses[keyof GetRoleUsersV1Responses];
+
+export type GetAllSensorsV1Data = {
+	body?: never;
+	path?: never;
+	query?: never;
+	url: "/api/v1/sensors";
+};
+
+export type GetAllSensorsV1Responses = {
+	/**
+	 * OK
+	 */
+	200: Array<SensorResponse>;
+};
+
+export type GetAllSensorsV1Response = GetAllSensorsV1Responses[keyof GetAllSensorsV1Responses];
+
+export type CreateSensorV1Data = {
+	body?: SensorRequest;
+	path?: never;
+	query?: never;
+	url: "/api/v1/sensors";
+};
+
+export type CreateSensorV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: ProblemDetails;
+};
+
+export type CreateSensorV1Error = CreateSensorV1Errors[keyof CreateSensorV1Errors];
+
+export type CreateSensorV1Responses = {
+	/**
+	 * Created
+	 */
+	201: SensorResponse;
+};
+
+export type CreateSensorV1Response = CreateSensorV1Responses[keyof CreateSensorV1Responses];
+
+export type GetSensorReadingsV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: {
+		from?: Date;
+		to?: Date;
+		page?: number;
+		pageSize?: number;
+	};
+	url: "/api/v1/sensors/{id}/readings";
+};
+
+export type GetSensorReadingsV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+};
+
+export type GetSensorReadingsV1Error = GetSensorReadingsV1Errors[keyof GetSensorReadingsV1Errors];
+
+export type GetSensorReadingsV1Responses = {
+	/**
+	 * OK
+	 */
+	200: SensorReadingResponsePagedResponse;
+};
+
+export type GetSensorReadingsV1Response =
+	GetSensorReadingsV1Responses[keyof GetSensorReadingsV1Responses];
+
+export type DeleteSensorV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/sensors/{id}";
+};
+
+export type DeleteSensorV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+};
+
+export type DeleteSensorV1Error = DeleteSensorV1Errors[keyof DeleteSensorV1Errors];
+
+export type DeleteSensorV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetSensorByIdV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/sensors/{id}";
+};
+
+export type GetSensorByIdV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+};
+
+export type GetSensorByIdV1Error = GetSensorByIdV1Errors[keyof GetSensorByIdV1Errors];
+
+export type GetSensorByIdV1Responses = {
+	/**
+	 * OK
+	 */
+	200: SensorResponse;
+};
+
+export type GetSensorByIdV1Response = GetSensorByIdV1Responses[keyof GetSensorByIdV1Responses];
+
+export type UpdateSensorV1Data = {
+	body?: SensorRequest;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/sensors/{id}";
+};
+
+export type UpdateSensorV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: ProblemDetails;
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+};
+
+export type UpdateSensorV1Error = UpdateSensorV1Errors[keyof UpdateSensorV1Errors];
+
+export type UpdateSensorV1Responses = {
+	/**
+	 * OK
+	 */
+	200: SensorResponse;
+};
+
+export type UpdateSensorV1Response = UpdateSensorV1Responses[keyof UpdateSensorV1Responses];
+
+export type GetAllSitesV1Data = {
+	body?: never;
+	path?: never;
+	query?: never;
+	url: "/api/v1/sites";
+};
+
+export type GetAllSitesV1Responses = {
+	/**
+	 * OK
+	 */
+	200: Array<SiteResponse>;
+};
+
+export type GetAllSitesV1Response = GetAllSitesV1Responses[keyof GetAllSitesV1Responses];
+
+export type CreateSiteV1Data = {
+	body?: SiteRequest;
+	path?: never;
+	query?: never;
+	url: "/api/v1/sites";
+};
+
+export type CreateSiteV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: ProblemDetails;
+};
+
+export type CreateSiteV1Error = CreateSiteV1Errors[keyof CreateSiteV1Errors];
+
+export type CreateSiteV1Responses = {
+	/**
+	 * Created
+	 */
+	201: SiteResponse;
+};
+
+export type CreateSiteV1Response = CreateSiteV1Responses[keyof CreateSiteV1Responses];
+
+export type DeleteSiteV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/sites/{id}";
+};
+
+export type DeleteSiteV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+};
+
+export type DeleteSiteV1Error = DeleteSiteV1Errors[keyof DeleteSiteV1Errors];
+
+export type DeleteSiteV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetSiteByIdV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/sites/{id}";
+};
+
+export type GetSiteByIdV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+};
+
+export type GetSiteByIdV1Error = GetSiteByIdV1Errors[keyof GetSiteByIdV1Errors];
+
+export type GetSiteByIdV1Responses = {
+	/**
+	 * OK
+	 */
+	200: SiteResponse;
+};
+
+export type GetSiteByIdV1Response = GetSiteByIdV1Responses[keyof GetSiteByIdV1Responses];
+
+export type UpdateSiteV1Data = {
+	body?: SiteRequest;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/sites/{id}";
+};
+
+export type UpdateSiteV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: ProblemDetails;
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+};
+
+export type UpdateSiteV1Error = UpdateSiteV1Errors[keyof UpdateSiteV1Errors];
+
+export type UpdateSiteV1Responses = {
+	/**
+	 * OK
+	 */
+	200: SiteResponse;
+};
+
+export type UpdateSiteV1Response = UpdateSiteV1Responses[keyof UpdateSiteV1Responses];
+
+export type RemoveUserRolesV1Data = {
+	body?: RemoveRolesFromUserRequest;
+	path: {
+		userId: string;
+	};
+	query?: never;
+	url: "/api/users/{userId}/roles";
+};
+
+export type RemoveUserRolesV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetUserRolesV1Data = {
+	body?: never;
+	path: {
+		userId: string;
+	};
+	query?: never;
+	url: "/api/users/{userId}/roles";
+};
+
+export type GetUserRolesV1Responses = {
+	/**
+	 * OK
+	 */
+	200: UserRolesResponse;
+};
+
+export type GetUserRolesV1Response = GetUserRolesV1Responses[keyof GetUserRolesV1Responses];
+
+export type AssignUserRolesV1Data = {
+	body?: AssignRolesToUserRequest;
+	path: {
+		userId: string;
+	};
+	query?: never;
+	url: "/api/users/{userId}/roles";
+};
+
+export type AssignUserRolesV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type ReplaceUserRolesV1Data = {
+	body?: AssignRolesToUserRequest;
+	path: {
+		userId: string;
+	};
+	query?: never;
+	url: "/api/users/{userId}/roles";
+};
+
+export type ReplaceUserRolesV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
