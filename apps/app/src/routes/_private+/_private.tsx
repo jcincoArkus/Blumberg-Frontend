@@ -53,9 +53,9 @@ function Private() {
 		};
 	}, []);
 
-if (authorizationController.isLoading) {
-return <div>{t`Loading...`}</div>;
-}
+	if (authorizationController.isLoading) {
+		return <div>{t`Loading...`}</div>;
+	}
 
 	if (!authViewModel.isAuthenticated) {
 		return (
