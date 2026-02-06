@@ -38,6 +38,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 	);
 }
 
+export function HydrateFallback() {
+	return null;
+}
+
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 	let message = "Oops!";
 	let details = "An unexpected error occurred.";

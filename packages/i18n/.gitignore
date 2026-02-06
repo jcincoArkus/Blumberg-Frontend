@@ -1,1 +1,2 @@
-messages/
+messages/*
+!messages/messages.json

@@ -1,6 +1,6 @@
 ---
 name: component-pattern
-description: Pattern for implementing React components using the Observer Pattern with MobX and hooks for accessing ViewModels
+description: Pattern for implementing React components using the Observer Pattern with MobX and hooks for accessing ViewModels. Use when creating new React components, connecting components to ViewModels, adding observer() wrappers, or deciding between local state vs ViewModel state.
 ---
 
 # React Component Pattern with MobX
@@ -20,8 +20,8 @@ Pattern for implementing React components using the **Observer Pattern** with **
 ## Template: Basic Component with ViewModel
 
 ```typescript
-import { observer } from "@/mobx";
-import { useItemsPanelViewModel } from "@/view-models";
+import { observer } from "~@/mobx";
+import { useItemsPanelViewModel } from "~@/view-model";
 
 export const ItemsPanel = observer(function ItemsPanel() {
   const vm = useItemsPanelViewModel();
@@ -47,13 +47,12 @@ get itemCount(): number {
   return this.items.length;
 }
 ```
-```
 
 ## Template: Component with Props
 
 ```typescript
-import { observer } from "@/mobx";
-import { useItemsPanelViewModel } from "@/view-models";
+import { observer } from "~@/mobx";
+import { useItemsPanelViewModel } from "~@/view-model";
 
 interface ItemsPanelProps {
   onItemClick?: (itemId: string) => void;
@@ -158,9 +157,9 @@ export const ItemsPanel = observer(function ItemsPanel({
 
 ```typescript
 import { useState } from "react";
-import { observer } from "@/mobx";
-import { useItemsPanelViewModel } from "@/view-models";
-import type { Item } from "@/models";
+import { observer } from "~@/mobx";
+import { useItemsPanelViewModel } from "~@/view-model";
+import type { Item } from "~@/models";
 
 export const ItemsPanel = observer(function ItemsPanel() {
   const vm = useItemsPanelViewModel();
@@ -196,7 +195,7 @@ export const ItemsPanel = observer(function ItemsPanel() {
 ## File Structure
 
 ```
-src/views/
+packages/views/
 ├── items/
 │   ├── ItemsPanel/
 │   │   ├── index.tsx                # Main component
@@ -340,13 +339,13 @@ export const ItemsPanel = observer(function ItemsPanel({
 import { useState, useMemo } from "react";
 
 // 2. Third-party imports
-import { DataTable, type ColumnDef } from "@/data-table";
+import { DataTable, type ColumnDef } from "~@/data-table";
 
 // 3. MobX imports
-import { observer } from "@/mobx";
+import { observer } from "~@/mobx";
 
 // 4. ViewModel imports
-import { useItemsPanelViewModel } from "@/view-models";
+import { useItemsPanelViewModel } from "~@/view-model";
 
 // 5. Local imports
 import { ItemsController } from "./ItemsController";

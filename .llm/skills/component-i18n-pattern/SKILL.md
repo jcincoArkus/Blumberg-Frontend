@@ -41,7 +41,7 @@ import { Trans } from "~@/i18n/macro";
 export function WelcomeMessage() {
   return (
     <div>
-      <h1><Trans>Welcome to Vega</Trans></h1>
+      <h1><Trans>Welcome to the app</Trans></h1>
       <p><Trans>Please sign in to continue</Trans></p>
     </div>
   );
@@ -196,6 +196,8 @@ export function LanguageSwitcher() {
 }
 ```
 
+**Note:** The `Language` enum is defined and exported from `~@/i18n` (e.g., `Language.EN`, `Language.ES`).
+
 ## Template: msg Macro (Define Messages)
 
 ```tsx
@@ -203,7 +205,7 @@ import { msg } from "~@/i18n/macro";
 
 // Define messages for use elsewhere
 export const messages = {
-  welcome: msg`Welcome to Vega`,
+  welcome: msg`Welcome to the app`,
   error: msg`An error occurred`,
   success: msg`Operation successful`,
   loading: msg`Loading...`,

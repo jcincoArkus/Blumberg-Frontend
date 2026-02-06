@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const pathOfSpecification = "./../../backend/Adapters/Authorization/rbac_policy.yaml";
+const pathOfSpecification = "./../../api/pkg/authorization/internal/rbac_policy.csv";
 const actionsFile = "./../packages/authorization/actions.ts";
 
 function toPascalCase(str: string): string {

@@ -1,6 +1,6 @@
 ---
 name: logger-pattern
-description: Pattern for using the centralized logger system to replace console.log/warn/error throughout the application
+description: Pattern for using the centralized logger system to replace console.log/warn/error throughout the application. Use when adding logging, replacing console methods, setting up error tracking, or managing log context.
 ---
 
 # Logger Pattern with MobX
@@ -35,7 +35,7 @@ Pattern for implementing centralized, configurable logging with console output a
 ## Template: Basic Usage
 
 ```typescript
-import { logger } from "@/logger";
+import { logger } from "~@/logger";
 
 // Simple string messages
 logger.info("Operation completed successfully");
@@ -47,7 +47,7 @@ logger.critical("System failure");
 ## Template: With Options Object
 
 ```typescript
-import { logger } from "@/logger";
+import { logger } from "~@/logger";
 
 // With error object
 logger.error({
@@ -76,7 +76,7 @@ logger.error({
 ## Template: Context Management
 
 ```typescript
-import { logger } from "@/logger";
+import { logger } from "~@/logger";
 
 // Set global context (e.g., on login)
 logger.updateContext({
@@ -95,7 +95,7 @@ logger.clearContext("User logged out");
 ## Template: Error Handling in Try-Catch
 
 ```typescript
-import { logger } from "@/logger";
+import { logger } from "~@/logger";
 
 // Before
 try {
@@ -118,8 +118,8 @@ try {
 ## Template: Login/Logout Flow in ViewModel
 
 ```typescript
-import { makeAutoObservable } from "@/mobx";
-import { logger } from "@/logger";
+import { makeAutoObservable } from "~@/mobx";
+import { logger } from "~@/logger";
 
 class AuthViewModel {
   constructor() {
@@ -162,7 +162,7 @@ class AuthViewModel {
 ## Template: API Interceptor Errors
 
 ```typescript
-import { logger } from "@/logger";
+import { logger } from "~@/logger";
 
 const authInterceptor = async (request: Request) => {
   try {
@@ -184,9 +184,9 @@ const authInterceptor = async (request: Request) => {
 ## Template: ViewModel with Logger
 
 ```typescript
-import { makeAutoObservable } from "@/mobx";
-import { logger } from "@/logger";
-import { getItemsV1ObservedQuery } from "@/api";
+import { makeAutoObservable } from "~@/mobx";
+import { logger } from "~@/logger";
+import { getItemsV1ObservedQuery } from "~@/api";
 
 class ItemsViewModel {
   #itemsQuery = getItemsV1ObservedQuery();
@@ -216,8 +216,8 @@ class ItemsViewModel {
 ## Template: React Component with Logger
 
 ```typescript
-import { observer } from "@/mobx";
-import { useLogger } from "@/logger";
+import { observer } from "~@/mobx";
+import { useLogger } from "~@/logger";
 
 export const MyComponent = observer(function MyComponent() {
   const logger = useLogger();

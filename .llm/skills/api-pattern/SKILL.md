@@ -1,6 +1,6 @@
 ---
 name: api-pattern
-description: Pattern for auto-generating TypeScript API SDK from OpenAPI specs using hey-api with automatic MobX integration
+description: Pattern for auto-generating TypeScript API SDK from OpenAPI specs using hey-api with automatic MobX integration. Use when working with ObservedQuery, ObservedMutation, or API data fetching.
 ---
 
 # API Pattern with hey-api and MobX
@@ -23,7 +23,7 @@ Pattern for auto-generating TypeScript API SDK from OpenAPI specs using **hey-ap
 **For GET requests (queries).**
 
 ```typescript
-import { getAllItemsV1ObservedQuery, type GetAllItemsV1Data } from "@/api";
+import { getAllItemsV1ObservedQuery, type GetAllItemsV1Data } from "~@/api";
 
 // Create instance
 const query = getAllItemsV1ObservedQuery();
@@ -56,7 +56,7 @@ query.dispose();
 **For queries with path params or query params.**
 
 ```typescript
-import { getItemDetailsV1ObservedQuery, type GetItemDetailsV1Data } from "@/api";
+import { getItemDetailsV1ObservedQuery, type GetItemDetailsV1Data } from "~@/api";
 
 // Create instance
 const detailsQuery = getItemDetailsV1ObservedQuery();
@@ -83,8 +83,8 @@ import {
   createItemV1ObservedMutation,
   updateItemV1ObservedMutation,
   deleteItemV1ObservedMutation,
-} from "@/api";
-import type { ItemRequest } from "@/api";
+} from "~@/api";
+import type { ItemRequest } from "~@/api";
 
 // Create instances
 const createMutation = createItemV1ObservedMutation();
