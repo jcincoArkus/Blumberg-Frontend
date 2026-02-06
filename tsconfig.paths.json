@@ -13,6 +13,7 @@
 			"~@/models": ["./packages/models/index.ts"],
 			"~@/view-model": ["./packages/view-model/index.ts"],
 			"~@/data-table": ["./packages/data-table/index.ts"],
+			"~@/forms": ["./packages/forms/index.ts"],
 			"~@/ui": ["./packages/ui/index.ts"],
 			"~@/views": ["./packages/views/index.ts"]
 		}
