@@ -119,7 +119,8 @@ function FormInner<TSchema extends FormSchema = FormSchema>(
 		disabled: isReadOnly,
 	});
 
-	const hiddenFields = useHiddenFields(schema);
+	// Pass control so useWatch works before FormProvider is rendered (avoids "control is null")
+	const hiddenFields = useHiddenFields(schema, form.control);
 
 	// Imperative handle
 	useImperativeHandle(ref, () => ({

@@ -97,9 +97,10 @@ class _MobxQuery<
 	/**
 	 * Triggers a refetch of the query data.
 	 * This is an action that can be called to manually refresh the query.
+	 * Returns a promise that resolves when the refetch completes.
 	 */
-	refetch = (): void => {
-		this.qObserver?.refetch();
+	refetch = (): Promise<QueryObserverResult<TData, TError> | undefined> => {
+		return this.qObserver?.refetch() ?? Promise.resolve(undefined);
 	};
 
 	/**
@@ -208,9 +209,10 @@ export class MobxQuery<
 	/**
 	 * Manually triggers a refetch of the query data.
 	 * This can be used to refresh data on user action.
+	 * Returns a promise that resolves when the refetch completes.
 	 */
-	refetch = (): void => {
-		this.query.refetch();
+	refetch = (): Promise<QueryObserverResult<TData, TError> | undefined> => {
+		return this.query.refetch();
 	};
 
 	/**

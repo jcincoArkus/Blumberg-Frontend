@@ -89,6 +89,7 @@ export {
 	FormMessage,
 	useFormField,
 } from "./Form";
+export { AppFormProvider } from "./forms/AppFormProvider";
 export { Input } from "./Input";
 export { Label } from "./Label";
 export { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "./Popover";

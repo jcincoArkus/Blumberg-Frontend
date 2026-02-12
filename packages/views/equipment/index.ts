@@ -1,8 +1,11 @@
 export { ClimateTab } from "./ClimateTab";
 export { EnergyTab } from "./EnergyTab";
 export { EquipmentAlertsPanel } from "./EquipmentAlertsPanel";
+export { EquipmentDataTableController } from "./EquipmentDataTableController";
 export { EquipmentDetailsTab } from "./EquipmentDetailsTab";
+export { EquipmentForm, equipmentFormValuesFromResponse } from "./EquipmentForm";
 export { EquipmentOverviewHeader } from "./EquipmentOverviewHeader";
+export { getEquipmentColumns } from "./equipmentColumns";
 export { HistoricalCharts } from "./HistoricalCharts";
 export { LimitsComparisonPanel } from "./LimitsComparisonPanel";
 export { RecentAlerts } from "./RecentAlerts";

@@ -12,20 +12,28 @@ import {
 	createAdminV1,
 	createEquipmentV1,
 	createRoleV1,
+	createSensorTypeV1,
 	createSensorV1,
 	createSiteV1,
+	createThresholdV1,
 	deleteAdminV1,
 	deleteEquipmentV1,
 	deleteRoleV1,
+	deleteSensorTypeV1,
 	deleteSensorV1,
 	deleteSiteV1,
+	deleteThresholdV1,
 	getAdminByIdV1,
 	getAllAdminsV1,
 	getAllEquipmentV1,
 	getAllRolesV1,
 	getAllSensorsV1,
+	getAllSensorTypesV1,
 	getAllSitesV1,
+	getAllThresholdsV1,
 	getEquipmentByIdV1,
+	getIngestionRunByIdV1,
+	getIngestionRunsV1,
 	getPermissionActionsV1,
 	getPermissionResourcesV1,
 	getRoleByNameV1,
@@ -33,8 +41,11 @@ import {
 	getRoleUsersV1,
 	getSensorByIdV1,
 	getSensorReadingsV1,
+	getSensorTypeByIdV1,
 	getSiteByIdV1,
+	getThresholdByIdV1,
 	getUserRolesV1,
+	ingestReadingsV1,
 	loginV1,
 	type Options,
 	removeRolePermissionsV1,
@@ -44,8 +55,10 @@ import {
 	updateAdminV1,
 	updateEquipmentV1,
 	updateRoleV1,
+	updateSensorTypeV1,
 	updateSensorV1,
 	updateSiteV1,
+	updateThresholdV1,
 } from "../sdk.gen";
 import type {
 	AssignRolePermissionsV1Data,
@@ -62,21 +75,31 @@ import type {
 	CreateEquipmentV1Response,
 	CreateRoleV1Data,
 	CreateRoleV1Response,
+	CreateSensorTypeV1Data,
+	CreateSensorTypeV1Error,
+	CreateSensorTypeV1Response,
 	CreateSensorV1Data,
 	CreateSensorV1Error,
 	CreateSensorV1Response,
 	CreateSiteV1Data,
 	CreateSiteV1Error,
 	CreateSiteV1Response,
+	CreateThresholdV1Data,
+	CreateThresholdV1Error,
+	CreateThresholdV1Response,
 	DeleteAdminV1Data,
 	DeleteAdminV1Error,
 	DeleteEquipmentV1Data,
 	DeleteEquipmentV1Error,
 	DeleteRoleV1Data,
+	DeleteSensorTypeV1Data,
+	DeleteSensorTypeV1Error,
 	DeleteSensorV1Data,
 	DeleteSensorV1Error,
 	DeleteSiteV1Data,
 	DeleteSiteV1Error,
+	DeleteThresholdV1Data,
+	DeleteThresholdV1Error,
 	GetAdminByIdV1Data,
 	GetAdminByIdV1Error,
 	GetAdminByIdV1Response,
@@ -88,11 +111,21 @@ import type {
 	GetAllRolesV1Response,
 	GetAllSensorsV1Data,
 	GetAllSensorsV1Response,
+	GetAllSensorTypesV1Data,
+	GetAllSensorTypesV1Response,
 	GetAllSitesV1Data,
 	GetAllSitesV1Response,
+	GetAllThresholdsV1Data,
+	GetAllThresholdsV1Response,
 	GetEquipmentByIdV1Data,
 	GetEquipmentByIdV1Error,
 	GetEquipmentByIdV1Response,
+	GetIngestionRunByIdV1Data,
+	GetIngestionRunByIdV1Error,
+	GetIngestionRunByIdV1Response,
+	GetIngestionRunsV1Data,
+	GetIngestionRunsV1Error,
+	GetIngestionRunsV1Response,
 	GetPermissionActionsV1Data,
 	GetPermissionActionsV1Response,
 	GetPermissionResourcesV1Data,
@@ -109,11 +142,20 @@ import type {
 	GetSensorReadingsV1Data,
 	GetSensorReadingsV1Error,
 	GetSensorReadingsV1Response,
+	GetSensorTypeByIdV1Data,
+	GetSensorTypeByIdV1Error,
+	GetSensorTypeByIdV1Response,
 	GetSiteByIdV1Data,
 	GetSiteByIdV1Error,
 	GetSiteByIdV1Response,
+	GetThresholdByIdV1Data,
+	GetThresholdByIdV1Error,
+	GetThresholdByIdV1Response,
 	GetUserRolesV1Data,
 	GetUserRolesV1Response,
+	IngestReadingsV1Data,
+	IngestReadingsV1Error,
+	IngestReadingsV1Response,
 	LoginV1Data,
 	LoginV1Error,
 	LoginV1Response,
@@ -129,12 +171,18 @@ import type {
 	UpdateEquipmentV1Response,
 	UpdateRoleV1Data,
 	UpdateRoleV1Response,
+	UpdateSensorTypeV1Data,
+	UpdateSensorTypeV1Error,
+	UpdateSensorTypeV1Response,
 	UpdateSensorV1Data,
 	UpdateSensorV1Error,
 	UpdateSensorV1Response,
 	UpdateSiteV1Data,
 	UpdateSiteV1Error,
 	UpdateSiteV1Response,
+	UpdateThresholdV1Data,
+	UpdateThresholdV1Error,
+	UpdateThresholdV1Response,
 } from "../types.gen";
 
 export type QueryKey<TOptions extends Options> = [
@@ -423,6 +471,74 @@ export const updateEquipmentV1Mutation = (
 	};
 	return mutationOptions;
 };
+
+export const ingestReadingsV1Mutation = (
+	options?: Partial<Options<IngestReadingsV1Data>>,
+): UseMutationOptions<
+	IngestReadingsV1Response,
+	AxiosError<IngestReadingsV1Error>,
+	Options<IngestReadingsV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		IngestReadingsV1Response,
+		AxiosError<IngestReadingsV1Error>,
+		Options<IngestReadingsV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await ingestReadingsV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getIngestionRunsV1QueryKey = (options?: Options<GetIngestionRunsV1Data>) =>
+	createQueryKey("getIngestionRunsV1", options);
+
+export const getIngestionRunsV1Options = (options?: Options<GetIngestionRunsV1Data>) =>
+	queryOptions<
+		GetIngestionRunsV1Response,
+		AxiosError<GetIngestionRunsV1Error>,
+		GetIngestionRunsV1Response,
+		ReturnType<typeof getIngestionRunsV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getIngestionRunsV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getIngestionRunsV1QueryKey(options),
+	});
+
+export const getIngestionRunByIdV1QueryKey = (options: Options<GetIngestionRunByIdV1Data>) =>
+	createQueryKey("getIngestionRunByIdV1", options);
+
+export const getIngestionRunByIdV1Options = (options: Options<GetIngestionRunByIdV1Data>) =>
+	queryOptions<
+		GetIngestionRunByIdV1Response,
+		AxiosError<GetIngestionRunByIdV1Error>,
+		GetIngestionRunByIdV1Response,
+		ReturnType<typeof getIngestionRunByIdV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getIngestionRunByIdV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getIngestionRunByIdV1QueryKey(options),
+	});
 
 export const getPermissionResourcesV1QueryKey = (options?: Options<GetPermissionResourcesV1Data>) =>
 	createQueryKey("getPermissionResourcesV1", options);
@@ -732,6 +848,122 @@ export const getRoleUsersV1Options = (options: Options<GetRoleUsersV1Data>) =>
 		queryKey: getRoleUsersV1QueryKey(options),
 	});
 
+export const getAllSensorTypesV1QueryKey = (options?: Options<GetAllSensorTypesV1Data>) =>
+	createQueryKey("getAllSensorTypesV1", options);
+
+export const getAllSensorTypesV1Options = (options?: Options<GetAllSensorTypesV1Data>) =>
+	queryOptions<
+		GetAllSensorTypesV1Response,
+		AxiosError<DefaultError>,
+		GetAllSensorTypesV1Response,
+		ReturnType<typeof getAllSensorTypesV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getAllSensorTypesV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getAllSensorTypesV1QueryKey(options),
+	});
+
+export const createSensorTypeV1Mutation = (
+	options?: Partial<Options<CreateSensorTypeV1Data>>,
+): UseMutationOptions<
+	CreateSensorTypeV1Response,
+	AxiosError<CreateSensorTypeV1Error>,
+	Options<CreateSensorTypeV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		CreateSensorTypeV1Response,
+		AxiosError<CreateSensorTypeV1Error>,
+		Options<CreateSensorTypeV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await createSensorTypeV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const deleteSensorTypeV1Mutation = (
+	options?: Partial<Options<DeleteSensorTypeV1Data>>,
+): UseMutationOptions<
+	unknown,
+	AxiosError<DeleteSensorTypeV1Error>,
+	Options<DeleteSensorTypeV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DeleteSensorTypeV1Error>,
+		Options<DeleteSensorTypeV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await deleteSensorTypeV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getSensorTypeByIdV1QueryKey = (options: Options<GetSensorTypeByIdV1Data>) =>
+	createQueryKey("getSensorTypeByIdV1", options);
+
+export const getSensorTypeByIdV1Options = (options: Options<GetSensorTypeByIdV1Data>) =>
+	queryOptions<
+		GetSensorTypeByIdV1Response,
+		AxiosError<GetSensorTypeByIdV1Error>,
+		GetSensorTypeByIdV1Response,
+		ReturnType<typeof getSensorTypeByIdV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getSensorTypeByIdV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getSensorTypeByIdV1QueryKey(options),
+	});
+
+export const updateSensorTypeV1Mutation = (
+	options?: Partial<Options<UpdateSensorTypeV1Data>>,
+): UseMutationOptions<
+	UpdateSensorTypeV1Response,
+	AxiosError<UpdateSensorTypeV1Error>,
+	Options<UpdateSensorTypeV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		UpdateSensorTypeV1Response,
+		AxiosError<UpdateSensorTypeV1Error>,
+		Options<UpdateSensorTypeV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await updateSensorTypeV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
 export const getAllSensorsV1QueryKey = (options?: Options<GetAllSensorsV1Data>) =>
 	createQueryKey("getAllSensorsV1", options);
 
@@ -968,6 +1200,122 @@ export const updateSiteV1Mutation = (
 	> = {
 		mutationFn: async (fnOptions) => {
 			const { data } = await updateSiteV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getAllThresholdsV1QueryKey = (options?: Options<GetAllThresholdsV1Data>) =>
+	createQueryKey("getAllThresholdsV1", options);
+
+export const getAllThresholdsV1Options = (options?: Options<GetAllThresholdsV1Data>) =>
+	queryOptions<
+		GetAllThresholdsV1Response,
+		AxiosError<DefaultError>,
+		GetAllThresholdsV1Response,
+		ReturnType<typeof getAllThresholdsV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getAllThresholdsV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getAllThresholdsV1QueryKey(options),
+	});
+
+export const createThresholdV1Mutation = (
+	options?: Partial<Options<CreateThresholdV1Data>>,
+): UseMutationOptions<
+	CreateThresholdV1Response,
+	AxiosError<CreateThresholdV1Error>,
+	Options<CreateThresholdV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		CreateThresholdV1Response,
+		AxiosError<CreateThresholdV1Error>,
+		Options<CreateThresholdV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await createThresholdV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const deleteThresholdV1Mutation = (
+	options?: Partial<Options<DeleteThresholdV1Data>>,
+): UseMutationOptions<
+	unknown,
+	AxiosError<DeleteThresholdV1Error>,
+	Options<DeleteThresholdV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DeleteThresholdV1Error>,
+		Options<DeleteThresholdV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await deleteThresholdV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getThresholdByIdV1QueryKey = (options: Options<GetThresholdByIdV1Data>) =>
+	createQueryKey("getThresholdByIdV1", options);
+
+export const getThresholdByIdV1Options = (options: Options<GetThresholdByIdV1Data>) =>
+	queryOptions<
+		GetThresholdByIdV1Response,
+		AxiosError<GetThresholdByIdV1Error>,
+		GetThresholdByIdV1Response,
+		ReturnType<typeof getThresholdByIdV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getThresholdByIdV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getThresholdByIdV1QueryKey(options),
+	});
+
+export const updateThresholdV1Mutation = (
+	options?: Partial<Options<UpdateThresholdV1Data>>,
+): UseMutationOptions<
+	UpdateThresholdV1Response,
+	AxiosError<UpdateThresholdV1Error>,
+	Options<UpdateThresholdV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		UpdateThresholdV1Response,
+		AxiosError<UpdateThresholdV1Error>,
+		Options<UpdateThresholdV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await updateThresholdV1({
 				...options,
 				...fnOptions,
 				throwOnError: true,

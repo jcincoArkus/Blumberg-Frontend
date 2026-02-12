@@ -8,8 +8,12 @@ import {
 	getAllEquipmentV1Options,
 	getAllRolesV1Options,
 	getAllSensorsV1Options,
+	getAllSensorTypesV1Options,
 	getAllSitesV1Options,
+	getAllThresholdsV1Options,
 	getEquipmentByIdV1Options,
+	getIngestionRunByIdV1Options,
+	getIngestionRunsV1Options,
 	getPermissionActionsV1Options,
 	getPermissionResourcesV1Options,
 	getRoleByNameV1Options,
@@ -17,7 +21,9 @@ import {
 	getRoleUsersV1Options,
 	getSensorByIdV1Options,
 	getSensorReadingsV1Options,
+	getSensorTypeByIdV1Options,
 	getSiteByIdV1Options,
+	getThresholdByIdV1Options,
 	getUserRolesV1Options,
 } from "./@tanstack/react-query.gen";
 import type {
@@ -26,8 +32,12 @@ import type {
 	GetAllEquipmentV1Data,
 	GetAllRolesV1Data,
 	GetAllSensorsV1Data,
+	GetAllSensorTypesV1Data,
 	GetAllSitesV1Data,
+	GetAllThresholdsV1Data,
 	GetEquipmentByIdV1Data,
+	GetIngestionRunByIdV1Data,
+	GetIngestionRunsV1Data,
 	GetPermissionActionsV1Data,
 	GetPermissionResourcesV1Data,
 	GetRoleByNameV1Data,
@@ -35,7 +45,9 @@ import type {
 	GetRoleUsersV1Data,
 	GetSensorByIdV1Data,
 	GetSensorReadingsV1Data,
+	GetSensorTypeByIdV1Data,
 	GetSiteByIdV1Data,
+	GetThresholdByIdV1Data,
 	GetUserRolesV1Data,
 } from "./types.gen";
 
@@ -58,6 +70,16 @@ export const getEquipmentByIdV1ObservedQuery = (
 	defaultValues?: Partial<GetEquipmentByIdV1Data>,
 	observerOptions?: QueryOptions<typeof getEquipmentByIdV1Options>,
 ) => new ObservedQuery(getEquipmentByIdV1Options, defaultValues, observerOptions);
+
+export const getIngestionRunsV1ObservedQuery = (
+	defaultValues?: Partial<GetIngestionRunsV1Data>,
+	observerOptions?: QueryOptions<typeof getIngestionRunsV1Options>,
+) => new ObservedQuery(getIngestionRunsV1Options, defaultValues, observerOptions);
+
+export const getIngestionRunByIdV1ObservedQuery = (
+	defaultValues?: Partial<GetIngestionRunByIdV1Data>,
+	observerOptions?: QueryOptions<typeof getIngestionRunByIdV1Options>,
+) => new ObservedQuery(getIngestionRunByIdV1Options, defaultValues, observerOptions);
 
 export const getPermissionResourcesV1ObservedQuery = (
 	defaultValues?: Partial<GetPermissionResourcesV1Data>,
@@ -89,6 +111,16 @@ export const getRoleUsersV1ObservedQuery = (
 	observerOptions?: QueryOptions<typeof getRoleUsersV1Options>,
 ) => new ObservedQuery(getRoleUsersV1Options, defaultValues, observerOptions);
 
+export const getAllSensorTypesV1ObservedQuery = (
+	defaultValues?: Partial<GetAllSensorTypesV1Data>,
+	observerOptions?: QueryOptions<typeof getAllSensorTypesV1Options>,
+) => new ObservedQuery(getAllSensorTypesV1Options, defaultValues, observerOptions);
+
+export const getSensorTypeByIdV1ObservedQuery = (
+	defaultValues?: Partial<GetSensorTypeByIdV1Data>,
+	observerOptions?: QueryOptions<typeof getSensorTypeByIdV1Options>,
+) => new ObservedQuery(getSensorTypeByIdV1Options, defaultValues, observerOptions);
+
 export const getAllSensorsV1ObservedQuery = (
 	defaultValues?: Partial<GetAllSensorsV1Data>,
 	observerOptions?: QueryOptions<typeof getAllSensorsV1Options>,
@@ -113,6 +145,16 @@ export const getSiteByIdV1ObservedQuery = (
 	defaultValues?: Partial<GetSiteByIdV1Data>,
 	observerOptions?: QueryOptions<typeof getSiteByIdV1Options>,
 ) => new ObservedQuery(getSiteByIdV1Options, defaultValues, observerOptions);
+
+export const getAllThresholdsV1ObservedQuery = (
+	defaultValues?: Partial<GetAllThresholdsV1Data>,
+	observerOptions?: QueryOptions<typeof getAllThresholdsV1Options>,
+) => new ObservedQuery(getAllThresholdsV1Options, defaultValues, observerOptions);
+
+export const getThresholdByIdV1ObservedQuery = (
+	defaultValues?: Partial<GetThresholdByIdV1Data>,
+	observerOptions?: QueryOptions<typeof getThresholdByIdV1Options>,
+) => new ObservedQuery(getThresholdByIdV1Options, defaultValues, observerOptions);
 
 export const getUserRolesV1ObservedQuery = (
 	defaultValues?: Partial<GetUserRolesV1Data>,

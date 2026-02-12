@@ -27,8 +27,12 @@ export function useDashboardShellState({ navSections }: UseDashboardShellStatePr
 
 	const isItemActive = useCallback(
 		(itemHref: string): boolean => {
-			if (itemHref === "/") return pathname === "/" || pathname.startsWith("/equipment/");
-			if (itemHref === "/sites") return pathname === "/sites" || pathname.startsWith("/site/");
+			if (itemHref === "/") return pathname === "/" || pathname.startsWith("/home");
+			if (itemHref === "/sites") return pathname === "/sites" || pathname.startsWith("/sites/");
+			if (itemHref === "/equipment")
+				return pathname === "/equipment" || pathname.startsWith("/equipment/");
+			if (itemHref === "/sensors")
+				return pathname === "/sensors" || pathname.startsWith("/sensors/");
 			if (itemHref === "/monitoring/sensor-health") return pathname.startsWith("/monitoring");
 			if (itemHref.startsWith("/config")) return pathname.startsWith("/config");
 			if (itemHref === "/ingestion") return pathname.startsWith("/ingestion");
