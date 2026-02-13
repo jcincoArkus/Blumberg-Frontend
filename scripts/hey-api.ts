@@ -1,7 +1,10 @@
-import { readFileSync, rmSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const ROOT_DIR = process.cwd();
+const __dirname = dirname(fileURLToPath(import.meta.url));
+/** Repo root: directory containing package.json, resolved from this script's location. */
+const ROOT_DIR = join(__dirname, "..");
 const DECIMAL_IMPORT = 'import { Decimal } from "decimal.js";';
 const IMPORT_FROM_BASE = "../../api/generated/client";
 
@@ -69,10 +72,15 @@ function addDecimalImport(relativePath: string): void {
 }
 
 function updateLegacySdk(): void {
+	const sdkGenPath = "packages/api-legacy/generated/sdk.gen.ts";
+	if (!existsSync(resolvePath(sdkGenPath))) {
+		console.log("⊘ packages/api-legacy not present, skipping legacy SDK update");
+		return;
+	}
+
 	removePath("packages/api-legacy/generated/client");
 	removePath("packages/api-legacy/generated/client.gen.ts");
 
-	const sdkGenPath = "packages/api-legacy/generated/sdk.gen.ts";
 	const sdkUpdated = replaceOrKeep(
 		replaceOrKeep(
 			readText(sdkGenPath),

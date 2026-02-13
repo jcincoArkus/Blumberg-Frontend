@@ -7,10 +7,10 @@ export const zActionsResponse = z.object({
 });
 
 export const zAdminRequest = z.object({
-	email: z.optional(z.union([z.string(), z.null()])),
-	password: z.optional(z.union([z.string(), z.null()])),
-	firstName: z.optional(z.union([z.string(), z.null()])),
-	lastName: z.optional(z.union([z.string(), z.null()])),
+	email: z.email().min(0).max(255),
+	password: z.string().min(8).max(128),
+	firstName: z.string().min(0).max(100),
+	lastName: z.string().min(0).max(100),
 });
 
 export const zAdminResponse = z.object({
@@ -20,6 +20,35 @@ export const zAdminResponse = z.object({
 	lastName: z.optional(z.union([z.string(), z.null()])),
 	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
 	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+});
+
+export const zAdminResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zAdminResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
 });
 
 export const zAssignRolesToUserRequest = z.object({
@@ -53,9 +82,9 @@ export const zCreateRoleRequest = z.object({
 });
 
 export const zEquipmentRequest = z.object({
-	name: z.optional(z.union([z.string(), z.null()])),
-	equipmentType: z.optional(z.union([z.string(), z.null()])),
-	siteId: z.optional(z.uuid()),
+	name: z.string().min(0).max(200),
+	equipmentType: z.string().min(0).max(100),
+	siteId: z.uuid(),
 });
 
 export const zEquipmentResponse = z.object({
@@ -68,6 +97,133 @@ export const zEquipmentResponse = z.object({
 	siteName: z.optional(z.union([z.string(), z.null()])),
 	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
 	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+});
+
+export const zEquipmentResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zEquipmentResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
+});
+
+export const zIngestReadingsResponse = z.object({
+	runId: z.optional(z.uuid()),
+	totalRecords: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	acceptedRecords: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	rejectedRecords: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	status: z.optional(z.union([z.string(), z.null()])),
+});
+
+export const zIngestionReadingResult = z.object({
+	id: z.optional(z.uuid()),
+	sensorId: z.optional(z.uuid()),
+	value: z.optional(z.number()),
+	timestampUtc: z.optional(z.iso.datetime({ offset: true, local: true })),
+	unit: z.optional(z.union([z.string(), z.null()])),
+});
+
+export const zIngestionSource = z.union([z.literal(0), z.literal(1), z.literal(2)]);
+
+export const zIngestionStatus = z.union([
+	z.literal(0),
+	z.literal(1),
+	z.literal(2),
+	z.literal(3),
+	z.literal(4),
+]);
+
+export const zIngestionRunListResponse = z.object({
+	id: z.optional(z.uuid()),
+	source: z.optional(zIngestionSource),
+	status: z.optional(zIngestionStatus),
+	totalRecords: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	acceptedRecords: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	rejectedRecords: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	startedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+	completedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+	organizationId: z.optional(z.uuid()),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+});
+
+export const zIngestionRunListResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zIngestionRunListResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
 });
 
 export const zLoginRequest = z.object({
@@ -89,6 +245,46 @@ export const zProblemDetails = z.object({
 	),
 	detail: z.optional(z.union([z.string(), z.null()])),
 	instance: z.optional(z.union([z.string(), z.null()])),
+});
+
+export const zRejectedReadingResult = z.object({
+	rowIndex: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	rejectionReason: z.optional(z.union([z.string(), z.null()])),
+});
+
+export const zIngestionRunDetailResponse = z.object({
+	id: z.optional(z.uuid()),
+	source: z.optional(zIngestionSource),
+	status: z.optional(zIngestionStatus),
+	totalRecords: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	acceptedRecords: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	rejectedRecords: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	startedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+	completedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+	organizationId: z.optional(z.uuid()),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	acceptedReadings: z.optional(z.union([z.array(zIngestionReadingResult), z.null()])),
+	rejectedReadings: z.optional(z.union([z.array(zRejectedReadingResult), z.null()])),
 });
 
 export const zRemoveRolesFromUserRequest = z.object({
@@ -146,11 +342,11 @@ export const zRolesListResponse = z.object({
 export const zSensorStatus = z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]);
 
 export const zSensorRequest = z.object({
-	serial: z.optional(z.union([z.string(), z.null()])),
-	status: z.optional(zSensorStatus),
-	equipmentId: z.optional(z.uuid()),
-	sensorTypeId: z.optional(z.uuid()),
-	thresholdId: z.optional(z.uuid()),
+	serial: z.string().min(0).max(100),
+	status: zSensorStatus,
+	equipmentId: z.uuid(),
+	sensorTypeId: z.uuid(),
+	thresholdId: z.uuid(),
 });
 
 export const zSensorResponse = z.object({
@@ -168,13 +364,52 @@ export const zSensorResponse = z.object({
 	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
 });
 
+export const zSensorResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zSensorResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
+});
+
+export const zSensorTypeKind = z.union([
+	z.literal(0),
+	z.literal(1),
+	z.literal(2),
+	z.literal(3),
+	z.literal(4),
+	z.literal(5),
+	z.literal(6),
+]);
+
 export const zSiteRequest = z.object({
-	name: z.optional(z.union([z.string(), z.null()])),
-	address: z.optional(z.union([z.string(), z.null()])),
-	city: z.optional(z.union([z.string(), z.null()])),
-	state: z.optional(z.union([z.string(), z.null()])),
-	postalCode: z.optional(z.union([z.string(), z.null()])),
-	country: z.optional(z.union([z.string(), z.null()])),
+	name: z.string().min(0).max(200),
+	address: z.string().min(0).max(500),
+	city: z.string().min(0).max(100),
+	state: z.string().min(0).max(100),
+	postalCode: z.string().min(0).max(20),
+	country: z.string().min(0).max(100),
 });
 
 export const zSiteResponse = z.object({
@@ -191,6 +426,84 @@ export const zSiteResponse = z.object({
 	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
 });
 
+export const zSiteResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zSiteResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
+});
+
+export const zThresholdRequest = z.object({
+	min: z.number(),
+	max: z.number(),
+	durationSeconds: z.int().gte(0).lte(2147483647),
+});
+
+export const zThresholdResponse = z.object({
+	id: z.optional(z.uuid()),
+	min: z.optional(z.number()),
+	max: z.optional(z.number()),
+	durationSeconds: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+});
+
+export const zThresholdResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zThresholdResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
+});
+
 export const zUnit = z.union([
 	z.literal(0),
 	z.literal(1),
@@ -202,6 +515,13 @@ export const zUnit = z.union([
 	z.literal(7),
 	z.literal(8),
 ]);
+
+export const zIngestReadingItem = z.object({
+	sensorId: z.optional(z.uuid()),
+	value: z.optional(z.number()),
+	timestampUtc: z.optional(z.iso.datetime({ offset: true, local: true })),
+	unit: z.optional(zUnit),
+});
 
 export const zSensorReadingResponse = z.object({
 	id: z.optional(z.uuid()),
@@ -243,6 +563,48 @@ export const zSensorReadingResponsePagedResponse = z.object({
 	),
 });
 
+export const zSensorTypeRequest = z.object({
+	type: zSensorTypeKind,
+	unit: zUnit,
+});
+
+export const zSensorTypeResponse = z.object({
+	id: z.optional(z.uuid()),
+	type: z.optional(zSensorTypeKind),
+	unit: z.optional(zUnit),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+});
+
+export const zSensorTypeResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zSensorTypeResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
+});
+
 export const zUpdateRoleRequest = z.object({
 	displayName: z.union([z.string(), z.null()]),
 	description: z.union([z.string(), z.null()]),
@@ -253,6 +615,72 @@ export const zUpdateRoleRequest = z.object({
 export const zUserRolesResponse = z.object({
 	userId: z.union([z.string(), z.null()]),
 	roles: z.union([z.array(z.string()), z.null()]),
+});
+
+export const zAdminResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zAdminResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
+export const zEquipmentResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zEquipmentResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
+export const zIngestionRunListResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zIngestionRunListResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
 });
 
 export const zSensorReadingResponsePagedResponseWritable = z.object({
@@ -277,10 +705,114 @@ export const zSensorReadingResponsePagedResponseWritable = z.object({
 	),
 });
 
+export const zSensorResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zSensorResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
+export const zSensorTypeResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zSensorTypeResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
+export const zSiteResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zSiteResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
+export const zThresholdResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zThresholdResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
 export const zGetAllAdminsV1Data = z.object({
 	body: z.optional(z.never()),
 	path: z.optional(z.never()),
-	query: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			Search: z.optional(z.string()),
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
 });
 
 export const zCreateAdminV1Data = z.object({
@@ -322,7 +854,23 @@ export const zLoginV1Data = z.object({
 export const zGetAllEquipmentV1Data = z.object({
 	body: z.optional(z.never()),
 	path: z.optional(z.never()),
-	query: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			Search: z.optional(z.string()),
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
 });
 
 export const zCreateEquipmentV1Data = z.object({
@@ -349,6 +897,46 @@ export const zGetEquipmentByIdV1Data = z.object({
 
 export const zUpdateEquipmentV1Data = z.object({
 	body: z.optional(zEquipmentRequest),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zIngestReadingsV1Data = z.object({
+	body: z.optional(z.array(zIngestReadingItem)),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zGetIngestionRunsV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			Status: z.optional(zIngestionStatus),
+			Source: z.optional(zIngestionSource),
+			From: z.optional(z.iso.datetime({ offset: true, local: true })),
+			To: z.optional(z.iso.datetime({ offset: true, local: true })),
+			Search: z.optional(z.string()),
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
+});
+
+export const zGetIngestionRunByIdV1Data = z.object({
+	body: z.optional(z.never()),
 	path: z.object({
 		id: z.uuid(),
 	}),
@@ -457,10 +1045,78 @@ export const zGetRoleUsersV1Data = z.object({
 	query: z.optional(z.never()),
 });
 
+export const zGetAllSensorTypesV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			Search: z.optional(z.string()),
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
+});
+
+export const zCreateSensorTypeV1Data = z.object({
+	body: z.optional(zSensorTypeRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zDeleteSensorTypeV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetSensorTypeByIdV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zUpdateSensorTypeV1Data = z.object({
+	body: z.optional(zSensorTypeRequest),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
 export const zGetAllSensorsV1Data = z.object({
 	body: z.optional(z.never()),
 	path: z.optional(z.never()),
-	query: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			Search: z.optional(z.string()),
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
 });
 
 export const zCreateSensorV1Data = z.object({
@@ -476,24 +1132,21 @@ export const zGetSensorReadingsV1Data = z.object({
 	}),
 	query: z.optional(
 		z.object({
-			from: z.optional(z.iso.datetime({ offset: true, local: true })),
-			to: z.optional(z.iso.datetime({ offset: true, local: true })),
-			page: z
-				.optional(
-					z
-						.int()
-						.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
-						.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
-				)
-				.default(1),
-			pageSize: z
-				.optional(
-					z
-						.int()
-						.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
-						.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
-				)
-				.default(20),
+			From: z.optional(z.iso.datetime({ offset: true, local: true })),
+			To: z.optional(z.iso.datetime({ offset: true, local: true })),
+			Search: z.optional(z.string()),
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
 		}),
 	),
 });
@@ -525,7 +1178,23 @@ export const zUpdateSensorV1Data = z.object({
 export const zGetAllSitesV1Data = z.object({
 	body: z.optional(z.never()),
 	path: z.optional(z.never()),
-	query: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			Search: z.optional(z.string()),
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
 });
 
 export const zCreateSiteV1Data = z.object({
@@ -552,6 +1221,58 @@ export const zGetSiteByIdV1Data = z.object({
 
 export const zUpdateSiteV1Data = z.object({
 	body: z.optional(zSiteRequest),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetAllThresholdsV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			Search: z.optional(z.string()),
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
+});
+
+export const zCreateThresholdV1Data = z.object({
+	body: z.optional(zThresholdRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zDeleteThresholdV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetThresholdByIdV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zUpdateThresholdV1Data = z.object({
+	body: z.optional(zThresholdRequest),
 	path: z.object({
 		id: z.uuid(),
 	}),

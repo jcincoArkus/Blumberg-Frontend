@@ -95,8 +95,12 @@ export {
 	ClimateTab,
 	EnergyTab,
 	EquipmentAlertsPanel,
+	EquipmentDataTableController,
 	EquipmentDetailsTab,
+	EquipmentForm,
 	EquipmentOverviewHeader,
+	equipmentFormValuesFromResponse,
+	getEquipmentColumns,
 	HistoricalCharts,
 	LimitsComparisonPanel,
 	RecentAlerts,
@@ -163,4 +167,17 @@ export {
 	SensorHealthStats,
 	SensorHealthTable,
 } from "./sensor-health";
-export { SiteTrendCharts } from "./sites";
+export {
+	getSensorColumns,
+	getSensorTypeKindDisplayName,
+	SensorForm,
+	SensorsDataTableController,
+	sensorFormValuesFromResponse,
+} from "./sensors";
+export {
+	getSiteColumns,
+	SiteForm,
+	SitesDataTableController,
+	SiteTrendCharts,
+	siteFormValuesFromResponse,
+} from "./sites";
