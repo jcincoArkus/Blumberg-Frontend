@@ -20,6 +20,8 @@ import type {
 	GetIngestionRunByIdV1Response,
 	GetIngestionRunsV1Response,
 	GetSensorByIdV1Response,
+	GetSensorHealthByIdV1Response,
+	GetSensorHealthListV1Response,
 	GetSensorReadingsV1Response,
 	GetSensorTypeByIdV1Response,
 	GetSiteByIdV1Response,
@@ -193,6 +195,43 @@ export const getIngestionRunByIdV1ResponseTransformer = async (
 	data: any,
 ): Promise<GetIngestionRunByIdV1Response> => {
 	data = ingestionRunDetailResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+const sensorHealthListItemResponseSchemaResponseTransformer = (data: any) => {
+	if (data.lastSeenAt) {
+		data.lastSeenAt = new Date(data.lastSeenAt);
+	}
+	return data;
+};
+
+const sensorHealthListItemResponsePagedResponseSchemaResponseTransformer = (data: any) => {
+	if (data.items) {
+		data.items = data.items.map((item: any) =>
+			sensorHealthListItemResponseSchemaResponseTransformer(item),
+		);
+	}
+	return data;
+};
+
+export const getSensorHealthListV1ResponseTransformer = async (
+	data: any,
+): Promise<GetSensorHealthListV1Response> => {
+	data = sensorHealthListItemResponsePagedResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+const sensorHealthDetailResponseSchemaResponseTransformer = (data: any) => {
+	if (data.lastSeenAt) {
+		data.lastSeenAt = new Date(data.lastSeenAt);
+	}
+	return data;
+};
+
+export const getSensorHealthByIdV1ResponseTransformer = async (
+	data: any,
+): Promise<GetSensorHealthByIdV1Response> => {
+	data = sensorHealthDetailResponseSchemaResponseTransformer(data);
 	return data;
 };
 

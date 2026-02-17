@@ -13,17 +13,16 @@ import { Link } from "react-router";
 
 import type { DataTableProps } from "~@/data-table";
 import { t } from "~@/i18n/macro";
-import { Badge, Button, Progress } from "~@/ui";
+import { Badge, Button } from "~@/ui";
 
 import type { EnrichedSensor } from "./SensorHealthTable";
 
 const statusConfig: Record<string, { icon: typeof Wifi; className: string }> = {
-	active: { icon: Wifi, className: "bg-green-100 text-green-700" },
+	healthy: { icon: Wifi, className: "bg-green-100 text-green-700" },
 	offline: { icon: WifiOff, className: "bg-red-100 text-red-700" },
-	stale: { icon: WifiOff, className: "bg-red-100 text-red-700" },
+	stale: { icon: WifiOff, className: "bg-amber-100 text-amber-700" },
 	warning: { icon: AlertTriangle, className: "bg-amber-100 text-amber-700" },
-	error: { icon: AlertTriangle, className: "bg-red-100 text-red-700" },
-	inactive: { icon: WifiOff, className: "bg-slate-100 text-slate-700" },
+	critical: { icon: AlertTriangle, className: "bg-red-100 text-red-700" },
 };
 
 const typeIcons: Record<string, typeof Activity> = {
@@ -43,12 +42,6 @@ const formatDate = (dateString: string) => {
 		hour: "2-digit",
 		minute: "2-digit",
 	});
-};
-
-const getBatteryColor = (level: number) => {
-	if (level >= 50) return "bg-green-500";
-	if (level >= 20) return "bg-amber-500";
-	return "bg-red-500";
 };
 
 export const getSensorHealthColumns = (): DataTableProps<EnrichedSensor>["columns"] =>
@@ -109,7 +102,7 @@ export const getSensorHealthColumns = (): DataTableProps<EnrichedSensor>["column
 			header: t`Status`,
 			cell: ({ row }) => {
 				const sensor = row.original;
-				const config = statusConfig[sensor.status] || statusConfig.inactive;
+				const config = statusConfig[sensor.status] || statusConfig.healthy;
 				const StatusIcon = config.icon;
 				return (
 					<Badge className={config.className}>
@@ -124,27 +117,13 @@ export const getSensorHealthColumns = (): DataTableProps<EnrichedSensor>["column
 			header: t`Current Value`,
 			cell: ({ row }) => {
 				const sensor = row.original;
+				if (sensor.value === 0 && !sensor.unit) {
+					return <span className="text-muted-foreground">-</span>;
+				}
 				return (
 					<span className="font-mono">
 						{sensor.value} {sensor.unit}
 					</span>
-				);
-			},
-		},
-		{
-			accessorKey: "batteryLevel",
-			header: t`Battery`,
-			cell: ({ row }) => {
-				const batteryLevel = row.original.batteryLevel ?? 100;
-				return (
-					<div className="flex items-center gap-2 w-24">
-						<Progress
-							value={batteryLevel}
-							className="h-2"
-							indicatorClassName={getBatteryColor(batteryLevel)}
-						/>
-						<span className="text-xs text-muted-foreground w-8">{batteryLevel}%</span>
-					</div>
 				);
 			},
 		},

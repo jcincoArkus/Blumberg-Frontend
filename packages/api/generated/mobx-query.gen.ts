@@ -20,6 +20,8 @@ import {
 	getRolePermissionsV1Options,
 	getRoleUsersV1Options,
 	getSensorByIdV1Options,
+	getSensorHealthByIdV1Options,
+	getSensorHealthListV1Options,
 	getSensorReadingsV1Options,
 	getSensorTypeByIdV1Options,
 	getSiteByIdV1Options,
@@ -44,6 +46,8 @@ import type {
 	GetRolePermissionsV1Data,
 	GetRoleUsersV1Data,
 	GetSensorByIdV1Data,
+	GetSensorHealthByIdV1Data,
+	GetSensorHealthListV1Data,
 	GetSensorReadingsV1Data,
 	GetSensorTypeByIdV1Data,
 	GetSiteByIdV1Data,
@@ -110,6 +114,16 @@ export const getRoleUsersV1ObservedQuery = (
 	defaultValues?: Partial<GetRoleUsersV1Data>,
 	observerOptions?: QueryOptions<typeof getRoleUsersV1Options>,
 ) => new ObservedQuery(getRoleUsersV1Options, defaultValues, observerOptions);
+
+export const getSensorHealthListV1ObservedQuery = (
+	defaultValues?: Partial<GetSensorHealthListV1Data>,
+	observerOptions?: QueryOptions<typeof getSensorHealthListV1Options>,
+) => new ObservedQuery(getSensorHealthListV1Options, defaultValues, observerOptions);
+
+export const getSensorHealthByIdV1ObservedQuery = (
+	defaultValues?: Partial<GetSensorHealthByIdV1Data>,
+	observerOptions?: QueryOptions<typeof getSensorHealthByIdV1Options>,
+) => new ObservedQuery(getSensorHealthByIdV1Options, defaultValues, observerOptions);
 
 export const getAllSensorTypesV1ObservedQuery = (
 	defaultValues?: Partial<GetAllSensorTypesV1Data>,

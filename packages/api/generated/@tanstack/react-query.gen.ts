@@ -40,6 +40,8 @@ import {
 	getRolePermissionsV1,
 	getRoleUsersV1,
 	getSensorByIdV1,
+	getSensorHealthByIdV1,
+	getSensorHealthListV1,
 	getSensorReadingsV1,
 	getSensorTypeByIdV1,
 	getSiteByIdV1,
@@ -139,6 +141,11 @@ import type {
 	GetSensorByIdV1Data,
 	GetSensorByIdV1Error,
 	GetSensorByIdV1Response,
+	GetSensorHealthByIdV1Data,
+	GetSensorHealthByIdV1Error,
+	GetSensorHealthByIdV1Response,
+	GetSensorHealthListV1Data,
+	GetSensorHealthListV1Response,
 	GetSensorReadingsV1Data,
 	GetSensorReadingsV1Error,
 	GetSensorReadingsV1Response,
@@ -846,6 +853,50 @@ export const getRoleUsersV1Options = (options: Options<GetRoleUsersV1Data>) =>
 			return data;
 		},
 		queryKey: getRoleUsersV1QueryKey(options),
+	});
+
+export const getSensorHealthListV1QueryKey = (options?: Options<GetSensorHealthListV1Data>) =>
+	createQueryKey("getSensorHealthListV1", options);
+
+export const getSensorHealthListV1Options = (options?: Options<GetSensorHealthListV1Data>) =>
+	queryOptions<
+		GetSensorHealthListV1Response,
+		AxiosError<DefaultError>,
+		GetSensorHealthListV1Response,
+		ReturnType<typeof getSensorHealthListV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getSensorHealthListV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getSensorHealthListV1QueryKey(options),
+	});
+
+export const getSensorHealthByIdV1QueryKey = (options: Options<GetSensorHealthByIdV1Data>) =>
+	createQueryKey("getSensorHealthByIdV1", options);
+
+export const getSensorHealthByIdV1Options = (options: Options<GetSensorHealthByIdV1Data>) =>
+	queryOptions<
+		GetSensorHealthByIdV1Response,
+		AxiosError<GetSensorHealthByIdV1Error>,
+		GetSensorHealthByIdV1Response,
+		ReturnType<typeof getSensorHealthByIdV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getSensorHealthByIdV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getSensorHealthByIdV1QueryKey(options),
 	});
 
 export const getAllSensorTypesV1QueryKey = (options?: Options<GetAllSensorTypesV1Data>) =>

@@ -1,15 +1,41 @@
-import { makeAutoObservable } from "~@/mobx";
 import {
-	equipment,
-	getAllIngestionErrorsLast24h,
-	getDataQualityRecord,
-	getIngestionErrorsForSensor,
-	getSensorHealthRecord,
-	sensorHealthRecords,
-	sensors,
-	sites,
-} from "~@/mock-data";
-import type { Equipment, QualityWindow, SensorHealthData, Site } from "~@/views";
+	type GetSensorHealthListV1Data,
+	getAllEquipmentV1ObservedQuery,
+	getAllSitesV1ObservedQuery,
+	getSensorHealthListV1ObservedQuery,
+	SensorHealthStatus,
+} from "~@/api";
+import { makeAutoObservable, reaction } from "~@/mobx";
+import type {
+	MonitoringEquipment as Equipment,
+	HealthStatus,
+	QualityWindow,
+	SensorHealthData,
+	MonitoringSite as Site,
+} from "~@/views";
+
+/** Map numeric enum to display-friendly health status strings. */
+const healthStatusLabel: Record<SensorHealthStatus, HealthStatus> = {
+	[SensorHealthStatus._0]: "healthy",
+	[SensorHealthStatus._1]: "warning",
+	[SensorHealthStatus._2]: "critical",
+	[SensorHealthStatus._3]: "stale",
+	[SensorHealthStatus._4]: "offline",
+};
+
+/** Reverse lookup: display string to enum value. */
+const healthStatusFromLabel: Record<string, SensorHealthStatus> = {
+	healthy: SensorHealthStatus._0,
+	warning: SensorHealthStatus._1,
+	critical: SensorHealthStatus._2,
+	stale: SensorHealthStatus._3,
+	offline: SensorHealthStatus._4,
+};
+
+// Constants matching backend SensorService
+const WARNING_STALE_SECONDS = 600;
+const CRITICAL_STALE_SECONDS = 1800;
+const EXPECTED_INTERVAL_SECONDS = 300;
 
 export class MonitoringSensorHealthViewModel {
 	selectedSensor: SensorHealthData | null = null;
@@ -24,117 +50,111 @@ export class MonitoringSensorHealthViewModel {
 	siteFilter = "all";
 	equipmentFilter = "all";
 
+	#healthQuery = getSensorHealthListV1ObservedQuery();
+	#sitesQuery = getAllSitesV1ObservedQuery();
+	#equipmentQuery = getAllEquipmentV1ObservedQuery();
+	#filterDisposer: (() => void) | null = null;
+
 	constructor() {
 		makeAutoObservable(this);
+		this.#loadInitialData();
+
+		// Re-fetch when server-side filters change
+		this.#filterDisposer = reaction(
+			() => ({
+				health: this.healthFilter,
+				site: this.siteFilter,
+				search: this.searchQuery,
+			}),
+			() => this.#loadHealthList(),
+			{ delay: 300 },
+		);
+	}
+
+	#loadInitialData() {
+		this.#sitesQuery.load({ query: { Page: 1, PageSize: 200 } });
+		this.#equipmentQuery.load({ query: { Page: 1, PageSize: 500 } });
+		this.#loadHealthList();
+	}
+
+	#loadHealthList() {
+		const query: GetSensorHealthListV1Data["query"] = {
+			Page: 1,
+			PageSize: 200,
+		};
+
+		if (this.siteFilter !== "all") {
+			query.SiteId = this.siteFilter;
+		}
+
+		const enumVal = healthStatusFromLabel[this.healthFilter];
+		if (enumVal !== undefined) {
+			query.HealthStatus = enumVal;
+		}
+
+		if (this.searchQuery.trim()) {
+			query.Search = this.searchQuery.trim();
+		}
+
+		this.#healthQuery.load({ query });
+	}
+
+	get isLoading(): boolean {
+		return this.#healthQuery.isLoading;
+	}
+
+	get hasError(): boolean {
+		return this.#healthQuery.hasError;
 	}
 
 	get sensorHealthData(): SensorHealthData[] {
-		const sensorIds = sensorHealthRecords.map((record) => record.sensorId);
-		const relevantSensors = sensors.filter((sensor) => sensorIds.includes(sensor.id));
+		const items = this.#healthQuery.data?.items ?? [];
 
-		return relevantSensors.map((sensor) => {
-			const health = getSensorHealthRecord(sensor.id);
-			const quality = getDataQualityRecord(sensor.id, this.timeWindow);
-			const errors = getIngestionErrorsForSensor(sensor.id, true);
-
-			let ingestionStatus: "ok" | "api_error" | "csv_error" = "ok";
-			if (errors.length > 0) {
-				const hasApiError = errors.some((error) => error.source === "api");
-				const hasCsvError = errors.some((error) => error.source === "csv");
-				if (hasApiError) {
-					ingestionStatus = "api_error";
-				} else if (hasCsvError) {
-					ingestionStatus = "csv_error";
-				}
-			}
-
-			const issues: string[] = [];
-			if (quality?.missingPoints && quality.missingPoints > 0) {
-				issues.push(`${quality.missingPoints} missing points`);
-			}
-			if (quality?.inconsistentPoints && quality.inconsistentPoints > 0) {
-				issues.push(`${quality.inconsistentPoints} inconsistent`);
-			}
-			if (errors.length > 0) {
-				issues.push(`${errors.length} ingestion error${errors.length > 1 ? "s" : ""}`);
-			}
-			if (quality?.notes) {
-				issues.push(quality.notes);
-			}
-			const issueSummary = issues.length > 0 ? issues.join(", ") : "No issues";
-
-			const site = sites.find((entry) => entry.id === sensor.siteId);
-			const eq = equipment.find((entry) => entry.id === sensor.equipmentId);
+		return items.map((item) => {
+			const status = healthStatusLabel[item.healthStatus ?? SensorHealthStatus._0];
 
 			return {
 				sensor: {
-					id: sensor.id,
-					name: sensor.name,
-					type: sensor.type,
-					siteId: sensor.siteId,
-					siteName: site?.name,
-					equipmentId: sensor.equipmentId,
-					equipmentName: eq?.name,
+					id: item.id ?? "",
+					name: item.name ?? "",
+					type: (item.sensorType ?? "").toLowerCase(),
+					siteId: item.siteId ?? "",
+					siteName: item.siteName ?? undefined,
+					equipmentId: item.equipmentId ?? "",
+					equipmentName: item.equipmentName ?? undefined,
 				},
-				health: health
-					? {
-							lastReportedAt: health.lastReportedAt,
-							expectedIntervalSeconds: health.expectedIntervalSeconds,
-							warningThresholdSeconds: health.warningThresholdSeconds,
-							criticalThresholdSeconds: health.criticalThresholdSeconds,
-							healthStatus: health.healthStatus,
-						}
-					: undefined,
-				quality: quality
-					? {
-							window: quality.window,
-							expectedPoints: quality.expectedPoints,
-							receivedPoints: quality.receivedPoints,
-							missingPoints: quality.missingPoints,
-							inconsistentPoints: quality.inconsistentPoints,
-							completenessPct: quality.completenessPct,
-							consistencyPct: quality.consistencyPct,
-							freshnessPct: quality.freshnessPct,
-							qualityStatus: quality.qualityStatus,
-							notes: quality.notes,
-						}
-					: undefined,
-				ingestionErrors: errors.map((error) => ({
-					id: error.id,
-					timestamp: error.timestamp,
-					source: error.source,
-					errorCode: error.errorCode,
-					message: error.message,
-					severity: error.severity,
-				})),
-				ingestionStatus,
-				issueSummary,
+				health: {
+					lastReportedAt: item.lastSeenAt
+						? item.lastSeenAt.toISOString()
+						: new Date().toISOString(),
+					expectedIntervalSeconds: EXPECTED_INTERVAL_SECONDS,
+					warningThresholdSeconds: WARNING_STALE_SECONDS,
+					criticalThresholdSeconds: CRITICAL_STALE_SECONDS,
+					healthStatus: status,
+					reliabilityScore: item.reliabilityScore ?? 0,
+				},
+				quality: undefined,
+				ingestionErrors: [],
+				ingestionStatus: "ok" as const,
+				issueSummary:
+					status === "offline" || status === "critical"
+						? "Sensor not reporting"
+						: status === "stale"
+							? "Late / delayed"
+							: "No issues",
 			};
 		});
 	}
 
 	get filteredData(): SensorHealthData[] {
 		return this.sensorHealthData.filter((data) => {
-			if (this.searchQuery) {
-				const query = this.searchQuery.toLowerCase();
-				const matchesSearch =
-					data.sensor.id.toLowerCase().includes(query) ||
-					data.sensor.name.toLowerCase().includes(query) ||
-					data.sensor.siteName?.toLowerCase().includes(query) ||
-					data.sensor.equipmentName?.toLowerCase().includes(query) ||
-					data.sensor.type.toLowerCase().includes(query);
-				if (!matchesSearch) return false;
-			}
-			if (this.healthFilter !== "all") {
-				if (!data.health || data.health.healthStatus !== this.healthFilter) return false;
-			}
+			// Health and search filters are server-side; remaining filters are client-side
 			if (this.qualityFilter !== "all") {
 				if (!data.quality || data.quality.qualityStatus !== this.qualityFilter) return false;
 			}
 			if (this.ingestionFilter !== "all" && data.ingestionStatus !== this.ingestionFilter)
 				return false;
 			if (this.typeFilter !== "all" && data.sensor.type !== this.typeFilter) return false;
-			if (this.siteFilter !== "all" && data.sensor.siteId !== this.siteFilter) return false;
 			if (this.equipmentFilter !== "all") {
 				if (this.equipmentFilter === "unassigned" && data.sensor.equipmentId) return false;
 				if (
@@ -149,33 +169,18 @@ export class MonitoringSensorHealthViewModel {
 
 	get sortedData(): SensorHealthData[] {
 		return [...this.filteredData].sort((a, b) => {
-			const healthPriority = { silent: 3, stale: 2, healthy: 1 };
-			const aHealthPriority = a.health ? healthPriority[a.health.healthStatus] : 0;
-			const bHealthPriority = b.health ? healthPriority[b.health.healthStatus] : 0;
+			const healthPriority: Record<string, number> = {
+				offline: 4,
+				critical: 3,
+				stale: 2,
+				warning: 1,
+				healthy: 0,
+			};
+			const aHealthPriority = a.health ? (healthPriority[a.health.healthStatus] ?? 0) : 0;
+			const bHealthPriority = b.health ? (healthPriority[b.health.healthStatus] ?? 0) : 0;
 
 			if (aHealthPriority !== bHealthPriority) {
 				return bHealthPriority - aHealthPriority;
-			}
-
-			const aQualityIssues =
-				a.quality?.qualityStatus === "inconsistent"
-					? 2
-					: a.quality?.qualityStatus === "missing"
-						? 1
-						: 0;
-			const bQualityIssues =
-				b.quality?.qualityStatus === "inconsistent"
-					? 2
-					: b.quality?.qualityStatus === "missing"
-						? 1
-						: 0;
-
-			if (aQualityIssues !== bQualityIssues) {
-				return bQualityIssues - aQualityIssues;
-			}
-
-			if (a.ingestionErrors.length !== b.ingestionErrors.length) {
-				return b.ingestionErrors.length - a.ingestionErrors.length;
 			}
 
 			if (a.health && b.health) {
@@ -189,43 +194,40 @@ export class MonitoringSensorHealthViewModel {
 	}
 
 	get kpis() {
-		const total = this.sensorHealthData.length;
-		const healthy = this.sensorHealthData.filter(
-			(data) => data.health?.healthStatus === "healthy",
-		).length;
-		const stale = this.sensorHealthData.filter(
-			(data) => data.health?.healthStatus === "stale",
-		).length;
-		const silent = this.sensorHealthData.filter(
-			(data) => data.health?.healthStatus === "silent",
-		).length;
-		const last24hErrors = getAllIngestionErrorsLast24h();
-		const qualityIssues = this.sensorHealthData.filter(
-			(data) =>
-				data.quality &&
-				(data.quality.qualityStatus === "missing" || data.quality.qualityStatus === "inconsistent"),
+		const data = this.sensorHealthData;
+		const total = this.#healthQuery.data?.totalCount ?? data.length;
+		const healthy = data.filter((d) => d.health?.healthStatus === "healthy").length;
+		const stale = data.filter((d) => d.health?.healthStatus === "stale").length;
+		const offline = data.filter(
+			(d) => d.health?.healthStatus === "offline" || d.health?.healthStatus === "critical",
 		).length;
 
 		return {
 			total,
 			healthy,
 			stale,
-			silent,
-			ingestionErrors: last24hErrors.length,
-			qualityIssues,
+			silent: offline,
+			ingestionErrors: 0,
+			qualityIssues: 0,
 		};
 	}
 
 	get monitoringSites(): Site[] {
-		return sites.map((site) => ({ id: site.id, name: site.name, location: site.location }));
+		const items = this.#sitesQuery.data?.items ?? [];
+		return items.map((site) => ({
+			id: site.id ?? "",
+			name: site.name ?? "",
+			location: [site.city, site.state].filter(Boolean).join(", ") || undefined,
+		}));
 	}
 
 	get monitoringEquipment(): Equipment[] {
-		return equipment.map((entry) => ({
-			id: entry.id,
-			siteId: entry.siteId,
-			name: entry.name,
-			type: entry.type,
+		const items = this.#equipmentQuery.data?.items ?? [];
+		return items.map((eq) => ({
+			id: eq.id ?? "",
+			siteId: eq.siteId ?? "",
+			name: eq.name ?? "",
+			type: eq.equipmentType ?? undefined,
 		}));
 	}
 
@@ -271,7 +273,10 @@ export class MonitoringSensorHealthViewModel {
 	};
 
 	dispose() {
-		// No subscriptions to clean up.
+		this.#filterDisposer?.();
+		this.#healthQuery.dispose();
+		this.#sitesQuery.dispose();
+		this.#equipmentQuery.dispose();
 	}
 }
 
