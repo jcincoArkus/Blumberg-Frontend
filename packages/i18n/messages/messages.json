@@ -243,6 +243,10 @@
 		"en-US": "Acknowledged: {0}",
 		"es-LA": ""
 	},
+	"across": {
+		"en-US": "across",
+		"es-LA": ""
+	},
 	"Actions": {
 		"en-US": "Actions",
 		"es-LA": ""
@@ -713,6 +717,14 @@
 	},
 	"Capacity": {
 		"en-US": "Capacity",
+		"es-LA": ""
+	},
+	"categories": {
+		"en-US": "categories",
+		"es-LA": ""
+	},
+	"category": {
+		"en-US": "category",
 		"es-LA": ""
 	},
 	"City": {
@@ -1187,6 +1199,10 @@
 		"en-US": "Duration",
 		"es-LA": ""
 	},
+	"Duration in seconds": {
+		"en-US": "Duration in seconds",
+		"es-LA": ""
+	},
 	"Duration: {0}": {
 		"en-US": "Duration: {0}",
 		"es-LA": ""
@@ -1481,6 +1497,10 @@
 	},
 	"Failed to create site": {
 		"en-US": "Failed to create site",
+		"es-LA": ""
+	},
+	"Failed to create threshold": {
+		"en-US": "Failed to create threshold",
 		"es-LA": ""
 	},
 	"Failed to delete equipment": {
@@ -2303,6 +2323,10 @@
 		"en-US": "No sensor readings available for the selected period and filters",
 		"es-LA": ""
 	},
+	"No sensors available": {
+		"en-US": "No sensors available",
+		"es-LA": ""
+	},
 	"No sensors available for comparison.": {
 		"en-US": "No sensors available for comparison.",
 		"es-LA": ""
@@ -2465,6 +2489,10 @@
 	},
 	"Origin": {
 		"en-US": "Origin",
+		"es-LA": ""
+	},
+	"Other": {
+		"en-US": "Other",
 		"es-LA": ""
 	},
 	"out of range": {
@@ -3023,6 +3051,10 @@
 		"en-US": "Sensor",
 		"es-LA": ""
 	},
+	"sensor": {
+		"en-US": "sensor",
+		"es-LA": ""
+	},
 	"Sensor created successfully": {
 		"en-US": "Sensor created successfully",
 		"es-LA": ""
@@ -3077,6 +3109,10 @@
 	},
 	"Sensor Management": {
 		"en-US": "Sensor Management",
+		"es-LA": ""
+	},
+	"Sensor Metrics": {
+		"en-US": "Sensor Metrics",
 		"es-LA": ""
 	},
 	"Sensor Name / ID": {
@@ -3137,6 +3173,10 @@
 	},
 	"Sensors": {
 		"en-US": "Sensors",
+		"es-LA": ""
+	},
+	"sensors": {
+		"en-US": "sensors",
 		"es-LA": ""
 	},
 	"Sensors for {0}": {
@@ -3543,6 +3583,10 @@
 		"en-US": "Threshold",
 		"es-LA": ""
 	},
+	"Threshold duration (seconds)": {
+		"en-US": "Threshold duration (seconds)",
+		"es-LA": ""
+	},
 	"Threshold ID": {
 		"en-US": "Threshold ID",
 		"es-LA": ""
@@ -3555,8 +3599,16 @@
 		"en-US": "Threshold is required",
 		"es-LA": ""
 	},
+	"Threshold max": {
+		"en-US": "Threshold max",
+		"es-LA": ""
+	},
 	"Threshold max (optional)": {
 		"en-US": "Threshold max (optional)",
+		"es-LA": ""
+	},
+	"Threshold min": {
+		"en-US": "Threshold min",
 		"es-LA": ""
 	},
 	"Threshold min (optional)": {
@@ -3625,6 +3677,10 @@
 	},
 	"Total Alerts": {
 		"en-US": "Total Alerts",
+		"es-LA": ""
+	},
+	"total alerts": {
+		"en-US": "total alerts",
 		"es-LA": ""
 	},
 	"Total Readings": {

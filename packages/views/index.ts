@@ -79,6 +79,8 @@ export {
 	DashboardShell,
 	type Domain,
 	GlobalStatusBar,
+	GroupedSensorMetricsPanel,
+	type GroupedSensorMetricsSensor,
 	KeyMetricsCards,
 	type KeyMetricsCardsProps,
 	KPIGauge,

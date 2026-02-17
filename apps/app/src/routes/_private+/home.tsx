@@ -2,6 +2,7 @@ import {
 	ActiveAlertsPanel,
 	AIInsightsPanel,
 	GlobalStatusBar,
+	GroupedSensorMetricsPanel,
 	KeyMetricsCards,
 	SensorReliabilityPanel,
 	TrendsPanel,
@@ -30,6 +31,8 @@ function Home() {
 						<AIInsightsPanel />
 					</div>
 				</div>
+
+				<GroupedSensorMetricsPanel />
 
 				<div className="grid gap-3 lg:grid-cols-12 items-start">
 					<div className="lg:col-span-9">

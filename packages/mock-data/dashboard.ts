@@ -94,20 +94,193 @@ export const alerts: Alert[] = [
 	},
 ];
 
-// Type for sensors in the mock data (extended for filtering)
-type SensorType = "temperature" | "humidity" | "co2" | "pressure" | "energy";
+// Type for sensors in the mock data (extended for Sensor Metrics and filtering)
+export type DashboardSensorType = "temperature" | "humidity" | "co2" | "pressure" | "energy" | "o2";
 
-interface MockSensor extends Sensor {
-	type: SensorType;
+export interface MockSensor extends Sensor {
+	type: DashboardSensorType;
+	value?: number;
+	unit: string;
+	min?: number;
+	max?: number;
+	lastSeen?: string;
 }
 
-// Mock Sensors for reliability panel
+// Mock Sensors for reliability panel and Sensor Metrics (with readings for dashboard)
 export const sensors: MockSensor[] = [
-	{ id: "s-1", name: "Temp Sensor A", status: "active", type: "temperature" },
-	{ id: "s-2", name: "Humidity Sensor B", status: "active", type: "humidity" },
-	{ id: "s-3", name: "CO2 Sensor C", status: "offline", type: "co2" },
-	{ id: "s-4", name: "Pressure Sensor D", status: "stale", type: "pressure" },
-	{ id: "s-5", name: "Energy Meter E", status: "warning", type: "energy" },
+	{
+		id: "s-1",
+		name: "Internal Temp",
+		status: "active",
+		type: "temperature",
+		value: -18.2,
+		unit: "°C",
+		min: -25,
+		max: -15,
+		lastSeen: "2024-01-15T02:30:00Z",
+	},
+	{
+		id: "s-2",
+		name: "Internal Temp",
+		status: "active",
+		type: "temperature",
+		value: -19.1,
+		unit: "°C",
+		min: -25,
+		max: -15,
+		lastSeen: "2024-01-15T02:28:00Z",
+	},
+	{
+		id: "s-3",
+		name: "Supply Air Temp",
+		status: "active",
+		type: "temperature",
+		value: 22.5,
+		unit: "°C",
+		min: 18,
+		max: 28,
+		lastSeen: "2024-01-15T02:25:00Z",
+	},
+	{
+		id: "s-4",
+		name: "Freezer Temp",
+		status: "active",
+		type: "temperature",
+		value: -22.8,
+		unit: "°C",
+		min: -30,
+		max: -20,
+		lastSeen: "2024-01-15T02:20:00Z",
+	},
+	{
+		id: "s-5",
+		name: "Zone Temp",
+		status: "active",
+		type: "temperature",
+		value: 21.2,
+		unit: "°C",
+		min: 18,
+		max: 26,
+		lastSeen: "2024-01-15T02:22:00Z",
+	},
+	{
+		id: "s-6",
+		name: "Chamber Temp",
+		status: "active",
+		type: "temperature",
+		value: 4.2,
+		unit: "°C",
+		min: 2,
+		max: 8,
+		lastSeen: "2024-01-15T02:15:00Z",
+	},
+	{
+		id: "s-7",
+		name: "Chamber Temp",
+		status: "active",
+		type: "temperature",
+		value: 4.8,
+		unit: "°C",
+		min: 2,
+		max: 8,
+		lastSeen: "2024-01-15T02:18:00Z",
+	},
+	{
+		id: "s-8",
+		name: "Panel Temp",
+		status: "active",
+		type: "temperature",
+		value: 32.5,
+		unit: "°C",
+		min: 20,
+		max: 45,
+		lastSeen: "2024-01-15T02:12:00Z",
+	},
+	{
+		id: "s-9",
+		name: "Unmapped Temp Sensor",
+		status: "active",
+		type: "temperature",
+		unit: "°C",
+		lastSeen: "2024-01-15T12:06:00Z",
+	},
+	{
+		id: "s-10",
+		name: "Zone Temp 2",
+		status: "active",
+		type: "temperature",
+		value: 20.8,
+		unit: "°C",
+		min: 18,
+		max: 26,
+		lastSeen: "2024-01-15T02:20:00Z",
+	},
+	{
+		id: "s-11",
+		name: "Humidity Sensor A",
+		status: "active",
+		type: "humidity",
+		value: 52,
+		unit: "%",
+		min: 30,
+		max: 70,
+		lastSeen: "2024-01-15T02:18:00Z",
+	},
+	{
+		id: "s-12",
+		name: "Humidity Sensor B",
+		status: "active",
+		type: "humidity",
+		value: 48,
+		unit: "%",
+		min: 30,
+		max: 70,
+		lastSeen: "2024-01-15T02:20:00Z",
+	},
+	{
+		id: "s-13",
+		name: "Pressure Sensor A",
+		status: "active",
+		type: "pressure",
+		value: 101.3,
+		unit: "kPa",
+		min: 95,
+		max: 110,
+		lastSeen: "2024-01-15T02:25:00Z",
+	},
+	{
+		id: "s-14",
+		name: "CO₂ Sensor A",
+		status: "active",
+		type: "co2",
+		value: 450,
+		unit: "ppm",
+		min: 350,
+		max: 1000,
+		lastSeen: "2024-01-15T02:22:00Z",
+	},
+	{
+		id: "s-15",
+		name: "Energy Meter E",
+		status: "warning",
+		type: "energy",
+		value: 12.5,
+		unit: "kW",
+		min: 0,
+		max: 20,
+		lastSeen: "2024-01-15T02:10:00Z",
+	},
+	{
+		id: "s-16",
+		name: "O₂ Sensor",
+		status: "active",
+		type: "o2",
+		value: 20.9,
+		unit: "%",
+		min: 19.5,
+		max: 23,
+		lastSeen: "2024-01-15T02:28:00Z",
+	},
 ];
 
 // Mock AI Insights
