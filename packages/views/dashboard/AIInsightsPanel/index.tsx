@@ -39,7 +39,7 @@ export const AIInsightsPanel = observer(function AIInsightsPanel() {
 
 	return (
 		<div className="h-full flex flex-col bg-card text-card-foreground rounded-xl border shadow-sm overflow-hidden">
-			<div className="px-3 pt-3 pb-0.5">
+			<div className="px-4 pt-4 pb-0.5 flex-shrink-0">
 				<h3 className="text-base font-semibold leading-tight">{t`AI Insights`}</h3>
 			</div>
 			<DataTable

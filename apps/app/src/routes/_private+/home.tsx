@@ -27,10 +27,10 @@ function Home() {
 					<div className="lg:col-span-3">
 						<ActiveAlertsPanel />
 					</div>
-					<div className="lg:col-span-6">
+					<div className="lg:col-span-4">
 						<TrendsPanel />
 					</div>
-					<div className="lg:col-span-3">
+					<div className="lg:col-span-5">
 						<AIInsightsPanel />
 					</div>
 				</div>
