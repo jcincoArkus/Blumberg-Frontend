@@ -37,7 +37,6 @@ function Home() {
 
 				<GroupedSensorMetricsPanel />
 
-				{/* 50/50 grid: Interior Map + Location */}
 				<div className="grid gap-4 lg:grid-cols-12 items-stretch min-h-[min(600px,70vh)]">
 					<div className="lg:col-span-6 min-w-0 flex flex-col min-h-0">
 						<InteriorMapPanel selectedLocation={selectedLocation} />
@@ -50,7 +49,6 @@ function Home() {
 					</div>
 				</div>
 
-				{/* Sensor Status: full width below maps (mockup design) */}
 				<SensorReliabilityPanel />
 			</div>
 		</div>

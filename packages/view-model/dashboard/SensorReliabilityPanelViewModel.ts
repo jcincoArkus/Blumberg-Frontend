@@ -44,6 +44,21 @@ class SensorReliabilityPanelViewModel {
 	get flappingSensors() {
 		return this.reliability.flappingSensors;
 	}
+
+	/** Number of sensors that are not offline, stale, or flapping. */
+	get healthyCount() {
+		return this.totalSensors - this.offlineCount - this.staleCount - this.flappingCount;
+	}
+
+	/** Percentage of healthy sensors (0–100). */
+	get healthyPercentage() {
+		return this.totalSensors > 0 ? Math.round((this.healthyCount / this.totalSensors) * 100) : 100;
+	}
+
+	/** True if any sensors are offline, stale, or flapping. */
+	get hasIssues() {
+		return this.offlineCount > 0 || this.staleCount > 0 || this.flappingCount > 0;
+	}
 }
 
 // Export singleton instance

@@ -15,12 +15,11 @@ class InteriorMapPanelViewModel {
 	}
 
 	getLocationName(locationId: string | null | undefined): string {
-		if (!locationId) return "Interior Map";
+		if (!locationId) return "No Location Selected";
 		const loc = this.locations.find((l) => l.id === locationId);
 		return loc?.name ?? "Interior Map";
 	}
 
-	/** Zone status for the selected location (links interior map to map selection). */
 	getZoneStatus(zoneId: string, locationId: string | null | undefined): ZoneStatus {
 		if (!locationId) return "ok";
 		const byLocation = locationZoneStatus[locationId];

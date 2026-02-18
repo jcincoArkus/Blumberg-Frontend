@@ -22,11 +22,10 @@ const getColumns = (): ColumnDef<InsightItem>[] => [
 
 export const AIInsightsPanel = observer(function AIInsightsPanel() {
 	const vm = useAIInsightsPanelViewModel();
-	const displayInsights = useMemo((): InsightItem[] => {
-		return vm.insights.map((insight) => ({ ...insight }));
-	}, [vm.insights]);
-
-	const controller = useMemo(() => new AIInsightsController(displayInsights), [displayInsights]);
+	const controller = useMemo(
+		() => new AIInsightsController(vm.insights as InsightItem[]),
+		[vm.insights],
+	);
 	const columns = useMemo(() => getColumns(), []);
 
 	const listItem = useMemo(
