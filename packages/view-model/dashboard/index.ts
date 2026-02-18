@@ -26,10 +26,23 @@ export {
 	globalStatusBarViewModel,
 	useGlobalStatusBarViewModel,
 } from "./GlobalStatusBarViewModel";
+export type { SensorWithReading } from "./GroupedSensorMetricsPanelViewModel";
+export {
+	groupedSensorMetricsPanelViewModel,
+	useGroupedSensorMetricsPanelViewModel,
+} from "./GroupedSensorMetricsPanelViewModel";
+export {
+	interiorMapPanelViewModel,
+	useInteriorMapPanelViewModel,
+} from "./InteriorMapPanelViewModel";
 export {
 	keyMetricsCardsViewModel,
 	useKeyMetricsCardsViewModel,
 } from "./KeyMetricsCardsViewModel";
+export {
+	locationPanelViewModel,
+	useLocationPanelViewModel,
+} from "./LocationPanelViewModel";
 export {
 	sensorReliabilityPanelViewModel,
 	useSensorReliabilityPanelViewModel,

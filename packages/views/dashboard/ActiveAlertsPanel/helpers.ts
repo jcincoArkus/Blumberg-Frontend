@@ -1,4 +1,16 @@
-import { AlertCircle, AlertTriangle, Info } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import {
+	Activity,
+	AlertCircle,
+	AlertTriangle,
+	Droplets,
+	Gauge,
+	Info,
+	Settings,
+	Thermometer,
+	Wind,
+	Wrench,
+} from "lucide-react";
 
 export function formatDuration(createdAt: string): string {
 	const now = new Date();
@@ -13,6 +25,34 @@ export function formatDuration(createdAt: string): string {
 	return `${diffMins}m`;
 }
 
+/** Mockup-style relative time, e.g. "2h41m ago" */
+export function formatDurationAgo(createdAt: string): string {
+	const d = formatDuration(createdAt);
+	return d ? `${d} ago` : "";
+}
+
+/** Map alert name/type to icon (mockup: thermometer, gauge, cloud, droplet, wrench, etc.) */
+export function getSensorIcon(_alertName: string): LucideIcon {
+	const name = _alertName.toLowerCase();
+	if (name.includes("temperature") || name.includes("temp") || name.includes("freezer"))
+		return Thermometer;
+	if (name.includes("pressure") || name.includes("compressor")) return Gauge;
+	if (
+		name.includes("air") ||
+		name.includes("climate") ||
+		name.includes("aqi") ||
+		name.includes("co2") ||
+		name.includes("co₂")
+	)
+		return Wind;
+	if (name.includes("humidity") || name.includes("moisture")) return Droplets;
+	if (name.includes("maintenance") || name.includes("service") || name.includes("repair"))
+		return Wrench;
+	if (name.includes("energy") || name.includes("power") || name.includes("consumption"))
+		return Activity;
+	return Settings;
+}
+
 export function getSeverityIcon(severity: string) {
 	switch (severity) {
 		case "critical":
@@ -21,6 +61,49 @@ export function getSeverityIcon(severity: string) {
 			return AlertCircle;
 		default:
 			return Info;
+	}
+}
+
+/** Mockup-style row styling: bg, left border, icon circle, badge */
+export function getSeverityStyle(severity: string) {
+	switch (severity) {
+		case "critical":
+			return {
+				bg: "bg-red-50",
+				border: "border-l-4 border-red-600",
+				iconBg: "bg-red-100",
+				iconColor: "text-red-600",
+				badgeBg: "bg-red-600",
+				badgeText: "text-white",
+			};
+		case "high":
+			return {
+				bg: "bg-orange-50",
+				border: "border-l-4 border-orange-500",
+				iconBg: "bg-orange-100",
+				iconColor: "text-orange-600",
+				badgeBg: "bg-orange-500",
+				badgeText: "text-white",
+			};
+		case "medium":
+			return {
+				bg: "bg-yellow-50",
+				border: "border-l-4 border-yellow-500",
+				iconBg: "bg-yellow-100",
+				iconColor: "text-yellow-600",
+				badgeBg: "bg-yellow-500",
+				badgeText: "text-white",
+			};
+		default:
+			// Mockup: blue for LOW (e.g. Maintenance, Air)
+			return {
+				bg: "bg-slate-50",
+				border: "border-l-4 border-slate-400",
+				iconBg: "bg-slate-100",
+				iconColor: "text-slate-600",
+				badgeBg: "bg-blue-500",
+				badgeText: "text-white",
+			};
 	}
 }
 
@@ -42,11 +125,11 @@ export function getBadgeClassName(severity: string) {
 		case "critical":
 			return "bg-red-600 text-white border-0";
 		case "high":
-			return "bg-orange-100 text-orange-900 border-0";
+			return "bg-orange-500 text-white border-0";
 		case "medium":
-			return "bg-amber-100 text-amber-900 border-0";
+			return "bg-yellow-500 text-white border-0";
 		default:
-			return "bg-slate-100 text-slate-900 border-0";
+			return "bg-blue-500 text-white border-0";
 	}
 }
 
@@ -57,7 +140,7 @@ export function getTextColor(severity: string) {
 		case "high":
 			return "text-orange-700";
 		case "medium":
-			return "text-amber-700";
+			return "text-yellow-700";
 		default:
 			return "text-slate-700";
 	}
