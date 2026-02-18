@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronRight, TrendingUp } from "lucide-react";
+import { Activity, ChevronDown, ChevronRight } from "lucide-react";
 import type { FC } from "react";
 import { Link } from "react-router";
 
@@ -18,38 +18,30 @@ export const FlappingList: FC<FlappingListProps> = ({ flappingSensors, isOpen, o
 
 	return (
 		<Collapsible open={isOpen} onOpenChange={onToggle}>
-			<CollapsibleTrigger className="w-full flex items-center justify-between p-1 rounded hover:bg-muted/50 transition-colors">
+			<CollapsibleTrigger className="w-full flex items-center justify-between py-1.5 px-1 rounded hover:bg-muted/50 transition-colors text-left">
 				<div className="flex items-center gap-1.5">
-					<TrendingUp className="size-3 text-orange-600" />
-					<p className="text-xs font-medium text-orange-700">
-						{t`Flapping`} ({flappingSensors.length})
+					<Activity className="size-3.5 text-purple-600 shrink-0" aria-hidden />
+					<p className="text-xs font-medium text-purple-600">
+						{t`Unstable`} ({flappingSensors.length})
 					</p>
 				</div>
 				{isOpen ? (
-					<ChevronDown className="size-3 text-muted-foreground" />
+					<ChevronDown className="size-3 text-muted-foreground shrink-0" />
 				) : (
-					<ChevronRight className="size-3 text-muted-foreground" />
+					<ChevronRight className="size-3 text-muted-foreground shrink-0" />
 				)}
 			</CollapsibleTrigger>
 			<CollapsibleContent>
 				<div className="space-y-0.5 pt-1">
-					{flappingSensors.slice(0, 3).map((sensor) => (
+					{flappingSensors.slice(0, 5).map((sensor) => (
 						<Link
 							key={sensor.id}
 							to={`/config/sensors?sensor=${sensor.id}`}
-							className="block p-1 rounded text-xs border border-orange-200 bg-orange-50/30 hover:bg-orange-100/50 transition-colors"
+							className="block py-2 px-2 rounded-md text-xs border border-purple-100 bg-white dark:bg-card hover:bg-purple-50/50 dark:hover:bg-purple-950/20 transition-colors"
 						>
-							<p className="font-medium truncate">{sensor.name}</p>
+							<p className="font-medium text-foreground truncate">{sensor.name}</p>
 						</Link>
 					))}
-					{flappingSensors.length > 3 && (
-						<Link
-							to="/monitoring/sensor-health"
-							className="block text-center text-xs text-primary hover:underline pt-0.5"
-						>
-							{t`View all →`}
-						</Link>
-					)}
 				</div>
 			</CollapsibleContent>
 		</Collapsible>
