@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router";
 
 import type { ColumnDef } from "~@/data-table";
 import { DataTable } from "~@/data-table";
@@ -44,25 +45,35 @@ export const ActiveAlertsPanel = observer(function ActiveAlertsPanel() {
 	return (
 		<>
 			<div className="h-full flex flex-col bg-card text-card-foreground rounded-xl border shadow-sm overflow-hidden">
-				<div className="px-3 pt-3 pb-0.5">
+				<div className="px-4 pt-4 pb-0.5 flex-shrink-0">
 					<h3 className="text-base font-semibold leading-tight">{t`Active Alerts`}</h3>
 				</div>
-				<DataTable
-					controller={controller}
-					columns={columns}
-					viewMode="list"
-					showSearch={false}
-					isClickable={true}
-					listItem={listItem}
-					components={{ ListView: ActiveAlertsListView }}
-					onRowClick={handleAlertClick}
-					customEmptyState={() => (
-						<div className="p-3 text-center text-xs text-muted-foreground">
-							{t`No active alerts`}
-						</div>
-					)}
-					renderBottomBar={() => null}
-				/>
+				<div className="flex-1 min-h-0 overflow-hidden">
+					<DataTable
+						controller={controller}
+						columns={columns}
+						viewMode="list"
+						showSearch={false}
+						isClickable={true}
+						listItem={listItem}
+						components={{ ListView: ActiveAlertsListView }}
+						onRowClick={handleAlertClick}
+						customEmptyState={() => (
+							<div className="p-3 text-center text-xs text-muted-foreground">
+								{t`No active alerts`}
+							</div>
+						)}
+						renderBottomBar={() => null}
+					/>
+				</div>
+				<div className="flex-shrink-0 px-4 pb-3 pt-2 border-t border-border text-center">
+					<Link
+						to="/alerts"
+						className="text-xs font-medium text-teal-600 dark:text-teal-400 hover:underline"
+					>
+						{t`View All →`}
+					</Link>
+				</div>
 			</div>
 
 			{selectedAlert && (
