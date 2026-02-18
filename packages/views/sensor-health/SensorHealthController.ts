@@ -1,45 +1,60 @@
 import { makeAutoObservable } from "mobx";
 
-import type { DataItem, IDataTableController, StandardQuery } from "~@/data-table";
+import type { GetSensorHealthListV1Data, SensorHealthListItemResponse } from "~@/api";
+import { getSensorHealthListV1ObservedQuery } from "~@/api";
+import type { ErrorInfo, IDataTableController, StandardQuery } from "~@/data-table";
 
-export interface EnrichedSensor extends DataItem {
-	id: string;
-	name: string;
-	type: string;
-	status: "active" | "warning" | "stale" | "offline" | "error" | "inactive";
-	equipmentId: string;
-	equipmentName: string;
-	siteName: string;
-	siteId: string;
-	value: number;
-	unit: string;
-	batteryLevel?: number;
-	lastSeen: string;
-}
-
-export class SensorHealthController implements IDataTableController<EnrichedSensor> {
+export class SensorHealthController implements IDataTableController<SensorHealthListItemResponse> {
 	readonly tableId = "sensor-health";
 
-	data: EnrichedSensor[] = [];
-	total = 0;
-	isLoading = false;
-	isFetching = false;
-	isError = false;
-	error = null;
+	#query = getSensorHealthListV1ObservedQuery();
 
-	constructor(initialData: EnrichedSensor[]) {
+	constructor() {
 		makeAutoObservable(this);
-		this.setData(initialData);
 	}
 
-	setData(data: EnrichedSensor[]) {
-		this.data = data;
-		this.total = data.length;
+	get data(): SensorHealthListItemResponse[] {
+		return this.#query.data?.items ?? [];
 	}
 
-	async load(_query: StandardQuery): Promise<void> {
-		return Promise.resolve();
+	get total(): number {
+		return this.#query.data?.totalCount ?? 0;
 	}
 
-	dispose(): void {}
+	get isLoading(): boolean {
+		return this.#query.isLoading;
+	}
+
+	get isFetching(): boolean {
+		return this.#query.isFetching;
+	}
+
+	get isError(): boolean {
+		return this.#query.hasError;
+	}
+
+	get error(): ErrorInfo | null {
+		const err = this.#query.error;
+		if (!err) return null;
+		return { message: err instanceof Error ? err.message : String(err) };
+	}
+
+	async load(query: StandardQuery): Promise<void> {
+		const page = query.page ?? 0;
+		const limit = query.limit ?? 20;
+		const search = query.search?.trim() || undefined;
+
+		const params: Partial<GetSensorHealthListV1Data> = {
+			query: {
+				Page: page + 1,
+				PageSize: limit,
+				Search: search,
+			},
+		};
+		await this.#query.loadAsync(params);
+	}
+
+	dispose(): void {
+		this.#query.dispose();
+	}
 }

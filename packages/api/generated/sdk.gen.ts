@@ -20,6 +20,8 @@ import {
 	getIngestionRunByIdV1ResponseTransformer,
 	getIngestionRunsV1ResponseTransformer,
 	getSensorByIdV1ResponseTransformer,
+	getSensorHealthByIdV1ResponseTransformer,
+	getSensorHealthListV1ResponseTransformer,
 	getSensorReadingsV1ResponseTransformer,
 	getSensorTypeByIdV1ResponseTransformer,
 	getSiteByIdV1ResponseTransformer,
@@ -121,6 +123,11 @@ import type {
 	GetSensorByIdV1Data,
 	GetSensorByIdV1Errors,
 	GetSensorByIdV1Responses,
+	GetSensorHealthByIdV1Data,
+	GetSensorHealthByIdV1Errors,
+	GetSensorHealthByIdV1Responses,
+	GetSensorHealthListV1Data,
+	GetSensorHealthListV1Responses,
 	GetSensorReadingsV1Data,
 	GetSensorReadingsV1Errors,
 	GetSensorReadingsV1Responses,
@@ -206,6 +213,8 @@ import {
 	zGetRolePermissionsV1Data,
 	zGetRoleUsersV1Data,
 	zGetSensorByIdV1Data,
+	zGetSensorHealthByIdV1Data,
+	zGetSensorHealthListV1Data,
 	zGetSensorReadingsV1Data,
 	zGetSensorTypeByIdV1Data,
 	zGetSiteByIdV1Data,
@@ -628,6 +637,34 @@ export const getRoleUsersV1 = <ThrowOnError extends boolean = false>(
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/roles/{roleName}/users",
+		...options,
+	});
+
+export const getSensorHealthListV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetSensorHealthListV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<GetSensorHealthListV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetSensorHealthListV1Data.parseAsync(data),
+		responseTransformer: getSensorHealthListV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/sensors/health",
+		...options,
+	});
+
+export const getSensorHealthByIdV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetSensorHealthByIdV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<
+		GetSensorHealthByIdV1Responses,
+		GetSensorHealthByIdV1Errors,
+		ThrowOnError
+	>({
+		requestValidator: async (data) => await zGetSensorHealthByIdV1Data.parseAsync(data),
+		responseTransformer: getSensorHealthByIdV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/sensors/{id}/health",
 		...options,
 	});
 

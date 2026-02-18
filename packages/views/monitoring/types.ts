@@ -1,6 +1,6 @@
 // Types for monitoring components
 
-export type HealthStatus = "healthy" | "stale" | "silent";
+export type HealthStatus = "healthy" | "stale" | "offline" | "warning" | "critical";
 export type DataQualityStatus = "good" | "missing" | "inconsistent";
 export type IngestionSource = "api" | "csv";
 export type IngestionStatus = "ok" | "api_error" | "csv_error";
@@ -23,6 +23,7 @@ export interface SensorHealthRecordInfo {
 	warningThresholdSeconds: number;
 	criticalThresholdSeconds: number;
 	healthStatus: HealthStatus;
+	reliabilityScore?: number;
 }
 
 export interface DataQualityInfo {

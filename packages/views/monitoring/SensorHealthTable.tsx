@@ -89,7 +89,7 @@ function SensorHealthTable({
 		});
 	};
 
-	const getHealthBadge = (status?: "healthy" | "stale" | "silent") => {
+	const getHealthBadge = (status?: "healthy" | "stale" | "offline" | "warning" | "critical") => {
 		if (!status) {
 			return (
 				<Badge variant="outline" className="bg-slate-100 text-slate-700 border-slate-200">
@@ -103,7 +103,9 @@ function SensorHealthTable({
 				className: "bg-emerald-100 text-emerald-700 border-emerald-200",
 			},
 			stale: { label: t`Stale`, className: "bg-amber-100 text-amber-700 border-amber-200" },
-			silent: { label: t`Silent`, className: "bg-red-100 text-red-700 border-red-200" },
+			offline: { label: t`Offline`, className: "bg-red-100 text-red-700 border-red-200" },
+			warning: { label: t`Warning`, className: "bg-amber-100 text-amber-700 border-amber-200" },
+			critical: { label: t`Critical`, className: "bg-red-100 text-red-700 border-red-200" },
 		};
 		const cfg = config[status];
 		return (
@@ -237,7 +239,9 @@ function SensorHealthTable({
 								<SelectItem value="all">{t`All Status`}</SelectItem>
 								<SelectItem value="healthy">{t`Healthy`}</SelectItem>
 								<SelectItem value="stale">{t`Stale`}</SelectItem>
-								<SelectItem value="silent">{t`Silent`}</SelectItem>
+								<SelectItem value="offline">{t`Offline`}</SelectItem>
+								<SelectItem value="warning">{t`Warning`}</SelectItem>
+								<SelectItem value="critical">{t`Critical`}</SelectItem>
 							</SelectContent>
 						</Select>
 					</div>
@@ -378,7 +382,9 @@ interface TableContentProps {
 	data: SensorHealthData[];
 	onViewDetails: (data: SensorHealthData) => void;
 	formatTimestamp: (dateString?: string) => string;
-	getHealthBadge: (status?: "healthy" | "stale" | "silent") => JSX.Element;
+	getHealthBadge: (
+		status?: "healthy" | "stale" | "offline" | "warning" | "critical",
+	) => JSX.Element;
 	getQualityBadge: (status?: "good" | "missing" | "inconsistent") => JSX.Element;
 	getIngestionBadge: (status: "ok" | "api_error" | "csv_error") => JSX.Element;
 }
@@ -414,8 +420,12 @@ function TableContent({
 							key={item.sensor.id}
 							className={cn(
 								"cursor-pointer hover:bg-muted/50",
-								item.health?.healthStatus === "silent" && "bg-red-50/30",
-								item.health?.healthStatus === "stale" && "bg-amber-50/30",
+								(item.health?.healthStatus === "offline" ||
+									item.health?.healthStatus === "critical") &&
+									"bg-red-50/30",
+								(item.health?.healthStatus === "stale" ||
+									item.health?.healthStatus === "warning") &&
+									"bg-amber-50/30",
 							)}
 							onClick={() => onViewDetails(item)}
 						>

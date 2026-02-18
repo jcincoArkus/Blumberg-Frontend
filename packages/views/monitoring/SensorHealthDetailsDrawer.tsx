@@ -62,7 +62,7 @@ function SensorHealthDetailsDrawer({
 		});
 	};
 
-	const getHealthBadge = (status?: "healthy" | "stale" | "silent") => {
+	const getHealthBadge = (status?: "healthy" | "stale" | "offline" | "warning" | "critical") => {
 		if (!status) {
 			return (
 				<Badge variant="outline" className="bg-slate-100 text-slate-700 border-slate-200">
@@ -81,8 +81,18 @@ function SensorHealthDetailsDrawer({
 				className: "bg-amber-100 text-amber-700 border-amber-200",
 				icon: Clock,
 			},
-			silent: {
-				label: t`Silent`,
+			offline: {
+				label: t`Offline`,
+				className: "bg-red-100 text-red-700 border-red-200",
+				icon: XCircle,
+			},
+			warning: {
+				label: t`Warning`,
+				className: "bg-amber-100 text-amber-700 border-amber-200",
+				icon: AlertTriangle,
+			},
+			critical: {
+				label: t`Critical`,
 				className: "bg-red-100 text-red-700 border-red-200",
 				icon: XCircle,
 			},
@@ -181,7 +191,9 @@ function SensorHealthDetailsDrawer({
 // Sensor Health Section
 interface SensorHealthSectionProps {
 	data: SensorHealthData;
-	getHealthBadge: (status?: "healthy" | "stale" | "silent") => JSX.Element;
+	getHealthBadge: (
+		status?: "healthy" | "stale" | "offline" | "warning" | "critical",
+	) => JSX.Element;
 	formatTimestamp: (dateString: string) => string;
 	ageFormatted: string;
 }

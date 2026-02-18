@@ -245,6 +245,51 @@ export type RolesListResponse = {
 	roles: Array<RoleDto> | null;
 };
 
+export type SensorHealthDetailResponse = {
+	sensorId?: string;
+	name?: string | null;
+	healthStatus?: SensorHealthStatus;
+	lastSeenAt?: Date | null;
+	reliabilityScore?: number;
+	lastValue?: number | null;
+	unit?: string | null;
+	freshnessSeconds?: number | null;
+	recentReadingsCount?: number;
+	expectedPoints?: number;
+	receivedPoints?: number;
+};
+
+export type SensorHealthListItemResponse = {
+	id?: string;
+	name?: string | null;
+	sensorType?: string | null;
+	healthStatus?: SensorHealthStatus;
+	lastSeenAt?: Date | null;
+	reliabilityScore?: number;
+	siteId?: string;
+	siteName?: string | null;
+	equipmentId?: string;
+	equipmentName?: string | null;
+	lastValue?: number | null;
+	unit?: string | null;
+};
+
+export type SensorHealthListItemResponsePagedResponse = {
+	items?: Array<SensorHealthListItemResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+	readonly totalPages?: number;
+};
+
+export enum SensorHealthStatus {
+	_0 = 0,
+	_1 = 1,
+	_2 = 2,
+	_3 = 3,
+	_4 = 4,
+}
+
 export type SensorReadingResponse = {
 	id?: string;
 	sensorId?: string;
@@ -427,6 +472,13 @@ export type EquipmentResponsePagedResponseWritable = {
 
 export type IngestionRunListResponsePagedResponseWritable = {
 	items?: Array<IngestionRunListResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+};
+
+export type SensorHealthListItemResponsePagedResponseWritable = {
+	items?: Array<SensorHealthListItemResponse> | null;
 	totalCount?: number;
 	page?: number;
 	pageSize?: number;
@@ -1090,6 +1142,60 @@ export type GetRoleUsersV1Responses = {
 
 export type GetRoleUsersV1Response = GetRoleUsersV1Responses[keyof GetRoleUsersV1Responses];
 
+export type GetSensorHealthListV1Data = {
+	body?: never;
+	path?: never;
+	query?: {
+		SiteId?: string;
+		EquipmentId?: string;
+		Status?: SensorStatus;
+		HealthStatus?: SensorHealthStatus;
+		Search?: string;
+		Page?: number;
+		PageSize?: number;
+	};
+	url: "/api/v1/sensors/health";
+};
+
+export type GetSensorHealthListV1Responses = {
+	/**
+	 * OK
+	 */
+	200: SensorHealthListItemResponsePagedResponse;
+};
+
+export type GetSensorHealthListV1Response =
+	GetSensorHealthListV1Responses[keyof GetSensorHealthListV1Responses];
+
+export type GetSensorHealthByIdV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/sensors/{id}/health";
+};
+
+export type GetSensorHealthByIdV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+};
+
+export type GetSensorHealthByIdV1Error =
+	GetSensorHealthByIdV1Errors[keyof GetSensorHealthByIdV1Errors];
+
+export type GetSensorHealthByIdV1Responses = {
+	/**
+	 * OK
+	 */
+	200: SensorHealthDetailResponse;
+};
+
+export type GetSensorHealthByIdV1Response =
+	GetSensorHealthByIdV1Responses[keyof GetSensorHealthByIdV1Responses];
+
 export type GetAllSensorTypesV1Data = {
 	body?: never;
 	path?: never;
@@ -1167,7 +1273,13 @@ export type GetSensorTypeByIdV1Data = {
 	path: {
 		id: string;
 	};
-	query?: never;
+	query?: {
+		From?: Date;
+		To?: Date;
+		Search?: string;
+		Page?: number;
+		PageSize?: number;
+	};
 	url: "/api/v1/sensor-types/{id}";
 };
 
