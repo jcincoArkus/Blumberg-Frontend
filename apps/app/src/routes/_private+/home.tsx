@@ -6,7 +6,6 @@ import {
 	GlobalStatusBar,
 	GroupedSensorMetricsPanel,
 	InteriorMapPanel,
-	KeyMetricsCards,
 	LocationPanel,
 	SensorReliabilityPanel,
 	TrendsPanel,
@@ -28,8 +27,7 @@ function Home() {
 					<div className="lg:col-span-3">
 						<ActiveAlertsPanel />
 					</div>
-					<div className="lg:col-span-6 space-y-3">
-						<KeyMetricsCards />
+					<div className="lg:col-span-6">
 						<TrendsPanel />
 					</div>
 					<div className="lg:col-span-3">
