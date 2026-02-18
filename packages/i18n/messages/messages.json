@@ -1767,6 +1767,10 @@
 		"en-US": "Installed",
 		"es-LA": ""
 	},
+	"Interior Map": {
+		"en-US": "Interior Map",
+		"es-LA": ""
+	},
 	"Invalid email address.": {
 		"en-US": "Invalid email address.",
 		"es-LA": ""
@@ -1915,6 +1919,10 @@
 		"en-US": "Loading equipment...",
 		"es-LA": ""
 	},
+	"Loading map...": {
+		"en-US": "Loading map...",
+		"es-LA": ""
+	},
 	"Loading sensor...": {
 		"en-US": "Loading sensor...",
 		"es-LA": ""
@@ -1941,6 +1949,10 @@
 	},
 	"Locations": {
 		"en-US": "Locations",
+		"es-LA": ""
+	},
+	"locations across North America": {
+		"en-US": "locations across North America",
 		"es-LA": ""
 	},
 	"Login Methods": {
@@ -3333,6 +3345,10 @@
 	},
 	"Site Health (24h)": {
 		"en-US": "Site Health (24h)",
+		"es-LA": ""
+	},
+	"Site Information": {
+		"en-US": "Site Information",
 		"es-LA": ""
 	},
 	"Site is required": {

@@ -1,6 +1,61 @@
 import type { Alert, AlertEvent, AlertNotification } from "~@/models";
 import type { AgentInsight, Sensor, Site } from "~@/views";
 
+/** Map location for dashboard Location panel (geo map) */
+export interface MapLocation {
+	id: string;
+	name: string;
+	city: string;
+	lat: number;
+	lng: number;
+	status: "ok" | "warning" | "alert";
+}
+
+/** Mock map locations for Location panel (North America) */
+export const mapLocations: MapLocation[] = [
+	{
+		id: "1",
+		name: "West Coast Warehouse",
+		city: "Los Angeles, CA",
+		lat: 34.0522,
+		lng: -118.2437,
+		status: "ok",
+	},
+	{
+		id: "2",
+		name: "Pacific Northwest Hub",
+		city: "Seattle, WA",
+		lat: 47.6062,
+		lng: -122.3321,
+		status: "alert",
+	},
+	{
+		id: "3",
+		name: "South Central Facility",
+		city: "Dallas, TX",
+		lat: 32.7767,
+		lng: -96.797,
+		status: "warning",
+	},
+];
+
+/** Zone status per location (links Interior Map to selected map location) */
+export type ZoneStatus = "alert" | "warning" | "ok";
+
+export const locationZoneStatus: Record<string, Record<string, ZoneStatus>> = {
+	"1": {
+		"cold-room-1": "alert",
+		"aisle-b": "warning",
+		"storage-area": "alert",
+	},
+	"2": {
+		"storage-area": "alert",
+	},
+	"3": {
+		"aisle-b": "warning",
+	},
+};
+
 // Mock Sites
 export const sites: Site[] = [
 	{

@@ -32,9 +32,17 @@ export {
 	useGroupedSensorMetricsPanelViewModel,
 } from "./GroupedSensorMetricsPanelViewModel";
 export {
+	interiorMapPanelViewModel,
+	useInteriorMapPanelViewModel,
+} from "./InteriorMapPanelViewModel";
+export {
 	keyMetricsCardsViewModel,
 	useKeyMetricsCardsViewModel,
 } from "./KeyMetricsCardsViewModel";
+export {
+	locationPanelViewModel,
+	useLocationPanelViewModel,
+} from "./LocationPanelViewModel";
 export {
 	sensorReliabilityPanelViewModel,
 	useSensorReliabilityPanelViewModel,

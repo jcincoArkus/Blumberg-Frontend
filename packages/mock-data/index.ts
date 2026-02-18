@@ -31,10 +31,13 @@ export {
 	getSensorName,
 	getSensorType,
 } from "./alerts";
+export type { MapLocation, ZoneStatus } from "./dashboard";
 // Dashboard mock data
 export {
 	agentInsights,
 	alerts as dashboardAlerts,
+	locationZoneStatus,
+	mapLocations as dashboardMapLocations,
 	sensors as dashboardSensors,
 	sites as dashboardSites,
 } from "./dashboard";
