@@ -110,6 +110,9 @@ import type {
 	GetIngestionRunsV1Data,
 	GetIngestionRunsV1Errors,
 	GetIngestionRunsV1Responses,
+	GetIngestionStatsV1Data,
+	GetIngestionStatsV1Errors,
+	GetIngestionStatsV1Responses,
 	GetPermissionActionsV1Data,
 	GetPermissionActionsV1Responses,
 	GetPermissionResourcesV1Data,
@@ -207,6 +210,7 @@ import {
 	zGetEquipmentByIdV1Data,
 	zGetIngestionRunByIdV1Data,
 	zGetIngestionRunsV1Data,
+	zGetIngestionStatsV1Data,
 	zGetPermissionActionsV1Data,
 	zGetPermissionResourcesV1Data,
 	zGetRoleByNameV1Data,
@@ -443,6 +447,21 @@ export const getIngestionRunsV1 = <ThrowOnError extends boolean = false>(
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/v1/ingestion/runs",
+		...options,
+	});
+
+export const getIngestionStatsV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetIngestionStatsV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<
+		GetIngestionStatsV1Responses,
+		GetIngestionStatsV1Errors,
+		ThrowOnError
+	>({
+		requestValidator: async (data) => await zGetIngestionStatsV1Data.parseAsync(data),
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/ingestion/stats",
 		...options,
 	});
 

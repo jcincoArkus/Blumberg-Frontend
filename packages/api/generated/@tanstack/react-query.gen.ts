@@ -34,6 +34,7 @@ import {
 	getEquipmentByIdV1,
 	getIngestionRunByIdV1,
 	getIngestionRunsV1,
+	getIngestionStatsV1,
 	getPermissionActionsV1,
 	getPermissionResourcesV1,
 	getRoleByNameV1,
@@ -128,6 +129,9 @@ import type {
 	GetIngestionRunsV1Data,
 	GetIngestionRunsV1Error,
 	GetIngestionRunsV1Response,
+	GetIngestionStatsV1Data,
+	GetIngestionStatsV1Error,
+	GetIngestionStatsV1Response,
 	GetPermissionActionsV1Data,
 	GetPermissionActionsV1Response,
 	GetPermissionResourcesV1Data,
@@ -523,6 +527,28 @@ export const getIngestionRunsV1Options = (options?: Options<GetIngestionRunsV1Da
 			return data;
 		},
 		queryKey: getIngestionRunsV1QueryKey(options),
+	});
+
+export const getIngestionStatsV1QueryKey = (options?: Options<GetIngestionStatsV1Data>) =>
+	createQueryKey("getIngestionStatsV1", options);
+
+export const getIngestionStatsV1Options = (options?: Options<GetIngestionStatsV1Data>) =>
+	queryOptions<
+		GetIngestionStatsV1Response,
+		AxiosError<GetIngestionStatsV1Error>,
+		GetIngestionStatsV1Response,
+		ReturnType<typeof getIngestionStatsV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getIngestionStatsV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getIngestionStatsV1QueryKey(options),
 	});
 
 export const getIngestionRunByIdV1QueryKey = (options: Options<GetIngestionRunByIdV1Data>) =>

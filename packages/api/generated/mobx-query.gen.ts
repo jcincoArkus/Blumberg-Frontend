@@ -14,6 +14,7 @@ import {
 	getEquipmentByIdV1Options,
 	getIngestionRunByIdV1Options,
 	getIngestionRunsV1Options,
+	getIngestionStatsV1Options,
 	getPermissionActionsV1Options,
 	getPermissionResourcesV1Options,
 	getRoleByNameV1Options,
@@ -40,6 +41,7 @@ import type {
 	GetEquipmentByIdV1Data,
 	GetIngestionRunByIdV1Data,
 	GetIngestionRunsV1Data,
+	GetIngestionStatsV1Data,
 	GetPermissionActionsV1Data,
 	GetPermissionResourcesV1Data,
 	GetRoleByNameV1Data,
@@ -79,6 +81,11 @@ export const getIngestionRunsV1ObservedQuery = (
 	defaultValues?: Partial<GetIngestionRunsV1Data>,
 	observerOptions?: QueryOptions<typeof getIngestionRunsV1Options>,
 ) => new ObservedQuery(getIngestionRunsV1Options, defaultValues, observerOptions);
+
+export const getIngestionStatsV1ObservedQuery = (
+	defaultValues?: Partial<GetIngestionStatsV1Data>,
+	observerOptions?: QueryOptions<typeof getIngestionStatsV1Options>,
+) => new ObservedQuery(getIngestionStatsV1Options, defaultValues, observerOptions);
 
 export const getIngestionRunByIdV1ObservedQuery = (
 	defaultValues?: Partial<GetIngestionRunByIdV1Data>,

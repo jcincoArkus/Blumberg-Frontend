@@ -166,6 +166,12 @@ export enum IngestionStatus {
 	_4 = 4,
 }
 
+export type IngestionStatsResponse = {
+	totalRecords?: number;
+	acceptedRecords?: number;
+	rejectedRecords?: number;
+};
+
 export type LoginRequest = {
 	email: string;
 	password: string;
@@ -869,6 +875,37 @@ export type GetIngestionRunsV1Responses = {
 
 export type GetIngestionRunsV1Response =
 	GetIngestionRunsV1Responses[keyof GetIngestionRunsV1Responses];
+
+export type GetIngestionStatsV1Data = {
+	body?: never;
+	path?: never;
+	query?: {
+		Status?: IngestionStatus;
+		Source?: IngestionSource;
+		From?: Date;
+		To?: Date;
+	};
+	url: "/api/v1/ingestion/stats";
+};
+
+export type GetIngestionStatsV1Errors = {
+	/**
+	 * Unauthorized
+	 */
+	401: ProblemDetails;
+};
+
+export type GetIngestionStatsV1Error = GetIngestionStatsV1Errors[keyof GetIngestionStatsV1Errors];
+
+export type GetIngestionStatsV1Responses = {
+	/**
+	 * OK
+	 */
+	200: IngestionStatsResponse;
+};
+
+export type GetIngestionStatsV1Response =
+	GetIngestionStatsV1Responses[keyof GetIngestionStatsV1Responses];
 
 export type GetIngestionRunByIdV1Data = {
 	body?: never;

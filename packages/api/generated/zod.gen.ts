@@ -226,6 +226,27 @@ export const zIngestionRunListResponsePagedResponse = z.object({
 	),
 });
 
+export const zIngestionStatsResponse = z.object({
+	totalRecords: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	acceptedRecords: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	rejectedRecords: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
 export const zLoginRequest = z.object({
 	email: z.email().min(1),
 	password: z.string().min(1),
@@ -1034,6 +1055,19 @@ export const zGetIngestionRunsV1Data = z.object({
 					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
 					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
 			),
+		}),
+	),
+});
+
+export const zGetIngestionStatsV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			Status: z.optional(zIngestionStatus),
+			Source: z.optional(zIngestionSource),
+			From: z.optional(z.iso.datetime({ offset: true, local: true })),
+			To: z.optional(z.iso.datetime({ offset: true, local: true })),
 		}),
 	),
 });

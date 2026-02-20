@@ -1,11 +1,13 @@
-import { Eye } from "lucide-react";
+import { Eye, Loader2 } from "lucide-react";
 import { useState } from "react";
 
+import type { DataTablePaginationInfo } from "~@/data-table";
 import { t } from "~@/i18n/macro";
 import {
 	Badge,
 	Button,
 	cn,
+	Pagination,
 	Table,
 	TableBody,
 	TableCell,
@@ -19,11 +21,27 @@ import type { IngestionRun } from "./types";
 
 interface IngestionHistoryProps {
 	runs: IngestionRun[];
+	loading?: boolean;
+	error?: string | null;
+	onViewDetails?: (id: string) => Promise<IngestionRun | null>;
+	loadingDetail?: boolean;
+	/** When provided, shows pagination controls below the table */
+	pagination?: DataTablePaginationInfo;
+	onPageChange?: (pageIndex: number) => void;
 }
 
-export function IngestionHistory({ runs }: IngestionHistoryProps) {
+export function IngestionHistory({
+	runs,
+	loading = false,
+	error = null,
+	onViewDetails,
+	loadingDetail = false,
+	pagination,
+	onPageChange,
+}: IngestionHistoryProps) {
 	const [selectedRun, setSelectedRun] = useState<IngestionRun | null>(null);
 	const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+	const [detailIdLoading, setDetailIdLoading] = useState<string | null>(null);
 
 	const formatTimestamp = (dateString: string) => {
 		const date = new Date(dateString);
@@ -36,10 +54,40 @@ export function IngestionHistory({ runs }: IngestionHistoryProps) {
 		});
 	};
 
-	const handleViewDetails = (run: IngestionRun) => {
-		setSelectedRun(run);
-		setIsDetailsOpen(true);
+	const handleViewDetails = async (run: IngestionRun) => {
+		if (onViewDetails) {
+			setDetailIdLoading(run.id);
+			try {
+				const detail = await onViewDetails(run.id);
+				if (detail) {
+					setSelectedRun(detail);
+					setIsDetailsOpen(true);
+				}
+			} finally {
+				setDetailIdLoading(null);
+			}
+		} else {
+			setSelectedRun(run);
+			setIsDetailsOpen(true);
+		}
 	};
+
+	if (error) {
+		return (
+			<div className="py-8 rounded-lg border border-destructive/50 bg-destructive/10 px-4 py-2 text-sm text-destructive">
+				{error}
+			</div>
+		);
+	}
+
+	if (loading) {
+		return (
+			<div className="py-12 flex items-center justify-center gap-2 text-muted-foreground">
+				<Loader2 className="size-6 animate-spin" aria-hidden="true" />
+				<p className="text-sm">{t`Loading ingestion runs...`}</p>
+			</div>
+		);
+	}
 
 	if (runs.length === 0) {
 		return (
@@ -94,17 +142,32 @@ export function IngestionHistory({ runs }: IngestionHistoryProps) {
 								<Button
 									variant="ghost"
 									size="sm"
-									onClick={() => handleViewDetails(run)}
+									onClick={() => void handleViewDetails(run)}
+									disabled={detailIdLoading != null || loadingDetail}
 									className="h-8"
 									aria-label={t`View details for run ${run.id}`}
 								>
-									<Eye className="h-4 w-4" aria-hidden="true" />
+									{detailIdLoading === run.id ? (
+										<Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+									) : (
+										<Eye className="h-4 w-4" aria-hidden="true" />
+									)}
 								</Button>
 							</TableCell>
 						</TableRow>
 					))}
 				</TableBody>
 			</Table>
+
+			{pagination && onPageChange && pagination.totalPages > 1 && (
+				<Pagination
+					pagination={pagination}
+					onPageChange={onPageChange}
+					onPageSizeChange={() => {}}
+					showPageSizeSelector={false}
+					showInfo={true}
+				/>
+			)}
 
 			{selectedRun && (
 				<IngestionRunDetailsDrawer

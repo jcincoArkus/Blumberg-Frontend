@@ -1,6 +1,8 @@
-import { AlertCircle, CheckCircle2, Copy, Database, Send, XCircle } from "lucide-react";
+import { AlertCircle, CheckCircle2, Copy, Database, Loader2, Send, XCircle } from "lucide-react";
 import { useState } from "react";
 
+import { ingestReadingsV1 } from "~@/api";
+import type { DataTablePaginationInfo } from "~@/data-table";
 import { t } from "~@/i18n/macro";
 import {
 	Badge,
@@ -11,6 +13,7 @@ import {
 	CardHeader,
 	CardTitle,
 	cn,
+	Pagination,
 	Table,
 	TableBody,
 	TableCell,
@@ -22,36 +25,87 @@ import {
 
 import type { IngestionRun } from "./types";
 
+const UNIT_MAP: Record<string, number> = {
+	"°c": 0,
+	celsius: 0,
+	"°f": 1,
+	fahrenheit: 1,
+	"%": 2,
+	percent: 2,
+	ppm: 3,
+	psi: 4,
+	bar: 5,
+	kw: 6,
+	kwh: 7,
+	custom: 8,
+};
+
+function parseUnit(u: unknown): number {
+	if (typeof u === "number" && u >= 0 && u <= 8) return u;
+	const s = String(u ?? "")
+		.toLowerCase()
+		.trim();
+	return UNIT_MAP[s] ?? 0;
+}
+
 const examplePayload = {
 	readings: [
 		{
-			sensorId: "s-1",
-			timestamp: "2024-01-15T10:30:00Z",
+			sensorId: "00000000-0000-0000-0000-000000000001",
+			timestampUtc: "2024-01-15T10:30:00Z",
 			value: -18.2,
-			unit: "°C",
+			unit: 0,
 		},
 		{
-			sensorId: "s-2",
-			timestamp: "2024-01-15T10:30:00Z",
+			sensorId: "00000000-0000-0000-0000-000000000002",
+			timestampUtc: "2024-01-15T10:30:00Z",
 			value: 45,
-			unit: "%",
+			unit: 2,
 		},
 	],
+};
+
+type ReadingBodyItem = {
+	sensorId: string;
+	value: number;
+	timestampUtc: string;
+	unit: number;
 };
 
 interface ApiIngestionTabProps {
 	apiRuns24h: IngestionRun[];
 	validSensorIds: string[];
+	runsLoading?: boolean;
+	runsError?: string | null;
 	onValidateReading: (
 		reading: { sensorId?: string; timestamp?: string; value?: number },
 		validIds: string[],
 	) => { valid: boolean; errors: string[] };
+	/** When provided, use ViewModel mutation (ObservedMutation) instead of direct API call */
+	onSubmitReadings?: (
+		body: ReadingBodyItem[],
+	) => Promise<{ acceptedRecords?: number; rejectedRecords?: number } | undefined>;
+	isSubmittingReadings?: boolean;
+	onSendTest?: () => void;
+	/** Pagination for Recent Ingestion Log (when provided, shows pagination controls) */
+	recent24hPagination?: DataTablePaginationInfo;
+	onRecent24hPageChange?: (pageIndex: number) => void;
+	/** When provided, KPI cards use these totals (all 24h) instead of summing the current page */
+	last24hStats?: { totalRecords: number; acceptedRecords: number; rejectedRecords: number } | null;
 }
 
 export function ApiIngestionTab({
 	apiRuns24h,
-	validSensorIds,
-	onValidateReading,
+	validSensorIds: _validSensorIds,
+	runsLoading = false,
+	runsError = null,
+	onValidateReading: _onValidateReading,
+	onSubmitReadings,
+	isSubmittingReadings = false,
+	onSendTest,
+	recent24hPagination,
+	onRecent24hPageChange,
+	last24hStats,
 }: ApiIngestionTabProps) {
 	const [testPayload, setTestPayload] = useState(JSON.stringify(examplePayload, null, 2));
 	const [testResult, setTestResult] = useState<{
@@ -59,58 +113,95 @@ export function ApiIngestionTab({
 		rejected: number;
 		errors: Array<{ code: string; message: string; count: number }>;
 	} | null>(null);
-	const [isTesting, setIsTesting] = useState(false);
+	const [localTesting, setLocalTesting] = useState(false);
+	const isTesting = isSubmittingReadings || localTesting;
 
-	// Calculate KPIs
-	const kpis = {
-		totalRecords: apiRuns24h.reduce((sum, r) => sum + r.totalRecords, 0),
-		accepted: apiRuns24h.reduce((sum, r) => sum + r.acceptedCount, 0),
-		rejected: apiRuns24h.reduce((sum, r) => sum + r.rejectedCount, 0),
-		errors: apiRuns24h.reduce((sum, r) => sum + r.errors.length, 0),
-	};
+	// KPIs: use backend 24h stats when available (all runs in range), else sum current page
+	const kpis = last24hStats
+		? {
+				totalRecords: last24hStats.totalRecords,
+				accepted: last24hStats.acceptedRecords,
+				rejected: last24hStats.rejectedRecords,
+				errors: apiRuns24h.reduce((sum, r) => sum + r.errors.length, 0),
+			}
+		: {
+				totalRecords: apiRuns24h.reduce((sum, r) => sum + r.totalRecords, 0),
+				accepted: apiRuns24h.reduce((sum, r) => sum + r.acceptedCount, 0),
+				rejected: apiRuns24h.reduce((sum, r) => sum + r.rejectedCount, 0),
+				errors: apiRuns24h.reduce((sum, r) => sum + r.errors.length, 0),
+			};
 
 	const handleTestPayload = async () => {
-		setIsTesting(true);
 		setTestResult(null);
+		setLocalTesting(true);
 
 		try {
 			const payload = JSON.parse(testPayload);
+			const rawReadings = payload.readings ?? payload;
+			const readingsArray = Array.isArray(rawReadings) ? rawReadings : [rawReadings];
 
-			if (!payload.readings || !Array.isArray(payload.readings)) {
-				throw new Error(t`Payload must contain a "readings" array`);
+			if (readingsArray.length === 0) {
+				throw new Error(t`Payload must contain at least one reading`);
 			}
 
-			let accepted = 0;
-			let rejected = 0;
-			const errorCounts: Record<string, number> = {};
-
-			payload.readings.forEach((reading: Record<string, unknown>) => {
-				const validation = onValidateReading(
-					{
-						sensorId: reading.sensorId as string,
-						timestamp: reading.timestamp as string,
-						value: reading.value as number,
-					},
-					validSensorIds,
-				);
-				if (validation.valid) {
-					accepted++;
-				} else {
-					rejected++;
-					validation.errors.forEach((error) => {
-						const code = error.toUpperCase().replace(/\s+/g, "_");
-						errorCounts[code] = (errorCounts[code] || 0) + 1;
-					});
+			const body: ReadingBodyItem[] = readingsArray.map((r: Record<string, unknown>) => {
+				const ts = (r.timestampUtc ?? r.timestamp) as string | undefined;
+				const tsDate = ts ? new Date(ts) : new Date();
+				if (isNaN(tsDate.getTime())) {
+					throw new Error(t`Invalid timestamp: ${String(ts)}`);
 				}
+				return {
+					sensorId: String(r.sensorId ?? ""),
+					value: Number(r.value),
+					timestampUtc: tsDate.toISOString(),
+					unit: parseUnit(r.unit),
+				};
 			});
 
-			const errors = Object.entries(errorCounts).map(([code, count]) => ({
-				code,
-				message: code.replace(/_/g, " ").toLowerCase(),
-				count,
-			}));
+			if (onSubmitReadings) {
+				const data = await onSubmitReadings(body);
+				const accepted = data?.acceptedRecords ?? 0;
+				const rejected = data?.rejectedRecords ?? 0;
+				setTestResult({
+					accepted,
+					rejected,
+					errors:
+						rejected > 0
+							? [{ code: "REJECTED", message: t`Rejected by server`, count: rejected }]
+							: [],
+				});
+				onSendTest?.();
+				return;
+			}
 
-			setTestResult({ accepted, rejected, errors });
+			const res = await ingestReadingsV1({ body: body as never, throwOnError: false });
+
+			if (res.error) {
+				const err = res.error as { response?: { data?: { message?: string } } };
+				const message =
+					err?.response?.data?.message ??
+					(res.error as unknown as Error)?.message ??
+					t`Request failed`;
+				setTestResult({
+					accepted: 0,
+					rejected: body.length,
+					errors: [{ code: "API_ERROR", message, count: 1 }],
+				});
+				return;
+			}
+
+			const data = res.data as { acceptedRecords?: number; rejectedRecords?: number } | undefined;
+			const accepted = data?.acceptedRecords ?? 0;
+			const rejected = data?.rejectedRecords ?? 0;
+			setTestResult({
+				accepted,
+				rejected,
+				errors:
+					rejected > 0
+						? [{ code: "REJECTED", message: t`Rejected by server`, count: rejected }]
+						: [],
+			});
+			onSendTest?.();
 		} catch (error: unknown) {
 			const message = error instanceof Error ? error.message : t`Invalid JSON payload`;
 			setTestResult({
@@ -119,7 +210,7 @@ export function ApiIngestionTab({
 				errors: [{ code: "PARSE_ERROR", message, count: 1 }],
 			});
 		} finally {
-			setIsTesting(false);
+			setLocalTesting(false);
 		}
 	};
 
@@ -149,7 +240,7 @@ export function ApiIngestionTab({
 					<div>
 						<p className="text-sm font-medium text-muted-foreground mb-1">{t`Endpoint URL`}</p>
 						<code className="text-sm bg-muted px-2 py-1 rounded">
-							{t`POST /api/ingestion/readings`}
+							{t`POST /api/v1/ingestion/readings`}
 						</code>
 					</div>
 					<div>
@@ -183,7 +274,11 @@ export function ApiIngestionTab({
 						aria-label={t`JSON payload input`}
 					/>
 					<Button onClick={handleTestPayload} disabled={isTesting}>
-						<Send className="size-4 mr-2" aria-hidden="true" />
+						{isTesting ? (
+							<Loader2 className="size-4 mr-2 animate-spin" aria-hidden="true" />
+						) : (
+							<Send className="size-4 mr-2" aria-hidden="true" />
+						)}
 						{isTesting ? t`Sending...` : t`Send Test`}
 					</Button>
 
@@ -273,7 +368,17 @@ export function ApiIngestionTab({
 					<CardDescription>{t`API ingestion runs from the last 24 hours`}</CardDescription>
 				</CardHeader>
 				<CardContent>
-					{apiRuns24h.length === 0 ? (
+					{runsError && (
+						<div className="mb-4 rounded-lg border border-destructive/50 bg-destructive/10 px-4 py-2 text-sm text-destructive">
+							{runsError}
+						</div>
+					)}
+					{runsLoading ? (
+						<div className="py-8 flex items-center justify-center gap-2 text-muted-foreground">
+							<Loader2 className="size-6 animate-spin" aria-hidden="true" />
+							<p className="text-sm">{t`Loading runs...`}</p>
+						</div>
+					) : apiRuns24h.length === 0 ? (
 						<div className="py-8 text-center">
 							<Database className="size-8 mx-auto mb-2 text-muted-foreground" aria-hidden="true" />
 							<p className="text-sm text-muted-foreground">
@@ -281,49 +386,64 @@ export function ApiIngestionTab({
 							</p>
 						</div>
 					) : (
-						<Table>
-							<TableHeader>
-								<TableRow>
-									<TableHead>{t`Timestamp`}</TableHead>
-									<TableHead>{t`Source`}</TableHead>
-									<TableHead>{t`Total Records`}</TableHead>
-									<TableHead>{t`Accepted`}</TableHead>
-									<TableHead>{t`Rejected`}</TableHead>
-									<TableHead>{t`Status`}</TableHead>
-								</TableRow>
-							</TableHeader>
-							<TableBody>
-								{apiRuns24h.map((run) => (
-									<TableRow key={run.id}>
-										<TableCell className="text-sm">{formatTimestamp(run.createdAt)}</TableCell>
-										<TableCell>
-											<Badge variant="outline" className="capitalize">
-												{run.source}
-											</Badge>
-										</TableCell>
-										<TableCell>{run.totalRecords}</TableCell>
-										<TableCell className="text-emerald-600 font-medium">
-											{run.acceptedCount}
-										</TableCell>
-										<TableCell className="text-red-600 font-medium">{run.rejectedCount}</TableCell>
-										<TableCell>
-											<Badge
-												variant="outline"
-												className={cn(
-													run.status === "success" &&
-														"bg-emerald-100 text-emerald-700 border-emerald-200",
-													run.status === "partial" &&
-														"bg-amber-100 text-amber-700 border-amber-200",
-													run.status === "fail" && "bg-red-100 text-red-700 border-red-200",
-												)}
-											>
-												{run.status}
-											</Badge>
-										</TableCell>
+						<>
+							<Table>
+								<TableHeader>
+									<TableRow>
+										<TableHead>{t`Timestamp`}</TableHead>
+										<TableHead>{t`Source`}</TableHead>
+										<TableHead>{t`Total Records`}</TableHead>
+										<TableHead>{t`Accepted`}</TableHead>
+										<TableHead>{t`Rejected`}</TableHead>
+										<TableHead>{t`Status`}</TableHead>
 									</TableRow>
-								))}
-							</TableBody>
-						</Table>
+								</TableHeader>
+								<TableBody>
+									{apiRuns24h.map((run) => (
+										<TableRow key={run.id}>
+											<TableCell className="text-sm">{formatTimestamp(run.createdAt)}</TableCell>
+											<TableCell>
+												<Badge variant="outline" className="capitalize">
+													{run.source}
+												</Badge>
+											</TableCell>
+											<TableCell>{run.totalRecords}</TableCell>
+											<TableCell className="text-emerald-600 font-medium">
+												{run.acceptedCount}
+											</TableCell>
+											<TableCell className="text-red-600 font-medium">
+												{run.rejectedCount}
+											</TableCell>
+											<TableCell>
+												<Badge
+													variant="outline"
+													className={cn(
+														run.status === "success" &&
+															"bg-emerald-100 text-emerald-700 border-emerald-200",
+														run.status === "partial" &&
+															"bg-amber-100 text-amber-700 border-amber-200",
+														run.status === "fail" && "bg-red-100 text-red-700 border-red-200",
+													)}
+												>
+													{run.status}
+												</Badge>
+											</TableCell>
+										</TableRow>
+									))}
+								</TableBody>
+							</Table>
+							{recent24hPagination &&
+								onRecent24hPageChange &&
+								recent24hPagination.totalPages > 1 && (
+									<Pagination
+										pagination={recent24hPagination}
+										onPageChange={onRecent24hPageChange}
+										onPageSizeChange={() => {}}
+										showPageSizeSelector={false}
+										showInfo={true}
+									/>
+								)}
+						</>
 					)}
 				</CardContent>
 			</Card>

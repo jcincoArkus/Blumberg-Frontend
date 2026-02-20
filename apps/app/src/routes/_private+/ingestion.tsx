@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { validateSensorReading } from "~@/mock-data";
@@ -7,6 +9,10 @@ import { ApiIngestionTab, CsvUploadTab, IngestionHistory, type IngestionRun } fr
 
 const DataIngestionPage = observer(function DataIngestionPage() {
 	const vm = useIngestionViewModel();
+
+	useEffect(() => {
+		vm.loadAll();
+	}, [vm]);
 
 	const handleIngestionComplete = (run: IngestionRun) => {
 		vm.handleIngestionComplete(run);
@@ -37,7 +43,15 @@ const DataIngestionPage = observer(function DataIngestionPage() {
 					<ApiIngestionTab
 						apiRuns24h={vm.apiRuns24h}
 						validSensorIds={vm.validSensorIds}
+						runsLoading={vm.loadingRuns}
+						runsError={vm.runsError}
 						onValidateReading={validateSensorReading}
+						onSubmitReadings={vm.submitReadings}
+						isSubmittingReadings={vm.isSubmittingReadings}
+						onSendTest={vm.refreshAfterIngestion}
+						recent24hPagination={vm.recent24hPagination}
+						onRecent24hPageChange={vm.setRecent24hPageByIndex}
+						last24hStats={vm.last24hStats}
 					/>
 				</TabsContent>
 
@@ -55,7 +69,15 @@ const DataIngestionPage = observer(function DataIngestionPage() {
 				title={t`Ingestion History`}
 				description={t`View all ingestion runs from API and CSV sources`}
 			>
-				<IngestionHistory runs={vm.allRuns} />
+				<IngestionHistory
+					runs={vm.allRuns}
+					loading={vm.loadingRuns}
+					error={vm.runsError}
+					onViewDetails={vm.fetchRunDetail}
+					loadingDetail={vm.loadingDetail}
+					pagination={vm.historyPagination}
+					onPageChange={vm.setHistoryPageByIndex}
+				/>
 			</DashboardPanel>
 		</div>
 	);
