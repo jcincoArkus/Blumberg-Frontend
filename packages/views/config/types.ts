@@ -12,6 +12,8 @@ export type {
 	NotificationChannel,
 	Sensor,
 	SensorStatus,
+	SensorThreshold,
+	SensorThresholdSeverity,
 	SensorType,
 	SensorTypeOption,
 	Site,
