@@ -3,6 +3,7 @@
 import type {
 	CreateAdminV1Response,
 	CreateEquipmentV1Response,
+	CreateIngestionApiKeyV1Response,
 	CreateSensorTypeV1Response,
 	CreateSensorV1Response,
 	CreateSiteV1Response,
@@ -24,6 +25,7 @@ import type {
 	GetSensorTypeByIdV1Response,
 	GetSiteByIdV1Response,
 	GetThresholdByIdV1Response,
+	ListIngestionApiKeysV1Response,
 	LoginV1Response,
 	UpdateAdminV1Response,
 	UpdateEquipmentV1Response,
@@ -135,6 +137,44 @@ export const updateEquipmentV1ResponseTransformer = async (
 	return data;
 };
 
+const apiKeyListResponseSchemaResponseTransformer = (data: any) => {
+	if (data.createdAt) {
+		data.createdAt = new Date(data.createdAt);
+	}
+	if (data.revokedAt) {
+		data.revokedAt = new Date(data.revokedAt);
+	}
+	return data;
+};
+
+const apiKeyListResponsePagedResponseSchemaResponseTransformer = (data: any) => {
+	if (data.items) {
+		data.items = data.items.map((item: any) => apiKeyListResponseSchemaResponseTransformer(item));
+	}
+	return data;
+};
+
+export const listIngestionApiKeysV1ResponseTransformer = async (
+	data: any,
+): Promise<ListIngestionApiKeysV1Response> => {
+	data = apiKeyListResponsePagedResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+const createApiKeyResponseSchemaResponseTransformer = (data: any) => {
+	if (data.createdAt) {
+		data.createdAt = new Date(data.createdAt);
+	}
+	return data;
+};
+
+export const createIngestionApiKeyV1ResponseTransformer = async (
+	data: any,
+): Promise<CreateIngestionApiKeyV1Response> => {
+	data = createApiKeyResponseSchemaResponseTransformer(data);
+	return data;
+};
+
 const ingestionRunListResponseSchemaResponseTransformer = (data: any) => {
 	if (data.startedAt) {
 		data.startedAt = new Date(data.startedAt);
@@ -196,43 +236,6 @@ export const getIngestionRunByIdV1ResponseTransformer = async (
 	return data;
 };
 
-const sensorHealthListItemResponseSchemaResponseTransformer = (data: any) => {
-	if (data.lastSeenAt) {
-		data.lastSeenAt = new Date(data.lastSeenAt);
-	}
-	return data;
-};
-
-const sensorHealthListItemResponsePagedResponseSchemaResponseTransformer = (data: any) => {
-	if (data.items) {
-		data.items = data.items.map((item: any) =>
-			sensorHealthListItemResponseSchemaResponseTransformer(item),
-		);
-	}
-	return data;
-};
-
-export const getSensorHealthListV1ResponseTransformer = async (
-	data: any,
-): Promise<GetSensorHealthListV1Response> => {
-	data = sensorHealthListItemResponsePagedResponseSchemaResponseTransformer(data);
-	return data;
-};
-
-const sensorHealthDetailResponseSchemaResponseTransformer = (data: any) => {
-	if (data.lastSeenAt) {
-		data.lastSeenAt = new Date(data.lastSeenAt);
-	}
-	return data;
-};
-
-export const getSensorHealthByIdV1ResponseTransformer = async (
-	data: any,
-): Promise<GetSensorHealthByIdV1Response> => {
-	data = sensorHealthDetailResponseSchemaResponseTransformer(data);
-	return data;
-};
-
 const sensorTypeResponseSchemaResponseTransformer = (data: any) => {
 	if (data.createdAt) {
 		data.createdAt = new Date(data.createdAt);
@@ -275,6 +278,43 @@ export const updateSensorTypeV1ResponseTransformer = async (
 	data: any,
 ): Promise<UpdateSensorTypeV1Response> => {
 	data = sensorTypeResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+const sensorHealthListItemResponseSchemaResponseTransformer = (data: any) => {
+	if (data.lastSeenAt) {
+		data.lastSeenAt = new Date(data.lastSeenAt);
+	}
+	return data;
+};
+
+const sensorHealthListItemResponsePagedResponseSchemaResponseTransformer = (data: any) => {
+	if (data.items) {
+		data.items = data.items.map((item: any) =>
+			sensorHealthListItemResponseSchemaResponseTransformer(item),
+		);
+	}
+	return data;
+};
+
+export const getSensorHealthListV1ResponseTransformer = async (
+	data: any,
+): Promise<GetSensorHealthListV1Response> => {
+	data = sensorHealthListItemResponsePagedResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+const sensorHealthDetailResponseSchemaResponseTransformer = (data: any) => {
+	if (data.lastSeenAt) {
+		data.lastSeenAt = new Date(data.lastSeenAt);
+	}
+	return data;
+};
+
+export const getSensorHealthByIdV1ResponseTransformer = async (
+	data: any,
+): Promise<GetSensorHealthByIdV1Response> => {
+	data = sensorHealthDetailResponseSchemaResponseTransformer(data);
 	return data;
 };
 
