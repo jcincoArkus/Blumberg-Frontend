@@ -33,6 +33,21 @@ export type AdminResponsePagedResponse = {
 	readonly totalPages?: number;
 };
 
+export type ApiKeyListResponse = {
+	id?: string;
+	name?: string | null;
+	createdAt?: Date;
+	revokedAt?: Date | null;
+};
+
+export type ApiKeyListResponsePagedResponse = {
+	items?: Array<ApiKeyListResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+	readonly totalPages?: number;
+};
+
 export type AssignPermissionsToRoleRequest = {
 	permissions: Array<RolePermissionDto> | null;
 };
@@ -57,6 +72,18 @@ export type CheckPermissionRequest = {
 
 export type CheckPermissionResponse = {
 	hasPermission: boolean;
+};
+
+export type CreateApiKeyRequest = {
+	name?: string | null;
+};
+
+export type CreateApiKeyResponse = {
+	id?: string;
+	name?: string | null;
+	organizationId?: string;
+	createdAt?: Date;
+	key?: string | null;
 };
 
 export type CreateRoleRequest = {
@@ -158,6 +185,12 @@ export enum IngestionSource {
 	_2 = 2,
 }
 
+export type IngestionStatsResponse = {
+	totalRecords?: number;
+	acceptedRecords?: number;
+	rejectedRecords?: number;
+};
+
 export enum IngestionStatus {
 	_0 = 0,
 	_1 = 1,
@@ -165,12 +198,6 @@ export enum IngestionStatus {
 	_3 = 3,
 	_4 = 4,
 }
-
-export type IngestionStatsResponse = {
-	totalRecords?: number;
-	acceptedRecords?: number;
-	rejectedRecords?: number;
-};
 
 export type LoginRequest = {
 	email: string;
@@ -464,6 +491,13 @@ export type UserRolesResponse = {
 
 export type AdminResponsePagedResponseWritable = {
 	items?: Array<AdminResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+};
+
+export type ApiKeyListResponsePagedResponseWritable = {
+	items?: Array<ApiKeyListResponse> | null;
 	totalCount?: number;
 	page?: number;
 	pageSize?: number;
@@ -813,6 +847,101 @@ export type UpdateEquipmentV1Responses = {
 export type UpdateEquipmentV1Response =
 	UpdateEquipmentV1Responses[keyof UpdateEquipmentV1Responses];
 
+export type ListIngestionApiKeysV1Data = {
+	body?: never;
+	path?: never;
+	query?: {
+		Search?: string;
+		Page?: number;
+		PageSize?: number;
+	};
+	url: "/api/v1/ingestion/api-keys";
+};
+
+export type ListIngestionApiKeysV1Errors = {
+	/**
+	 * Unauthorized
+	 */
+	401: ProblemDetails;
+};
+
+export type ListIngestionApiKeysV1Error =
+	ListIngestionApiKeysV1Errors[keyof ListIngestionApiKeysV1Errors];
+
+export type ListIngestionApiKeysV1Responses = {
+	/**
+	 * OK
+	 */
+	200: ApiKeyListResponsePagedResponse;
+};
+
+export type ListIngestionApiKeysV1Response =
+	ListIngestionApiKeysV1Responses[keyof ListIngestionApiKeysV1Responses];
+
+export type CreateIngestionApiKeyV1Data = {
+	body?: CreateApiKeyRequest;
+	path?: never;
+	query?: never;
+	url: "/api/v1/ingestion/api-keys";
+};
+
+export type CreateIngestionApiKeyV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: ProblemDetails;
+	/**
+	 * Unauthorized
+	 */
+	401: ProblemDetails;
+};
+
+export type CreateIngestionApiKeyV1Error =
+	CreateIngestionApiKeyV1Errors[keyof CreateIngestionApiKeyV1Errors];
+
+export type CreateIngestionApiKeyV1Responses = {
+	/**
+	 * Created
+	 */
+	201: CreateApiKeyResponse;
+};
+
+export type CreateIngestionApiKeyV1Response =
+	CreateIngestionApiKeyV1Responses[keyof CreateIngestionApiKeyV1Responses];
+
+export type RevokeIngestionApiKeyV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/ingestion/api-keys/{id}";
+};
+
+export type RevokeIngestionApiKeyV1Errors = {
+	/**
+	 * Unauthorized
+	 */
+	401: ProblemDetails;
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+};
+
+export type RevokeIngestionApiKeyV1Error =
+	RevokeIngestionApiKeyV1Errors[keyof RevokeIngestionApiKeyV1Errors];
+
+export type RevokeIngestionApiKeyV1Responses = {
+	/**
+	 * No Content
+	 */
+	204: void;
+};
+
+export type RevokeIngestionApiKeyV1Response =
+	RevokeIngestionApiKeyV1Responses[keyof RevokeIngestionApiKeyV1Responses];
+
 export type IngestReadingsV1Data = {
 	body?: Array<IngestReadingItem>;
 	path?: never;
@@ -884,6 +1013,9 @@ export type GetIngestionStatsV1Data = {
 		Source?: IngestionSource;
 		From?: Date;
 		To?: Date;
+		Search?: string;
+		Page?: number;
+		PageSize?: number;
 	};
 	url: "/api/v1/ingestion/stats";
 };
@@ -1179,60 +1311,6 @@ export type GetRoleUsersV1Responses = {
 
 export type GetRoleUsersV1Response = GetRoleUsersV1Responses[keyof GetRoleUsersV1Responses];
 
-export type GetSensorHealthListV1Data = {
-	body?: never;
-	path?: never;
-	query?: {
-		SiteId?: string;
-		EquipmentId?: string;
-		Status?: SensorStatus;
-		HealthStatus?: SensorHealthStatus;
-		Search?: string;
-		Page?: number;
-		PageSize?: number;
-	};
-	url: "/api/v1/sensors/health";
-};
-
-export type GetSensorHealthListV1Responses = {
-	/**
-	 * OK
-	 */
-	200: SensorHealthListItemResponsePagedResponse;
-};
-
-export type GetSensorHealthListV1Response =
-	GetSensorHealthListV1Responses[keyof GetSensorHealthListV1Responses];
-
-export type GetSensorHealthByIdV1Data = {
-	body?: never;
-	path: {
-		id: string;
-	};
-	query?: never;
-	url: "/api/v1/sensors/{id}/health";
-};
-
-export type GetSensorHealthByIdV1Errors = {
-	/**
-	 * Not Found
-	 */
-	404: ProblemDetails;
-};
-
-export type GetSensorHealthByIdV1Error =
-	GetSensorHealthByIdV1Errors[keyof GetSensorHealthByIdV1Errors];
-
-export type GetSensorHealthByIdV1Responses = {
-	/**
-	 * OK
-	 */
-	200: SensorHealthDetailResponse;
-};
-
-export type GetSensorHealthByIdV1Response =
-	GetSensorHealthByIdV1Responses[keyof GetSensorHealthByIdV1Responses];
-
 export type GetAllSensorTypesV1Data = {
 	body?: never;
 	path?: never;
@@ -1310,13 +1388,7 @@ export type GetSensorTypeByIdV1Data = {
 	path: {
 		id: string;
 	};
-	query?: {
-		From?: Date;
-		To?: Date;
-		Search?: string;
-		Page?: number;
-		PageSize?: number;
-	};
+	query?: never;
 	url: "/api/v1/sensor-types/{id}";
 };
 
@@ -1366,6 +1438,60 @@ export type UpdateSensorTypeV1Responses = {
 
 export type UpdateSensorTypeV1Response =
 	UpdateSensorTypeV1Responses[keyof UpdateSensorTypeV1Responses];
+
+export type GetSensorHealthListV1Data = {
+	body?: never;
+	path?: never;
+	query?: {
+		SiteId?: string;
+		EquipmentId?: string;
+		Status?: SensorStatus;
+		HealthStatus?: SensorHealthStatus;
+		Search?: string;
+		Page?: number;
+		PageSize?: number;
+	};
+	url: "/api/v1/sensors/health";
+};
+
+export type GetSensorHealthListV1Responses = {
+	/**
+	 * OK
+	 */
+	200: SensorHealthListItemResponsePagedResponse;
+};
+
+export type GetSensorHealthListV1Response =
+	GetSensorHealthListV1Responses[keyof GetSensorHealthListV1Responses];
+
+export type GetSensorHealthByIdV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/sensors/{id}/health";
+};
+
+export type GetSensorHealthByIdV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+};
+
+export type GetSensorHealthByIdV1Error =
+	GetSensorHealthByIdV1Errors[keyof GetSensorHealthByIdV1Errors];
+
+export type GetSensorHealthByIdV1Responses = {
+	/**
+	 * OK
+	 */
+	200: SensorHealthDetailResponse;
+};
+
+export type GetSensorHealthByIdV1Response =
+	GetSensorHealthByIdV1Responses[keyof GetSensorHealthByIdV1Responses];
 
 export type GetAllSensorsV1Data = {
 	body?: never;

@@ -11,6 +11,7 @@ import {
 	checkPermissionUserV1,
 	createAdminV1,
 	createEquipmentV1,
+	createIngestionApiKeyV1,
 	createRoleV1,
 	createSensorTypeV1,
 	createSensorV1,
@@ -49,12 +50,14 @@ import {
 	getThresholdByIdV1,
 	getUserRolesV1,
 	ingestReadingsV1,
+	listIngestionApiKeysV1,
 	loginV1,
 	type Options,
 	removeRolePermissionsV1,
 	removeUserRolesV1,
 	replaceRolePermissionsV1,
 	replaceUserRolesV1,
+	revokeIngestionApiKeyV1,
 	updateAdminV1,
 	updateEquipmentV1,
 	updateRoleV1,
@@ -76,6 +79,9 @@ import type {
 	CreateEquipmentV1Data,
 	CreateEquipmentV1Error,
 	CreateEquipmentV1Response,
+	CreateIngestionApiKeyV1Data,
+	CreateIngestionApiKeyV1Error,
+	CreateIngestionApiKeyV1Response,
 	CreateRoleV1Data,
 	CreateRoleV1Response,
 	CreateSensorTypeV1Data,
@@ -167,6 +173,9 @@ import type {
 	IngestReadingsV1Data,
 	IngestReadingsV1Error,
 	IngestReadingsV1Response,
+	ListIngestionApiKeysV1Data,
+	ListIngestionApiKeysV1Error,
+	ListIngestionApiKeysV1Response,
 	LoginV1Data,
 	LoginV1Error,
 	LoginV1Response,
@@ -174,6 +183,9 @@ import type {
 	RemoveUserRolesV1Data,
 	ReplaceRolePermissionsV1Data,
 	ReplaceUserRolesV1Data,
+	RevokeIngestionApiKeyV1Data,
+	RevokeIngestionApiKeyV1Error,
+	RevokeIngestionApiKeyV1Response,
 	UpdateAdminV1Data,
 	UpdateAdminV1Error,
 	UpdateAdminV1Response,
@@ -473,6 +485,76 @@ export const updateEquipmentV1Mutation = (
 	> = {
 		mutationFn: async (fnOptions) => {
 			const { data } = await updateEquipmentV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const listIngestionApiKeysV1QueryKey = (options?: Options<ListIngestionApiKeysV1Data>) =>
+	createQueryKey("listIngestionApiKeysV1", options);
+
+export const listIngestionApiKeysV1Options = (options?: Options<ListIngestionApiKeysV1Data>) =>
+	queryOptions<
+		ListIngestionApiKeysV1Response,
+		AxiosError<ListIngestionApiKeysV1Error>,
+		ListIngestionApiKeysV1Response,
+		ReturnType<typeof listIngestionApiKeysV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await listIngestionApiKeysV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: listIngestionApiKeysV1QueryKey(options),
+	});
+
+export const createIngestionApiKeyV1Mutation = (
+	options?: Partial<Options<CreateIngestionApiKeyV1Data>>,
+): UseMutationOptions<
+	CreateIngestionApiKeyV1Response,
+	AxiosError<CreateIngestionApiKeyV1Error>,
+	Options<CreateIngestionApiKeyV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		CreateIngestionApiKeyV1Response,
+		AxiosError<CreateIngestionApiKeyV1Error>,
+		Options<CreateIngestionApiKeyV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await createIngestionApiKeyV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const revokeIngestionApiKeyV1Mutation = (
+	options?: Partial<Options<RevokeIngestionApiKeyV1Data>>,
+): UseMutationOptions<
+	RevokeIngestionApiKeyV1Response,
+	AxiosError<RevokeIngestionApiKeyV1Error>,
+	Options<RevokeIngestionApiKeyV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		RevokeIngestionApiKeyV1Response,
+		AxiosError<RevokeIngestionApiKeyV1Error>,
+		Options<RevokeIngestionApiKeyV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await revokeIngestionApiKeyV1({
 				...options,
 				...fnOptions,
 				throwOnError: true,
@@ -881,50 +963,6 @@ export const getRoleUsersV1Options = (options: Options<GetRoleUsersV1Data>) =>
 		queryKey: getRoleUsersV1QueryKey(options),
 	});
 
-export const getSensorHealthListV1QueryKey = (options?: Options<GetSensorHealthListV1Data>) =>
-	createQueryKey("getSensorHealthListV1", options);
-
-export const getSensorHealthListV1Options = (options?: Options<GetSensorHealthListV1Data>) =>
-	queryOptions<
-		GetSensorHealthListV1Response,
-		AxiosError<DefaultError>,
-		GetSensorHealthListV1Response,
-		ReturnType<typeof getSensorHealthListV1QueryKey>
-	>({
-		queryFn: async ({ queryKey, signal }) => {
-			const { data } = await getSensorHealthListV1({
-				...options,
-				...queryKey[0],
-				signal,
-				throwOnError: true,
-			});
-			return data;
-		},
-		queryKey: getSensorHealthListV1QueryKey(options),
-	});
-
-export const getSensorHealthByIdV1QueryKey = (options: Options<GetSensorHealthByIdV1Data>) =>
-	createQueryKey("getSensorHealthByIdV1", options);
-
-export const getSensorHealthByIdV1Options = (options: Options<GetSensorHealthByIdV1Data>) =>
-	queryOptions<
-		GetSensorHealthByIdV1Response,
-		AxiosError<GetSensorHealthByIdV1Error>,
-		GetSensorHealthByIdV1Response,
-		ReturnType<typeof getSensorHealthByIdV1QueryKey>
-	>({
-		queryFn: async ({ queryKey, signal }) => {
-			const { data } = await getSensorHealthByIdV1({
-				...options,
-				...queryKey[0],
-				signal,
-				throwOnError: true,
-			});
-			return data;
-		},
-		queryKey: getSensorHealthByIdV1QueryKey(options),
-	});
-
 export const getAllSensorTypesV1QueryKey = (options?: Options<GetAllSensorTypesV1Data>) =>
 	createQueryKey("getAllSensorTypesV1", options);
 
@@ -1040,6 +1078,50 @@ export const updateSensorTypeV1Mutation = (
 	};
 	return mutationOptions;
 };
+
+export const getSensorHealthListV1QueryKey = (options?: Options<GetSensorHealthListV1Data>) =>
+	createQueryKey("getSensorHealthListV1", options);
+
+export const getSensorHealthListV1Options = (options?: Options<GetSensorHealthListV1Data>) =>
+	queryOptions<
+		GetSensorHealthListV1Response,
+		AxiosError<DefaultError>,
+		GetSensorHealthListV1Response,
+		ReturnType<typeof getSensorHealthListV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getSensorHealthListV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getSensorHealthListV1QueryKey(options),
+	});
+
+export const getSensorHealthByIdV1QueryKey = (options: Options<GetSensorHealthByIdV1Data>) =>
+	createQueryKey("getSensorHealthByIdV1", options);
+
+export const getSensorHealthByIdV1Options = (options: Options<GetSensorHealthByIdV1Data>) =>
+	queryOptions<
+		GetSensorHealthByIdV1Response,
+		AxiosError<GetSensorHealthByIdV1Error>,
+		GetSensorHealthByIdV1Response,
+		ReturnType<typeof getSensorHealthByIdV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getSensorHealthByIdV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getSensorHealthByIdV1QueryKey(options),
+	});
 
 export const getAllSensorsV1QueryKey = (options?: Options<GetAllSensorsV1Data>) =>
 	createQueryKey("getAllSensorsV1", options);

@@ -5,6 +5,7 @@ import { client } from "./client.gen";
 import {
 	createAdminV1ResponseTransformer,
 	createEquipmentV1ResponseTransformer,
+	createIngestionApiKeyV1ResponseTransformer,
 	createSensorTypeV1ResponseTransformer,
 	createSensorV1ResponseTransformer,
 	createSiteV1ResponseTransformer,
@@ -26,6 +27,7 @@ import {
 	getSensorTypeByIdV1ResponseTransformer,
 	getSiteByIdV1ResponseTransformer,
 	getThresholdByIdV1ResponseTransformer,
+	listIngestionApiKeysV1ResponseTransformer,
 	loginV1ResponseTransformer,
 	updateAdminV1ResponseTransformer,
 	updateEquipmentV1ResponseTransformer,
@@ -49,6 +51,9 @@ import type {
 	CreateEquipmentV1Data,
 	CreateEquipmentV1Errors,
 	CreateEquipmentV1Responses,
+	CreateIngestionApiKeyV1Data,
+	CreateIngestionApiKeyV1Errors,
+	CreateIngestionApiKeyV1Responses,
 	CreateRoleV1Data,
 	CreateRoleV1Responses,
 	CreateSensorTypeV1Data,
@@ -148,6 +153,9 @@ import type {
 	IngestReadingsV1Data,
 	IngestReadingsV1Errors,
 	IngestReadingsV1Responses,
+	ListIngestionApiKeysV1Data,
+	ListIngestionApiKeysV1Errors,
+	ListIngestionApiKeysV1Responses,
 	LoginV1Data,
 	LoginV1Errors,
 	LoginV1Responses,
@@ -159,6 +167,9 @@ import type {
 	ReplaceRolePermissionsV1Responses,
 	ReplaceUserRolesV1Data,
 	ReplaceUserRolesV1Responses,
+	RevokeIngestionApiKeyV1Data,
+	RevokeIngestionApiKeyV1Errors,
+	RevokeIngestionApiKeyV1Responses,
 	UpdateAdminV1Data,
 	UpdateAdminV1Errors,
 	UpdateAdminV1Responses,
@@ -187,6 +198,7 @@ import {
 	zCheckPermissionUserV1Data,
 	zCreateAdminV1Data,
 	zCreateEquipmentV1Data,
+	zCreateIngestionApiKeyV1Data,
 	zCreateRoleV1Data,
 	zCreateSensorTypeV1Data,
 	zCreateSensorV1Data,
@@ -225,11 +237,13 @@ import {
 	zGetThresholdByIdV1Data,
 	zGetUserRolesV1Data,
 	zIngestReadingsV1Data,
+	zListIngestionApiKeysV1Data,
 	zLoginV1Data,
 	zRemoveRolePermissionsV1Data,
 	zRemoveUserRolesV1Data,
 	zReplaceRolePermissionsV1Data,
 	zReplaceUserRolesV1Data,
+	zRevokeIngestionApiKeyV1Data,
 	zUpdateAdminV1Data,
 	zUpdateEquipmentV1Data,
 	zUpdateRoleV1Data,
@@ -416,6 +430,56 @@ export const updateEquipmentV1 = <ThrowOnError extends boolean = false>(
 			},
 		},
 	);
+
+export const listIngestionApiKeysV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<ListIngestionApiKeysV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<
+		ListIngestionApiKeysV1Responses,
+		ListIngestionApiKeysV1Errors,
+		ThrowOnError
+	>({
+		requestValidator: async (data) => await zListIngestionApiKeysV1Data.parseAsync(data),
+		responseTransformer: listIngestionApiKeysV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/ingestion/api-keys",
+		...options,
+	});
+
+export const createIngestionApiKeyV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<CreateIngestionApiKeyV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<
+		CreateIngestionApiKeyV1Responses,
+		CreateIngestionApiKeyV1Errors,
+		ThrowOnError
+	>({
+		requestValidator: async (data) => await zCreateIngestionApiKeyV1Data.parseAsync(data),
+		responseTransformer: createIngestionApiKeyV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/ingestion/api-keys",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const revokeIngestionApiKeyV1 = <ThrowOnError extends boolean = false>(
+	options: Options<RevokeIngestionApiKeyV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).delete<
+		RevokeIngestionApiKeyV1Responses,
+		RevokeIngestionApiKeyV1Errors,
+		ThrowOnError
+	>({
+		requestValidator: async (data) => await zRevokeIngestionApiKeyV1Data.parseAsync(data),
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/ingestion/api-keys/{id}",
+		...options,
+	});
 
 export const ingestReadingsV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<IngestReadingsV1Data, ThrowOnError>,
@@ -659,34 +723,6 @@ export const getRoleUsersV1 = <ThrowOnError extends boolean = false>(
 		...options,
 	});
 
-export const getSensorHealthListV1 = <ThrowOnError extends boolean = false>(
-	options?: Options<GetSensorHealthListV1Data, ThrowOnError>,
-) =>
-	(options?.client ?? client).get<GetSensorHealthListV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetSensorHealthListV1Data.parseAsync(data),
-		responseTransformer: getSensorHealthListV1ResponseTransformer,
-		responseType: "json",
-		security: [{ scheme: "bearer", type: "http" }],
-		url: "/api/v1/sensors/health",
-		...options,
-	});
-
-export const getSensorHealthByIdV1 = <ThrowOnError extends boolean = false>(
-	options: Options<GetSensorHealthByIdV1Data, ThrowOnError>,
-) =>
-	(options.client ?? client).get<
-		GetSensorHealthByIdV1Responses,
-		GetSensorHealthByIdV1Errors,
-		ThrowOnError
-	>({
-		requestValidator: async (data) => await zGetSensorHealthByIdV1Data.parseAsync(data),
-		responseTransformer: getSensorHealthByIdV1ResponseTransformer,
-		responseType: "json",
-		security: [{ scheme: "bearer", type: "http" }],
-		url: "/api/v1/sensors/{id}/health",
-		...options,
-	});
-
 export const getAllSensorTypesV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<GetAllSensorTypesV1Data, ThrowOnError>,
 ) =>
@@ -767,6 +803,34 @@ export const updateSensorTypeV1 = <ThrowOnError extends boolean = false>(
 			"Content-Type": "application/json",
 			...options.headers,
 		},
+	});
+
+export const getSensorHealthListV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetSensorHealthListV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<GetSensorHealthListV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetSensorHealthListV1Data.parseAsync(data),
+		responseTransformer: getSensorHealthListV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/sensors/health",
+		...options,
+	});
+
+export const getSensorHealthByIdV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetSensorHealthByIdV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<
+		GetSensorHealthByIdV1Responses,
+		GetSensorHealthByIdV1Errors,
+		ThrowOnError
+	>({
+		requestValidator: async (data) => await zGetSensorHealthByIdV1Data.parseAsync(data),
+		responseTransformer: getSensorHealthByIdV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/sensors/{id}/health",
+		...options,
 	});
 
 export const getAllSensorsV1 = <ThrowOnError extends boolean = false>(

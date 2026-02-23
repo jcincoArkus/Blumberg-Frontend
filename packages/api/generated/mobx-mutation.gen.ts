@@ -9,6 +9,7 @@ import {
 	checkPermissionUserV1Mutation,
 	createAdminV1Mutation,
 	createEquipmentV1Mutation,
+	createIngestionApiKeyV1Mutation,
 	createRoleV1Mutation,
 	createSensorTypeV1Mutation,
 	createSensorV1Mutation,
@@ -27,6 +28,7 @@ import {
 	removeUserRolesV1Mutation,
 	replaceRolePermissionsV1Mutation,
 	replaceUserRolesV1Mutation,
+	revokeIngestionApiKeyV1Mutation,
 	updateAdminV1Mutation,
 	updateEquipmentV1Mutation,
 	updateRoleV1Mutation,
@@ -42,6 +44,7 @@ import type {
 	CheckPermissionUserV1Data,
 	CreateAdminV1Data,
 	CreateEquipmentV1Data,
+	CreateIngestionApiKeyV1Data,
 	CreateRoleV1Data,
 	CreateSensorTypeV1Data,
 	CreateSensorV1Data,
@@ -60,6 +63,7 @@ import type {
 	RemoveUserRolesV1Data,
 	ReplaceRolePermissionsV1Data,
 	ReplaceUserRolesV1Data,
+	RevokeIngestionApiKeyV1Data,
 	UpdateAdminV1Data,
 	UpdateEquipmentV1Data,
 	UpdateRoleV1Data,
@@ -103,6 +107,16 @@ export const updateEquipmentV1ObservedMutation = (
 	defaultValues?: Partial<UpdateEquipmentV1Data>,
 	observerOptions?: MutationOptions<typeof updateEquipmentV1Mutation>,
 ) => new ObservedMutation(updateEquipmentV1Mutation, defaultValues, observerOptions);
+
+export const createIngestionApiKeyV1ObservedMutation = (
+	defaultValues?: Partial<CreateIngestionApiKeyV1Data>,
+	observerOptions?: MutationOptions<typeof createIngestionApiKeyV1Mutation>,
+) => new ObservedMutation(createIngestionApiKeyV1Mutation, defaultValues, observerOptions);
+
+export const revokeIngestionApiKeyV1ObservedMutation = (
+	defaultValues?: Partial<RevokeIngestionApiKeyV1Data>,
+	observerOptions?: MutationOptions<typeof revokeIngestionApiKeyV1Mutation>,
+) => new ObservedMutation(revokeIngestionApiKeyV1Mutation, defaultValues, observerOptions);
 
 export const ingestReadingsV1ObservedMutation = (
 	defaultValues?: Partial<IngestReadingsV1Data>,
