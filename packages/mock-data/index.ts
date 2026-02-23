@@ -94,6 +94,12 @@ export {
 	ingestionErrors,
 	sensorHealthRecords,
 } from "./sensor-health";
+// Sensor thresholds mock data
+export {
+	sensorThresholdSeverityOptions,
+	sensorThresholds,
+	timeOptions as sensorThresholdTimeOptions,
+} from "./sensor-thresholds";
 export type {
 	DataMapping,
 	DataMappingTransform,

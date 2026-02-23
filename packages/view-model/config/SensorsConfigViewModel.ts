@@ -3,6 +3,7 @@ import type {
 	Equipment,
 	Sensor,
 	SensorStatus,
+	SensorThreshold,
 	SensorType,
 	SensorTypeOption,
 	Site,
@@ -39,6 +40,12 @@ export class SensorsConfigViewModel implements Disposable, FilterableViewModel {
 	editingSensor: Sensor | null = null;
 	isEditorOpen = false;
 	isDetailsOpen = false;
+
+	// Threshold editor state
+	thresholdSensorId: string | null = null;
+	editingThreshold: SensorThreshold | null = null;
+	isThresholdEditorOpen = false;
+	thresholds: SensorThreshold[] = [];
 
 	// Observable state - filters
 	searchQuery = "";
@@ -160,6 +167,24 @@ export class SensorsConfigViewModel implements Disposable, FilterableViewModel {
 			this.sensors = [...this.sensors, sensor];
 		}
 		this.closeEditor();
+	};
+
+	// Threshold actions — always opens in create mode (backend creates a new record each time)
+	openThresholdEditor = (sensor: Sensor) => {
+		this.thresholdSensorId = sensor.id;
+		this.editingThreshold = null;
+		this.isThresholdEditorOpen = true;
+	};
+
+	closeThresholdEditor = () => {
+		this.isThresholdEditorOpen = false;
+		this.thresholdSensorId = null;
+		this.editingThreshold = null;
+	};
+
+	saveThreshold = (threshold: SensorThreshold) => {
+		this.thresholds = [...this.thresholds, threshold];
+		this.closeThresholdEditor();
 	};
 
 	toggleSensorStatus = (id: string, status: string) => {

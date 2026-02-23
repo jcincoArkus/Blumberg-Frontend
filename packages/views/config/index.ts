@@ -3,6 +3,7 @@ export { AlertRulesTable } from "./AlertRulesTable";
 export { SensorDetailsDrawer } from "./SensorDetailsDrawer";
 export { SensorEditor } from "./SensorEditor";
 export { SensorsTable } from "./SensorsTable";
+export { SensorThresholdEditor } from "./SensorThresholdEditor";
 export type {
 	AlertRule,
 	AlertRuleNotification,
@@ -17,6 +18,8 @@ export type {
 	NotificationChannel,
 	Sensor,
 	SensorStatus,
+	SensorThreshold,
+	SensorThresholdSeverity,
 	SensorType,
 	SensorTypeOption,
 	Site,

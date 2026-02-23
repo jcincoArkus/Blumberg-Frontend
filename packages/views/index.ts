@@ -68,6 +68,9 @@ export {
 	SensorEditor,
 	type SensorStatus as ConfigSensorStatus,
 	SensorsTable as ConfigSensorsTable,
+	type SensorThreshold,
+	SensorThresholdEditor,
+	type SensorThresholdSeverity,
 	type SensorType as AlertSensorType,
 	type Site as ConfigSite,
 } from "./config";
@@ -174,6 +177,7 @@ export {
 	SensorHealthStats,
 	SensorHealthTable,
 } from "./sensor-health";
+export type { CreateSensorWithNewThresholdRequest } from "./sensors";
 export {
 	getSensorColumns,
 	getSensorTypeKindDisplayName,

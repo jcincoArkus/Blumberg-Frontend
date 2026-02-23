@@ -6,6 +6,7 @@ import {
 	Edit,
 	MapPin,
 	Server,
+	SlidersHorizontal,
 	X,
 	XCircle,
 } from "lucide-react";
@@ -38,6 +39,7 @@ interface SensorDetailsDrawerProps {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 	onEdit: (sensor: Sensor) => void;
+	onSetThreshold: (sensor: Sensor) => void;
 	onToggleStatus: (id: string, status: string) => void;
 }
 
@@ -100,6 +102,7 @@ export function SensorDetailsDrawer({
 	open,
 	onOpenChange,
 	onEdit,
+	onSetThreshold,
 	onToggleStatus,
 }: SensorDetailsDrawerProps) {
 	const isMapped = sensor.dataMapping && sensor.dataMapping.length > 0;
@@ -114,6 +117,18 @@ export function SensorDetailsDrawer({
 							<DrawerDescription>{t`Complete information about this sensor`}</DrawerDescription>
 						</div>
 						<div className="flex items-center gap-2">
+							<Button
+								variant="outline"
+								size="sm"
+								onClick={() => {
+									onSetThreshold(sensor);
+									onOpenChange(false);
+								}}
+								className="h-8"
+							>
+								<SlidersHorizontal className="h-4 w-4 mr-1.5" />
+								{t`Set Threshold`}
+							</Button>
 							<Button
 								variant="outline"
 								size="sm"

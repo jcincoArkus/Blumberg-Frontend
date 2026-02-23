@@ -2,9 +2,15 @@ import { Plus } from "lucide-react";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
+import { sensorThresholdSeverityOptions, sensorThresholdTimeOptions } from "~@/mock-data";
 import { Button } from "~@/ui";
 import { useSensorsConfigViewModel } from "~@/view-model";
-import { ConfigSensorsTable, SensorDetailsDrawer, SensorEditor } from "~@/views";
+import {
+	ConfigSensorsTable,
+	SensorDetailsDrawer,
+	SensorEditor,
+	SensorThresholdEditor,
+} from "~@/views";
 
 /**
  * Sensors Configuration page component.
@@ -44,6 +50,7 @@ const SensorsConfigPage = observer(function SensorsConfigPage() {
 				onEquipmentFilterChange={vm.setEquipmentFilter}
 				onViewDetails={vm.viewDetails}
 				onEdit={vm.openEditor}
+				onSetThreshold={vm.openThresholdEditor}
 				onToggleStatus={vm.toggleSensorStatus}
 			/>
 
@@ -66,9 +73,21 @@ const SensorsConfigPage = observer(function SensorsConfigPage() {
 					open={vm.isDetailsOpen}
 					onOpenChange={(open) => !open && vm.closeDetails()}
 					onEdit={vm.openEditor}
+					onSetThreshold={vm.openThresholdEditor}
 					onToggleStatus={vm.toggleSensorStatus}
 				/>
 			)}
+
+			<SensorThresholdEditor
+				open={vm.isThresholdEditorOpen}
+				onOpenChange={(open) => !open && vm.closeThresholdEditor()}
+				threshold={vm.editingThreshold}
+				onSave={vm.saveThreshold}
+				sensors={vm.sensors}
+				sensorId={vm.thresholdSensorId ?? undefined}
+				severityOptions={sensorThresholdSeverityOptions}
+				timeOptions={sensorThresholdTimeOptions}
+			/>
 		</div>
 	);
 });
