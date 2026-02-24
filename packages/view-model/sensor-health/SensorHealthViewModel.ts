@@ -12,7 +12,8 @@ export const healthStatusLabel: Record<SensorHealthStatus, string> = {
 	[SensorHealthStatus._1]: "warning",
 	[SensorHealthStatus._2]: "critical",
 	[SensorHealthStatus._3]: "stale",
-	[SensorHealthStatus._4]: "offline",
+	[SensorHealthStatus._4]: "silent",
+	[SensorHealthStatus._5]: "offline",
 };
 
 /** Reverse lookup: display string to enum value. */
@@ -21,7 +22,8 @@ const healthStatusFromLabel: Record<string, SensorHealthStatus> = {
 	warning: SensorHealthStatus._1,
 	critical: SensorHealthStatus._2,
 	stale: SensorHealthStatus._3,
-	offline: SensorHealthStatus._4,
+	silent: SensorHealthStatus._4,
+	offline: SensorHealthStatus._5,
 };
 
 const PAGE_SIZE = 50;

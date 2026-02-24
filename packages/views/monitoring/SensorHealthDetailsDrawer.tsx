@@ -67,7 +67,8 @@ function SensorHealthDetailsDrawer({
 	timeWindow,
 	onTimeWindowChange,
 }: SensorHealthDetailsDrawerProps) {
-	const formatTimestamp = (dateString: string) => {
+	const formatTimestamp = (dateString?: string) => {
+		if (!dateString) return t`Never`;
 		const date = new Date(dateString);
 		return date.toLocaleString("en-US", {
 			month: "short",
@@ -79,7 +80,9 @@ function SensorHealthDetailsDrawer({
 		});
 	};
 
-	const getHealthBadge = (status?: "healthy" | "stale" | "offline" | "warning" | "critical") => {
+	const getHealthBadge = (
+		status?: "healthy" | "stale" | "silent" | "offline" | "warning" | "critical",
+	) => {
 		if (!status) {
 			return (
 				<Badge variant="outline" className="bg-slate-100 text-slate-700 border-slate-200">
@@ -97,6 +100,11 @@ function SensorHealthDetailsDrawer({
 				label: t`Stale`,
 				className: "bg-amber-100 text-amber-700 border-amber-200",
 				icon: Clock,
+			},
+			silent: {
+				label: t`Silent`,
+				className: "bg-red-100 text-red-700 border-red-200",
+				icon: XCircle,
 			},
 			offline: {
 				label: t`Offline`,
@@ -218,9 +226,9 @@ function SensorHealthDetailsDrawer({
 interface SensorHealthSectionProps {
 	data: SensorHealthData;
 	getHealthBadge: (
-		status?: "healthy" | "stale" | "offline" | "warning" | "critical",
+		status?: "healthy" | "stale" | "silent" | "offline" | "warning" | "critical",
 	) => React.ReactNode;
-	formatTimestamp: (dateString: string) => string;
+	formatTimestamp: (dateString?: string) => string;
 	ageFormatted: string;
 }
 
@@ -249,7 +257,9 @@ function SensorHealthSection({
 							<p className="text-sm font-medium text-foreground">
 								{formatTimestamp(data.health.lastReportedAt)}
 							</p>
-							<p className="text-xs text-muted-foreground mt-0.5">{t`${ageFormatted} ago`}</p>
+							<p className="text-xs text-muted-foreground mt-0.5">
+								{data.health.lastReportedAt ? t`${ageFormatted} ago` : t`Never reported`}
+							</p>
 						</div>
 
 						<div>
@@ -264,22 +274,28 @@ function SensorHealthSection({
 								<CardTitle className="text-sm">{t`Classification Logic`}</CardTitle>
 							</CardHeader>
 							<CardContent className="space-y-2 text-xs">
-								<div className="flex items-center justify-between">
-									<span className="text-muted-foreground">{t`Healthy:`}</span>
-									<span className="font-medium">
-										{t`Reported within ${Math.floor(data.health.warningThresholdSeconds / 60)} minutes`}
+								<div className="flex items-center justify-between gap-2">
+									<span className="text-muted-foreground shrink-0">{t`Healthy:`}</span>
+									<span className="font-medium text-right">{t`Fresh + reliability > 90%`}</span>
+								</div>
+								<div className="flex items-center justify-between gap-2">
+									<span className="text-muted-foreground shrink-0">{t`Warning:`}</span>
+									<span className="font-medium text-right">{t`Fresh + reliability 70–90%`}</span>
+								</div>
+								<div className="flex items-center justify-between gap-2">
+									<span className="text-muted-foreground shrink-0">{t`Critical:`}</span>
+									<span className="font-medium text-right">{t`Fresh + reliability < 70%`}</span>
+								</div>
+								<div className="flex items-center justify-between gap-2">
+									<span className="text-muted-foreground shrink-0">{t`Stale:`}</span>
+									<span className="font-medium text-right">
+										{t`Late beyond ${Math.floor(data.health.warningThresholdSeconds / 60)} min (2× expected)`}
 									</span>
 								</div>
-								<div className="flex items-center justify-between">
-									<span className="text-muted-foreground">{t`Stale:`}</span>
-									<span className="font-medium">
-										{t`Late beyond ${Math.floor(data.health.warningThresholdSeconds / 60)} minutes`}
-									</span>
-								</div>
-								<div className="flex items-center justify-between">
-									<span className="text-muted-foreground">{t`Silent:`}</span>
-									<span className="font-medium">
-										{t`Beyond ${Math.floor(data.health.criticalThresholdSeconds / 60)} minutes`}
+								<div className="flex items-center justify-between gap-2">
+									<span className="text-muted-foreground shrink-0">{t`Offline:`}</span>
+									<span className="font-medium text-right">
+										{t`No report or beyond ${Math.floor(data.health.criticalThresholdSeconds / 60)} min (5× expected)`}
 									</span>
 								</div>
 							</CardContent>
@@ -339,48 +355,49 @@ function DataQualitySection({
 					</CardContent>
 				</Card>
 			) : hasDetailFromApi ? (
-				<Card>
-					<CardHeader className="pb-3">
-						<CardTitle className="text-sm">{t`Reading counts (last 24h)`}</CardTitle>
-					</CardHeader>
-					<CardContent className="space-y-3">
-						<div className="flex items-center justify-between">
-							<span className="text-xs text-muted-foreground">{t`Expected`}</span>
-							<span className="text-sm font-medium">{detail.expectedPoints} points</span>
-						</div>
-						<div className="flex items-center justify-between">
-							<span className="text-xs text-muted-foreground">{t`Received`}</span>
-							<span className="text-sm font-medium">{detail.receivedPoints} points</span>
-						</div>
-						<div className="flex items-center justify-between">
-							<span className="text-xs text-muted-foreground">{t`Missing`}</span>
-							<span className="text-sm font-medium">
-								{Math.max(0, (detail.expectedPoints ?? 0) - (detail.receivedPoints ?? 0))} points
-							</span>
-						</div>
-						<div className="pt-2">
-							<div className="flex items-center justify-between mb-1.5">
-								<span className="text-xs font-medium text-foreground">{t`Completeness`}</span>
-								<span className="text-xs font-medium text-foreground">
-									{(detail.expectedPoints ?? 0) > 0
-										? (((detail.receivedPoints ?? 0) / (detail.expectedPoints ?? 1)) * 100).toFixed(
-												1,
-											)
-										: "100.0"}
-									%
-								</span>
-							</div>
-							<Progress
-								value={
-									(detail.expectedPoints ?? 0) > 0
-										? ((detail.receivedPoints ?? 0) / (detail.expectedPoints ?? 1)) * 100
-										: 100
-								}
-								className="h-2"
-							/>
-						</div>
-					</CardContent>
-				</Card>
+				(() => {
+					const expected = detail.expectedPoints ?? 0;
+					const received = detail.receivedPoints ?? 0;
+					const missing = Math.max(0, expected - received);
+					const rawPct = expected > 0 ? (received / expected) * 100 : 100;
+					const completenessPct = Math.min(100, rawPct);
+					const aboveTarget = rawPct > 100;
+					return (
+						<Card>
+							<CardHeader className="pb-3">
+								<CardTitle className="text-sm">{t`Reading counts (last 24h)`}</CardTitle>
+							</CardHeader>
+							<CardContent className="space-y-3">
+								<div className="flex items-center justify-between">
+									<span className="text-xs text-muted-foreground">{t`Expected`}</span>
+									<span className="text-sm font-medium">{expected} points</span>
+								</div>
+								<div className="flex items-center justify-between">
+									<span className="text-xs text-muted-foreground">{t`Received`}</span>
+									<span className="text-sm font-medium">{received} points</span>
+								</div>
+								<div className="flex items-center justify-between">
+									<span className="text-xs text-muted-foreground">{t`Missing`}</span>
+									<span className="text-sm font-medium">{missing} points</span>
+								</div>
+								<div className="pt-2">
+									<div className="flex items-center justify-between mb-1.5">
+										<span className="text-xs font-medium text-foreground">{t`Completeness`}</span>
+										<span className="text-xs font-medium text-foreground">
+											{expected > 0 ? completenessPct.toFixed(1) : "100.0"}%
+											{aboveTarget && (
+												<span className="ml-1.5 font-normal text-muted-foreground">
+													({t`above target`} {rawPct.toFixed(1)}%)
+												</span>
+											)}
+										</span>
+									</div>
+									<Progress value={completenessPct} className="h-2" />
+								</div>
+							</CardContent>
+						</Card>
+					);
+				})()
 			) : data.quality ? (
 				<div className="space-y-4">
 					{/* Missing Data Summary */}
@@ -475,7 +492,7 @@ function DataQualitySection({
 // Ingestion Errors Section (per-sensor count from API)
 interface IngestionErrorsSectionProps {
 	data: SensorHealthData;
-	formatTimestamp: (dateString: string) => string;
+	formatTimestamp: (dateString?: string) => string;
 	/** Per-sensor rejection count in last 24h (null = loading) */
 	ingestionErrorCount?: number | null;
 }

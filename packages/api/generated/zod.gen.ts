@@ -414,6 +414,7 @@ export const zSensorHealthStatus = z.union([
 	z.literal(2),
 	z.literal(3),
 	z.literal(4),
+	z.literal(5),
 ]);
 
 export const zSensorHealthDetailResponse = z.object({
@@ -458,6 +459,7 @@ export const zSensorHealthListItemResponse = z.object({
 	equipmentName: z.optional(z.union([z.string(), z.null()])),
 	lastValue: z.optional(z.union([z.number(), z.null()])),
 	unit: z.optional(z.union([z.string(), z.null()])),
+	ingestionSource: z.optional(z.union([zIngestionSource, z.null()])),
 });
 
 export const zSensorHealthListItemResponsePagedResponse = z.object({

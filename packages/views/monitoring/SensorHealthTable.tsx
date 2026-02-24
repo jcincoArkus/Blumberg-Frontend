@@ -89,7 +89,9 @@ function SensorHealthTable({
 		});
 	};
 
-	const getHealthBadge = (status?: "healthy" | "stale" | "offline" | "warning" | "critical") => {
+	const getHealthBadge = (
+		status?: "healthy" | "stale" | "silent" | "offline" | "warning" | "critical",
+	) => {
 		if (!status) {
 			return (
 				<Badge variant="outline" className="bg-slate-100 text-slate-700 border-slate-200">
@@ -103,6 +105,7 @@ function SensorHealthTable({
 				className: "bg-emerald-100 text-emerald-700 border-emerald-200",
 			},
 			stale: { label: t`Stale`, className: "bg-amber-100 text-amber-700 border-amber-200" },
+			silent: { label: t`Silent`, className: "bg-red-100 text-red-700 border-red-200" },
 			offline: { label: t`Offline`, className: "bg-red-100 text-red-700 border-red-200" },
 			warning: { label: t`Warning`, className: "bg-amber-100 text-amber-700 border-amber-200" },
 			critical: { label: t`Critical`, className: "bg-red-100 text-red-700 border-red-200" },
@@ -136,16 +139,19 @@ function SensorHealthTable({
 		);
 	};
 
-	const getIngestionBadge = (status: "ok" | "api_error" | "csv_error") => {
+	const getIngestionBadge = (source?: "api" | "csv") => {
 		const config = {
-			ok: { label: t`OK`, className: "bg-emerald-100 text-emerald-700 border-emerald-200" },
-			api_error: { label: t`API Error`, className: "bg-red-100 text-red-700 border-red-200" },
-			csv_error: {
-				label: t`CSV Error`,
-				className: "bg-orange-100 text-orange-700 border-orange-200",
-			},
+			api: { label: t`API`, className: "bg-sky-100 text-sky-700 border-sky-200" },
+			csv: { label: t`CSV`, className: "bg-violet-100 text-violet-700 border-violet-200" },
 		};
-		const cfg = config[status];
+		if (!source) {
+			return (
+				<Badge variant="outline" className="border bg-muted/50 text-muted-foreground">
+					{t`—`}
+				</Badge>
+			);
+		}
+		const cfg = config[source];
 		return (
 			<Badge variant="outline" className={cn("border", cfg.className)}>
 				{cfg.label}
@@ -239,6 +245,7 @@ function SensorHealthTable({
 								<SelectItem value="all">{t`All Status`}</SelectItem>
 								<SelectItem value="healthy">{t`Healthy`}</SelectItem>
 								<SelectItem value="stale">{t`Stale`}</SelectItem>
+								<SelectItem value="silent">{t`Silent`}</SelectItem>
 								<SelectItem value="offline">{t`Offline`}</SelectItem>
 								<SelectItem value="warning">{t`Warning`}</SelectItem>
 								<SelectItem value="critical">{t`Critical`}</SelectItem>
@@ -273,9 +280,8 @@ function SensorHealthTable({
 							</SelectTrigger>
 							<SelectContent>
 								<SelectItem value="all">{t`All Sources`}</SelectItem>
-								<SelectItem value="ok">{t`OK`}</SelectItem>
-								<SelectItem value="api_error">{t`API Error`}</SelectItem>
-								<SelectItem value="csv_error">{t`CSV Error`}</SelectItem>
+								<SelectItem value="api">{t`API`}</SelectItem>
+								<SelectItem value="csv">{t`CSV`}</SelectItem>
 							</SelectContent>
 						</Select>
 					</div>
@@ -383,10 +389,10 @@ interface TableContentProps {
 	onViewDetails: (data: SensorHealthData) => void;
 	formatTimestamp: (dateString?: string) => string;
 	getHealthBadge: (
-		status?: "healthy" | "stale" | "offline" | "warning" | "critical",
+		status?: "healthy" | "stale" | "silent" | "offline" | "warning" | "critical",
 	) => JSX.Element;
 	getQualityBadge: (status?: "good" | "missing" | "inconsistent") => JSX.Element;
-	getIngestionBadge: (status: "ok" | "api_error" | "csv_error") => JSX.Element;
+	getIngestionBadge: (source?: "api" | "csv") => JSX.Element;
 }
 
 function TableContent({
@@ -421,6 +427,7 @@ function TableContent({
 							className={cn(
 								"cursor-pointer hover:bg-muted/50",
 								(item.health?.healthStatus === "offline" ||
+									item.health?.healthStatus === "silent" ||
 									item.health?.healthStatus === "critical") &&
 									"bg-red-50/30",
 								(item.health?.healthStatus === "stale" ||
@@ -458,7 +465,7 @@ function TableContent({
 							</TableCell>
 							<TableCell>{getHealthBadge(item.health?.healthStatus)}</TableCell>
 							<TableCell>{getQualityBadge(item.quality?.qualityStatus)}</TableCell>
-							<TableCell>{getIngestionBadge(item.ingestionStatus)}</TableCell>
+							<TableCell>{getIngestionBadge(item.ingestionSource)}</TableCell>
 							<TableCell>
 								<p className="text-xs text-muted-foreground max-w-xs truncate">
 									{item.issueSummary}

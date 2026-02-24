@@ -181,7 +181,6 @@ export type IngestionRunListResponsePagedResponse = {
 export enum IngestionSource {
 	_0 = 0,
 	_1 = 1,
-	_2 = 2,
 }
 
 export type IngestionStatsResponse = {
@@ -304,6 +303,8 @@ export type SensorHealthListItemResponse = {
 	equipmentName?: string | null;
 	lastValue?: number | null;
 	unit?: string | null;
+	/** Source of last ingestion that produced a reading (0=Api, 1=Csv, 2=Simulated). */
+	ingestionSource?: IngestionSource | null;
 };
 
 export type SensorHealthListItemResponsePagedResponse = {
@@ -320,6 +321,7 @@ export enum SensorHealthStatus {
 	_2 = 2,
 	_3 = 3,
 	_4 = 4,
+	_5 = 5,
 }
 
 export type SensorReadingResponse = {
