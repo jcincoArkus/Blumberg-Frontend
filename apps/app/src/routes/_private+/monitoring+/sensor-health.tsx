@@ -53,6 +53,9 @@ const SensorHealthPage = observer(function SensorHealthPage() {
 			{vm.selectedSensor && (
 				<SensorHealthDetailsDrawer
 					data={vm.selectedSensor}
+					detail={vm.selectedSensorDetail}
+					detailLoading={vm.isDetailLoading}
+					ingestionErrorCount={vm.selectedSensorRejectionCount}
 					open={vm.isDetailsOpen}
 					onOpenChange={vm.setDetailsOpen}
 					timeWindow={vm.timeWindow}

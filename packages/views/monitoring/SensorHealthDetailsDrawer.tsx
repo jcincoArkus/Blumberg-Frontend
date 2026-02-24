@@ -4,11 +4,12 @@ import {
 	CheckCircle2,
 	Clock,
 	Database,
-	RefreshCw,
 	X,
 	XCircle,
 } from "lucide-react";
+import type React from "react";
 
+import type { SensorHealthDetailResponse } from "~@/api";
 import { t } from "~@/i18n/macro";
 import {
 	Badge,
@@ -37,14 +38,30 @@ import type { QualityWindow, SensorHealthData } from "./types";
 
 interface SensorHealthDetailsDrawerProps {
 	data: SensorHealthData;
+	detail?: SensorHealthDetailResponse | undefined;
+	detailLoading?: boolean;
+	/** Per-sensor ingestion rejection count in last 24h (null = loading) */
+	ingestionErrorCount?: number | null;
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 	timeWindow: QualityWindow;
 	onTimeWindowChange: (window: QualityWindow) => void;
 }
 
+function formatFreshnessSeconds(seconds: number): string {
+	if (seconds < 60) return `${Math.round(seconds)}s`;
+	const mins = Math.floor(seconds / 60);
+	if (mins < 60) return `${mins}m`;
+	const h = Math.floor(mins / 60);
+	const m = mins % 60;
+	return m > 0 ? `${h}h ${m}m` : `${h}h`;
+}
+
 function SensorHealthDetailsDrawer({
 	data,
+	detail,
+	detailLoading = false,
+	ingestionErrorCount = null,
 	open,
 	onOpenChange,
 	timeWindow,
@@ -108,6 +125,9 @@ function SensorHealthDetailsDrawer({
 	};
 
 	const getAgeFormatted = () => {
+		if (detail?.freshnessSeconds != null && detail.freshnessSeconds >= 0) {
+			return formatFreshnessSeconds(detail.freshnessSeconds);
+		}
 		if (!data.health?.lastReportedAt) return t`N/A`;
 		const now = Date.now();
 		const lastReported = new Date(data.health.lastReportedAt).getTime();
@@ -174,6 +194,8 @@ function SensorHealthDetailsDrawer({
 					{/* Data Quality Diagnostics */}
 					<DataQualitySection
 						data={data}
+						detail={detail}
+						detailLoading={detailLoading}
 						timeWindow={timeWindow}
 						onTimeWindowChange={onTimeWindowChange}
 					/>
@@ -181,7 +203,11 @@ function SensorHealthDetailsDrawer({
 					<Separator />
 
 					{/* Ingestion Errors */}
-					<IngestionErrorsSection data={data} formatTimestamp={formatTimestamp} />
+					<IngestionErrorsSection
+						data={data}
+						formatTimestamp={formatTimestamp}
+						ingestionErrorCount={ingestionErrorCount}
+					/>
 				</div>
 			</DrawerContent>
 		</Drawer>
@@ -193,7 +219,7 @@ interface SensorHealthSectionProps {
 	data: SensorHealthData;
 	getHealthBadge: (
 		status?: "healthy" | "stale" | "offline" | "warning" | "critical",
-	) => JSX.Element;
+	) => React.ReactNode;
 	formatTimestamp: (dateString: string) => string;
 	ageFormatted: string;
 }
@@ -268,11 +294,25 @@ function SensorHealthSection({
 // Data Quality Section
 interface DataQualitySectionProps {
 	data: SensorHealthData;
+	detail?: SensorHealthDetailResponse | undefined;
+	detailLoading?: boolean;
 	timeWindow: QualityWindow;
 	onTimeWindowChange: (window: QualityWindow) => void;
 }
 
-function DataQualitySection({ data, timeWindow, onTimeWindowChange }: DataQualitySectionProps) {
+function DataQualitySection({
+	data,
+	detail,
+	detailLoading = false,
+	timeWindow,
+	onTimeWindowChange,
+}: DataQualitySectionProps) {
+	const hasDetailFromApi =
+		detail &&
+		detail.expectedPoints != null &&
+		detail.receivedPoints != null &&
+		detail.sensorId === data.sensor.id;
+
 	return (
 		<div className="space-y-4">
 			<div className="flex items-center justify-between">
@@ -292,7 +332,56 @@ function DataQualitySection({ data, timeWindow, onTimeWindowChange }: DataQualit
 				</Select>
 			</div>
 
-			{data.quality ? (
+			{detailLoading ? (
+				<Card>
+					<CardContent className="py-6">
+						<p className="text-sm text-muted-foreground">{t`Loading diagnostics…`}</p>
+					</CardContent>
+				</Card>
+			) : hasDetailFromApi ? (
+				<Card>
+					<CardHeader className="pb-3">
+						<CardTitle className="text-sm">{t`Reading counts (last 24h)`}</CardTitle>
+					</CardHeader>
+					<CardContent className="space-y-3">
+						<div className="flex items-center justify-between">
+							<span className="text-xs text-muted-foreground">{t`Expected`}</span>
+							<span className="text-sm font-medium">{detail.expectedPoints} points</span>
+						</div>
+						<div className="flex items-center justify-between">
+							<span className="text-xs text-muted-foreground">{t`Received`}</span>
+							<span className="text-sm font-medium">{detail.receivedPoints} points</span>
+						</div>
+						<div className="flex items-center justify-between">
+							<span className="text-xs text-muted-foreground">{t`Missing`}</span>
+							<span className="text-sm font-medium">
+								{Math.max(0, (detail.expectedPoints ?? 0) - (detail.receivedPoints ?? 0))} points
+							</span>
+						</div>
+						<div className="pt-2">
+							<div className="flex items-center justify-between mb-1.5">
+								<span className="text-xs font-medium text-foreground">{t`Completeness`}</span>
+								<span className="text-xs font-medium text-foreground">
+									{(detail.expectedPoints ?? 0) > 0
+										? (((detail.receivedPoints ?? 0) / (detail.expectedPoints ?? 1)) * 100).toFixed(
+												1,
+											)
+										: "100.0"}
+									%
+								</span>
+							</div>
+							<Progress
+								value={
+									(detail.expectedPoints ?? 0) > 0
+										? ((detail.receivedPoints ?? 0) / (detail.expectedPoints ?? 1)) * 100
+										: 100
+								}
+								className="h-2"
+							/>
+						</div>
+					</CardContent>
+				</Card>
+			) : data.quality ? (
 				<div className="space-y-4">
 					{/* Missing Data Summary */}
 					<Card>
@@ -383,57 +472,57 @@ function DataQualitySection({ data, timeWindow, onTimeWindowChange }: DataQualit
 	);
 }
 
-// Ingestion Errors Section
+// Ingestion Errors Section (per-sensor count from API)
 interface IngestionErrorsSectionProps {
 	data: SensorHealthData;
 	formatTimestamp: (dateString: string) => string;
+	/** Per-sensor rejection count in last 24h (null = loading) */
+	ingestionErrorCount?: number | null;
 }
 
-function IngestionErrorsSection({ data, formatTimestamp }: IngestionErrorsSectionProps) {
+function IngestionErrorsSection({
+	data,
+	formatTimestamp: _formatTimestamp,
+	ingestionErrorCount = null,
+}: IngestionErrorsSectionProps) {
+	const count = ingestionErrorCount ?? data.ingestionErrors.length;
+	const hasErrors =
+		typeof ingestionErrorCount === "number"
+			? ingestionErrorCount > 0
+			: data.ingestionErrors.length > 0;
+	const isLoading = ingestionErrorCount === null && data.ingestionErrors.length === 0;
+
 	return (
 		<div className="space-y-4">
 			<h3 className="text-sm font-semibold text-foreground">{t`Ingestion Errors`}</h3>
 
-			{data.ingestionErrors.length > 0 ? (
-				<div className="space-y-2">
-					{data.ingestionErrors.map((error) => (
-						<Card key={error.id}>
-							<CardContent className="p-4 space-y-2">
-								<div className="flex items-start justify-between">
-									<div className="flex-1">
-										<div className="flex items-center gap-2 mb-1 flex-wrap">
-											<Badge
-												variant="outline"
-												className={
-													error.severity === "alert"
-														? "bg-red-100 text-red-700 border-red-200"
-														: "bg-amber-100 text-amber-700 border-amber-200"
-												}
-											>
-												{error.severity === "alert" ? (
-													<AlertCircle className="size-3 mr-1" />
-												) : (
-													<AlertTriangle className="size-3 mr-1" />
-												)}
-												{error.severity}
-											</Badge>
-											<Badge variant="outline" className="capitalize">
-												{error.source}
-											</Badge>
-											<Badge variant="outline" className="font-mono text-xs">
-												{error.errorCode}
-											</Badge>
-										</div>
-										<p className="text-sm font-medium text-foreground mb-1">{error.message}</p>
-										<p className="text-xs text-muted-foreground">
-											{formatTimestamp(error.timestamp)}
-										</p>
-									</div>
-								</div>
-							</CardContent>
-						</Card>
-					))}
-				</div>
+			{isLoading ? (
+				<Card>
+					<CardContent className="py-6 text-center">
+						<p className="text-sm text-muted-foreground">{t`Loading…`}</p>
+					</CardContent>
+				</Card>
+			) : hasErrors ? (
+				<>
+					<Card>
+						<CardContent className="py-4">
+							<p className="text-sm text-foreground">
+								{count === 1
+									? t`1 rejected reading in the last 24 hours.`
+									: t`${count} rejected readings in the last 24 hours.`}
+							</p>
+							<p className="text-xs text-muted-foreground mt-1">
+								{t`Rejections can be due to invalid sensor id, invalid unit, or other validation errors.`}
+							</p>
+						</CardContent>
+					</Card>
+					<div className="flex gap-2">
+						<Button variant="outline" size="sm" className="flex-1">
+							<AlertCircle className="size-4 mr-2" />
+							{t`View ingestion runs`}
+						</Button>
+					</div>
+				</>
 			) : (
 				<Card>
 					<CardContent className="py-6 text-center">
@@ -443,20 +532,6 @@ function IngestionErrorsSection({ data, formatTimestamp }: IngestionErrorsSectio
 						</p>
 					</CardContent>
 				</Card>
-			)}
-
-			{/* Retry / Investigate CTA */}
-			{data.ingestionErrors.length > 0 && (
-				<div className="flex gap-2">
-					<Button variant="outline" size="sm" className="flex-1">
-						<RefreshCw className="size-4 mr-2" />
-						{t`Retry Ingestion`}
-					</Button>
-					<Button variant="outline" size="sm" className="flex-1">
-						<AlertCircle className="size-4 mr-2" />
-						{t`Investigate`}
-					</Button>
-				</div>
 			)}
 		</div>
 	);

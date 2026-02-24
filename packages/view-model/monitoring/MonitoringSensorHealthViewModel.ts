@@ -2,8 +2,12 @@ import {
 	type GetSensorHealthListV1Data,
 	getAllEquipmentV1ObservedQuery,
 	getAllSitesV1ObservedQuery,
+	getSensorHealthByIdV1ObservedQuery,
 	getSensorHealthListV1ObservedQuery,
+	getSensorRejectionCount,
+	type SensorHealthDetailResponse,
 	SensorHealthStatus,
+	type SensorRejectionCountResponse,
 } from "~@/api";
 import { makeAutoObservable, reaction } from "~@/mobx";
 import type {
@@ -37,10 +41,15 @@ const WARNING_STALE_SECONDS = 600;
 const CRITICAL_STALE_SECONDS = 1800;
 const EXPECTED_INTERVAL_SECONDS = 300;
 
+/** Last 24h window for per-sensor ingestion error count */
+const REJECTION_COUNT_FROM_HOURS = 24;
+
 export class MonitoringSensorHealthViewModel {
 	selectedSensor: SensorHealthData | null = null;
 	isDetailsOpen = false;
 	timeWindow: QualityWindow = "24h";
+	/** Per-sensor rejection count for the open drawer (null = loading, number = loaded) */
+	selectedSensorRejectionCount: number | null = null;
 
 	searchQuery = "";
 	healthFilter = "all";
@@ -51,6 +60,7 @@ export class MonitoringSensorHealthViewModel {
 	equipmentFilter = "all";
 
 	#healthQuery = getSensorHealthListV1ObservedQuery();
+	#detailQuery = getSensorHealthByIdV1ObservedQuery();
 	#sitesQuery = getAllSitesV1ObservedQuery();
 	#equipmentQuery = getAllEquipmentV1ObservedQuery();
 	#filterDisposer: (() => void) | null = null;
@@ -266,15 +276,48 @@ export class MonitoringSensorHealthViewModel {
 	viewDetails = (data: SensorHealthData) => {
 		this.selectedSensor = data;
 		this.isDetailsOpen = true;
+		this.selectedSensorRejectionCount = null;
+		this.#detailQuery.load({ path: { id: data.sensor.id } });
+		this.#loadRejectionCount(data.sensor.id);
 	};
+
+	#loadRejectionCount(sensorId: string) {
+		const to = new Date();
+		const from = new Date(to.getTime() - REJECTION_COUNT_FROM_HOURS * 60 * 60 * 1000);
+		getSensorRejectionCount(sensorId, { from, to })
+			.then((r: SensorRejectionCountResponse) => {
+				if (this.selectedSensor?.sensor.id === sensorId) {
+					this.selectedSensorRejectionCount = r.count;
+				}
+			})
+			.catch(() => {
+				if (this.selectedSensor?.sensor.id === sensorId) {
+					this.selectedSensorRejectionCount = 0;
+				}
+			});
+	}
 
 	setDetailsOpen = (open: boolean) => {
 		this.isDetailsOpen = open;
+		if (!open) this.selectedSensorRejectionCount = null;
 	};
+
+	get selectedSensorDetail(): SensorHealthDetailResponse | undefined {
+		const data = this.#detailQuery.data;
+		if (!data || !this.selectedSensor || data.sensorId !== this.selectedSensor.sensor.id) {
+			return undefined;
+		}
+		return data;
+	}
+
+	get isDetailLoading(): boolean {
+		return this.#detailQuery.isLoading;
+	}
 
 	dispose() {
 		this.#filterDisposer?.();
 		this.#healthQuery.dispose();
+		this.#detailQuery.dispose();
 		this.#sitesQuery.dispose();
 		this.#equipmentQuery.dispose();
 	}
