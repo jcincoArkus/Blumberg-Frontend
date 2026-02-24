@@ -51,6 +51,52 @@ export const zAdminResponsePagedResponse = z.object({
 	),
 });
 
+export const zAlertResponse = z.object({
+	id: z.optional(z.uuid()),
+	sensorId: z.optional(z.uuid()),
+	equipmentId: z.optional(z.uuid()),
+	siteId: z.optional(z.uuid()),
+	severity: z.optional(z.union([z.string(), z.null()])),
+	triggeredValue: z.optional(z.number()),
+	thresholdMin: z.optional(z.number()),
+	thresholdMax: z.optional(z.number()),
+	triggeredAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	status: z.optional(z.union([z.string(), z.null()])),
+	resolvedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+});
+
+export const zAlertResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zAlertResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
+});
+
+export const zAlertStatus = z.union([z.literal(0), z.literal(1), z.literal(2)]);
+
 export const zApiKeyListResponse = z.object({
 	id: z.optional(z.uuid()),
 	name: z.optional(z.union([z.string(), z.null()])),
@@ -789,6 +835,28 @@ export const zAdminResponsePagedResponseWritable = z.object({
 	),
 });
 
+export const zAlertResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zAlertResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
 export const zApiKeyListResponsePagedResponseWritable = z.object({
 	items: z.optional(z.union([z.array(zApiKeyListResponse), z.null()])),
 	totalCount: z.optional(
@@ -1033,6 +1101,56 @@ export const zGetAdminByIdV1Data = z.object({
 
 export const zUpdateAdminV1Data = z.object({
 	body: z.optional(zAdminRequest),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetAllAlertsV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			Status: z.optional(zAlertStatus),
+			SensorId: z.optional(z.uuid()),
+			EquipmentId: z.optional(z.uuid()),
+			SiteId: z.optional(z.uuid()),
+			Search: z.optional(z.string()),
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
+});
+
+export const zGetAlertByIdV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zAcknowledgeAlertV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zResolveAlertV1Data = z.object({
+	body: z.optional(z.never()),
 	path: z.object({
 		id: z.uuid(),
 	}),

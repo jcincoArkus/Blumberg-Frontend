@@ -32,6 +32,35 @@ export type AdminResponsePagedResponse = {
 	readonly totalPages?: number;
 };
 
+export type AlertResponse = {
+	id?: string;
+	sensorId?: string;
+	equipmentId?: string;
+	siteId?: string;
+	severity?: string | null;
+	triggeredValue?: number;
+	thresholdMin?: number;
+	thresholdMax?: number;
+	triggeredAt?: Date;
+	status?: string | null;
+	resolvedAt?: Date | null;
+	createdAt?: Date;
+};
+
+export type AlertResponsePagedResponse = {
+	items?: Array<AlertResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+	readonly totalPages?: number;
+};
+
+export enum AlertStatus {
+	_0 = 0,
+	_1 = 1,
+	_2 = 2,
+}
+
 export type ApiKeyListResponse = {
 	id?: string;
 	name?: string | null;
@@ -495,6 +524,13 @@ export type AdminResponsePagedResponseWritable = {
 	pageSize?: number;
 };
 
+export type AlertResponsePagedResponseWritable = {
+	items?: Array<AlertResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+};
+
 export type ApiKeyListResponsePagedResponseWritable = {
 	items?: Array<ApiKeyListResponse> | null;
 	totalCount?: number;
@@ -688,6 +724,120 @@ export type UpdateAdminV1Responses = {
 };
 
 export type UpdateAdminV1Response = UpdateAdminV1Responses[keyof UpdateAdminV1Responses];
+
+export type GetAllAlertsV1Data = {
+	body?: never;
+	path?: never;
+	query?: {
+		Status?: AlertStatus;
+		SensorId?: string;
+		EquipmentId?: string;
+		SiteId?: string;
+		Search?: string;
+		Page?: number;
+		PageSize?: number;
+	};
+	url: "/api/v1/alerts";
+};
+
+export type GetAllAlertsV1Responses = {
+	/**
+	 * OK
+	 */
+	200: AlertResponsePagedResponse;
+};
+
+export type GetAllAlertsV1Response = GetAllAlertsV1Responses[keyof GetAllAlertsV1Responses];
+
+export type GetAlertByIdV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/alerts/{id}";
+};
+
+export type GetAlertByIdV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+};
+
+export type GetAlertByIdV1Error = GetAlertByIdV1Errors[keyof GetAlertByIdV1Errors];
+
+export type GetAlertByIdV1Responses = {
+	/**
+	 * OK
+	 */
+	200: AlertResponse;
+};
+
+export type GetAlertByIdV1Response = GetAlertByIdV1Responses[keyof GetAlertByIdV1Responses];
+
+export type AcknowledgeAlertV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/alerts/{id}/acknowledge";
+};
+
+export type AcknowledgeAlertV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+	/**
+	 * Conflict
+	 */
+	409: ProblemDetails;
+};
+
+export type AcknowledgeAlertV1Error = AcknowledgeAlertV1Errors[keyof AcknowledgeAlertV1Errors];
+
+export type AcknowledgeAlertV1Responses = {
+	/**
+	 * OK
+	 */
+	200: AlertResponse;
+};
+
+export type AcknowledgeAlertV1Response =
+	AcknowledgeAlertV1Responses[keyof AcknowledgeAlertV1Responses];
+
+export type ResolveAlertV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/alerts/{id}/resolve";
+};
+
+export type ResolveAlertV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: ProblemDetails;
+	/**
+	 * Conflict
+	 */
+	409: ProblemDetails;
+};
+
+export type ResolveAlertV1Error = ResolveAlertV1Errors[keyof ResolveAlertV1Errors];
+
+export type ResolveAlertV1Responses = {
+	/**
+	 * OK
+	 */
+	200: AlertResponse;
+};
+
+export type ResolveAlertV1Response = ResolveAlertV1Responses[keyof ResolveAlertV1Responses];
 
 export type LoginV1Data = {
 	body?: LoginRequest;
