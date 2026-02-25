@@ -24,7 +24,7 @@ function toNowIso(): string {
 
 type PagedData = { items?: unknown[]; totalCount?: number; page?: number; pageSize?: number };
 
-export class IngestionViewModel {
+class IngestionViewModel {
 	activeTab: "api" | "csv" = "api";
 	refreshKey = 0;
 

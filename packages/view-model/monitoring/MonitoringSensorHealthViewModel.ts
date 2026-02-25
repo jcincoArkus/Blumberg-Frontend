@@ -1,11 +1,17 @@
 import {
+	IngestionSource as ApiIngestionSource,
 	type GetSensorHealthListV1Data,
 	getAllEquipmentV1ObservedQuery,
 	getAllSitesV1ObservedQuery,
+	getIngestionStatsV1ObservedQuery,
+	getSensorHealthByIdV1ObservedQuery,
 	getSensorHealthListV1ObservedQuery,
+	getSensorRejectionCount,
+	type SensorHealthDetailResponse,
 	SensorHealthStatus,
+	type SensorRejectionCountResponse,
 } from "~@/api";
-import { makeAutoObservable, reaction } from "~@/mobx";
+import { makeAutoObservable, reaction, runInAction } from "~@/mobx";
 import type {
 	MonitoringEquipment as Equipment,
 	HealthStatus,
@@ -20,7 +26,8 @@ const healthStatusLabel: Record<SensorHealthStatus, HealthStatus> = {
 	[SensorHealthStatus._1]: "warning",
 	[SensorHealthStatus._2]: "critical",
 	[SensorHealthStatus._3]: "stale",
-	[SensorHealthStatus._4]: "offline",
+	[SensorHealthStatus._4]: "silent",
+	[SensorHealthStatus._5]: "offline",
 };
 
 /** Reverse lookup: display string to enum value. */
@@ -29,18 +36,29 @@ const healthStatusFromLabel: Record<string, SensorHealthStatus> = {
 	warning: SensorHealthStatus._1,
 	critical: SensorHealthStatus._2,
 	stale: SensorHealthStatus._3,
-	offline: SensorHealthStatus._4,
+	silent: SensorHealthStatus._4,
+	offline: SensorHealthStatus._5,
 };
 
-// Constants matching backend SensorService
-const WARNING_STALE_SECONDS = 600;
-const CRITICAL_STALE_SECONDS = 1800;
-const EXPECTED_INTERVAL_SECONDS = 300;
+/** Map API ingestion source enum to label (0=Api, 1=Csv). */
+const ingestionSourceLabel: Record<ApiIngestionSource, "api" | "csv"> = {
+	[ApiIngestionSource._0]: "api",
+	[ApiIngestionSource._1]: "csv",
+};
 
-export class MonitoringSensorHealthViewModel {
-	selectedSensor: SensorHealthData | null = null;
-	isDetailsOpen = false;
+// Constants matching backend SensorService (global expected interval 300s; Stale > 2×, Offline > 5×)
+const EXPECTED_INTERVAL_SECONDS = 300;
+const WARNING_STALE_SECONDS = 2 * EXPECTED_INTERVAL_SECONDS; // 600s = 10 min
+const CRITICAL_STALE_SECONDS = 5 * EXPECTED_INTERVAL_SECONDS; // 1500s = 25 min
+
+/** Last 24h window for per-sensor ingestion error count */
+const REJECTION_COUNT_FROM_HOURS = 24;
+
+class MonitoringSensorHealthViewModel {
 	timeWindow: QualityWindow = "24h";
+	/** Sensor ID for which we last loaded rejection count (one-off API); value in rejectionCountValue */
+	rejectionCountSensorId: string | null = null;
+	rejectionCountValue: number | null = null;
 
 	searchQuery = "";
 	healthFilter = "all";
@@ -51,8 +69,10 @@ export class MonitoringSensorHealthViewModel {
 	equipmentFilter = "all";
 
 	#healthQuery = getSensorHealthListV1ObservedQuery();
+	#detailQuery = getSensorHealthByIdV1ObservedQuery();
 	#sitesQuery = getAllSitesV1ObservedQuery();
 	#equipmentQuery = getAllEquipmentV1ObservedQuery();
+	#stats24hQuery = getIngestionStatsV1ObservedQuery();
 	#filterDisposer: (() => void) | null = null;
 
 	constructor() {
@@ -75,6 +95,15 @@ export class MonitoringSensorHealthViewModel {
 		this.#sitesQuery.load({ query: { Page: 1, PageSize: 200 } });
 		this.#equipmentQuery.load({ query: { Page: 1, PageSize: 500 } });
 		this.#loadHealthList();
+		this.#loadIngestionStats24h();
+	}
+
+	#loadIngestionStats24h() {
+		const from = new Date(Date.now() - REJECTION_COUNT_FROM_HOURS * 60 * 60 * 1000).toISOString();
+		const to = new Date().toISOString();
+		this.#stats24hQuery.load({
+			query: { From: from as unknown as Date, To: to as unknown as Date },
+		});
 	}
 
 	#loadHealthList() {
@@ -97,6 +126,7 @@ export class MonitoringSensorHealthViewModel {
 		}
 
 		this.#healthQuery.load({ query });
+		this.#loadIngestionStats24h();
 	}
 
 	get isLoading(): boolean {
@@ -124,9 +154,7 @@ export class MonitoringSensorHealthViewModel {
 					equipmentName: item.equipmentName ?? undefined,
 				},
 				health: {
-					lastReportedAt: item.lastSeenAt
-						? item.lastSeenAt.toISOString()
-						: new Date().toISOString(),
+					lastReportedAt: item.lastSeenAt?.toISOString(),
 					expectedIntervalSeconds: EXPECTED_INTERVAL_SECONDS,
 					warningThresholdSeconds: WARNING_STALE_SECONDS,
 					criticalThresholdSeconds: CRITICAL_STALE_SECONDS,
@@ -136,12 +164,18 @@ export class MonitoringSensorHealthViewModel {
 				quality: undefined,
 				ingestionErrors: [],
 				ingestionStatus: "ok" as const,
+				ingestionSource:
+					item.ingestionSource != null ? ingestionSourceLabel[item.ingestionSource] : undefined,
 				issueSummary:
-					status === "offline" || status === "critical"
+					status === "offline" || status === "silent"
 						? "Sensor not reporting"
 						: status === "stale"
 							? "Late / delayed"
-							: "No issues",
+							: status === "critical"
+								? "Low reliability"
+								: status === "warning"
+									? "Reduced reliability"
+									: "No issues",
 			};
 		});
 	}
@@ -152,7 +186,7 @@ export class MonitoringSensorHealthViewModel {
 			if (this.qualityFilter !== "all") {
 				if (!data.quality || data.quality.qualityStatus !== this.qualityFilter) return false;
 			}
-			if (this.ingestionFilter !== "all" && data.ingestionStatus !== this.ingestionFilter)
+			if (this.ingestionFilter !== "all" && data.ingestionSource !== this.ingestionFilter)
 				return false;
 			if (this.typeFilter !== "all" && data.sensor.type !== this.typeFilter) return false;
 			if (this.equipmentFilter !== "all") {
@@ -170,7 +204,8 @@ export class MonitoringSensorHealthViewModel {
 	get sortedData(): SensorHealthData[] {
 		return [...this.filteredData].sort((a, b) => {
 			const healthPriority: Record<string, number> = {
-				offline: 4,
+				offline: 5,
+				silent: 4,
 				critical: 3,
 				stale: 2,
 				warning: 1,
@@ -184,9 +219,9 @@ export class MonitoringSensorHealthViewModel {
 			}
 
 			if (a.health && b.health) {
-				return (
-					new Date(b.health.lastReportedAt).getTime() - new Date(a.health.lastReportedAt).getTime()
-				);
+				const aTime = a.health.lastReportedAt ? new Date(a.health.lastReportedAt).getTime() : 0;
+				const bTime = b.health.lastReportedAt ? new Date(b.health.lastReportedAt).getTime() : 0;
+				return bTime - aTime;
 			}
 
 			return 0;
@@ -199,15 +234,21 @@ export class MonitoringSensorHealthViewModel {
 		const healthy = data.filter((d) => d.health?.healthStatus === "healthy").length;
 		const stale = data.filter((d) => d.health?.healthStatus === "stale").length;
 		const offline = data.filter(
-			(d) => d.health?.healthStatus === "offline" || d.health?.healthStatus === "critical",
+			(d) =>
+				d.health?.healthStatus === "offline" ||
+				d.health?.healthStatus === "silent" ||
+				d.health?.healthStatus === "critical",
 		).length;
+
+		const ingestionErrors =
+			(this.#stats24hQuery.data as { rejectedRecords?: number } | undefined)?.rejectedRecords ?? 0;
 
 		return {
 			total,
 			healthy,
 			stale,
 			silent: offline,
-			ingestionErrors: 0,
+			ingestionErrors,
 			qualityIssues: 0,
 		};
 	}
@@ -263,20 +304,56 @@ export class MonitoringSensorHealthViewModel {
 		this.timeWindow = value;
 	};
 
-	viewDetails = (data: SensorHealthData) => {
-		this.selectedSensor = data;
-		this.isDetailsOpen = true;
+	/** Load detail and rejection count for a sensor (e.g. when opening the details drawer). Call from page when user selects a row. */
+	loadDetailFor = (sensorId: string) => {
+		this.rejectionCountSensorId = sensorId;
+		this.rejectionCountValue = null;
+		this.#detailQuery.load({ path: { id: sensorId } });
+		this.#loadRejectionCount(sensorId);
 	};
 
-	setDetailsOpen = (open: boolean) => {
-		this.isDetailsOpen = open;
-	};
+	#loadRejectionCount(sensorId: string) {
+		const to = new Date();
+		const from = new Date(to.getTime() - REJECTION_COUNT_FROM_HOURS * 60 * 60 * 1000);
+		getSensorRejectionCount(sensorId, { from, to })
+			.then((r: SensorRejectionCountResponse) => {
+				runInAction(() => {
+					this.rejectionCountSensorId = sensorId;
+					this.rejectionCountValue = r.count;
+				});
+			})
+			.catch(() => {
+				runInAction(() => {
+					this.rejectionCountSensorId = sensorId;
+					this.rejectionCountValue = 0;
+				});
+			});
+	}
+
+	/** Returns detail response if it was loaded for the given sensorId (for use with local drawer state). */
+	getDetailFor(sensorId: string | null): SensorHealthDetailResponse | undefined {
+		const data = this.#detailQuery.data;
+		if (!data || !sensorId || data.sensorId !== sensorId) return undefined;
+		return data;
+	}
+
+	/** Returns rejection count if it was loaded for the given sensorId (null = loading or not loaded for this sensor). */
+	getRejectionCountFor(sensorId: string | null): number | null {
+		if (!sensorId || this.rejectionCountSensorId !== sensorId) return null;
+		return this.rejectionCountValue;
+	}
+
+	get isDetailLoading(): boolean {
+		return this.#detailQuery.isLoading;
+	}
 
 	dispose() {
 		this.#filterDisposer?.();
 		this.#healthQuery.dispose();
+		this.#detailQuery.dispose();
 		this.#sitesQuery.dispose();
 		this.#equipmentQuery.dispose();
+		this.#stats24hQuery.dispose();
 	}
 }
 

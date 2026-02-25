@@ -25,7 +25,7 @@ import type { Disposable, FilterableViewModel } from "../types";
  * ViewModel for the Sensors Configuration page.
  * Manages sensor CRUD operations, filtering, and UI state.
  */
-export class SensorsConfigViewModel implements Disposable, FilterableViewModel {
+class SensorsConfigViewModel implements Disposable, FilterableViewModel {
 	// Observable state - data
 	sensors: Sensor[];
 
