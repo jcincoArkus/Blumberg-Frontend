@@ -5,6 +5,7 @@ import type { AxiosError } from "axios";
 
 import { client } from "../client.gen";
 import {
+	acknowledgeAlertV1,
 	assignRolePermissionsV1,
 	assignUserRolesV1,
 	checkPermissionCurrentUserV1,
@@ -25,7 +26,9 @@ import {
 	deleteSiteV1,
 	deleteThresholdV1,
 	getAdminByIdV1,
+	getAlertByIdV1,
 	getAllAdminsV1,
+	getAllAlertsV1,
 	getAllEquipmentV1,
 	getAllRolesV1,
 	getAllSensorsV1,
@@ -57,6 +60,7 @@ import {
 	removeUserRolesV1,
 	replaceRolePermissionsV1,
 	replaceUserRolesV1,
+	resolveAlertV1,
 	revokeIngestionApiKeyV1,
 	updateAdminV1,
 	updateEquipmentV1,
@@ -67,6 +71,9 @@ import {
 	updateThresholdV1,
 } from "../sdk.gen";
 import type {
+	AcknowledgeAlertV1Data,
+	AcknowledgeAlertV1Error,
+	AcknowledgeAlertV1Response,
 	AssignRolePermissionsV1Data,
 	AssignUserRolesV1Data,
 	CheckPermissionCurrentUserV1Data,
@@ -112,8 +119,13 @@ import type {
 	GetAdminByIdV1Data,
 	GetAdminByIdV1Error,
 	GetAdminByIdV1Response,
+	GetAlertByIdV1Data,
+	GetAlertByIdV1Error,
+	GetAlertByIdV1Response,
 	GetAllAdminsV1Data,
 	GetAllAdminsV1Response,
+	GetAllAlertsV1Data,
+	GetAllAlertsV1Response,
 	GetAllEquipmentV1Data,
 	GetAllEquipmentV1Response,
 	GetAllRolesV1Data,
@@ -183,6 +195,9 @@ import type {
 	RemoveUserRolesV1Data,
 	ReplaceRolePermissionsV1Data,
 	ReplaceUserRolesV1Data,
+	ResolveAlertV1Data,
+	ResolveAlertV1Error,
+	ResolveAlertV1Response,
 	RevokeIngestionApiKeyV1Data,
 	RevokeIngestionApiKeyV1Error,
 	RevokeIngestionApiKeyV1Response,
@@ -349,6 +364,98 @@ export const updateAdminV1Mutation = (
 	> = {
 		mutationFn: async (fnOptions) => {
 			const { data } = await updateAdminV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getAllAlertsV1QueryKey = (options?: Options<GetAllAlertsV1Data>) =>
+	createQueryKey("getAllAlertsV1", options);
+
+export const getAllAlertsV1Options = (options?: Options<GetAllAlertsV1Data>) =>
+	queryOptions<
+		GetAllAlertsV1Response,
+		AxiosError<DefaultError>,
+		GetAllAlertsV1Response,
+		ReturnType<typeof getAllAlertsV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getAllAlertsV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getAllAlertsV1QueryKey(options),
+	});
+
+export const getAlertByIdV1QueryKey = (options: Options<GetAlertByIdV1Data>) =>
+	createQueryKey("getAlertByIdV1", options);
+
+export const getAlertByIdV1Options = (options: Options<GetAlertByIdV1Data>) =>
+	queryOptions<
+		GetAlertByIdV1Response,
+		AxiosError<GetAlertByIdV1Error>,
+		GetAlertByIdV1Response,
+		ReturnType<typeof getAlertByIdV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getAlertByIdV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getAlertByIdV1QueryKey(options),
+	});
+
+export const acknowledgeAlertV1Mutation = (
+	options?: Partial<Options<AcknowledgeAlertV1Data>>,
+): UseMutationOptions<
+	AcknowledgeAlertV1Response,
+	AxiosError<AcknowledgeAlertV1Error>,
+	Options<AcknowledgeAlertV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		AcknowledgeAlertV1Response,
+		AxiosError<AcknowledgeAlertV1Error>,
+		Options<AcknowledgeAlertV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await acknowledgeAlertV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const resolveAlertV1Mutation = (
+	options?: Partial<Options<ResolveAlertV1Data>>,
+): UseMutationOptions<
+	ResolveAlertV1Response,
+	AxiosError<ResolveAlertV1Error>,
+	Options<ResolveAlertV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		ResolveAlertV1Response,
+		AxiosError<ResolveAlertV1Error>,
+		Options<ResolveAlertV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await resolveAlertV1({
 				...options,
 				...fnOptions,
 				throwOnError: true,

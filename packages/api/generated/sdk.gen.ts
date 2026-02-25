@@ -3,6 +3,7 @@
 import type { Client, Options as Options2, TDataShape } from "./client";
 import { client } from "./client.gen";
 import {
+	acknowledgeAlertV1ResponseTransformer,
 	createAdminV1ResponseTransformer,
 	createEquipmentV1ResponseTransformer,
 	createIngestionApiKeyV1ResponseTransformer,
@@ -11,7 +12,9 @@ import {
 	createSiteV1ResponseTransformer,
 	createThresholdV1ResponseTransformer,
 	getAdminByIdV1ResponseTransformer,
+	getAlertByIdV1ResponseTransformer,
 	getAllAdminsV1ResponseTransformer,
+	getAllAlertsV1ResponseTransformer,
 	getAllEquipmentV1ResponseTransformer,
 	getAllSensorsV1ResponseTransformer,
 	getAllSensorTypesV1ResponseTransformer,
@@ -29,6 +32,7 @@ import {
 	getThresholdByIdV1ResponseTransformer,
 	listIngestionApiKeysV1ResponseTransformer,
 	loginV1ResponseTransformer,
+	resolveAlertV1ResponseTransformer,
 	updateAdminV1ResponseTransformer,
 	updateEquipmentV1ResponseTransformer,
 	updateSensorTypeV1ResponseTransformer,
@@ -37,6 +41,9 @@ import {
 	updateThresholdV1ResponseTransformer,
 } from "./transformers.gen";
 import type {
+	AcknowledgeAlertV1Data,
+	AcknowledgeAlertV1Errors,
+	AcknowledgeAlertV1Responses,
 	AssignRolePermissionsV1Data,
 	AssignRolePermissionsV1Responses,
 	AssignUserRolesV1Data,
@@ -91,9 +98,14 @@ import type {
 	GetAdminByIdV1Data,
 	GetAdminByIdV1Errors,
 	GetAdminByIdV1Responses,
+	GetAlertByIdV1Data,
+	GetAlertByIdV1Errors,
+	GetAlertByIdV1Responses,
 	GetAllAdminsV1Data,
 	GetAllAdminsV1Errors,
 	GetAllAdminsV1Responses,
+	GetAllAlertsV1Data,
+	GetAllAlertsV1Responses,
 	GetAllEquipmentV1Data,
 	GetAllEquipmentV1Responses,
 	GetAllRolesV1Data,
@@ -167,6 +179,9 @@ import type {
 	ReplaceRolePermissionsV1Responses,
 	ReplaceUserRolesV1Data,
 	ReplaceUserRolesV1Responses,
+	ResolveAlertV1Data,
+	ResolveAlertV1Errors,
+	ResolveAlertV1Responses,
 	RevokeIngestionApiKeyV1Data,
 	RevokeIngestionApiKeyV1Errors,
 	RevokeIngestionApiKeyV1Responses,
@@ -192,6 +207,7 @@ import type {
 	UpdateThresholdV1Responses,
 } from "./types.gen";
 import {
+	zAcknowledgeAlertV1Data,
 	zAssignRolePermissionsV1Data,
 	zAssignUserRolesV1Data,
 	zCheckPermissionCurrentUserV1Data,
@@ -212,7 +228,9 @@ import {
 	zDeleteSiteV1Data,
 	zDeleteThresholdV1Data,
 	zGetAdminByIdV1Data,
+	zGetAlertByIdV1Data,
 	zGetAllAdminsV1Data,
+	zGetAllAlertsV1Data,
 	zGetAllEquipmentV1Data,
 	zGetAllRolesV1Data,
 	zGetAllSensorsV1Data,
@@ -243,6 +261,7 @@ import {
 	zRemoveUserRolesV1Data,
 	zReplaceRolePermissionsV1Data,
 	zReplaceUserRolesV1Data,
+	zResolveAlertV1Data,
 	zRevokeIngestionApiKeyV1Data,
 	zUpdateAdminV1Data,
 	zUpdateEquipmentV1Data,
@@ -334,6 +353,58 @@ export const updateAdminV1 = <ThrowOnError extends boolean = false>(
 			"Content-Type": "application/json",
 			...options.headers,
 		},
+	});
+
+export const getAllAlertsV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetAllAlertsV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<GetAllAlertsV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetAllAlertsV1Data.parseAsync(data),
+		responseTransformer: getAllAlertsV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/alerts",
+		...options,
+	});
+
+export const getAlertByIdV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetAlertByIdV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<GetAlertByIdV1Responses, GetAlertByIdV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zGetAlertByIdV1Data.parseAsync(data),
+		responseTransformer: getAlertByIdV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/alerts/{id}",
+		...options,
+	});
+
+export const acknowledgeAlertV1 = <ThrowOnError extends boolean = false>(
+	options: Options<AcknowledgeAlertV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).patch<
+		AcknowledgeAlertV1Responses,
+		AcknowledgeAlertV1Errors,
+		ThrowOnError
+	>({
+		requestValidator: async (data) => await zAcknowledgeAlertV1Data.parseAsync(data),
+		responseTransformer: acknowledgeAlertV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/alerts/{id}/acknowledge",
+		...options,
+	});
+
+export const resolveAlertV1 = <ThrowOnError extends boolean = false>(
+	options: Options<ResolveAlertV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).patch<ResolveAlertV1Responses, ResolveAlertV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zResolveAlertV1Data.parseAsync(data),
+		responseTransformer: resolveAlertV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/alerts/{id}/resolve",
+		...options,
 	});
 
 export const loginV1 = <ThrowOnError extends boolean = false>(

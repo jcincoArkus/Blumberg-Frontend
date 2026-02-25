@@ -4,7 +4,9 @@ import { ObservedQuery, type QueryOptions } from "~@/mobx";
 
 import {
 	getAdminByIdV1Options,
+	getAlertByIdV1Options,
 	getAllAdminsV1Options,
+	getAllAlertsV1Options,
 	getAllEquipmentV1Options,
 	getAllRolesV1Options,
 	getAllSensorsV1Options,
@@ -32,7 +34,9 @@ import {
 } from "./@tanstack/react-query.gen";
 import type {
 	GetAdminByIdV1Data,
+	GetAlertByIdV1Data,
 	GetAllAdminsV1Data,
+	GetAllAlertsV1Data,
 	GetAllEquipmentV1Data,
 	GetAllRolesV1Data,
 	GetAllSensorsV1Data,
@@ -68,6 +72,16 @@ export const getAdminByIdV1ObservedQuery = (
 	defaultValues?: Partial<GetAdminByIdV1Data>,
 	observerOptions?: QueryOptions<typeof getAdminByIdV1Options>,
 ) => new ObservedQuery(getAdminByIdV1Options, defaultValues, observerOptions);
+
+export const getAllAlertsV1ObservedQuery = (
+	defaultValues?: Partial<GetAllAlertsV1Data>,
+	observerOptions?: QueryOptions<typeof getAllAlertsV1Options>,
+) => new ObservedQuery(getAllAlertsV1Options, defaultValues, observerOptions);
+
+export const getAlertByIdV1ObservedQuery = (
+	defaultValues?: Partial<GetAlertByIdV1Data>,
+	observerOptions?: QueryOptions<typeof getAlertByIdV1Options>,
+) => new ObservedQuery(getAlertByIdV1Options, defaultValues, observerOptions);
 
 export const getAllEquipmentV1ObservedQuery = (
 	defaultValues?: Partial<GetAllEquipmentV1Data>,

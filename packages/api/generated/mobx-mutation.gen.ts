@@ -3,6 +3,7 @@
 import { type MutationOptions, ObservedMutation } from "~@/mobx";
 
 import {
+	acknowledgeAlertV1Mutation,
 	assignRolePermissionsV1Mutation,
 	assignUserRolesV1Mutation,
 	checkPermissionCurrentUserV1Mutation,
@@ -28,6 +29,7 @@ import {
 	removeUserRolesV1Mutation,
 	replaceRolePermissionsV1Mutation,
 	replaceUserRolesV1Mutation,
+	resolveAlertV1Mutation,
 	revokeIngestionApiKeyV1Mutation,
 	updateAdminV1Mutation,
 	updateEquipmentV1Mutation,
@@ -38,6 +40,7 @@ import {
 	updateThresholdV1Mutation,
 } from "./@tanstack/react-query.gen";
 import type {
+	AcknowledgeAlertV1Data,
 	AssignRolePermissionsV1Data,
 	AssignUserRolesV1Data,
 	CheckPermissionCurrentUserV1Data,
@@ -63,6 +66,7 @@ import type {
 	RemoveUserRolesV1Data,
 	ReplaceRolePermissionsV1Data,
 	ReplaceUserRolesV1Data,
+	ResolveAlertV1Data,
 	RevokeIngestionApiKeyV1Data,
 	UpdateAdminV1Data,
 	UpdateEquipmentV1Data,
@@ -87,6 +91,16 @@ export const updateAdminV1ObservedMutation = (
 	defaultValues?: Partial<UpdateAdminV1Data>,
 	observerOptions?: MutationOptions<typeof updateAdminV1Mutation>,
 ) => new ObservedMutation(updateAdminV1Mutation, defaultValues, observerOptions);
+
+export const acknowledgeAlertV1ObservedMutation = (
+	defaultValues?: Partial<AcknowledgeAlertV1Data>,
+	observerOptions?: MutationOptions<typeof acknowledgeAlertV1Mutation>,
+) => new ObservedMutation(acknowledgeAlertV1Mutation, defaultValues, observerOptions);
+
+export const resolveAlertV1ObservedMutation = (
+	defaultValues?: Partial<ResolveAlertV1Data>,
+	observerOptions?: MutationOptions<typeof resolveAlertV1Mutation>,
+) => new ObservedMutation(resolveAlertV1Mutation, defaultValues, observerOptions);
 
 export const loginV1ObservedMutation = (
 	defaultValues?: Partial<LoginV1Data>,
