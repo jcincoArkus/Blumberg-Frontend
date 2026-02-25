@@ -11,7 +11,7 @@ import {
 	SensorHealthStatus,
 	type SensorRejectionCountResponse,
 } from "~@/api";
-import { makeAutoObservable, reaction } from "~@/mobx";
+import { makeAutoObservable, reaction, runInAction } from "~@/mobx";
 import type {
 	MonitoringEquipment as Equipment,
 	HealthStatus,
@@ -54,12 +54,11 @@ const CRITICAL_STALE_SECONDS = 5 * EXPECTED_INTERVAL_SECONDS; // 1500s = 25 min
 /** Last 24h window for per-sensor ingestion error count */
 const REJECTION_COUNT_FROM_HOURS = 24;
 
-export class MonitoringSensorHealthViewModel {
-	selectedSensor: SensorHealthData | null = null;
-	isDetailsOpen = false;
+class MonitoringSensorHealthViewModel {
 	timeWindow: QualityWindow = "24h";
-	/** Per-sensor rejection count for the open drawer (null = loading, number = loaded) */
-	selectedSensorRejectionCount: number | null = null;
+	/** Sensor ID for which we last loaded rejection count (one-off API); value in rejectionCountValue */
+	rejectionCountSensorId: string | null = null;
+	rejectionCountValue: number | null = null;
 
 	searchQuery = "";
 	healthFilter = "all";
@@ -305,12 +304,12 @@ export class MonitoringSensorHealthViewModel {
 		this.timeWindow = value;
 	};
 
-	viewDetails = (data: SensorHealthData) => {
-		this.selectedSensor = data;
-		this.isDetailsOpen = true;
-		this.selectedSensorRejectionCount = null;
-		this.#detailQuery.load({ path: { id: data.sensor.id } });
-		this.#loadRejectionCount(data.sensor.id);
+	/** Load detail and rejection count for a sensor (e.g. when opening the details drawer). Call from page when user selects a row. */
+	loadDetailFor = (sensorId: string) => {
+		this.rejectionCountSensorId = sensorId;
+		this.rejectionCountValue = null;
+		this.#detailQuery.load({ path: { id: sensorId } });
+		this.#loadRejectionCount(sensorId);
 	};
 
 	#loadRejectionCount(sensorId: string) {
@@ -318,28 +317,30 @@ export class MonitoringSensorHealthViewModel {
 		const from = new Date(to.getTime() - REJECTION_COUNT_FROM_HOURS * 60 * 60 * 1000);
 		getSensorRejectionCount(sensorId, { from, to })
 			.then((r: SensorRejectionCountResponse) => {
-				if (this.selectedSensor?.sensor.id === sensorId) {
-					this.selectedSensorRejectionCount = r.count;
-				}
+				runInAction(() => {
+					this.rejectionCountSensorId = sensorId;
+					this.rejectionCountValue = r.count;
+				});
 			})
 			.catch(() => {
-				if (this.selectedSensor?.sensor.id === sensorId) {
-					this.selectedSensorRejectionCount = 0;
-				}
+				runInAction(() => {
+					this.rejectionCountSensorId = sensorId;
+					this.rejectionCountValue = 0;
+				});
 			});
 	}
 
-	setDetailsOpen = (open: boolean) => {
-		this.isDetailsOpen = open;
-		if (!open) this.selectedSensorRejectionCount = null;
-	};
-
-	get selectedSensorDetail(): SensorHealthDetailResponse | undefined {
+	/** Returns detail response if it was loaded for the given sensorId (for use with local drawer state). */
+	getDetailFor(sensorId: string | null): SensorHealthDetailResponse | undefined {
 		const data = this.#detailQuery.data;
-		if (!data || !this.selectedSensor || data.sensorId !== this.selectedSensor.sensor.id) {
-			return undefined;
-		}
+		if (!data || !sensorId || data.sensorId !== sensorId) return undefined;
 		return data;
+	}
+
+	/** Returns rejection count if it was loaded for the given sensorId (null = loading or not loaded for this sensor). */
+	getRejectionCountFor(sensorId: string | null): number | null {
+		if (!sensorId || this.rejectionCountSensorId !== sensorId) return null;
+		return this.rejectionCountValue;
 	}
 
 	get isDetailLoading(): boolean {
@@ -352,6 +353,7 @@ export class MonitoringSensorHealthViewModel {
 		this.#detailQuery.dispose();
 		this.#sitesQuery.dispose();
 		this.#equipmentQuery.dispose();
+		this.#stats24hQuery.dispose();
 	}
 }
 

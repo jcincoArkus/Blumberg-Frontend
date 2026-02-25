@@ -14,7 +14,7 @@ import type { Disposable } from "../types";
  * ViewModel for the Alerts & Events page.
  * Manages alert state, filtering, and actions (acknowledge/resolve).
  */
-export class AlertsViewModel implements Disposable {
+class AlertsViewModel implements Disposable {
 	// Observable state
 	alerts: Alert[] = [];
 	activeTab: AlertStatus | "all" = "all";

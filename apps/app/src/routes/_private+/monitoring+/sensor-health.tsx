@@ -1,11 +1,27 @@
+import { useState } from "react";
+
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { DashboardPanel } from "~@/ui";
 import { useMonitoringSensorHealthViewModel } from "~@/view-model";
+import type { SensorHealthData } from "~@/views";
 import { MonitoringSensorHealthTable, SensorHealthDetailsDrawer, SensorHealthKPIs } from "~@/views";
 
 const SensorHealthPage = observer(function SensorHealthPage() {
 	const vm = useMonitoringSensorHealthViewModel();
+	const [selectedSensor, setSelectedSensor] = useState<SensorHealthData | null>(null);
+	const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
+	const handleViewDetails = (data: SensorHealthData) => {
+		setSelectedSensor(data);
+		setIsDetailsOpen(true);
+		vm.loadDetailFor(data.sensor.id);
+	};
+
+	const handleDetailsOpenChange = (open: boolean) => {
+		setIsDetailsOpen(open);
+		if (!open) setSelectedSensor(null);
+	};
 
 	return (
 		<div className="space-y-6">
@@ -45,19 +61,19 @@ const SensorHealthPage = observer(function SensorHealthPage() {
 					onTimeWindowChange={vm.setTimeWindow}
 					sites={vm.monitoringSites}
 					equipment={vm.monitoringEquipment}
-					onViewDetails={vm.viewDetails}
+					onViewDetails={handleViewDetails}
 				/>
 			</DashboardPanel>
 
-			{/* Sensor Details Drawer */}
-			{vm.selectedSensor && (
+			{/* Sensor Details Drawer — local UI state (selected row + open) */}
+			{selectedSensor && (
 				<SensorHealthDetailsDrawer
-					data={vm.selectedSensor}
-					detail={vm.selectedSensorDetail}
+					data={selectedSensor}
+					detail={vm.getDetailFor(selectedSensor.sensor.id)}
 					detailLoading={vm.isDetailLoading}
-					ingestionErrorCount={vm.selectedSensorRejectionCount}
-					open={vm.isDetailsOpen}
-					onOpenChange={vm.setDetailsOpen}
+					ingestionErrorCount={vm.getRejectionCountFor(selectedSensor.sensor.id)}
+					open={isDetailsOpen}
+					onOpenChange={handleDetailsOpenChange}
 					timeWindow={vm.timeWindow}
 					onTimeWindowChange={vm.setTimeWindow}
 				/>

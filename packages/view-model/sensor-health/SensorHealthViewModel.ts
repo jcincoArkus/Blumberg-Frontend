@@ -28,7 +28,7 @@ const healthStatusFromLabel: Record<string, SensorHealthStatus> = {
 
 const PAGE_SIZE = 50;
 
-export class SensorHealthViewModel {
+class SensorHealthViewModel {
 	statusFilter = "all";
 	siteFilter = "all";
 	typeFilter = "all";

@@ -14,7 +14,7 @@ import type { Disposable } from "../types";
  * ViewModel for the Admin Users page.
  * Manages users, roles, and permissions CRUD operations.
  */
-export class UsersViewModel implements Disposable {
+class UsersViewModel implements Disposable {
 	// Observable state - data
 	users: User[];
 	roles: Role[];
