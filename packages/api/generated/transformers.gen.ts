@@ -84,6 +84,13 @@ export const updateAdminV1ResponseTransformer = async (
 	return data;
 };
 
+const alertEventResponseSchemaResponseTransformer = (data: any) => {
+	if (data.occurredAt) {
+		data.occurredAt = new Date(data.occurredAt);
+	}
+	return data;
+};
+
 const alertResponseSchemaResponseTransformer = (data: any) => {
 	if (data.triggeredAt) {
 		data.triggeredAt = new Date(data.triggeredAt);
@@ -93,6 +100,9 @@ const alertResponseSchemaResponseTransformer = (data: any) => {
 	}
 	if (data.createdAt) {
 		data.createdAt = new Date(data.createdAt);
+	}
+	if (data.events) {
+		data.events = data.events.map((item: any) => alertEventResponseSchemaResponseTransformer(item));
 	}
 	return data;
 };

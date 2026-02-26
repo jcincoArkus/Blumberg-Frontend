@@ -39,35 +39,45 @@ function buildDescription(
 	return `Value ${triggeredValue} (range ${thresholdMin}–${thresholdMax})`;
 }
 
-/** Build a minimal events timeline from the single alert (no backend events API yet). */
-function deriveEventsFromAlert(
-	alertId: string,
-	createdAt: string,
-	resolvedAt: string | undefined,
-): AlertEvent[] {
-	const events: AlertEvent[] = [
-		{
-			id: `${alertId}-triggered`,
-			type: "triggered",
-			timestamp: createdAt,
-			description: "Alert triggered",
-		},
-	];
-	if (resolvedAt) {
-		events.push({
-			id: `${alertId}-resolved`,
-			type: "resolved",
-			timestamp: resolvedAt,
-			description: "Alert resolved",
-		});
-	}
-	return events;
+/** Backend event type string (e.g. Triggered, Acknowledged) -> view AlertEvent type */
+const EVENT_TYPE_MAP: Record<string, AlertEvent["type"]> = {
+	triggered: "triggered",
+	acknowledged: "acknowledged",
+	resolved: "resolved",
+	escalated: "escalated",
+	note: "note",
+	systemupdate: "system_update",
+};
+
+/** API event shape (from GetById / Acknowledge / Resolve when backend includes events). */
+type ApiEvent = {
+	id?: string;
+	eventType?: string;
+	occurredAt?: Date | string;
+	description?: string;
+};
+
+function mapApiEventsToAlertEvents(apiEvents: ApiEvent[]): AlertEvent[] {
+	return apiEvents.map((e) => {
+		const ts =
+			typeof e.occurredAt === "string"
+				? e.occurredAt
+				: e.occurredAt instanceof Date
+					? e.occurredAt.toISOString()
+					: "";
+		const typeKey = (e.eventType ?? "").toLowerCase().replace(/_/g, "");
+		return {
+			id: e.id ?? crypto.randomUUID(),
+			type: EVENT_TYPE_MAP[typeKey] ?? "system_update",
+			timestamp: ts,
+			description: e.description ?? "",
+		};
+	});
 }
 
 /**
  * Map backend AlertResponse to view Alert.
- * Uses triggeredAt as createdAt for duration; optional equipmentName/sensorName from response.
- * Events History is derived from the alert (triggered, resolved) until the backend has an events API.
+ * Uses triggeredAt as createdAt; when the API returns events (e.g. GetById), uses them for Events History.
  */
 export function mapAlertResponseToAlert(r: AlertResponse): Alert {
 	const triggeredAt = r.triggeredAt ?? r.createdAt;
@@ -83,6 +93,9 @@ export function mapAlertResponseToAlert(r: AlertResponse): Alert {
 	const triggeredValue = r.triggeredValue ?? 0;
 	const id = r.id ?? "";
 
+	const apiEvents = (r as AlertResponse & { events?: ApiEvent[] | null }).events;
+	const events = apiEvents && apiEvents.length > 0 ? mapApiEventsToAlertEvents(apiEvents) : [];
+
 	return {
 		id,
 		name: buildTitle(triggeredValue, thresholdMin, thresholdMax),
@@ -94,6 +107,6 @@ export function mapAlertResponseToAlert(r: AlertResponse): Alert {
 		equipmentId: r.equipmentId,
 		sensorId: r.sensorId,
 		siteId: r.siteId,
-		events: deriveEventsFromAlert(id, createdAt, resolvedAt),
+		events,
 	};
 }

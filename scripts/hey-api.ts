@@ -5,13 +5,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 /** Repo root: directory containing package.json, resolved from this script's location. */
 const ROOT_DIR = join(__dirname, "..");
-const DECIMAL_IMPORT = 'import { Decimal } from "decimal.js";';
 const IMPORT_FROM_BASE = "../../api/generated/client";
-
-const GENERATED_API_FILES = [
-	"packages/api/generated/transformers.gen.ts",
-	"packages/api/generated/types.gen.ts",
-] as const;
 
 function resolvePath(relativePath: string): string {
 	return join(ROOT_DIR, relativePath);
@@ -44,31 +38,6 @@ function replaceOrKeep(
 	}
 
 	return content.replace(pattern, replacement);
-}
-
-function addDecimalImport(relativePath: string): void {
-	const content = readText(relativePath);
-	if (content.includes(DECIMAL_IMPORT)) {
-		console.log(`✓ ${relativePath}: import already exists`);
-		return;
-	}
-
-	const lines = content.split("\n");
-	let insertIndex = 0;
-
-	for (let i = 0; i < lines.length; i++) {
-		if (lines[i].startsWith("// This file is auto-generated")) {
-			insertIndex = i + 1;
-			while (insertIndex < lines.length && lines[insertIndex].trim() === "") {
-				insertIndex++;
-			}
-			break;
-		}
-	}
-
-	lines.splice(insertIndex, 0, DECIMAL_IMPORT);
-	writeText(relativePath, lines.join("\n"));
-	console.log(`✓ ${relativePath}: added Decimal import`);
 }
 
 function updateLegacySdk(): void {
@@ -118,9 +87,6 @@ function updateLegacySdk(): void {
 
 function main(): void {
 	console.log("Running HeyAPI post-processing...");
-	for (const filePath of GENERATED_API_FILES) {
-		addDecimalImport(filePath);
-	}
 	updateLegacySdk();
 	console.log("✓ Complete");
 }

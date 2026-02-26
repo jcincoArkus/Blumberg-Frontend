@@ -26,6 +26,7 @@ import {
 	getSensorHealthByIdV1Options,
 	getSensorHealthListV1Options,
 	getSensorReadingsV1Options,
+	getSensorRejectionCountV1Options,
 	getSensorTypeByIdV1Options,
 	getSiteByIdV1Options,
 	getThresholdByIdV1Options,
@@ -56,6 +57,7 @@ import type {
 	GetSensorHealthByIdV1Data,
 	GetSensorHealthListV1Data,
 	GetSensorReadingsV1Data,
+	GetSensorRejectionCountV1Data,
 	GetSensorTypeByIdV1Data,
 	GetSiteByIdV1Data,
 	GetThresholdByIdV1Data,
@@ -102,6 +104,11 @@ export const getIngestionRunsV1ObservedQuery = (
 	defaultValues?: Partial<GetIngestionRunsV1Data>,
 	observerOptions?: QueryOptions<typeof getIngestionRunsV1Options>,
 ) => new ObservedQuery(getIngestionRunsV1Options, defaultValues, observerOptions);
+
+export const getSensorRejectionCountV1ObservedQuery = (
+	defaultValues?: Partial<GetSensorRejectionCountV1Data>,
+	observerOptions?: QueryOptions<typeof getSensorRejectionCountV1Options>,
+) => new ObservedQuery(getSensorRejectionCountV1Options, defaultValues, observerOptions);
 
 export const getIngestionStatsV1ObservedQuery = (
 	defaultValues?: Partial<GetIngestionStatsV1Data>,

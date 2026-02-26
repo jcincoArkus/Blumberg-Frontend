@@ -151,6 +151,9 @@ import type {
 	GetSensorReadingsV1Data,
 	GetSensorReadingsV1Errors,
 	GetSensorReadingsV1Responses,
+	GetSensorRejectionCountV1Data,
+	GetSensorRejectionCountV1Errors,
+	GetSensorRejectionCountV1Responses,
 	GetSensorTypeByIdV1Data,
 	GetSensorTypeByIdV1Errors,
 	GetSensorTypeByIdV1Responses,
@@ -250,6 +253,7 @@ import {
 	zGetSensorHealthByIdV1Data,
 	zGetSensorHealthListV1Data,
 	zGetSensorReadingsV1Data,
+	zGetSensorRejectionCountV1Data,
 	zGetSensorTypeByIdV1Data,
 	zGetSiteByIdV1Data,
 	zGetThresholdByIdV1Data,
@@ -582,6 +586,21 @@ export const getIngestionRunsV1 = <ThrowOnError extends boolean = false>(
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/v1/ingestion/runs",
+		...options,
+	});
+
+export const getSensorRejectionCountV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetSensorRejectionCountV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<
+		GetSensorRejectionCountV1Responses,
+		GetSensorRejectionCountV1Errors,
+		ThrowOnError
+	>({
+		requestValidator: async (data) => await zGetSensorRejectionCountV1Data.parseAsync(data),
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/ingestion/sensors/{sensorId}/rejection-count",
 		...options,
 	});
 
