@@ -45,6 +45,9 @@ export type AlertResponse = {
 	status?: string | null;
 	resolvedAt?: Date | null;
 	createdAt?: Date;
+	equipmentName?: string | null;
+	sensorSerial?: string | null;
+	sensorTypeName?: string | null;
 };
 
 export type AlertResponsePagedResponse = {

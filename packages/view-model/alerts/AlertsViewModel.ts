@@ -1,42 +1,102 @@
+import type { AlertResponse, AlertResponsePagedResponse } from "~@/api";
+import {
+	acknowledgeAlertV1ObservedMutation,
+	getAllAlertsV1ObservedQuery,
+	resolveAlertV1ObservedMutation,
+} from "~@/api";
 import { makeAutoObservable } from "~@/mobx";
 import type { Alert, AlertStatus } from "~@/models";
-import {
-	getAlertDuration,
-	getAlertSensorName,
-	getAlertSensorType,
-	getAlerts,
-	getEquipmentName,
-} from "~@/models";
+import { getAlertDuration } from "~@/models";
 
 import type { Disposable } from "../types";
+import { mapAlertResponseToAlert } from "./mapAlertResponseToAlert";
+
+const DEFAULT_PAGE_SIZE = 500;
 
 /**
  * ViewModel for the Alerts & Events page.
- * Manages alert state, filtering, and actions (acknowledge/resolve).
+ * Uses ObservedQuery for list data and ObservedMutation for acknowledge/resolve (per .llm/skills viewmodel-pattern and api-pattern).
  */
 class AlertsViewModel implements Disposable {
-	// Observable state
-	alerts: Alert[] = [];
 	activeTab: AlertStatus | "all" = "all";
+
+	#alertsQuery = getAllAlertsV1ObservedQuery({
+		query: { Page: 1, PageSize: DEFAULT_PAGE_SIZE },
+	});
+	#ackMutation = acknowledgeAlertV1ObservedMutation();
+	#resolveMutation = resolveAlertV1ObservedMutation();
+
 	readonly calculateDuration = getAlertDuration;
-	readonly getEquipmentName = getEquipmentName;
-	readonly getSensorName = getAlertSensorName;
-	readonly getSensorType = getAlertSensorType;
+	getEquipmentName = (id: string): string => this.equipmentNames[id] ?? "Unknown Equipment";
+	getSensorName = (id: string): string => this.sensorNames[id] ?? "Unknown Sensor";
+	getSensorType = (id: string): string => this.sensorTypes[id] ?? "unknown";
 
 	constructor() {
 		makeAutoObservable(this);
-		this.alerts = getAlerts();
+		this.#alertsQuery.load();
+	}
+
+	private get rawItems(): AlertResponse[] {
+		const data = this.#alertsQuery.data as AlertResponsePagedResponse | null | undefined;
+		return data?.items ?? [];
+	}
+
+	get alerts(): Alert[] {
+		return this.rawItems.map(mapAlertResponseToAlert);
+	}
+
+	get equipmentNames(): Record<string, string> {
+		const acc: Record<string, string> = {};
+		const raw = this.rawItems as Array<Record<string, unknown>>;
+		for (const r of raw) {
+			const id = r.equipmentId as string | undefined;
+			const name = (r.equipmentName ?? r.EquipmentName) as string | undefined;
+			if (id && name) acc[id] = name;
+		}
+		return acc;
+	}
+
+	get sensorNames(): Record<string, string> {
+		const acc: Record<string, string> = {};
+		const raw = this.rawItems as Array<Record<string, unknown>>;
+		for (const r of raw) {
+			const id = r.sensorId as string | undefined;
+			const serial = (r.sensorSerial ?? r.SensorSerial) as string | undefined;
+			if (id && serial) acc[id] = serial;
+		}
+		return acc;
+	}
+
+	get sensorTypes(): Record<string, string> {
+		const acc: Record<string, string> = {};
+		const raw = this.rawItems as Array<Record<string, unknown>>;
+		for (const r of raw) {
+			const id = r.sensorId as string | undefined;
+			const name = (r.sensorTypeName ?? r.SensorTypeName) as string | undefined;
+			if (id && name) acc[id] = name;
+		}
+		return acc;
+	}
+
+	get isLoading(): boolean {
+		return this.#alertsQuery.isLoading;
+	}
+
+	get hasError(): boolean {
+		return this.#alertsQuery.hasError;
+	}
+
+	get error(): string | null {
+		const err = this.#alertsQuery.error;
+		return err instanceof Error ? err.message : err ? String(err) : null;
 	}
 
 	// Computed: filtered alerts based on active tab
 	get filteredAlerts(): Alert[] {
-		if (this.activeTab === "all") {
-			return this.alerts;
-		}
+		if (this.activeTab === "all") return this.alerts;
 		return this.alerts.filter((alert) => alert.status === this.activeTab);
 	}
 
-	// Computed: status counts for tabs
 	get statusCounts(): Record<AlertStatus | "all", number> {
 		return {
 			all: this.alerts.length,
@@ -46,72 +106,68 @@ class AlertsViewModel implements Disposable {
 		};
 	}
 
-	// Computed: active alerts (not resolved)
 	get activeAlerts(): Alert[] {
 		return this.alerts.filter((a) => a.status === "active");
 	}
 
-	// Computed: critical alerts that are active
 	get criticalAlerts(): Alert[] {
 		return this.alerts.filter((a) => a.severity === "critical" && a.status === "active");
 	}
 
-	// Computed: high priority alerts that are active
 	get highAlerts(): Alert[] {
 		return this.alerts.filter((a) => a.severity === "high" && a.status === "active");
 	}
 
-	// Computed: acknowledged alerts
 	get acknowledgedAlerts(): Alert[] {
 		return this.alerts.filter((a) => a.status === "acknowledged");
 	}
 
-	// Computed: alerts resolved today
 	get resolvedToday(): Alert[] {
 		const today = new Date();
 		return this.alerts.filter((a) => {
 			if (a.status !== "resolved" || !a.resolvedAt) return false;
-			const resolved = new Date(a.resolvedAt);
-			return resolved.toDateString() === today.toDateString();
+			return new Date(a.resolvedAt).toDateString() === today.toDateString();
 		});
 	}
 
-	// Action: set active tab
 	setActiveTab = (tab: AlertStatus | "all") => {
 		this.activeTab = tab;
 	};
 
-	// Action: acknowledge an alert
-	acknowledgeAlert = (alertId: string) => {
-		const alert = this.alerts.find((a) => a.id === alertId);
-		if (alert && alert.status === "active") {
-			alert.status = "acknowledged";
-			alert.acknowledgedAt = new Date().toISOString();
+	refresh = async () => {
+		await this.#alertsQuery.loadAsync({
+			query: { Page: 1, PageSize: DEFAULT_PAGE_SIZE },
+		});
+	};
+
+	acknowledgeAlert = async (alertId: string) => {
+		try {
+			await this.#ackMutation.mutateAsync({ path: { id: alertId } });
+			this.#alertsQuery.invalidate();
+		} catch {
+			// Error surfaced via #ackMutation.error; invalidation only on success per api-pattern
 		}
 	};
 
-	// Action: resolve an alert
-	resolveAlert = (alertId: string) => {
-		const alert = this.alerts.find((a) => a.id === alertId);
-		if (alert && alert.status !== "resolved") {
-			alert.status = "resolved";
-			alert.resolvedAt = new Date().toISOString();
+	resolveAlert = async (alertId: string) => {
+		try {
+			await this.#resolveMutation.mutateAsync({ path: { id: alertId } });
+			this.#alertsQuery.invalidate();
+		} catch {
+			// Error surfaced via #resolveMutation.error; invalidation only on success per api-pattern
 		}
 	};
 
-	// Action: update alert (acknowledge or resolve)
 	updateAlert = (alertId: string, action: "acknowledge" | "resolve") => {
 		if (action === "acknowledge") {
-			this.acknowledgeAlert(alertId);
+			void this.acknowledgeAlert(alertId);
 		} else {
-			this.resolveAlert(alertId);
+			void this.resolveAlert(alertId);
 		}
 	};
 
-	// Cleanup method
 	dispose() {
-		// No subscriptions to clean up currently
-		// Future: cancel API requests, clear timers, etc.
+		this.#alertsQuery.dispose();
 	}
 }
 

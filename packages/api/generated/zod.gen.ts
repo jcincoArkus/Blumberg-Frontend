@@ -64,6 +64,9 @@ export const zAlertResponse = z.object({
 	status: z.optional(z.union([z.string(), z.null()])),
 	resolvedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
 	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	equipmentName: z.optional(z.union([z.string(), z.null()])),
+	sensorSerial: z.optional(z.union([z.string(), z.null()])),
+	sensorTypeName: z.optional(z.union([z.string(), z.null()])),
 });
 
 export const zAlertResponsePagedResponse = z.object({

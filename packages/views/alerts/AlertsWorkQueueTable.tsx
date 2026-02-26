@@ -259,6 +259,10 @@ export function AlertsWorkQueueTable({
 							onAlertUpdate(alertId, action);
 						}
 					}}
+					equipmentName={
+						selectedAlert.equipmentId ? getEquipmentName(selectedAlert.equipmentId) : undefined
+					}
+					sensorName={selectedAlert.sensorId ? getSensorName(selectedAlert.sensorId) : undefined}
 				/>
 			)}
 		</>

@@ -7,6 +7,25 @@ import { AlertsStatusTabs, AlertsWorkQueueTable, KPIGauge } from "~@/views";
 const AlertsPage = observer(function AlertsPage() {
 	const vm = useAlertsViewModel();
 
+	if (vm.isLoading && vm.alerts.length === 0) {
+		return (
+			<div className="flex items-center justify-center py-12">
+				<p className="text-sm text-muted-foreground">{t`Loading alerts…`}</p>
+			</div>
+		);
+	}
+
+	if (vm.error && vm.alerts.length === 0) {
+		return (
+			<div className="space-y-6">
+				<div>
+					<h1 className="text-xl font-semibold text-foreground">{t`Alerts & Events`}</h1>
+					<p className="text-sm text-destructive mt-2">{vm.error}</p>
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<div className="space-y-6">
 			{/* Page Header */}
