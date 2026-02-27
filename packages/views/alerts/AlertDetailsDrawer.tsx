@@ -39,6 +39,8 @@ interface AlertDetailsDrawerProps {
 	sensorName?: string;
 	siteName?: string;
 	siteLocation?: string;
+	/** True while full alert (with events) is being fetched */
+	isDetailLoading?: boolean;
 }
 
 const getSeverityConfig = () => ({
@@ -126,6 +128,7 @@ export function AlertDetailsDrawer({
 	sensorName = t`Unknown Sensor`,
 	siteName,
 	siteLocation,
+	isDetailLoading = false,
 }: AlertDetailsDrawerProps) {
 	const [currentAlert, setCurrentAlert] = useState(alert);
 
@@ -295,7 +298,9 @@ export function AlertDetailsDrawer({
 					{/* Events History */}
 					<div className="space-y-4">
 						<h3 className="text-sm font-semibold text-foreground">{t`Events History`}</h3>
-						{events.length === 0 ? (
+						{isDetailLoading ? (
+							<div className="py-4 text-center text-sm text-muted-foreground">{t`Loading…`}</div>
+						) : events.length === 0 ? (
 							<div className="py-4 text-center text-sm text-muted-foreground">
 								{t`No events recorded`}
 							</div>

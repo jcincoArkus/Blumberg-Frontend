@@ -59,18 +59,21 @@ type ApiEvent = {
 
 function mapApiEventsToAlertEvents(apiEvents: ApiEvent[]): AlertEvent[] {
 	return apiEvents.map((e) => {
+		const occurredAt = e.occurredAt ?? (e as Record<string, unknown>).occurred_at;
 		const ts =
-			typeof e.occurredAt === "string"
-				? e.occurredAt
-				: e.occurredAt instanceof Date
-					? e.occurredAt.toISOString()
+			typeof occurredAt === "string"
+				? occurredAt
+				: occurredAt instanceof Date
+					? occurredAt.toISOString()
 					: "";
-		const typeKey = (e.eventType ?? "").toLowerCase().replace(/_/g, "");
+		const eventType = e.eventType ?? (e as Record<string, unknown>).event_type ?? "";
+		const typeKey = String(eventType).toLowerCase().replace(/_/g, "");
+		const description = e.description ?? (e as Record<string, unknown>).description ?? "";
 		return {
 			id: e.id ?? crypto.randomUUID(),
 			type: EVENT_TYPE_MAP[typeKey] ?? "system_update",
 			timestamp: ts,
-			description: e.description ?? "",
+			description: String(description),
 		};
 	});
 }
@@ -91,9 +94,11 @@ export function mapAlertResponseToAlert(r: AlertResponse): Alert {
 	const thresholdMin = r.thresholdMin ?? 0;
 	const thresholdMax = r.thresholdMax ?? 0;
 	const triggeredValue = r.triggeredValue ?? 0;
-	const id = r.id ?? "";
+	const rawR = r as AlertResponse & { Id?: string };
+	const id = rawR.id ?? rawR.Id ?? "";
 
-	const apiEvents = (r as AlertResponse & { events?: ApiEvent[] | null }).events;
+	const raw = r as AlertResponse & { events?: ApiEvent[] | null; Events?: ApiEvent[] | null };
+	const apiEvents = raw.events ?? raw.Events ?? null;
 	const events = apiEvents && apiEvents.length > 0 ? mapApiEventsToAlertEvents(apiEvents) : [];
 
 	return {

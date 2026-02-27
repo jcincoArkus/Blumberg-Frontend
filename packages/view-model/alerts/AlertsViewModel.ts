@@ -1,6 +1,7 @@
 import type { AlertResponse, AlertResponsePagedResponse } from "~@/api";
 import {
 	acknowledgeAlertV1ObservedMutation,
+	getAlertByIdV1ObservedQuery,
 	getAllAlertsV1ObservedQuery,
 	resolveAlertV1ObservedMutation,
 } from "~@/api";
@@ -23,6 +24,8 @@ class AlertsViewModel implements Disposable {
 	#alertsQuery = getAllAlertsV1ObservedQuery({
 		query: { Page: 1, PageSize: DEFAULT_PAGE_SIZE },
 	});
+	#detailQuery = getAlertByIdV1ObservedQuery();
+	#detailAlertId: string | null = null;
 	#ackMutation = acknowledgeAlertV1ObservedMutation();
 	#resolveMutation = resolveAlertV1ObservedMutation();
 
@@ -130,6 +133,37 @@ class AlertsViewModel implements Disposable {
 		});
 	}
 
+	/** Id of the alert currently loaded for detail (drawer). */
+	get selectedAlertId(): string | null {
+		return this.#detailAlertId;
+	}
+
+	/**
+	 * Returns full alert with events when loaded for the given alertId (for use with drawer).
+	 * Same pattern as monitoring's getDetailFor(sensorId) — caller passes selected id so observer tracks the query.
+	 */
+	getDetailFor(alertId: string | null): Alert | null {
+		if (!alertId || !this.#detailQuery.data) return null;
+		const d = this.#detailQuery.data as AlertResponse & { Id?: string };
+		const responseId = d.id ?? d.Id ?? "";
+		if (String(responseId) !== String(alertId)) return null;
+		return mapAlertResponseToAlert(d);
+	}
+
+	get isDetailLoading(): boolean {
+		return this.#detailQuery.isLoading;
+	}
+
+	/** Load full alert by ID (includes events) for the details drawer. */
+	loadAlertDetail = (alertId: string) => {
+		this.#detailAlertId = alertId;
+		this.#detailQuery.load({ path: { id: alertId } });
+	};
+
+	clearAlertDetail = () => {
+		this.#detailAlertId = null;
+	};
+
 	setActiveTab = (tab: AlertStatus | "all") => {
 		this.activeTab = tab;
 	};
@@ -144,6 +178,11 @@ class AlertsViewModel implements Disposable {
 		try {
 			await this.#ackMutation.mutateAsync({ path: { id: alertId } });
 			this.#alertsQuery.invalidate();
+			await this.#alertsQuery.refetch();
+			if (this.#detailAlertId === alertId) {
+				this.#detailQuery.invalidate();
+				await this.#detailQuery.refetch();
+			}
 		} catch {
 			// Error surfaced via #ackMutation.error; invalidation only on success per api-pattern
 		}
@@ -153,6 +192,11 @@ class AlertsViewModel implements Disposable {
 		try {
 			await this.#resolveMutation.mutateAsync({ path: { id: alertId } });
 			this.#alertsQuery.invalidate();
+			await this.#alertsQuery.refetch();
+			if (this.#detailAlertId === alertId) {
+				this.#detailQuery.invalidate();
+				await this.#detailQuery.refetch();
+			}
 		} catch {
 			// Error surfaced via #resolveMutation.error; invalidation only on success per api-pattern
 		}
@@ -168,6 +212,7 @@ class AlertsViewModel implements Disposable {
 
 	dispose() {
 		this.#alertsQuery.dispose();
+		this.#detailQuery.dispose();
 	}
 }
 

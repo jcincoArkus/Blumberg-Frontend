@@ -34,6 +34,15 @@ interface AlertsWorkQueueTableProps {
 	getEquipmentName: (equipmentId: string) => string;
 	getSensorType: (sensorId: string) => string;
 	getSensorName: (sensorId: string) => string;
+	/** Currently selected alert (from page state, same pattern as monitoring) */
+	selectedAlert: Alert | null;
+	/** Called when user selects a row; page should set selectedAlert and load detail */
+	onSelectAlert: (alert: Alert) => void;
+	/** Full alert with events when loaded via GetById (e.g. vm.getDetailFor(selectedAlert?.id)) */
+	alertDetail: Alert | null;
+	/** Called when drawer closes; page should clear detail and selectedAlert */
+	onDrawerClose: () => void;
+	isDetailLoading?: boolean;
 }
 
 const getSeverityConfig = () => ({
@@ -85,9 +94,13 @@ export function AlertsWorkQueueTable({
 	getEquipmentName,
 	getSensorType,
 	getSensorName,
+	selectedAlert,
+	onSelectAlert,
+	alertDetail,
+	onDrawerClose,
+	isDetailLoading = false,
 }: AlertsWorkQueueTableProps) {
 	const [currentPage, setCurrentPage] = useState(1);
-	const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
 	const itemsPerPage = 10;
 	const totalPages = Math.ceil(alerts.length / itemsPerPage);
 
@@ -107,7 +120,7 @@ export function AlertsWorkQueueTable({
 	};
 
 	const handleRowClick = (alert: Alert) => {
-		setSelectedAlert(alert);
+		onSelectAlert(alert);
 	};
 
 	const severityConfig = getSeverityConfig();
@@ -248,12 +261,18 @@ export function AlertsWorkQueueTable({
 				)}
 			</div>
 
-			{/* Alert Details Drawer */}
+			{/* Alert Details Drawer: use alertDetail (with events) when loaded for this alert, else list row */}
 			{selectedAlert && (
 				<AlertDetailsDrawer
-					alert={alerts.find((a) => a.id === selectedAlert.id) || selectedAlert}
+					alert={
+						alertDetail && selectedAlert && String(alertDetail.id) === String(selectedAlert.id)
+							? alertDetail
+							: (alerts.find((a) => a.id === selectedAlert.id) ?? selectedAlert)
+					}
 					open={!!selectedAlert}
-					onOpenChange={(open) => !open && setSelectedAlert(null)}
+					onOpenChange={(open) => {
+						if (!open) onDrawerClose();
+					}}
 					onAlertUpdate={(alertId, action) => {
 						if (onAlertUpdate) {
 							onAlertUpdate(alertId, action);
@@ -263,6 +282,7 @@ export function AlertsWorkQueueTable({
 						selectedAlert.equipmentId ? getEquipmentName(selectedAlert.equipmentId) : undefined
 					}
 					sensorName={selectedAlert.sensorId ? getSensorName(selectedAlert.sensorId) : undefined}
+					isDetailLoading={isDetailLoading}
 				/>
 			)}
 		</>

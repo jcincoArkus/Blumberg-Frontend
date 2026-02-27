@@ -1,11 +1,15 @@
+import { useState } from "react";
+
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { DashboardPanel } from "~@/ui";
 import { useAlertsViewModel } from "~@/view-model";
+import type { Alert } from "~@/views";
 import { AlertsStatusTabs, AlertsWorkQueueTable, KPIGauge } from "~@/views";
 
 const AlertsPage = observer(function AlertsPage() {
 	const vm = useAlertsViewModel();
+	const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
 
 	if (vm.isLoading && vm.alerts.length === 0) {
 		return (
@@ -37,83 +41,82 @@ const AlertsPage = observer(function AlertsPage() {
 			</div>
 
 			{/* KPI Row */}
-			<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-				<DashboardPanel
-					title={t`Active Alerts`}
-					className="flex flex-col items-center justify-center py-4"
-				>
-					<KPIGauge
-						label={t`Total Active`}
-						value={vm.activeAlerts.length}
-						unit=""
-						maxValue={20}
-						status={
-							vm.activeAlerts.length > 5
-								? "danger"
-								: vm.activeAlerts.length > 2
-									? "warning"
-									: "success"
-						}
-						size="sm"
-					/>
+			<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 items-stretch">
+				<DashboardPanel title={t`Active Alerts`} className="h-full">
+					<div className="flex-1 flex flex-col items-center justify-center py-1 min-h-0">
+						<KPIGauge
+							label={t`Total Active`}
+							value={vm.activeAlerts.length}
+							unit=""
+							maxValue={20}
+							status={
+								vm.activeAlerts.length > 5
+									? "danger"
+									: vm.activeAlerts.length > 2
+										? "warning"
+										: "success"
+							}
+							size="sm"
+						/>
+					</div>
 				</DashboardPanel>
 
-				<DashboardPanel
-					title={t`Critical`}
-					className="flex flex-col items-center justify-center py-4"
-				>
-					<KPIGauge
-						label={t`Critical`}
-						value={vm.criticalAlerts.length}
-						unit=""
-						maxValue={10}
-						status={vm.criticalAlerts.length > 0 ? "danger" : "success"}
-						size="sm"
-					/>
+				<DashboardPanel title={t`Critical`} className="h-full">
+					<div className="flex-1 flex flex-col items-center justify-center py-1 min-h-0">
+						<KPIGauge
+							label={t`Critical`}
+							value={vm.criticalAlerts.length}
+							unit=""
+							maxValue={10}
+							status={vm.criticalAlerts.length > 0 ? "danger" : "success"}
+							size="sm"
+						/>
+					</div>
 				</DashboardPanel>
 
-				<DashboardPanel
-					title={t`High Priority`}
-					className="flex flex-col items-center justify-center py-4"
-				>
-					<KPIGauge
-						label={t`High`}
-						value={vm.highAlerts.length}
-						unit=""
-						maxValue={10}
-						status={
-							vm.highAlerts.length > 2 ? "danger" : vm.highAlerts.length > 0 ? "warning" : "success"
-						}
-						size="sm"
-					/>
+				<DashboardPanel title={t`High Priority`} className="h-full">
+					<div className="flex-1 flex flex-col items-center justify-center py-1 min-h-0">
+						<KPIGauge
+							label={t`High`}
+							value={vm.highAlerts.length}
+							unit=""
+							maxValue={10}
+							status={
+								vm.highAlerts.length > 2
+									? "danger"
+									: vm.highAlerts.length > 0
+										? "warning"
+										: "success"
+							}
+							size="sm"
+						/>
+					</div>
 				</DashboardPanel>
 
-				<DashboardPanel
-					title={t`Acknowledged`}
-					className="flex flex-col items-center justify-center py-4"
-				>
-					<KPIGauge
-						label={t`In Progress`}
-						value={vm.acknowledgedAlerts.length}
-						unit=""
-						maxValue={15}
-						status="warning"
-						size="sm"
-					/>
+				<DashboardPanel title={t`Acknowledged`} className="h-full">
+					<div className="flex-1 flex flex-col items-center justify-center py-1 min-h-0">
+						<KPIGauge
+							label={t`In Progress`}
+							value={vm.acknowledgedAlerts.length}
+							unit=""
+							maxValue={15}
+							status="warning"
+							size="sm"
+						/>
+					</div>
 				</DashboardPanel>
 
-				<DashboardPanel
-					title={t`Resolved Today`}
-					className="flex flex-col items-center justify-center py-4"
-				>
-					<KPIGauge
-						label={t`Resolved`}
-						value={vm.resolvedToday.length}
-						unit=""
-						maxValue={10}
-						status="success"
-						size="sm"
-					/>
+				<DashboardPanel title={t`Resolved Today`} className="h-full">
+					<div className="flex-1 flex flex-col items-center justify-center py-1 min-h-0">
+						<KPIGauge
+							label={t`Resolved`}
+							value={vm.resolvedToday.length}
+							unit=""
+							maxValue={10}
+							status="success"
+							size="sm"
+						/>
+					</div>
 				</DashboardPanel>
 			</div>
 
@@ -135,6 +138,17 @@ const AlertsPage = observer(function AlertsPage() {
 						getEquipmentName={vm.getEquipmentName}
 						getSensorType={vm.getSensorType}
 						getSensorName={vm.getSensorName}
+						selectedAlert={selectedAlert}
+						onSelectAlert={(alert) => {
+							setSelectedAlert(alert);
+							vm.loadAlertDetail(alert.id);
+						}}
+						alertDetail={vm.getDetailFor(selectedAlert?.id ?? null)}
+						onDrawerClose={() => {
+							vm.clearAlertDetail();
+							setSelectedAlert(null);
+						}}
+						isDetailLoading={vm.isDetailLoading}
 					/>
 				</div>
 			</DashboardPanel>
