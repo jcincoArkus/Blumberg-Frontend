@@ -1,22 +1,16 @@
 import { t } from "~@/i18n/macro";
 import { Badge, Tabs, TabsList, TabsTrigger } from "~@/ui";
 
-import type { AlertStatus } from "./types";
+import type { AlertsStatusTabsProps } from "./types";
 
-interface AlertsStatusTabsProps {
-	activeTab: AlertStatus | "all";
-	onTabChange: (tab: AlertStatus | "all") => void;
-	counts: {
-		all: number;
-		active: number;
-		acknowledged: number;
-		resolved: number;
-	};
-}
+export type { AlertsStatusTabsProps } from "./types";
 
 export function AlertsStatusTabs({ activeTab, onTabChange, counts }: AlertsStatusTabsProps) {
 	return (
-		<Tabs value={activeTab} onValueChange={(value) => onTabChange(value as AlertStatus | "all")}>
+		<Tabs
+			value={activeTab}
+			onValueChange={(value) => onTabChange(value as AlertsStatusTabsProps["activeTab"])}
+		>
 			<TabsList className="bg-muted/50 p-1">
 				<TabsTrigger
 					value="all"
