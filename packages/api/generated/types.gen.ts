@@ -32,6 +32,14 @@ export type AdminResponsePagedResponse = {
 	readonly totalPages?: number;
 };
 
+export type AlertEventResponse = {
+	id?: string;
+	eventType?: string | null;
+	occurredAt?: Date;
+	description?: string | null;
+	actorId?: string | null;
+};
+
 export type AlertResponse = {
 	id?: string;
 	sensorId?: string;
@@ -45,6 +53,10 @@ export type AlertResponse = {
 	status?: string | null;
 	resolvedAt?: Date | null;
 	createdAt?: Date;
+	equipmentName?: string | null;
+	sensorSerial?: string | null;
+	sensorTypeName?: string | null;
+	events?: Array<AlertEventResponse> | null;
 };
 
 export type AlertResponsePagedResponse = {
@@ -210,6 +222,7 @@ export type IngestionRunListResponsePagedResponse = {
 export enum IngestionSource {
 	_0 = 0,
 	_1 = 1,
+	_2 = 2,
 }
 
 export type IngestionStatsResponse = {
@@ -254,6 +267,7 @@ export type ProblemDetails = {
 
 export type RejectedReadingResult = {
 	rowIndex?: number;
+	sensorId?: string | null;
 	rejectionReason?: string | null;
 };
 
@@ -320,6 +334,7 @@ export type SensorHealthDetailResponse = {
 };
 
 export type SensorHealthListItemResponse = {
+	ingestionSource?: IngestionSource;
 	id?: string;
 	name?: string | null;
 	sensorType?: string | null;
@@ -332,8 +347,6 @@ export type SensorHealthListItemResponse = {
 	equipmentName?: string | null;
 	lastValue?: number | null;
 	unit?: string | null;
-	/** Source of last ingestion that produced a reading (0=Api, 1=Csv, 2=Simulated). */
-	ingestionSource?: IngestionSource | null;
 };
 
 export type SensorHealthListItemResponsePagedResponse = {
@@ -370,6 +383,11 @@ export type SensorReadingResponsePagedResponse = {
 	page?: number;
 	pageSize?: number;
 	readonly totalPages?: number;
+};
+
+export type SensorRejectionCountResponse = {
+	sensorId?: string;
+	count?: number;
 };
 
 export type SensorRequest = {
@@ -1155,6 +1173,38 @@ export type GetIngestionRunsV1Responses = {
 
 export type GetIngestionRunsV1Response =
 	GetIngestionRunsV1Responses[keyof GetIngestionRunsV1Responses];
+
+export type GetSensorRejectionCountV1Data = {
+	body?: never;
+	path: {
+		sensorId: string;
+	};
+	query?: {
+		From?: Date;
+		To?: Date;
+	};
+	url: "/api/v1/ingestion/sensors/{sensorId}/rejection-count";
+};
+
+export type GetSensorRejectionCountV1Errors = {
+	/**
+	 * Unauthorized
+	 */
+	401: ProblemDetails;
+};
+
+export type GetSensorRejectionCountV1Error =
+	GetSensorRejectionCountV1Errors[keyof GetSensorRejectionCountV1Errors];
+
+export type GetSensorRejectionCountV1Responses = {
+	/**
+	 * OK
+	 */
+	200: SensorRejectionCountResponse;
+};
+
+export type GetSensorRejectionCountV1Response =
+	GetSensorRejectionCountV1Responses[keyof GetSensorRejectionCountV1Responses];
 
 export type GetIngestionStatsV1Data = {
 	body?: never;

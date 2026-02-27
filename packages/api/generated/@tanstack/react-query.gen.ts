@@ -48,6 +48,7 @@ import {
 	getSensorHealthByIdV1,
 	getSensorHealthListV1,
 	getSensorReadingsV1,
+	getSensorRejectionCountV1,
 	getSensorTypeByIdV1,
 	getSiteByIdV1,
 	getThresholdByIdV1,
@@ -171,6 +172,9 @@ import type {
 	GetSensorReadingsV1Data,
 	GetSensorReadingsV1Error,
 	GetSensorReadingsV1Response,
+	GetSensorRejectionCountV1Data,
+	GetSensorRejectionCountV1Error,
+	GetSensorRejectionCountV1Response,
 	GetSensorTypeByIdV1Data,
 	GetSensorTypeByIdV1Error,
 	GetSensorTypeByIdV1Response,
@@ -716,6 +720,29 @@ export const getIngestionRunsV1Options = (options?: Options<GetIngestionRunsV1Da
 			return data;
 		},
 		queryKey: getIngestionRunsV1QueryKey(options),
+	});
+
+export const getSensorRejectionCountV1QueryKey = (
+	options: Options<GetSensorRejectionCountV1Data>,
+) => createQueryKey("getSensorRejectionCountV1", options);
+
+export const getSensorRejectionCountV1Options = (options: Options<GetSensorRejectionCountV1Data>) =>
+	queryOptions<
+		GetSensorRejectionCountV1Response,
+		AxiosError<GetSensorRejectionCountV1Error>,
+		GetSensorRejectionCountV1Response,
+		ReturnType<typeof getSensorRejectionCountV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getSensorRejectionCountV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getSensorRejectionCountV1QueryKey(options),
 	});
 
 export const getIngestionStatsV1QueryKey = (options?: Options<GetIngestionStatsV1Data>) =>
