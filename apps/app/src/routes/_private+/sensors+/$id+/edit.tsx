@@ -177,16 +177,28 @@ export default observer(function EditSensorPage() {
 					<CardTitle>{t`Edit Sensor`}</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<SensorForm
-						equipmentOptions={equipmentOptions}
-						sensorTypeOptions={sensorTypeOptions}
-						thresholdOptions={[]}
-						createNewThreshold
-						defaultValues={sensorFormValuesFromResponse(vm.sensor)}
-						onSubmit={handleSubmit}
-						submitLabel={t`Update Sensor`}
-						isSubmitting={vm.isSaving}
-					/>
+					{!vm.sensor?.thresholdId ? (
+						<p className="text-sm text-muted-foreground">{t`Loading threshold...`}</p>
+					) : currentThreshold ? (
+						<SensorForm
+							key={currentThreshold.id}
+							equipmentOptions={equipmentOptions}
+							sensorTypeOptions={sensorTypeOptions}
+							thresholdOptions={[]}
+							createNewThreshold
+							defaultValues={{
+								...sensorFormValuesFromResponse(vm.sensor),
+								thresholdMin: currentThreshold.min ?? 0,
+								thresholdMax: currentThreshold.max ?? 100,
+								thresholdDurationSeconds: currentThreshold.durationSeconds ?? 60,
+							}}
+							onSubmit={handleSubmit}
+							submitLabel={t`Update Sensor`}
+							isSubmitting={vm.isSaving}
+						/>
+					) : (
+						<p className="text-sm text-muted-foreground">{t`Loading threshold...`}</p>
+					)}
 				</CardContent>
 			</Card>
 		</div>
