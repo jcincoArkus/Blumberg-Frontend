@@ -27,7 +27,7 @@
 		"start:admin": "node scripts/start-admin.js",
 		"    SKILLS    ": "",
 		"skills:claude": "mkdir -p .claude && ln -sfn ../.llm/skills .claude/skills",
-		"build": "remix vite:build"
+		"build": "node ./node_modules/@remix-run/dev/cli.js vite:build"
 	},
 	"engines": {
 		"node": ">=24.13.0 <25.0.0",
