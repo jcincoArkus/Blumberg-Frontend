@@ -6,6 +6,7 @@ import {
 	MapPin,
 	MoreHorizontal,
 	Search,
+	SlidersHorizontal,
 	X,
 	XCircle,
 } from "lucide-react";
@@ -62,6 +63,7 @@ interface SensorsTableProps {
 	equipment: Equipment[];
 	onViewDetails: (sensor: Sensor) => void;
 	onEdit: (sensor: Sensor) => void;
+	onSetThreshold: (sensor: Sensor) => void;
 	onToggleStatus: (id: string, status: string) => void;
 }
 
@@ -112,6 +114,7 @@ export function SensorsTable({
 	equipment,
 	onViewDetails,
 	onEdit,
+	onSetThreshold,
 	onToggleStatus,
 }: SensorsTableProps) {
 	const [showFilters, setShowFilters] = useState(false);
@@ -386,6 +389,10 @@ export function SensorsTable({
 											<DropdownMenuItem onClick={() => onEdit(sensor)}>
 												<Edit className="mr-2 h-4 w-4" />
 												{t`Edit`}
+											</DropdownMenuItem>
+											<DropdownMenuItem onClick={() => onSetThreshold(sensor)}>
+												<SlidersHorizontal className="mr-2 h-4 w-4" />
+												{t`Set Threshold`}
 											</DropdownMenuItem>
 										</DropdownMenuContent>
 									</DropdownMenu>

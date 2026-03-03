@@ -185,6 +185,17 @@ export class ObservedQuery<
 	};
 
 	/**
+	 * Refetch the current query (same parameters).
+	 * Returns a promise that resolves when the refetch completes.
+	 * No-op if no query has been loaded yet.
+	 */
+	refetch = async (): Promise<void> => {
+		if (this.query) {
+			await this.query.refetch();
+		}
+	};
+
+	/**
 	 * Clear the query as if we never called `.load()`.
 	 * This resets the query state and cleans up resources.
 	 * Useful for clearing data when navigating away or resetting forms.

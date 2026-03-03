@@ -23,7 +23,7 @@ export const StatusStats: FC<StatusStatsProps> = ({ offlineCount, staleCount, fl
 			<div className="w-px h-8 bg-border" />
 			<div className="flex-1 text-center">
 				<p className="text-lg font-semibold">{flappingCount}</p>
-				<p className="text-xs text-muted-foreground">{t`Flapping`}</p>
+				<p className="text-xs text-muted-foreground">{t`Unstable`}</p>
 			</div>
 		</div>
 	);

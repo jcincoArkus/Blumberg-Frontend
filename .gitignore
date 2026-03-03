@@ -2,8 +2,11 @@
 .env
 /node_modules/
 *.log
+
+# LLMs
 .claude/
 .augment/
+.gemini/
 
 # React Router
 /**/.react-router/

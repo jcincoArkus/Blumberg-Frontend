@@ -1,1 +1,1 @@
-export { UsersViewModel, usersViewModel, useUsersViewModel } from "./UsersViewModel";
+export { usersViewModel, useUsersViewModel } from "./UsersViewModel";

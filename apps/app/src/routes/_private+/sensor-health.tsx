@@ -39,7 +39,7 @@ const SensorHealthPage = observer(function SensorHealthPage() {
 				title={t`All Sensors`}
 				description={t`Showing ${vm.filteredSensors.length} of ${vm.enrichedSensors.length} sensors`}
 			>
-				<SensorHealthTable sensors={vm.filteredSensors} />
+				<SensorHealthTable sensors={vm.filteredSensors} isLoading={vm.isLoading} />
 			</DashboardPanel>
 		</div>
 	);

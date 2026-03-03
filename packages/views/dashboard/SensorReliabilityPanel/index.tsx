@@ -3,10 +3,9 @@ import { useState } from "react";
 import { observer } from "~@/mobx";
 import { useSensorReliabilityPanelViewModel } from "~@/view-model";
 
-import { AllHealthyState } from "./AllHealthyState";
 import { FlappingList } from "./FlappingList";
-import { getHealthyStats } from "./helpers";
 import { IssueList } from "./IssueList";
+import { SensorStatusFooter } from "./SensorStatusFooter";
 import { StatusStats } from "./StatusStats";
 import { StatusSummary } from "./StatusSummary";
 
@@ -14,20 +13,14 @@ export type { Sensor } from "./types";
 
 export const SensorReliabilityPanel = observer(function SensorReliabilityPanel() {
 	const vm = useSensorReliabilityPanelViewModel();
-	const { healthyPercentage, hasIssues } = getHealthyStats({
-		totalSensors: vm.totalSensors,
-		offlineCount: vm.offlineCount,
-		staleCount: vm.staleCount,
-		flappingCount: vm.flappingCount,
-	});
-	const [isFlappingOpen, setIsFlappingOpen] = useState(false);
+	const [isUnstableOpen, setIsUnstableOpen] = useState(false);
 
 	return (
 		<div className="bg-card text-card-foreground rounded-xl border shadow-sm">
-			<div className="px-3 pt-3 pb-0.5">
-				<StatusSummary healthyPercentage={healthyPercentage} hasIssues={hasIssues} />
+			<div className="px-4 pt-4 pb-0.5">
+				<StatusSummary healthyPercentage={vm.healthyPercentage} hasIssues={vm.hasIssues} />
 			</div>
-			<div className="px-3 pb-3 space-y-2">
+			<div className="px-4 pb-4 space-y-2">
 				<StatusStats
 					offlineCount={vm.offlineCount}
 					staleCount={vm.staleCount}
@@ -38,11 +31,15 @@ export const SensorReliabilityPanel = observer(function SensorReliabilityPanel()
 
 				<FlappingList
 					flappingSensors={vm.flappingSensors}
-					isOpen={isFlappingOpen}
-					onToggle={setIsFlappingOpen}
+					isOpen={isUnstableOpen}
+					onToggle={setIsUnstableOpen}
 				/>
 
-				{!hasIssues && <AllHealthyState totalSensors={vm.totalSensors} />}
+				<SensorStatusFooter
+					totalSensors={vm.totalSensors}
+					hasIssues={vm.hasIssues}
+					showViewAll={isUnstableOpen}
+				/>
 			</div>
 		</div>
 	);

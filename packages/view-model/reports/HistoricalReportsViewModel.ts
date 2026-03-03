@@ -7,7 +7,7 @@ import {
 } from "~@/mock-data";
 import type { DateRangePreset, HistoricalAlert, HistoricalReading } from "~@/views";
 
-export class HistoricalReportsViewModel {
+class HistoricalReportsViewModel {
 	activeTab: "readings" | "alerts" = "readings";
 	datePreset: DateRangePreset = "7d";
 	startDate: Date | null = null;

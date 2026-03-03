@@ -1,48 +1,91 @@
+import type { SiteRequest, SiteResponse } from "~@/api";
+import {
+	createSiteV1ObservedMutation,
+	getSiteByIdV1ObservedQuery,
+	updateSiteV1ObservedMutation,
+} from "~@/api";
 import { makeAutoObservable } from "~@/mobx";
-import { dashboardSites } from "~@/mock-data";
-import type { Site } from "~@/views";
+import { queryClient } from "~@/query-client";
+
+const SITES_LIST_QUERY_ID = "getAllSitesV1";
+const SITE_DETAIL_QUERY_ID = "getSiteByIdV1";
+
+const sitesQueryPredicate = (query: { queryKey: unknown[] }) => {
+	const first = query.queryKey[0] as { _id?: string } | undefined;
+	return first?._id === SITES_LIST_QUERY_ID || first?._id === SITE_DETAIL_QUERY_ID;
+};
+
+function invalidateSitesQueries(): void {
+	queryClient.invalidateQueries({ predicate: sitesQueryPredicate });
+}
+
+function refetchSitesQueries(): Promise<void> {
+	return queryClient.refetchQueries({ predicate: sitesQueryPredicate });
+}
 
 /**
- * Singleton ViewModel for Sites data.
- * Will use hey-api ObservedQuery when endpoints are ready.
- * Currently uses mock data.
+ * ViewModel for Site detail and create/edit form.
+ * List is owned by SitesDataTableController.
  */
 class SitesViewModel {
-	// TODO: Replace with ObservedQuery when hey-api endpoint is ready
-	// sitesQuery = new ObservedQuery(getSitesQuery, {});
-	private readonly _sites: Site[];
+	#detailQuery = getSiteByIdV1ObservedQuery();
+	#createMutation = createSiteV1ObservedMutation();
+	#updateMutation = updateSiteV1ObservedMutation();
 
 	constructor() {
 		makeAutoObservable(this);
-		this._sites = dashboardSites;
 	}
 
-	/**
-	 * Get all sites
-	 */
-	get sites(): Site[] {
-		// return this.sitesQuery.data ?? [];
-		return this._sites;
+	get site(): SiteResponse | null {
+		return this.#detailQuery.data ?? null;
 	}
 
-	/**
-	 * Load sites from API
-	 * TODO: Uncomment when hey-api endpoint is ready
-	 */
-	// load = () => {
-	// 	this.sitesQuery.load();
-	// };
+	get isLoading(): boolean {
+		return this.#detailQuery.isLoading;
+	}
 
-	/**
-	 * Dispose of resources
-	 * TODO: Uncomment when hey-api endpoint is ready
-	 */
-	// dispose = () => {
-	// 	this.sitesQuery.dispose();
-	// };
+	get hasError(): boolean {
+		return this.#detailQuery.hasError;
+	}
+
+	get error(): Error | null {
+		return this.#detailQuery.error ?? null;
+	}
+
+	get isSaving(): boolean {
+		return this.#createMutation.isPending || this.#updateMutation.isPending;
+	}
+
+	loadSite = async (siteId: string): Promise<void> => {
+		await this.#detailQuery.loadAsync({ path: { id: siteId } });
+	};
+
+	createSite = async (body: SiteRequest): Promise<SiteResponse | null> => {
+		const result = await this.#createMutation.mutateAsync({ body });
+		if (result != null) {
+			invalidateSitesQueries();
+			await refetchSitesQueries();
+		}
+		return result ?? null;
+	};
+
+	updateSite = async (siteId: string, body: SiteRequest): Promise<SiteResponse | null> => {
+		const result = await this.#updateMutation.mutateAsync({
+			path: { id: siteId },
+			body,
+		});
+		if (result != null) {
+			invalidateSitesQueries();
+			await refetchSitesQueries();
+		}
+		return result ?? null;
+	};
+
+	dispose = (): void => {
+		this.#detailQuery.dispose();
+	};
 }
 
-// Export singleton instance
 export const sitesViewModel = new SitesViewModel();
 
 export function useSitesViewModel() {

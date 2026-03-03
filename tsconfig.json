@@ -7,7 +7,7 @@
 		"isolatedModules": true,
 		"jsx": "react-jsx",
 		"lib": ["ES2022", "DOM", "DOM.Iterable"],
-		"types": ["node", "vite/client"],
+		"types": ["bun", "node", "vite/client"],
 		"module": "ES2022",
 		"target": "ES2022",
 		"moduleResolution": "bundler",

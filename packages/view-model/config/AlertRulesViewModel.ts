@@ -40,7 +40,7 @@ import type { Disposable } from "../types";
  * );
  * ```
  */
-export class AlertRulesViewModel implements Disposable {
+class AlertRulesViewModel implements Disposable {
 	// Observable state
 	rules: AlertRule[];
 	readonly sensorTypeOptions: SensorTypeOption[];

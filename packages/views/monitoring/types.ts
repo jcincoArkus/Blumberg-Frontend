@@ -1,6 +1,6 @@
 // Types for monitoring components
 
-export type HealthStatus = "healthy" | "stale" | "silent";
+export type HealthStatus = "healthy" | "stale" | "silent" | "offline" | "warning" | "critical";
 export type DataQualityStatus = "good" | "missing" | "inconsistent";
 export type IngestionSource = "api" | "csv";
 export type IngestionStatus = "ok" | "api_error" | "csv_error";
@@ -18,11 +18,12 @@ export interface SensorInfo {
 }
 
 export interface SensorHealthRecordInfo {
-	lastReportedAt: string;
+	lastReportedAt?: string;
 	expectedIntervalSeconds: number;
 	warningThresholdSeconds: number;
 	criticalThresholdSeconds: number;
 	healthStatus: HealthStatus;
+	reliabilityScore?: number;
 }
 
 export interface DataQualityInfo {
@@ -47,12 +48,17 @@ export interface IngestionErrorInfo {
 	severity: ErrorSeverity;
 }
 
+/** Last ingestion source that produced a reading for this sensor (api, csv, simulated). */
+export type IngestionSourceLabel = "api" | "csv";
+
 export interface SensorHealthData {
 	sensor: SensorInfo;
 	health?: SensorHealthRecordInfo;
 	quality?: DataQualityInfo;
 	ingestionErrors: IngestionErrorInfo[];
 	ingestionStatus: IngestionStatus;
+	/** Source of last ingestion that produced a reading (api/csv/simulated). Undefined when no readings. */
+	ingestionSource?: IngestionSourceLabel;
 	issueSummary: string;
 }
 

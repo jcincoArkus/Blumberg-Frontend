@@ -1,23 +1,20 @@
 import type { FC } from "react";
 
 import { t } from "~@/i18n/macro";
-import { Badge, cn } from "~@/ui";
+import { Badge } from "~@/ui";
 
 interface StatusSummaryProps {
 	healthyPercentage: number;
 	hasIssues: boolean;
 }
 
-export const StatusSummary: FC<StatusSummaryProps> = ({ healthyPercentage, hasIssues }) => {
+export const StatusSummary: FC<StatusSummaryProps> = ({ healthyPercentage }) => {
 	return (
 		<div className="flex items-center justify-between">
-			<h3 className="text-sm font-semibold leading-tight">{t`Sensor Status`}</h3>
+			<h3 className="text-base font-semibold leading-tight">{t`Sensor Status`}</h3>
 			<Badge
 				variant="outline"
-				className={cn(
-					"text-xs",
-					hasIssues ? "border-amber-300 text-amber-700" : "border-emerald-300 text-emerald-700",
-				)}
+				className="text-xs font-medium rounded-full px-2.5 py-0.5 bg-white dark:bg-card border border-amber-300 dark:border-amber-500 text-amber-800 dark:text-amber-200"
 			>
 				{healthyPercentage}%
 			</Badge>

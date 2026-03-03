@@ -5,34 +5,33 @@ import { DataTable } from "~@/data-table";
 
 import { getSensorHealthColumns } from "./columns";
 
-// Temporary inline type until controller file is created
 export interface EnrichedSensor extends DataItem {
 	id: string;
 	name: string;
 	type: string;
-	status: "active" | "warning" | "stale" | "offline" | "error" | "inactive";
+	status: string;
 	equipmentId: string;
 	equipmentName: string;
 	siteName: string;
 	siteId: string;
 	value: number;
 	unit: string;
-	batteryLevel?: number;
 	lastSeen: string;
+	reliabilityScore?: number;
 }
 
 interface SensorHealthTableProps {
 	sensors: EnrichedSensor[];
+	isLoading?: boolean;
 }
 
-export function SensorHealthTable({ sensors }: SensorHealthTableProps) {
+export function SensorHealthTable({ sensors, isLoading }: SensorHealthTableProps) {
 	const controller = useMemo(() => {
-		// Inline controller implementation
 		return {
 			tableId: "sensor-health",
 			data: sensors,
 			total: sensors.length,
-			isLoading: false,
+			isLoading: isLoading ?? false,
 			isFetching: false,
 			isError: false,
 			error: null,
@@ -41,7 +40,7 @@ export function SensorHealthTable({ sensors }: SensorHealthTableProps) {
 			},
 			dispose() {},
 		};
-	}, [sensors]);
+	}, [sensors, isLoading]);
 
 	const columns = useMemo(() => getSensorHealthColumns(), []);
 

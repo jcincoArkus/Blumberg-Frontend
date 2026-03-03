@@ -1,6 +1,6 @@
 ---
 name: datatable-pattern
-description: Pattern for implementing a headless DataTable with MobX controllers
+description: Pattern for implementing a headless DataTable with MobX controllers. Use when building data tables, integrating with API queries, or adding CRUD operations to tables.
 ---
 
 # DataTable Pattern with MobX
@@ -22,10 +22,10 @@ Pattern for implementing a **headless DataTable** with **MobX controllers**. The
 **This is the recommended pattern** - Uses auto-generated ObservedQuery from hey-api.
 
 ```typescript
-import { makeAutoObservable } from "mobx";
-import type { IDataTableController, ErrorInfo } from "@/data-table";
-import { type GetAllItemsV1Data, getAllItemsV1ObservedQuery } from "@/api";
-import type { Item } from "@/models";
+import { makeAutoObservable } from "~@/mobx";
+import type { IDataTableController, ErrorInfo } from "~@/data-table";
+import { type GetAllItemsV1Data, getAllItemsV1ObservedQuery } from "~@/api";
+import type { Item } from "~@/models";
 
 export class ItemsDataTableController implements IDataTableController<Item> {
   readonly tableId = "items-table";
@@ -92,21 +92,88 @@ export class ItemsDataTableController implements IDataTableController<Item> {
 - ✅ No need for manual `runInAction`, `AbortController`, or error handling
 - ✅ MobX reactivity is automatic
 
+## Template: DataTable Controller with Mutations
+
+```typescript
+import { makeAutoObservable } from "~@/mobx";
+import type { IDataTableController, ErrorInfo } from "~@/data-table";
+import {
+  type GetAllItemsV1Data,
+  getAllItemsV1ObservedQuery,
+  deleteItemV1ObservedMutation,
+} from "~@/api";
+import type { Item } from "~@/models";
+
+export class ItemsDataTableController implements IDataTableController<Item> {
+  readonly tableId = "items-table";
+
+  #query = getAllItemsV1ObservedQuery();
+  #deleteMutation = deleteItemV1ObservedMutation();
+
+  constructor() {
+    makeAutoObservable(this);
+  }
+
+  get data(): Item[] {
+    return this.#query.data?.data ?? [];
+  }
+
+  get total(): number {
+    return this.#query.data?.total ?? 0;
+  }
+
+  get isLoading(): boolean {
+    return this.#query.isLoading;
+  }
+
+  get isFetching(): boolean {
+    return this.#query.isFetching;
+  }
+
+  get isError(): boolean {
+    return this.#query.hasError;
+  }
+
+  get error(): ErrorInfo | null {
+    return this.#query.error;
+  }
+
+  async load(query: Partial<GetAllItemsV1Data>): Promise<void> {
+    this.#query.load(query);
+  }
+
+  async deleteItem(itemId: string): Promise<void> {
+    await this.#deleteMutation.mutateAsync({
+      path: { id: itemId },
+    });
+    this.#query.invalidate();
+  }
+
+  get isDeleting(): boolean {
+    return this.#deleteMutation.isPending;
+  }
+
+  dispose(): void {
+    this.#query.dispose();
+  }
+}
+```
+
 ## Template: DataTable Controller (with ViewModel)
 
 **Use this pattern when you need to share data across multiple components.**
 
 ```typescript
-import { makeAutoObservable } from "mobx";
-import type { IDataTableController, ErrorInfo } from "@/data-table";
-import { useItemsPanelViewModel } from "@/view-model";
-import type { Item } from "@/models";
+import { makeAutoObservable } from "~@/mobx";
+import type { IDataTableController, ErrorInfo } from "~@/data-table";
+import { itemsPanelViewModel } from "~@/view-model";
+import type { Item } from "~@/models";
 
 export class ItemsController implements IDataTableController<Item> {
   readonly tableId = "items-table";
 
-  // Reference to ViewModel (ViewModel uses ObservedQuery internally)
-  private vm = useItemsPanelViewModel();
+  // Reference to singleton ViewModel (ViewModel uses ObservedQuery internally)
+  private vm = itemsPanelViewModel;
 
   constructor() {
     makeAutoObservable(this);
@@ -165,9 +232,9 @@ export class ItemsController implements IDataTableController<Item> {
 ## Template: Columns Definition
 
 ```typescript
-import type { DataTableProps } from "@/data-table";
-import { Badge } from "@/ui";
-import type { Item } from "@/models";
+import type { DataTableProps } from "~@/data-table";
+import { Badge } from "~@/ui";
+import type { Item } from "~@/models";
 
 export const getItemColumns = (): DataTableProps<Item>["columns"] =>
   [
@@ -216,11 +283,11 @@ export const getItemColumns = (): DataTableProps<Item>["columns"] =>
 
 ```typescript
 import { useMemo } from "react";
-import { observer } from "@/mobx";
-import { DataTable } from "@/data-table";
+import { observer } from "~@/mobx";
+import { DataTable } from "~@/data-table";
 import { ItemsDataTableController } from "./ItemsDataTableController";
 import { getItemColumns } from "./columns";
-import type { Item } from "@/models";
+import type { Item } from "~@/models";
 
 export const ItemsPage = observer(function ItemsPage() {
   const controller = useMemo(() => new ItemsDataTableController(), []);
@@ -310,7 +377,7 @@ interface StandardQuery {
 ## File Structure
 
 ```
-src/views/
+packages/views/
 ├── items/
 │   ├── index.tsx                      # Main component
 │   ├── ItemsDataTableController.ts    # Controller
@@ -323,8 +390,8 @@ Set up global defaults to avoid repeating component overrides:
 
 ```typescript
 // app/providers/AppDataTableProvider.tsx
-import { DataTableConfigProvider, type DataTableComponentOverrides } from "@/data-table";
-import { TableView, Pagination, SearchInput, Loading, EmptyState, ErrorState } from "@/ui";
+import { DataTableConfigProvider, type DataTableComponentOverrides } from "~@/data-table";
+import { TableView, Pagination, SearchInput, Loading, EmptyState, ErrorState } from "~@/ui";
 
 const components: DataTableComponentOverrides = {
   TableView,

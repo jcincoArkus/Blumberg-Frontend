@@ -49,6 +49,12 @@ export const navSections: NavSection[] = [
 			},
 			{ label: t`Alerts`, href: "/alerts", icon: <Bell className="size-5" /> },
 			{ label: t`Sites`, href: "/sites", icon: <Building2 className="size-5" /> },
+			{ label: t`Equipment`, href: "/equipment", icon: <Server className="size-5" /> },
+			{
+				label: t`Sensors`,
+				href: "/sensors",
+				icon: <Activity className="size-5" />,
+			},
 			{
 				label: t`Equipment Overview`,
 				href: "/equipment-overview",

@@ -68,6 +68,9 @@ export {
 	SensorEditor,
 	type SensorStatus as ConfigSensorStatus,
 	SensorsTable as ConfigSensorsTable,
+	type SensorThreshold,
+	SensorThresholdEditor,
+	type SensorThresholdSeverity,
 	type SensorType as AlertSensorType,
 	type Site as ConfigSite,
 } from "./config";
@@ -79,15 +82,22 @@ export {
 	DashboardShell,
 	type Domain,
 	GlobalStatusBar,
+	GroupedSensorMetricsPanel,
+	type GroupedSensorMetricsSensor,
+	InteriorMapPanel,
 	KeyMetricsCards,
 	type KeyMetricsCardsProps,
 	KPIGauge,
+	LocationPanel,
+	type LocationPanelMapLocation,
+	type LocationPanelProps,
 	type Sensor,
 	SensorReliabilityPanel,
 	type SensorReliabilityPanelProps,
 	type Site,
 	TrendsPanel,
 	type TrendsPanelProps,
+	type WarehouseZone,
 	ZonesOverviewPanel,
 	type ZonesOverviewPanelProps,
 } from "./dashboard";
@@ -95,8 +105,12 @@ export {
 	ClimateTab,
 	EnergyTab,
 	EquipmentAlertsPanel,
+	EquipmentDataTableController,
 	EquipmentDetailsTab,
+	EquipmentForm,
 	EquipmentOverviewHeader,
+	equipmentFormValuesFromResponse,
+	getEquipmentColumns,
 	HistoricalCharts,
 	LimitsComparisonPanel,
 	RecentAlerts,
@@ -163,4 +177,18 @@ export {
 	SensorHealthStats,
 	SensorHealthTable,
 } from "./sensor-health";
-export { SiteTrendCharts } from "./sites";
+export type { CreateSensorWithNewThresholdRequest } from "./sensors";
+export {
+	getSensorColumns,
+	getSensorTypeKindDisplayName,
+	SensorForm,
+	SensorsDataTableController,
+	sensorFormValuesFromResponse,
+} from "./sensors";
+export {
+	getSiteColumns,
+	SiteForm,
+	SitesDataTableController,
+	SiteTrendCharts,
+	siteFormValuesFromResponse,
+} from "./sites";

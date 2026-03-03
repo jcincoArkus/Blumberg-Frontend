@@ -15,12 +15,13 @@ export const TableView: FC<DataTableTableViewProps<DataItem>> = ({
 	onRowClick,
 	onRowDoubleClick,
 	isLoading,
-	isFetching,
+	isFetching: _isFetching,
 	stickyHeader = false,
 }) => {
 	return (
 		<div className="relative">
-			{isFetching && !isLoading && (
+			{/* Only show overlay during initial load; avoid persistent spinner when isFetching lags */}
+			{isLoading && (
 				<div className="absolute inset-0 bg-background/50 z-10 flex items-center justify-center">
 					<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
 				</div>

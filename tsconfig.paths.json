@@ -6,14 +6,15 @@
 			"~@/i18n": ["./packages/i18n/index.ts"],
 			"~@/i18n/macro": ["./packages/i18n/macro.ts"],
 			"~@/authorization": ["./packages/authorization/index.ts"],
-			"~@/api": ["./packages/api/index.ts"],
 			"~@/query-client": ["./packages/query-client/index.ts"],
 			"~@/mobx": ["./packages/mobx/index.ts"],
+			"~@/api": ["./packages/api/index.ts"],
 			"~@/mock-data": ["./packages/mock-data/index.ts"], // TODO: will be removed
 			"~@/models": ["./packages/models/index.ts"],
-			"~@/data-table": ["./packages/data-table/index.ts"],
-			"~@/ui": ["./packages/ui/index.ts"],
 			"~@/view-model": ["./packages/view-model/index.ts"],
+			"~@/data-table": ["./packages/data-table/index.ts"],
+			"~@/forms": ["./packages/forms/index.ts"],
+			"~@/ui": ["./packages/ui/index.ts"],
 			"~@/views": ["./packages/views/index.ts"]
 		}
 	}

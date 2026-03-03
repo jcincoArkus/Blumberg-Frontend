@@ -45,7 +45,7 @@ function Private() {
 		if (!isAuthenticated) {
 			navigate("/", { replace: true });
 		}
-	}, [isAuthenticated]);
+	}, [isAuthenticated, navigate]);
 
 	useEffect(() => {
 		return () => {

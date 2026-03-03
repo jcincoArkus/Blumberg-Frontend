@@ -47,11 +47,11 @@ export function SensorHealthFilters({
 					</SelectTrigger>
 					<SelectContent>
 						<SelectItem value="all">{t`All Status`}</SelectItem>
-						<SelectItem value="active">{t`Active`}</SelectItem>
+						<SelectItem value="healthy">{t`Healthy`}</SelectItem>
+						<SelectItem value="stale">{t`Stale`}</SelectItem>
 						<SelectItem value="offline">{t`Offline`}</SelectItem>
 						<SelectItem value="warning">{t`Warning`}</SelectItem>
-						<SelectItem value="stale">{t`Stale`}</SelectItem>
-						<SelectItem value="error">{t`Error`}</SelectItem>
+						<SelectItem value="critical">{t`Critical`}</SelectItem>
 					</SelectContent>
 				</Select>
 			</div>
