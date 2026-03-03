@@ -25,6 +25,7 @@ import {
 	deleteThresholdV1Mutation,
 	ingestReadingsV1Mutation,
 	loginV1Mutation,
+	refreshV1Mutation,
 	removeRolePermissionsV1Mutation,
 	removeUserRolesV1Mutation,
 	replaceRolePermissionsV1Mutation,
@@ -62,6 +63,7 @@ import type {
 	DeleteThresholdV1Data,
 	IngestReadingsV1Data,
 	LoginV1Data,
+	RefreshV1Data,
 	RemoveRolePermissionsV1Data,
 	RemoveUserRolesV1Data,
 	ReplaceRolePermissionsV1Data,
@@ -106,6 +108,11 @@ export const loginV1ObservedMutation = (
 	defaultValues?: Partial<LoginV1Data>,
 	observerOptions?: MutationOptions<typeof loginV1Mutation>,
 ) => new ObservedMutation(loginV1Mutation, defaultValues, observerOptions);
+
+export const refreshV1ObservedMutation = (
+	defaultValues?: Partial<RefreshV1Data>,
+	observerOptions?: MutationOptions<typeof refreshV1Mutation>,
+) => new ObservedMutation(refreshV1Mutation, defaultValues, observerOptions);
 
 export const createEquipmentV1ObservedMutation = (
 	defaultValues?: Partial<CreateEquipmentV1Data>,

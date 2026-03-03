@@ -98,6 +98,7 @@ export type AssignRolesToUserRequest = {
 
 export type AuthResponse = {
 	token?: string | null;
+	refreshToken?: string | null;
 	email?: string | null;
 	firstName?: string | null;
 	lastName?: string | null;
@@ -263,6 +264,10 @@ export type ProblemDetails = {
 		| string
 		| null
 		| undefined;
+};
+
+export type RefreshRequest = {
+	refreshToken?: string | null;
 };
 
 export type RejectedReadingResult = {
@@ -883,6 +888,31 @@ export type LoginV1Responses = {
 };
 
 export type LoginV1Response = LoginV1Responses[keyof LoginV1Responses];
+
+export type RefreshV1Data = {
+	body?: RefreshRequest;
+	path?: never;
+	query?: never;
+	url: "/api/v1/auth/refresh";
+};
+
+export type RefreshV1Errors = {
+	/**
+	 * Unauthorized
+	 */
+	401: ProblemDetails;
+};
+
+export type RefreshV1Error = RefreshV1Errors[keyof RefreshV1Errors];
+
+export type RefreshV1Responses = {
+	/**
+	 * OK
+	 */
+	200: AuthResponse;
+};
+
+export type RefreshV1Response = RefreshV1Responses[keyof RefreshV1Responses];
 
 export type GetAllEquipmentV1Data = {
 	body?: never;

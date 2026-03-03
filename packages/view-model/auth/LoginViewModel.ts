@@ -40,10 +40,11 @@ class LoginViewModel {
 		if (!token) {
 			throw new Error("No token in response");
 		}
+		const refreshToken = result?.refreshToken ?? token;
 
 		authViewModel.setAuthenticatedSession({
 			accessToken: token,
-			refreshToken: token,
+			refreshToken,
 		});
 	};
 

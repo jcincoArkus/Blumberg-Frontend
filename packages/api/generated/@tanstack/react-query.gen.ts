@@ -57,6 +57,7 @@ import {
 	listIngestionApiKeysV1,
 	loginV1,
 	type Options,
+	refreshV1,
 	removeRolePermissionsV1,
 	removeUserRolesV1,
 	replaceRolePermissionsV1,
@@ -195,6 +196,9 @@ import type {
 	LoginV1Data,
 	LoginV1Error,
 	LoginV1Response,
+	RefreshV1Data,
+	RefreshV1Error,
+	RefreshV1Response,
 	RemoveRolePermissionsV1Data,
 	RemoveUserRolesV1Data,
 	ReplaceRolePermissionsV1Data,
@@ -480,6 +484,26 @@ export const loginV1Mutation = (
 	> = {
 		mutationFn: async (fnOptions) => {
 			const { data } = await loginV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const refreshV1Mutation = (
+	options?: Partial<Options<RefreshV1Data>>,
+): UseMutationOptions<RefreshV1Response, AxiosError<RefreshV1Error>, Options<RefreshV1Data>> => {
+	const mutationOptions: UseMutationOptions<
+		RefreshV1Response,
+		AxiosError<RefreshV1Error>,
+		Options<RefreshV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await refreshV1({
 				...options,
 				...fnOptions,
 				throwOnError: true,
