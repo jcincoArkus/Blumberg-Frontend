@@ -29,7 +29,7 @@
 		"    SKILLS    ": "",
 		"skills:claude": "mkdir -p .claude && ln -sfn ../.llm/skills .claude/skills",
 		"skills:gemini": "mkdir -p .gemini && ln -sfn ../.llm/skills .gemini/skills",
-		"build": "node node_modules/@react-router/dev/cli.js vite:build"
+		"build": "node_modules/.bin/react-router-dev vite:build"
 	},
 	"engines": {
 		"node": "please-use-bun",
