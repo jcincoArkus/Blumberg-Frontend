@@ -30,6 +30,7 @@ import type {
 	GetThresholdByIdV1Response,
 	ListIngestionApiKeysV1Response,
 	LoginV1Response,
+	RefreshV1Response,
 	ResolveAlertV1Response,
 	UpdateAdminV1Response,
 	UpdateEquipmentV1Response,
@@ -150,6 +151,11 @@ const authResponseSchemaResponseTransformer = (data: any) => {
 };
 
 export const loginV1ResponseTransformer = async (data: any): Promise<LoginV1Response> => {
+	data = authResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const refreshV1ResponseTransformer = async (data: any): Promise<RefreshV1Response> => {
 	data = authResponseSchemaResponseTransformer(data);
 	return data;
 };

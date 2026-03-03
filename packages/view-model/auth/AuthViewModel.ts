@@ -37,6 +37,10 @@ class AuthViewModel {
 		return this._authenticatedSession?.accessToken;
 	}
 
+	get refreshToken() {
+		return this._authenticatedSession?.refreshToken;
+	}
+
 	setAuthenticatedSession = (session: AuthenticatedSession) => {
 		sessionStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(session));
 		client.setConfig({
