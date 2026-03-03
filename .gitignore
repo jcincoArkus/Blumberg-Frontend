@@ -3,6 +3,11 @@
 /node_modules/
 *.log
 
+# Non-bun lockfiles
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
 # LLMs
 .claude/
 .augment/
