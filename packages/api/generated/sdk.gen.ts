@@ -11,6 +11,7 @@ import {
 	createSensorV1ResponseTransformer,
 	createSiteV1ResponseTransformer,
 	createThresholdV1ResponseTransformer,
+	getActiveAlertsV1ResponseTransformer,
 	getAdminByIdV1ResponseTransformer,
 	getAlertByIdV1ResponseTransformer,
 	getAllAdminsV1ResponseTransformer,
@@ -32,7 +33,6 @@ import {
 	getThresholdByIdV1ResponseTransformer,
 	listIngestionApiKeysV1ResponseTransformer,
 	loginV1ResponseTransformer,
-	refreshV1ResponseTransformer,
 	resolveAlertV1ResponseTransformer,
 	updateAdminV1ResponseTransformer,
 	updateEquipmentV1ResponseTransformer,
@@ -96,6 +96,8 @@ import type {
 	DeleteThresholdV1Data,
 	DeleteThresholdV1Errors,
 	DeleteThresholdV1Responses,
+	GetActiveAlertsV1Data,
+	GetActiveAlertsV1Responses,
 	GetAdminByIdV1Data,
 	GetAdminByIdV1Errors,
 	GetAdminByIdV1Responses,
@@ -175,9 +177,6 @@ import type {
 	LoginV1Data,
 	LoginV1Errors,
 	LoginV1Responses,
-	RefreshV1Data,
-	RefreshV1Errors,
-	RefreshV1Responses,
 	RemoveRolePermissionsV1Data,
 	RemoveRolePermissionsV1Responses,
 	RemoveUserRolesV1Data,
@@ -234,6 +233,7 @@ import {
 	zDeleteSensorV1Data,
 	zDeleteSiteV1Data,
 	zDeleteThresholdV1Data,
+	zGetActiveAlertsV1Data,
 	zGetAdminByIdV1Data,
 	zGetAlertByIdV1Data,
 	zGetAllAdminsV1Data,
@@ -265,7 +265,6 @@ import {
 	zIngestReadingsV1Data,
 	zListIngestionApiKeysV1Data,
 	zLoginV1Data,
-	zRefreshV1Data,
 	zRemoveRolePermissionsV1Data,
 	zRemoveUserRolesV1Data,
 	zReplaceRolePermissionsV1Data,
@@ -376,6 +375,18 @@ export const getAllAlertsV1 = <ThrowOnError extends boolean = false>(
 		...options,
 	});
 
+export const getActiveAlertsV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetActiveAlertsV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<GetActiveAlertsV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetActiveAlertsV1Data.parseAsync(data),
+		responseTransformer: getActiveAlertsV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/alerts/active",
+		...options,
+	});
+
 export const getAlertByIdV1 = <ThrowOnError extends boolean = false>(
 	options: Options<GetAlertByIdV1Data, ThrowOnError>,
 ) =>
@@ -424,21 +435,6 @@ export const loginV1 = <ThrowOnError extends boolean = false>(
 		responseTransformer: loginV1ResponseTransformer,
 		responseType: "json",
 		url: "/api/v1/auth/login",
-		...options,
-		headers: {
-			"Content-Type": "application/json",
-			...options?.headers,
-		},
-	});
-
-export const refreshV1 = <ThrowOnError extends boolean = false>(
-	options?: Options<RefreshV1Data, ThrowOnError>,
-) =>
-	(options?.client ?? client).post<RefreshV1Responses, RefreshV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zRefreshV1Data.parseAsync(data),
-		responseTransformer: refreshV1ResponseTransformer,
-		responseType: "json",
-		url: "/api/v1/auth/refresh",
 		...options,
 		headers: {
 			"Content-Type": "application/json",

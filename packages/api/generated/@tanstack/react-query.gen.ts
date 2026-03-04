@@ -25,6 +25,7 @@ import {
 	deleteSensorV1,
 	deleteSiteV1,
 	deleteThresholdV1,
+	getActiveAlertsV1,
 	getAdminByIdV1,
 	getAlertByIdV1,
 	getAllAdminsV1,
@@ -57,7 +58,6 @@ import {
 	listIngestionApiKeysV1,
 	loginV1,
 	type Options,
-	refreshV1,
 	removeRolePermissionsV1,
 	removeUserRolesV1,
 	replaceRolePermissionsV1,
@@ -118,6 +118,8 @@ import type {
 	DeleteSiteV1Error,
 	DeleteThresholdV1Data,
 	DeleteThresholdV1Error,
+	GetActiveAlertsV1Data,
+	GetActiveAlertsV1Response,
 	GetAdminByIdV1Data,
 	GetAdminByIdV1Error,
 	GetAdminByIdV1Response,
@@ -196,9 +198,6 @@ import type {
 	LoginV1Data,
 	LoginV1Error,
 	LoginV1Response,
-	RefreshV1Data,
-	RefreshV1Error,
-	RefreshV1Response,
 	RemoveRolePermissionsV1Data,
 	RemoveUserRolesV1Data,
 	ReplaceRolePermissionsV1Data,
@@ -404,6 +403,28 @@ export const getAllAlertsV1Options = (options?: Options<GetAllAlertsV1Data>) =>
 		queryKey: getAllAlertsV1QueryKey(options),
 	});
 
+export const getActiveAlertsV1QueryKey = (options?: Options<GetActiveAlertsV1Data>) =>
+	createQueryKey("getActiveAlertsV1", options);
+
+export const getActiveAlertsV1Options = (options?: Options<GetActiveAlertsV1Data>) =>
+	queryOptions<
+		GetActiveAlertsV1Response,
+		AxiosError<DefaultError>,
+		GetActiveAlertsV1Response,
+		ReturnType<typeof getActiveAlertsV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getActiveAlertsV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getActiveAlertsV1QueryKey(options),
+	});
+
 export const getAlertByIdV1QueryKey = (options: Options<GetAlertByIdV1Data>) =>
 	createQueryKey("getAlertByIdV1", options);
 
@@ -484,26 +505,6 @@ export const loginV1Mutation = (
 	> = {
 		mutationFn: async (fnOptions) => {
 			const { data } = await loginV1({
-				...options,
-				...fnOptions,
-				throwOnError: true,
-			});
-			return data;
-		},
-	};
-	return mutationOptions;
-};
-
-export const refreshV1Mutation = (
-	options?: Partial<Options<RefreshV1Data>>,
-): UseMutationOptions<RefreshV1Response, AxiosError<RefreshV1Error>, Options<RefreshV1Data>> => {
-	const mutationOptions: UseMutationOptions<
-		RefreshV1Response,
-		AxiosError<RefreshV1Error>,
-		Options<RefreshV1Data>
-	> = {
-		mutationFn: async (fnOptions) => {
-			const { data } = await refreshV1({
 				...options,
 				...fnOptions,
 				throwOnError: true,

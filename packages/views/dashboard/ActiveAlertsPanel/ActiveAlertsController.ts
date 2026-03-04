@@ -1,6 +1,6 @@
 import type { IDataTableController, StandardQuery } from "~@/data-table";
 import { makeAutoObservable } from "~@/mobx";
-import { activeAlertsPanelViewModel } from "~@/view-model";
+import { activeAlertsPanelViewModel, dashboardAlertsViewModel } from "~@/view-model";
 
 import type { Alert } from "../../alerts/types";
 
@@ -29,15 +29,15 @@ export class ActiveAlertsController implements IDataTableController<AlertItem> {
 	}
 
 	get isLoading(): boolean {
-		return false;
+		return dashboardAlertsViewModel.isLoading;
 	}
 
 	get isFetching(): boolean {
-		return false;
+		return dashboardAlertsViewModel.isFetching;
 	}
 
 	get isError(): boolean {
-		return false;
+		return dashboardAlertsViewModel.hasError;
 	}
 
 	get error(): null {

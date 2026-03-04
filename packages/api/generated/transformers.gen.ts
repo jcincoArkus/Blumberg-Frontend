@@ -9,6 +9,7 @@ import type {
 	CreateSensorV1Response,
 	CreateSiteV1Response,
 	CreateThresholdV1Response,
+	GetActiveAlertsV1Response,
 	GetAdminByIdV1Response,
 	GetAlertByIdV1Response,
 	GetAllAdminsV1Response,
@@ -30,7 +31,6 @@ import type {
 	GetThresholdByIdV1Response,
 	ListIngestionApiKeysV1Response,
 	LoginV1Response,
-	RefreshV1Response,
 	ResolveAlertV1Response,
 	UpdateAdminV1Response,
 	UpdateEquipmentV1Response,
@@ -122,6 +122,20 @@ export const getAllAlertsV1ResponseTransformer = async (
 	return data;
 };
 
+const activeAlertResponseSchemaResponseTransformer = (data: any) => {
+	if (data.triggeredAt) {
+		data.triggeredAt = new Date(data.triggeredAt);
+	}
+	return data;
+};
+
+export const getActiveAlertsV1ResponseTransformer = async (
+	data: any,
+): Promise<GetActiveAlertsV1Response> => {
+	data = data.map((item: any) => activeAlertResponseSchemaResponseTransformer(item));
+	return data;
+};
+
 export const getAlertByIdV1ResponseTransformer = async (
 	data: any,
 ): Promise<GetAlertByIdV1Response> => {
@@ -151,11 +165,6 @@ const authResponseSchemaResponseTransformer = (data: any) => {
 };
 
 export const loginV1ResponseTransformer = async (data: any): Promise<LoginV1Response> => {
-	data = authResponseSchemaResponseTransformer(data);
-	return data;
-};
-
-export const refreshV1ResponseTransformer = async (data: any): Promise<RefreshV1Response> => {
 	data = authResponseSchemaResponseTransformer(data);
 	return data;
 };
