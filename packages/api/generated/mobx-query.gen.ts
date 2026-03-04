@@ -3,6 +3,7 @@
 import { ObservedQuery, type QueryOptions } from "~@/mobx";
 
 import {
+	getActiveAlertsV1Options,
 	getAdminByIdV1Options,
 	getAlertByIdV1Options,
 	getAllAdminsV1Options,
@@ -34,6 +35,7 @@ import {
 	listIngestionApiKeysV1Options,
 } from "./@tanstack/react-query.gen";
 import type {
+	GetActiveAlertsV1Data,
 	GetAdminByIdV1Data,
 	GetAlertByIdV1Data,
 	GetAllAdminsV1Data,
@@ -79,6 +81,11 @@ export const getAllAlertsV1ObservedQuery = (
 	defaultValues?: Partial<GetAllAlertsV1Data>,
 	observerOptions?: QueryOptions<typeof getAllAlertsV1Options>,
 ) => new ObservedQuery(getAllAlertsV1Options, defaultValues, observerOptions);
+
+export const getActiveAlertsV1ObservedQuery = (
+	defaultValues?: Partial<GetActiveAlertsV1Data>,
+	observerOptions?: QueryOptions<typeof getActiveAlertsV1Options>,
+) => new ObservedQuery(getActiveAlertsV1Options, defaultValues, observerOptions);
 
 export const getAlertByIdV1ObservedQuery = (
 	defaultValues?: Partial<GetAlertByIdV1Data>,

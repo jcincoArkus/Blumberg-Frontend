@@ -8,6 +8,17 @@ export type ActionsResponse = {
 	actions: Array<string> | null;
 };
 
+export type ActiveAlertResponse = {
+	id?: string;
+	severity?: string | null;
+	status?: string | null;
+	sensorSerial?: string | null;
+	sensorTypeName?: string | null;
+	equipmentName?: string | null;
+	triggeredAt?: Date;
+	durationSeconds?: number;
+};
+
 export type AdminRequest = {
 	email: string;
 	password: string;
@@ -98,7 +109,6 @@ export type AssignRolesToUserRequest = {
 
 export type AuthResponse = {
 	token?: string | null;
-	refreshToken?: string | null;
 	email?: string | null;
 	firstName?: string | null;
 	lastName?: string | null;
@@ -264,10 +274,6 @@ export type ProblemDetails = {
 		| string
 		| null
 		| undefined;
-};
-
-export type RefreshRequest = {
-	refreshToken?: string | null;
 };
 
 export type RejectedReadingResult = {
@@ -774,6 +780,23 @@ export type GetAllAlertsV1Responses = {
 
 export type GetAllAlertsV1Response = GetAllAlertsV1Responses[keyof GetAllAlertsV1Responses];
 
+export type GetActiveAlertsV1Data = {
+	body?: never;
+	path?: never;
+	query?: never;
+	url: "/api/v1/alerts/active";
+};
+
+export type GetActiveAlertsV1Responses = {
+	/**
+	 * OK
+	 */
+	200: Array<ActiveAlertResponse>;
+};
+
+export type GetActiveAlertsV1Response =
+	GetActiveAlertsV1Responses[keyof GetActiveAlertsV1Responses];
+
 export type GetAlertByIdV1Data = {
 	body?: never;
 	path: {
@@ -888,31 +911,6 @@ export type LoginV1Responses = {
 };
 
 export type LoginV1Response = LoginV1Responses[keyof LoginV1Responses];
-
-export type RefreshV1Data = {
-	body?: RefreshRequest;
-	path?: never;
-	query?: never;
-	url: "/api/v1/auth/refresh";
-};
-
-export type RefreshV1Errors = {
-	/**
-	 * Unauthorized
-	 */
-	401: ProblemDetails;
-};
-
-export type RefreshV1Error = RefreshV1Errors[keyof RefreshV1Errors];
-
-export type RefreshV1Responses = {
-	/**
-	 * OK
-	 */
-	200: AuthResponse;
-};
-
-export type RefreshV1Response = RefreshV1Responses[keyof RefreshV1Responses];
 
 export type GetAllEquipmentV1Data = {
 	body?: never;
