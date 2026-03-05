@@ -3,15 +3,18 @@ import { getActiveAlertsV1ObservedQuery } from "~@/api";
 import { makeAutoObservable } from "~@/mobx";
 import type { Alert, Domain } from "~@/views";
 
+import { ALERTS_POLL_INTERVAL_MS } from "../constants";
 import type { Disposable } from "../types";
 import { mapActiveAlertResponseToAlert } from "./mapActiveAlertResponseToAlert";
 
 /**
  * Singleton ViewModel for Dashboard Alerts data.
- * Uses getActiveAlertsV1ObservedQuery with 30s polling.
+ * Auto-refreshes via refetchInterval (polling) so new alerts appear without reload.
  */
 class DashboardAlertsViewModel implements Disposable {
-	#alertsQuery = getActiveAlertsV1ObservedQuery();
+	#alertsQuery = getActiveAlertsV1ObservedQuery(undefined, {
+		refetchInterval: ALERTS_POLL_INTERVAL_MS,
+	});
 
 	// Observable state for domain filtering
 	activeDomain: Domain = "All";
