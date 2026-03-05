@@ -74,6 +74,25 @@ await detailsQuery.loadAsync({
 const details = detailsQuery.data?.data ?? [];
 ```
 
+## ObservedQuery - Auto-refresh (polling)
+
+**For lists that should update without user action**, pass **observer options** as the second argument. The generated functions have the signature `getXxxV1ObservedQuery(defaultValues?, observerOptions?)`. Use **`refetchInterval`** (milliseconds)—TanStack Query’s documented way to poll—so the query refetches in the background.
+
+**Reference:** [TanStack Query — useQuery: refetchInterval](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery#refetchinterval): *"If set to a number, [the query] will continuously refetch at this frequency in milliseconds."* Optional: `refetchIntervalInBackground: true` keeps polling when the tab is in the background.
+
+```typescript
+import { getActiveAlertsV1ObservedQuery } from "~@/api";
+
+// Poll every 30 seconds so new data appears without reload
+const ALERTS_POLL_INTERVAL_MS = 30_000;
+const query = getActiveAlertsV1ObservedQuery(undefined, {
+  refetchInterval: ALERTS_POLL_INTERVAL_MS,
+});
+query.load();
+```
+
+Use a shared constant (e.g. in `packages/view-model/constants.ts`) when the same interval is used in multiple ViewModels. Other TanStack Query options (e.g. `staleTime`) can be passed in `observerOptions` when needed.
+
 ## ObservedMutation - Basic Usage
 
 **For POST/PUT/DELETE operations (mutations).**
@@ -189,6 +208,7 @@ class ObservedMutation<T, V> {
 - **Use loadAsync for awaiting** - Use `loadAsync()` when you need to await the result
 - **Access nested data** - Response is often nested: `query.data?.data`
 - **Check for null** - Always use `?.` or `??` operators when accessing data
+- **Auto-refresh when needed** - Use TanStack Query’s documented polling: pass `observerOptions` as the second argument with `refetchInterval` (ms); see [useQuery refetchInterval](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery#refetchinterval); use a shared constant for the interval
 
 ❌ **DON'T:**
 - **Don't use ObservedQuery for mutations** - Use ObservedMutation instead
