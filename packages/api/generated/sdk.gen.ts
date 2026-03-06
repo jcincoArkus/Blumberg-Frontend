@@ -33,6 +33,7 @@ import {
 	getThresholdByIdV1ResponseTransformer,
 	listIngestionApiKeysV1ResponseTransformer,
 	loginV1ResponseTransformer,
+	refreshV1ResponseTransformer,
 	resolveAlertV1ResponseTransformer,
 	updateAdminV1ResponseTransformer,
 	updateEquipmentV1ResponseTransformer,
@@ -177,6 +178,9 @@ import type {
 	LoginV1Data,
 	LoginV1Errors,
 	LoginV1Responses,
+	RefreshV1Data,
+	RefreshV1Errors,
+	RefreshV1Responses,
 	RemoveRolePermissionsV1Data,
 	RemoveRolePermissionsV1Responses,
 	RemoveUserRolesV1Data,
@@ -265,6 +269,7 @@ import {
 	zIngestReadingsV1Data,
 	zListIngestionApiKeysV1Data,
 	zLoginV1Data,
+	zRefreshV1Data,
 	zRemoveRolePermissionsV1Data,
 	zRemoveUserRolesV1Data,
 	zReplaceRolePermissionsV1Data,
@@ -435,6 +440,21 @@ export const loginV1 = <ThrowOnError extends boolean = false>(
 		responseTransformer: loginV1ResponseTransformer,
 		responseType: "json",
 		url: "/api/v1/auth/login",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const refreshV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<RefreshV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<RefreshV1Responses, RefreshV1Errors, ThrowOnError>({
+		requestValidator: async (data) => await zRefreshV1Data.parseAsync(data),
+		responseTransformer: refreshV1ResponseTransformer,
+		responseType: "json",
+		url: "/api/v1/auth/refresh",
 		...options,
 		headers: {
 			"Content-Type": "application/json",

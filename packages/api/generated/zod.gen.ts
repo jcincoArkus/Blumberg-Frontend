@@ -162,6 +162,7 @@ export const zAssignRolesToUserRequest = z.object({
 
 export const zAuthResponse = z.object({
 	token: z.optional(z.union([z.string(), z.null()])),
+	refreshToken: z.optional(z.union([z.string(), z.null()])),
 	email: z.optional(z.union([z.string(), z.null()])),
 	firstName: z.optional(z.union([z.string(), z.null()])),
 	lastName: z.optional(z.union([z.string(), z.null()])),
@@ -383,6 +384,10 @@ export const zProblemDetails = z.object({
 	),
 	detail: z.optional(z.union([z.string(), z.null()])),
 	instance: z.optional(z.union([z.string(), z.null()])),
+});
+
+export const zRefreshRequest = z.object({
+	refreshToken: z.optional(z.union([z.string(), z.null()])),
 });
 
 export const zRejectedReadingResult = z.object({
@@ -1201,6 +1206,12 @@ export const zResolveAlertV1Data = z.object({
 
 export const zLoginV1Data = z.object({
 	body: z.optional(zLoginRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zRefreshV1Data = z.object({
+	body: z.optional(zRefreshRequest),
 	path: z.optional(z.never()),
 	query: z.optional(z.never()),
 });
