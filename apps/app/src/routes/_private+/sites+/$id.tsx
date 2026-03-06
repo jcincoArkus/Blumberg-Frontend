@@ -1,19 +1,26 @@
-import { ArrowLeft, Building2, MapPin, Pencil } from "lucide-react";
+import { ArrowLeft, Building2, MapPin, Pencil, ShieldAlert } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
 import { Link, Outlet, useLocation, useNavigate, useParams } from "react-router";
 
 import { DataTable } from "~@/data-table";
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Button, Card, CardContent, CardHeader, EmptyState } from "~@/ui";
-import { useSitesViewModel } from "~@/view-model";
-import { EquipmentDataTableController, getEquipmentColumns } from "~@/views";
+import { Button, Card, CardContent, CardHeader, EmptyState, StatusBadge } from "~@/ui";
+import { SiteDetailAlertsViewModel, useSitesViewModel } from "~@/view-model";
+import { EquipmentAlertsPanel, EquipmentDataTableController, getEquipmentColumns } from "~@/views";
 
 export default observer(function SiteDetailPage() {
 	const { id: siteId } = useParams();
 	const location = useLocation();
 	const navigate = useNavigate();
 	const vm = useSitesViewModel();
+
+	const alertsVm = useMemo(() => new SiteDetailAlertsViewModel(), []);
+
+	useEffect(() => {
+		if (siteId) alertsVm.loadForSite(siteId);
+		return () => alertsVm.dispose();
+	}, [siteId, alertsVm]);
 
 	const equipmentController = useMemo(
 		() => new EquipmentDataTableController(siteId ?? null),
@@ -26,8 +33,8 @@ export default observer(function SiteDetailPage() {
 				siteId: siteId ?? null,
 				onDelete: async (eq) => {
 					if (!eq.id) return;
+					// eslint-disable-next-line no-alert
 					if (window.confirm(t`Delete "${eq.name ?? ""}"?`)) {
-						// eslint-disable-line no-alert
 						await equipmentController.deleteEquipment(eq.id);
 					}
 				},
@@ -115,6 +122,17 @@ export default observer(function SiteDetailPage() {
 					<div>
 						<div className="flex items-center gap-3">
 							<h1 className="text-2xl font-bold text-foreground">{site.name ?? t`Unnamed Site`}</h1>
+							{!alertsVm.isLoading && (
+								<StatusBadge
+									status={
+										alertsVm.siteHealth === "healthy"
+											? "operational"
+											: alertsVm.siteHealth === "degraded"
+												? "warning"
+												: "critical"
+									}
+								/>
+							)}
 							<Button variant="outline" size="sm" asChild>
 								<Link to={`/sites/${site.id}/edit`}>
 									<Pencil className="size-4 mr-1" />
@@ -155,6 +173,50 @@ export default observer(function SiteDetailPage() {
 					</CardContent>
 				</Card>
 			</div>
+
+			<div className="grid grid-cols-3 gap-4">
+				{(
+					[
+						{
+							key: "high",
+							label: t`High`,
+							color: "text-red-600",
+							bg: "bg-red-50 border-red-200",
+						},
+						{
+							key: "medium",
+							label: t`Medium`,
+							color: "text-amber-600",
+							bg: "bg-amber-50 border-amber-200",
+						},
+						{
+							key: "low",
+							label: t`Low`,
+							color: "text-slate-600",
+							bg: "bg-slate-50 border-slate-200",
+						},
+					] as const
+				).map(({ key, label, color, bg }) => (
+					<Card key={key} className={bg}>
+						<CardContent className="p-4 flex items-center gap-3">
+							<ShieldAlert className={`size-5 ${color}`} />
+							<div>
+								<p className="text-sm text-muted-foreground">{label}</p>
+								<p className={`text-2xl font-bold ${color}`}>
+									{alertsVm.alertCountBySeverity[key]}
+								</p>
+							</div>
+						</CardContent>
+					</Card>
+				))}
+			</div>
+
+			{(alertsVm.activeAlerts.length > 0 || alertsVm.recentAlerts.length > 0) && (
+				<EquipmentAlertsPanel
+					activeAlerts={alertsVm.activeAlerts}
+					recentAlerts={alertsVm.recentAlerts}
+				/>
+			)}
 
 			<Card>
 				<CardHeader className="pb-2">
