@@ -11,7 +11,6 @@ import {
 } from "~@/mock-data";
 import { Button } from "~@/ui";
 import {
-	DashboardShell,
 	EquipmentAlertsPanel,
 	EquipmentOverviewHeader,
 	type EquipmentSensor,
@@ -88,48 +87,46 @@ export default function EquipmentOverviewPage() {
 	const recentAlerts = alerts.slice(0, 10);
 
 	return (
-		<DashboardShell>
-			<div className="space-y-6">
-				{/* Header with Back Button */}
-				<div className="flex items-center gap-3">
-					<Button variant="ghost" size="sm" asChild className="h-8 px-2">
-						<Link to={`/equipment/${id}`}>
-							<ArrowLeft className="size-4 mr-1" aria-hidden="true" />
-							{t`Back to Equipment Details`}
-						</Link>
-					</Button>
-				</div>
-
-				{/* Equipment Identification + Status */}
-				<EquipmentOverviewHeader
-					equipmentName={equipment.name}
-					equipmentId={equipment.id}
-					equipmentType={equipment.type}
-					lastUpdate={equipment.lastUpdate}
-					siteName={site?.name}
-					siteLocation={site?.location}
-					status={getOverviewStatus(equipment.status)}
-				/>
-
-				{/* Current Sensor Readings */}
-				<SensorReadingsGrid sensors={equipmentSensors} />
-
-				{/* Main Content Grid */}
-				<div className="grid gap-6 lg:grid-cols-3">
-					{/* Historical Charts - Takes 2 columns */}
-					<div className="lg:col-span-2">
-						<HistoricalCharts equipmentId={equipment.id} sensors={equipmentSensors} />
-					</div>
-
-					{/* Alerts Panel - Takes 1 column */}
-					<div className="lg:col-span-1">
-						<EquipmentAlertsPanel activeAlerts={activeAlerts} recentAlerts={recentAlerts} />
-					</div>
-				</div>
-
-				{/* Limits Comparison Panel */}
-				<LimitsComparisonPanel sensors={equipmentSensors} />
+		<div className="space-y-6">
+			{/* Header with Back Button */}
+			<div className="flex items-center gap-3">
+				<Button variant="ghost" size="sm" asChild className="h-8 px-2">
+					<Link to={`/equipment/${id}`}>
+						<ArrowLeft className="size-4 mr-1" aria-hidden="true" />
+						{t`Back to Equipment Details`}
+					</Link>
+				</Button>
 			</div>
-		</DashboardShell>
+
+			{/* Equipment Identification + Status */}
+			<EquipmentOverviewHeader
+				equipmentName={equipment.name}
+				equipmentId={equipment.id}
+				equipmentType={equipment.type}
+				lastUpdate={equipment.lastUpdate}
+				siteName={site?.name}
+				siteLocation={site?.location}
+				status={getOverviewStatus(equipment.status)}
+			/>
+
+			{/* Current Sensor Readings */}
+			<SensorReadingsGrid sensors={equipmentSensors} />
+
+			{/* Main Content Grid */}
+			<div className="grid gap-6 lg:grid-cols-3">
+				{/* Historical Charts - Takes 2 columns */}
+				<div className="lg:col-span-2">
+					<HistoricalCharts equipmentId={equipment.id} sensors={equipmentSensors} />
+				</div>
+
+				{/* Alerts Panel - Takes 1 column */}
+				<div className="lg:col-span-1">
+					<EquipmentAlertsPanel activeAlerts={activeAlerts} recentAlerts={recentAlerts} />
+				</div>
+			</div>
+
+			{/* Limits Comparison Panel */}
+			<LimitsComparisonPanel sensors={equipmentSensors} />
+		</div>
 	);
 }
