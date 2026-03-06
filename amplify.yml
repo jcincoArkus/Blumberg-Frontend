@@ -1,0 +1,23 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        # Install Bun in the Amplify build container
+        - curl -fsSL https://bun.sh/install | bash
+        - export BUN_INSTALL="$HOME/.bun"
+        - export PATH="$BUN_INSTALL/bin:$PATH"
+        # Install dependencies with Bun
+        - bun install
+    build:
+      commands:
+        - export BUN_INSTALL="$HOME/.bun"
+        - export PATH="$BUN_INSTALL/bin:$PATH"
+        - bun run app:build
+  artifacts:
+    baseDirectory: apps/app/dist/client
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*

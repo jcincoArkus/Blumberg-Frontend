@@ -15,25 +15,8 @@ export const ActiveAlertListItem: FC<ActiveAlertListItemProps> = ({ data, zone }
 	const SensorIcon = getSensorIcon(data.name);
 	const durationAgo = formatDurationAgo(data.createdAt);
 	const style = getSeverityStyle(data.severity);
-	const sensorType =
-		data.name
-			.split(" ")
-			.find((word) =>
-				[
-					"CO₂",
-					"Temp",
-					"Temperature",
-					"Humidity",
-					"Pressure",
-					"Energy",
-					"AQI",
-					"Climate",
-					"Air",
-					"Maintenance",
-				].includes(word),
-			) ||
-		data.name.split(" ")[0] ||
-		t`System`;
+	const sensorType = data.name || t`System`;
+	const equipmentName = data.description || zone;
 
 	return (
 		<div
@@ -63,14 +46,21 @@ export const ActiveAlertListItem: FC<ActiveAlertListItemProps> = ({ data, zone }
 					>
 						{data.severity.toUpperCase()}
 					</Badge>
-					<span className={cn("text-xs font-bold truncate", getTextColor(data.severity))}>
-						{sensorType}
-					</span>
+					<div className="flex flex-col min-w-0">
+						<span className={cn("text-xs font-bold truncate", getTextColor(data.severity))}>
+							{sensorType}
+						</span>
+						{equipmentName && (
+							<span className="text-[11px] text-muted-foreground truncate">
+								{equipmentName}
+								{data.sensorId ? ` · ${data.sensorId}` : ""}
+							</span>
+						)}
+					</div>
 				</div>
-				<div className="flex flex-col items-end min-w-0 shrink-0">
-					<span className="text-[11px] text-muted-foreground truncate max-w-[120px]">{zone}</span>
-					<span className="text-[11px] text-muted-foreground whitespace-nowrap">{durationAgo}</span>
-				</div>
+				<span className="text-[11px] text-muted-foreground whitespace-nowrap shrink-0">
+					{durationAgo}
+				</span>
 			</div>
 		</div>
 	);

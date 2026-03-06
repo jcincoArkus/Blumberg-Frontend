@@ -11,6 +11,7 @@ import {
 	createSensorV1ResponseTransformer,
 	createSiteV1ResponseTransformer,
 	createThresholdV1ResponseTransformer,
+	getActiveAlertsV1ResponseTransformer,
 	getAdminByIdV1ResponseTransformer,
 	getAlertByIdV1ResponseTransformer,
 	getAllAdminsV1ResponseTransformer,
@@ -96,6 +97,8 @@ import type {
 	DeleteThresholdV1Data,
 	DeleteThresholdV1Errors,
 	DeleteThresholdV1Responses,
+	GetActiveAlertsV1Data,
+	GetActiveAlertsV1Responses,
 	GetAdminByIdV1Data,
 	GetAdminByIdV1Errors,
 	GetAdminByIdV1Responses,
@@ -234,6 +237,7 @@ import {
 	zDeleteSensorV1Data,
 	zDeleteSiteV1Data,
 	zDeleteThresholdV1Data,
+	zGetActiveAlertsV1Data,
 	zGetAdminByIdV1Data,
 	zGetAlertByIdV1Data,
 	zGetAllAdminsV1Data,
@@ -373,6 +377,18 @@ export const getAllAlertsV1 = <ThrowOnError extends boolean = false>(
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/v1/alerts",
+		...options,
+	});
+
+export const getActiveAlertsV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetActiveAlertsV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<GetActiveAlertsV1Responses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetActiveAlertsV1Data.parseAsync(data),
+		responseTransformer: getActiveAlertsV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/alerts/active",
 		...options,
 	});
 

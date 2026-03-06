@@ -6,6 +6,17 @@ export const zActionsResponse = z.object({
 	actions: z.union([z.array(z.string()), z.null()]),
 });
 
+export const zActiveAlertResponse = z.object({
+	id: z.optional(z.uuid()),
+	severity: z.optional(z.union([z.string(), z.null()])),
+	status: z.optional(z.union([z.string(), z.null()])),
+	sensorSerial: z.optional(z.union([z.string(), z.null()])),
+	sensorTypeName: z.optional(z.union([z.string(), z.null()])),
+	equipmentName: z.optional(z.union([z.string(), z.null()])),
+	triggeredAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	durationSeconds: z.optional(z.number()),
+});
+
 export const zAdminRequest = z.object({
 	email: z.email().min(0).max(255),
 	password: z.string().min(8).max(128),
@@ -1161,6 +1172,12 @@ export const zGetAllAlertsV1Data = z.object({
 			),
 		}),
 	),
+});
+
+export const zGetActiveAlertsV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
 });
 
 export const zGetAlertByIdV1Data = z.object({

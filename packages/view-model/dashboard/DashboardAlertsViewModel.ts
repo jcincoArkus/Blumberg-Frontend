@@ -1,16 +1,20 @@
+import type { ActiveAlertResponse } from "~@/api";
+import { getActiveAlertsV1ObservedQuery } from "~@/api";
 import { makeAutoObservable } from "~@/mobx";
-import { dashboardAlerts } from "~@/mock-data";
 import type { Alert, Domain } from "~@/views";
+
+import { ALERTS_POLL_INTERVAL_MS } from "../constants";
+import type { Disposable } from "../types";
+import { mapActiveAlertResponseToAlert } from "./mapActiveAlertResponseToAlert";
 
 /**
  * Singleton ViewModel for Dashboard Alerts data.
- * Will use hey-api ObservedQuery when endpoints are ready.
- * Currently uses mock data.
+ * Auto-refreshes via refetchInterval (polling) so new alerts appear without reload.
  */
-class DashboardAlertsViewModel {
-	// TODO: Replace with ObservedQuery when hey-api endpoint is ready
-	// alertsQuery = new ObservedQuery(getAlertsQuery, {});
-	private readonly _alerts: Alert[];
+class DashboardAlertsViewModel implements Disposable {
+	#alertsQuery = getActiveAlertsV1ObservedQuery(undefined, {
+		refetchInterval: ALERTS_POLL_INTERVAL_MS,
+	});
 
 	// Observable state for domain filtering
 	activeDomain: Domain = "All";
@@ -18,7 +22,7 @@ class DashboardAlertsViewModel {
 
 	constructor() {
 		makeAutoObservable(this);
-		this._alerts = dashboardAlerts;
+		this.#alertsQuery.load();
 	}
 
 	/**
@@ -33,8 +37,8 @@ class DashboardAlertsViewModel {
 	 * Get all alerts (unfiltered)
 	 */
 	get allAlerts(): Alert[] {
-		// return this.alertsQuery.data ?? [];
-		return this._alerts;
+		const data = this.#alertsQuery.data as ActiveAlertResponse[] | null | undefined;
+		return (data ?? []).map(mapActiveAlertResponseToAlert);
 	}
 
 	/**
@@ -80,21 +84,21 @@ class DashboardAlertsViewModel {
 		return "healthy";
 	}
 
-	/**
-	 * Load alerts from API
-	 * TODO: Uncomment when hey-api endpoint is ready
-	 */
-	// load = () => {
-	// 	this.alertsQuery.load();
-	// };
+	get isLoading(): boolean {
+		return this.#alertsQuery.isLoading;
+	}
 
-	/**
-	 * Dispose of resources
-	 * TODO: Uncomment when hey-api endpoint is ready
-	 */
-	// dispose = () => {
-	// 	this.alertsQuery.dispose();
-	// };
+	get isFetching(): boolean {
+		return this.#alertsQuery.isFetching;
+	}
+
+	get hasError(): boolean {
+		return this.#alertsQuery.hasError;
+	}
+
+	dispose() {
+		this.#alertsQuery.dispose();
+	}
 }
 
 // Export singleton instance

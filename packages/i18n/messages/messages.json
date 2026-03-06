@@ -15,10 +15,6 @@
 		"en-US": "{0} Critical",
 		"es-LA": ""
 	},
-	"{0} equipment": {
-		"en-US": "{0} equipment",
-		"es-LA": ""
-	},
 	"{0} High": {
 		"en-US": "{0} High",
 		"es-LA": ""
@@ -35,10 +31,6 @@
 		"en-US": "{0} Medium",
 		"es-LA": ""
 	},
-	"{0} of {1} site(s)": {
-		"en-US": "{0} of {1} site(s)",
-		"es-LA": ""
-	},
 	"{0} points": {
 		"en-US": "{0} points",
 		"es-LA": ""
@@ -53,14 +45,6 @@
 	},
 	"{0} role(s) selected": {
 		"en-US": "{0} role(s) selected",
-		"es-LA": ""
-	},
-	"{0} sensor(s)": {
-		"en-US": "{0} sensor(s)",
-		"es-LA": ""
-	},
-	"{0} site(s)": {
-		"en-US": "{0} site(s)",
 		"es-LA": ""
 	},
 	"{0} Write": {
@@ -93,6 +77,10 @@
 	},
 	"{ageFormatted} ago": {
 		"en-US": "{ageFormatted} ago",
+		"es-LA": ""
+	},
+	"{count} rejected readings in the last 24 hours.": {
+		"en-US": "{count} rejected readings in the last 24 hours.",
 		"es-LA": ""
 	},
 	"{diffDays} days ago": {
@@ -143,6 +131,10 @@
 		"en-US": "⚠️ Active sensor without data mapping. Add at least one mapping to receive data.",
 		"es-LA": ""
 	},
+	"1 rejected reading in the last 24 hours.": {
+		"en-US": "1 rejected reading in the last 24 hours.",
+		"es-LA": ""
+	},
 	"2 minutes": {
 		"en-US": "2 minutes",
 		"es-LA": ""
@@ -161,6 +153,10 @@
 	},
 	"7d": {
 		"en-US": "7d",
+		"es-LA": ""
+	},
+	"A sensor must be selected": {
+		"en-US": "A sensor must be selected",
 		"es-LA": ""
 	},
 	"Ability to acknowledge or resolve alerts": {
@@ -189,6 +185,10 @@
 	},
 	"Above maximum ({0}{1})": {
 		"en-US": "Above maximum ({0}{1})",
+		"es-LA": ""
+	},
+	"above target": {
+		"en-US": "above target",
 		"es-LA": ""
 	},
 	"Above warning threshold ({warningThreshold}{0})": {
@@ -263,16 +263,8 @@
 		"en-US": "Active Alerts",
 		"es-LA": ""
 	},
-	"Active Alerts ({0})": {
-		"en-US": "Active Alerts ({0})",
-		"es-LA": ""
-	},
 	"Active and recent alerts for this equipment": {
 		"en-US": "Active and recent alerts for this equipment",
-		"es-LA": ""
-	},
-	"Active Sensors": {
-		"en-US": "Active Sensors",
 		"es-LA": ""
 	},
 	"Active sensors should have at least one mapping. Add a mapping to receive data.": {
@@ -295,68 +287,24 @@
 		"en-US": "Actual",
 		"es-LA": ""
 	},
-	"Add a new facility location.": {
-		"en-US": "Add a new facility location.",
-		"es-LA": ""
-	},
-	"Add a new site to the system": {
-		"en-US": "Add a new site to the system",
-		"es-LA": ""
-	},
 	"Add a new user to the system": {
 		"en-US": "Add a new user to the system",
-		"es-LA": ""
-	},
-	"Add a sensor to get started": {
-		"en-US": "Add a sensor to get started",
 		"es-LA": ""
 	},
 	"Add a sensor to get started.": {
 		"en-US": "Add a sensor to get started.",
 		"es-LA": ""
 	},
-	"Add a sensor to this equipment": {
-		"en-US": "Add a sensor to this equipment",
-		"es-LA": ""
-	},
-	"Add a sensor to this equipment to start collecting data.": {
-		"en-US": "Add a sensor to this equipment to start collecting data.",
-		"es-LA": ""
-	},
-	"Add a sensor to this equipment.": {
-		"en-US": "Add a sensor to this equipment.",
-		"es-LA": ""
-	},
 	"Add Equipment": {
 		"en-US": "Add Equipment",
-		"es-LA": ""
-	},
-	"Add equipment from a site detail page to get started.": {
-		"en-US": "Add equipment from a site detail page to get started.",
-		"es-LA": ""
-	},
-	"Add equipment from a site to get started": {
-		"en-US": "Add equipment from a site to get started",
 		"es-LA": ""
 	},
 	"Add equipment to a site to get started.": {
 		"en-US": "Add equipment to a site to get started.",
 		"es-LA": ""
 	},
-	"Add equipment to get started": {
-		"en-US": "Add equipment to get started",
-		"es-LA": ""
-	},
 	"Add equipment to get started.": {
 		"en-US": "Add equipment to get started.",
-		"es-LA": ""
-	},
-	"Add equipment to this site": {
-		"en-US": "Add equipment to this site",
-		"es-LA": ""
-	},
-	"Add equipment to this site.": {
-		"en-US": "Add equipment to this site.",
 		"es-LA": ""
 	},
 	"Add Mapping": {
@@ -387,16 +335,16 @@
 		"en-US": "Add Site",
 		"es-LA": ""
 	},
-	"Add your first site to get started.": {
-		"en-US": "Add your first site to get started.",
-		"es-LA": ""
-	},
 	"Address": {
 		"en-US": "Address",
 		"es-LA": ""
 	},
 	"Address is required": {
 		"en-US": "Address is required",
+		"es-LA": ""
+	},
+	"admin": {
+		"en-US": "admin",
 		"es-LA": ""
 	},
 	"Admin": {
@@ -433,6 +381,10 @@
 	},
 	"Alert Title": {
 		"en-US": "Alert Title",
+		"es-LA": ""
+	},
+	"alert when readings are outside": {
+		"en-US": "alert when readings are outside",
 		"es-LA": ""
 	},
 	"Alerting Configuration": {
@@ -511,10 +463,6 @@
 		"en-US": "All Status",
 		"es-LA": ""
 	},
-	"All statuses": {
-		"en-US": "All statuses",
-		"es-LA": ""
-	},
 	"All systems operating normally": {
 		"en-US": "All systems operating normally",
 		"es-LA": ""
@@ -539,12 +487,12 @@
 		"en-US": "Annual refrigerant check and top-up",
 		"es-LA": ""
 	},
-	"API Endpoint Summary": {
-		"en-US": "API Endpoint Summary",
+	"API": {
+		"en-US": "API",
 		"es-LA": ""
 	},
-	"API Error": {
-		"en-US": "API Error",
+	"API Endpoint Summary": {
+		"en-US": "API Endpoint Summary",
 		"es-LA": ""
 	},
 	"API Ingestion": {
@@ -573,14 +521,6 @@
 	},
 	"Are you sure you want to delete this alert rule? This action cannot be undone.": {
 		"en-US": "Are you sure you want to delete this alert rule? This action cannot be undone.",
-		"es-LA": ""
-	},
-	"Are you sure you want to delete this sensor?": {
-		"en-US": "Are you sure you want to delete this sensor?",
-		"es-LA": ""
-	},
-	"Are you sure you want to delete this site?": {
-		"en-US": "Are you sure you want to delete this site?",
 		"es-LA": ""
 	},
 	"At least one equipment must be selected": {
@@ -655,10 +595,6 @@
 		"en-US": "Back to Sensors",
 		"es-LA": ""
 	},
-	"Back to site": {
-		"en-US": "Back to site",
-		"es-LA": ""
-	},
 	"Back to Site": {
 		"en-US": "Back to Site",
 		"es-LA": ""
@@ -667,20 +603,12 @@
 		"en-US": "Back to Sites",
 		"es-LA": ""
 	},
-	"Back to sites list": {
-		"en-US": "Back to sites list",
-		"es-LA": ""
-	},
 	"Based on recent patterns": {
 		"en-US": "Based on recent patterns",
 		"es-LA": ""
 	},
 	"Basic Information": {
 		"en-US": "Basic Information",
-		"es-LA": ""
-	},
-	"Battery": {
-		"en-US": "Battery",
 		"es-LA": ""
 	},
 	"below {0} {1}": {
@@ -693,10 +621,6 @@
 	},
 	"Belt Drive": {
 		"en-US": "Belt Drive",
-		"es-LA": ""
-	},
-	"Beyond {0} minutes": {
-		"en-US": "Beyond {0} minutes",
 		"es-LA": ""
 	},
 	"Blumberg Supply Chain": {
@@ -737,10 +661,6 @@
 	},
 	"City is required": {
 		"en-US": "City is required",
-		"es-LA": ""
-	},
-	"City, State or Address": {
-		"en-US": "City, State or Address",
 		"es-LA": ""
 	},
 	"Classification Logic": {
@@ -931,8 +851,16 @@
 		"en-US": "Create Sensor",
 		"es-LA": ""
 	},
+	"Create Sensor Threshold": {
+		"en-US": "Create Sensor Threshold",
+		"es-LA": ""
+	},
 	"Create Site": {
 		"en-US": "Create Site",
+		"es-LA": ""
+	},
+	"Create Threshold": {
+		"en-US": "Create Threshold",
 		"es-LA": ""
 	},
 	"Create User": {
@@ -943,16 +871,8 @@
 		"en-US": "Create your first alert rule to start monitoring your sensors.",
 		"es-LA": ""
 	},
-	"Create your first site to get started": {
-		"en-US": "Create your first site to get started",
-		"es-LA": ""
-	},
 	"Create your first site to get started.": {
 		"en-US": "Create your first site to get started.",
-		"es-LA": ""
-	},
-	"Create your first site to start managing locations and equipment.": {
-		"en-US": "Create your first site to start managing locations and equipment.",
 		"es-LA": ""
 	},
 	"Create your first user to get started": {
@@ -971,8 +891,12 @@
 		"en-US": "Critical",
 		"es-LA": ""
 	},
-	"CSV Error": {
-		"en-US": "CSV Error",
+	"Critical:": {
+		"en-US": "Critical:",
+		"es-LA": ""
+	},
+	"CSV": {
+		"en-US": "CSV",
 		"es-LA": ""
 	},
 	"CSV Template": {
@@ -997,6 +921,10 @@
 	},
 	"Current Sensor Readings": {
 		"en-US": "Current Sensor Readings",
+		"es-LA": ""
+	},
+	"Current Threshold": {
+		"en-US": "Current Threshold",
 		"es-LA": ""
 	},
 	"Current Value": {
@@ -1075,6 +1003,10 @@
 		"en-US": "Deactivated",
 		"es-LA": ""
 	},
+	"Define the normal operating range for a specific sensor.": {
+		"en-US": "Define the normal operating range for a specific sensor.",
+		"es-LA": ""
+	},
 	"Degraded": {
 		"en-US": "Degraded",
 		"es-LA": ""
@@ -1091,10 +1023,6 @@
 		"en-US": "Delete Alert Rule",
 		"es-LA": ""
 	},
-	"Delete equipment?": {
-		"en-US": "Delete equipment?",
-		"es-LA": ""
-	},
 	"Delete role": {
 		"en-US": "Delete role",
 		"es-LA": ""
@@ -1107,28 +1035,8 @@
 		"en-US": "Delete sensor \"{0}\"?",
 		"es-LA": ""
 	},
-	"Delete sensor?": {
-		"en-US": "Delete sensor?",
-		"es-LA": ""
-	},
-	"Delete site": {
-		"en-US": "Delete site",
-		"es-LA": ""
-	},
 	"Delete site \"{0}\"?": {
 		"en-US": "Delete site \"{0}\"?",
-		"es-LA": ""
-	},
-	"Delete site?": {
-		"en-US": "Delete site?",
-		"es-LA": ""
-	},
-	"Deleting...": {
-		"en-US": "Deleting...",
-		"es-LA": ""
-	},
-	"Demo credentials (for testing)": {
-		"en-US": "Demo credentials (for testing)",
 		"es-LA": ""
 	},
 	"Describe what this role is for...": {
@@ -1141,10 +1049,6 @@
 	},
 	"Detailed sensor readings (showing first 100)": {
 		"en-US": "Detailed sensor readings (showing first 100)",
-		"es-LA": ""
-	},
-	"Details": {
-		"en-US": "Details",
 		"es-LA": ""
 	},
 	"Dimensions": {
@@ -1207,32 +1111,8 @@
 		"en-US": "Duration: {0}",
 		"es-LA": ""
 	},
-	"e.g. °C, %": {
-		"en-US": "e.g. °C, %",
-		"es-LA": ""
-	},
-	"e.g. 0": {
-		"en-US": "e.g. 0",
-		"es-LA": ""
-	},
-	"e.g. 100": {
-		"en-US": "e.g. 100",
-		"es-LA": ""
-	},
-	"e.g. HVAC, Chiller": {
-		"en-US": "e.g. HVAC, Chiller",
-		"es-LA": ""
-	},
 	"e.g. HVAC, Pump": {
 		"en-US": "e.g. HVAC, Pump",
-		"es-LA": ""
-	},
-	"e.g. HVAC, Refrigeration": {
-		"en-US": "e.g. HVAC, Refrigeration",
-		"es-LA": ""
-	},
-	"e.g. Refrigeration, Climate Control, Power": {
-		"en-US": "e.g. Refrigeration, Climate Control, Power",
 		"es-LA": ""
 	},
 	"e.g., 15 (optional)": {
@@ -1287,8 +1167,8 @@
 		"en-US": "Edit Sensor",
 		"es-LA": ""
 	},
-	"Edit site": {
-		"en-US": "Edit site",
+	"Edit Sensor Threshold": {
+		"en-US": "Edit Sensor Threshold",
 		"es-LA": ""
 	},
 	"Edit Site": {
@@ -1355,20 +1235,12 @@
 		"en-US": "Equipment",
 		"es-LA": ""
 	},
-	"Equipment at {0}": {
-		"en-US": "Equipment at {0}",
-		"es-LA": ""
-	},
 	"Equipment at this site": {
 		"en-US": "Equipment at this site",
 		"es-LA": ""
 	},
 	"Equipment created successfully": {
 		"en-US": "Equipment created successfully",
-		"es-LA": ""
-	},
-	"Equipment deleted": {
-		"en-US": "Equipment deleted",
 		"es-LA": ""
 	},
 	"Equipment Details": {
@@ -1383,28 +1255,20 @@
 		"en-US": "Equipment is required",
 		"es-LA": ""
 	},
-	"Equipment monitoring tabs": {
-		"en-US": "Equipment monitoring tabs",
+	"Equipment name": {
+		"en-US": "Equipment name",
 		"es-LA": ""
 	},
 	"Equipment Name": {
 		"en-US": "Equipment Name",
 		"es-LA": ""
 	},
-	"Equipment name": {
-		"en-US": "Equipment name",
-		"es-LA": ""
-	},
-	"Equipment Not Found": {
-		"en-US": "Equipment Not Found",
-		"es-LA": ""
-	},
 	"Equipment not found": {
 		"en-US": "Equipment not found",
 		"es-LA": ""
 	},
-	"Equipment not found.": {
-		"en-US": "Equipment not found.",
+	"Equipment Not Found": {
+		"en-US": "Equipment Not Found",
 		"es-LA": ""
 	},
 	"Equipment Overview": {
@@ -1503,38 +1367,6 @@
 		"en-US": "Failed to create threshold",
 		"es-LA": ""
 	},
-	"Failed to delete equipment": {
-		"en-US": "Failed to delete equipment",
-		"es-LA": ""
-	},
-	"Failed to delete sensor": {
-		"en-US": "Failed to delete sensor",
-		"es-LA": ""
-	},
-	"Failed to delete site": {
-		"en-US": "Failed to delete site",
-		"es-LA": ""
-	},
-	"Failed to load equipment": {
-		"en-US": "Failed to load equipment",
-		"es-LA": ""
-	},
-	"Failed to load sensor": {
-		"en-US": "Failed to load sensor",
-		"es-LA": ""
-	},
-	"Failed to load sensors": {
-		"en-US": "Failed to load sensors",
-		"es-LA": ""
-	},
-	"Failed to load site": {
-		"en-US": "Failed to load site",
-		"es-LA": ""
-	},
-	"Failed to load sites": {
-		"en-US": "Failed to load sites",
-		"es-LA": ""
-	},
 	"Failed to update equipment": {
 		"en-US": "Failed to update equipment",
 		"es-LA": ""
@@ -1555,20 +1387,12 @@
 		"en-US": "File Name",
 		"es-LA": ""
 	},
-	"Fill": {
-		"en-US": "Fill",
-		"es-LA": ""
-	},
 	"Filter {0}": {
 		"en-US": "Filter {0}",
 		"es-LA": ""
 	},
 	"Filter by name or email...": {
 		"en-US": "Filter by name or email...",
-		"es-LA": ""
-	},
-	"Filter by status": {
-		"en-US": "Filter by status",
 		"es-LA": ""
 	},
 	"Filter options": {
@@ -1587,12 +1411,20 @@
 		"en-US": "First",
 		"es-LA": ""
 	},
-	"Flapping": {
-		"en-US": "Flapping",
-		"es-LA": ""
-	},
 	"for more than": {
 		"en-US": "for more than",
+		"es-LA": ""
+	},
+	"Fresh + reliability < 70%": {
+		"en-US": "Fresh + reliability < 70%",
+		"es-LA": ""
+	},
+	"Fresh + reliability > 90%": {
+		"en-US": "Fresh + reliability > 90%",
+		"es-LA": ""
+	},
+	"Fresh + reliability 70–90%": {
+		"en-US": "Fresh + reliability 70–90%",
 		"es-LA": ""
 	},
 	"Freshness": {
@@ -1601,10 +1433,6 @@
 	},
 	"Full parts and labor coverage": {
 		"en-US": "Full parts and labor coverage",
-		"es-LA": ""
-	},
-	"Go to Sites": {
-		"en-US": "Go to Sites",
 		"es-LA": ""
 	},
 	"Good": {
@@ -1779,44 +1607,12 @@
 		"en-US": "Invalid email or password",
 		"es-LA": ""
 	},
-	"Invalid email or password. Use one of the demo credentials below.": {
-		"en-US": "Invalid email or password. Use one of the demo credentials below.",
-		"es-LA": ""
-	},
-	"Invalid equipment": {
-		"en-US": "Invalid equipment",
-		"es-LA": ""
-	},
-	"Invalid equipment ID": {
-		"en-US": "Invalid equipment ID",
-		"es-LA": ""
-	},
 	"Invalid JSON payload": {
 		"en-US": "Invalid JSON payload",
 		"es-LA": ""
 	},
-	"Invalid sensor": {
-		"en-US": "Invalid sensor",
-		"es-LA": ""
-	},
-	"Invalid Sensor": {
-		"en-US": "Invalid Sensor",
-		"es-LA": ""
-	},
-	"Invalid sensor ID": {
-		"en-US": "Invalid sensor ID",
-		"es-LA": ""
-	},
-	"Invalid site": {
-		"en-US": "Invalid site",
-		"es-LA": ""
-	},
-	"Invalid Site": {
-		"en-US": "Invalid Site",
-		"es-LA": ""
-	},
-	"Investigate": {
-		"en-US": "Investigate",
+	"Invalid timestamp: {0}": {
+		"en-US": "Invalid timestamp: {0}",
 		"es-LA": ""
 	},
 	"Invite Pending": {
@@ -1829,6 +1625,10 @@
 	},
 	"Issues": {
 		"en-US": "Issues",
+		"es-LA": ""
+	},
+	"John Admin": {
+		"en-US": "John Admin",
 		"es-LA": ""
 	},
 	"John Doe": {
@@ -1887,14 +1687,6 @@
 		"en-US": "Last Seen",
 		"es-LA": ""
 	},
-	"Last Update": {
-		"en-US": "Last Update",
-		"es-LA": ""
-	},
-	"Last update: {0}": {
-		"en-US": "Last update: {0}",
-		"es-LA": ""
-	},
 	"Last updated: {0}": {
 		"en-US": "Last updated: {0}",
 		"es-LA": ""
@@ -1903,8 +1695,8 @@
 		"en-US": "Late / delayed",
 		"es-LA": ""
 	},
-	"Late beyond {0} minutes": {
-		"en-US": "Late beyond {0} minutes",
+	"Late beyond {0} min (2× expected)": {
+		"en-US": "Late beyond {0} min (2× expected)",
 		"es-LA": ""
 	},
 	"Leave empty to use default": {
@@ -1915,36 +1707,40 @@
 		"en-US": "Lifecycle",
 		"es-LA": ""
 	},
-	"Loading equipment...": {
-		"en-US": "Loading equipment...",
+	"Loading alerts…": {
+		"en-US": "Loading alerts…",
+		"es-LA": ""
+	},
+	"Loading diagnostics…": {
+		"en-US": "Loading diagnostics…",
+		"es-LA": ""
+	},
+	"Loading ingestion runs...": {
+		"en-US": "Loading ingestion runs...",
 		"es-LA": ""
 	},
 	"Loading map...": {
 		"en-US": "Loading map...",
 		"es-LA": ""
 	},
-	"Loading sensor...": {
-		"en-US": "Loading sensor...",
+	"Loading runs...": {
+		"en-US": "Loading runs...",
 		"es-LA": ""
 	},
-	"Loading site...": {
-		"en-US": "Loading site...",
-		"es-LA": ""
-	},
-	"Loading sites...": {
-		"en-US": "Loading sites...",
+	"Loading threshold...": {
+		"en-US": "Loading threshold...",
 		"es-LA": ""
 	},
 	"Loading...": {
 		"en-US": "Loading...",
 		"es-LA": ""
 	},
-	"Location": {
-		"en-US": "Location",
+	"Loading…": {
+		"en-US": "Loading…",
 		"es-LA": ""
 	},
-	"Location is required": {
-		"en-US": "Location is required",
+	"Location": {
+		"en-US": "Location",
 		"es-LA": ""
 	},
 	"Locations": {
@@ -1957,6 +1753,10 @@
 	},
 	"Login Methods": {
 		"en-US": "Login Methods",
+		"es-LA": ""
+	},
+	"Logout": {
+		"en-US": "Logout",
 		"es-LA": ""
 	},
 	"Low": {
@@ -2035,6 +1835,10 @@
 		"en-US": "Max value",
 		"es-LA": ""
 	},
+	"Max value is required": {
+		"en-US": "Max value is required",
+		"es-LA": ""
+	},
 	"Max:": {
 		"en-US": "Max:",
 		"es-LA": ""
@@ -2075,6 +1879,10 @@
 		"en-US": "Min value",
 		"es-LA": ""
 	},
+	"Min value is required": {
+		"en-US": "Min value is required",
+		"es-LA": ""
+	},
 	"Min:": {
 		"en-US": "Min:",
 		"es-LA": ""
@@ -2099,20 +1907,8 @@
 		"en-US": "Missing Data Summary",
 		"es-LA": ""
 	},
-	"Missing equipment ID": {
-		"en-US": "Missing equipment ID",
-		"es-LA": ""
-	},
 	"Missing or gaps": {
 		"en-US": "Missing or gaps",
-		"es-LA": ""
-	},
-	"Missing sensor ID": {
-		"en-US": "Missing sensor ID",
-		"es-LA": ""
-	},
-	"Missing site ID": {
-		"en-US": "Missing site ID",
 		"es-LA": ""
 	},
 	"Model": {
@@ -2125,10 +1921,6 @@
 	},
 	"Module": {
 		"en-US": "Module",
-		"es-LA": ""
-	},
-	"Monitor and manage all facility locations": {
-		"en-US": "Monitor and manage all facility locations",
 		"es-LA": ""
 	},
 	"Monitor sensor health, data quality, and ingestion status. Identify technical issues affecting data reliability.": {
@@ -2163,6 +1955,10 @@
 		"en-US": "Never",
 		"es-LA": ""
 	},
+	"Never reported": {
+		"en-US": "Never reported",
+		"es-LA": ""
+	},
 	"New Equipment": {
 		"en-US": "New Equipment",
 		"es-LA": ""
@@ -2189,10 +1985,6 @@
 	},
 	"No active alerts": {
 		"en-US": "No active alerts",
-		"es-LA": ""
-	},
-	"No address": {
-		"en-US": "No address",
 		"es-LA": ""
 	},
 	"No Alert Rules": {
@@ -2247,20 +2039,8 @@
 		"en-US": "No equipment at this site",
 		"es-LA": ""
 	},
-	"No equipment at this site yet": {
-		"en-US": "No equipment at this site yet",
-		"es-LA": ""
-	},
-	"No equipment at this site yet.": {
-		"en-US": "No equipment at this site yet.",
-		"es-LA": ""
-	},
 	"No equipment available": {
 		"en-US": "No equipment available",
-		"es-LA": ""
-	},
-	"No equipment found": {
-		"en-US": "No equipment found",
 		"es-LA": ""
 	},
 	"No equipment yet": {
@@ -2283,18 +2063,6 @@
 		"en-US": "No insights available",
 		"es-LA": ""
 	},
-	"No matching equipment": {
-		"en-US": "No matching equipment",
-		"es-LA": ""
-	},
-	"No matching sensors": {
-		"en-US": "No matching sensors",
-		"es-LA": ""
-	},
-	"No matching sites": {
-		"en-US": "No matching sites",
-		"es-LA": ""
-	},
 	"No notifications sent": {
 		"en-US": "No notifications sent",
 		"es-LA": ""
@@ -2309,6 +2077,10 @@
 	},
 	"No Refrigeration Sensors": {
 		"en-US": "No Refrigeration Sensors",
+		"es-LA": ""
+	},
+	"No report or beyond {0} min (5× expected)": {
+		"en-US": "No report or beyond {0} min (5× expected)",
 		"es-LA": ""
 	},
 	"No roles": {
@@ -2361,14 +2133,6 @@
 	},
 	"No sites available": {
 		"en-US": "No sites available",
-		"es-LA": ""
-	},
-	"No sites found": {
-		"en-US": "No sites found",
-		"es-LA": ""
-	},
-	"No sites match your search": {
-		"en-US": "No sites match your search",
 		"es-LA": ""
 	},
 	"No sites yet": {
@@ -2427,6 +2191,10 @@
 		"en-US": "Offline",
 		"es-LA": ""
 	},
+	"Offline:": {
+		"en-US": "Offline:",
+		"es-LA": ""
+	},
 	"Offline/Stale": {
 		"en-US": "Offline/Stale",
 		"es-LA": ""
@@ -2463,10 +2231,6 @@
 		"en-US": "Operating within normal parameters",
 		"es-LA": ""
 	},
-	"Operational": {
-		"en-US": "Operational",
-		"es-LA": ""
-	},
 	"Operational work queue - Track alerts through their lifecycle and review event history": {
 		"en-US": "Operational work queue - Track alerts through their lifecycle and review event history",
 		"es-LA": ""
@@ -2493,10 +2257,6 @@
 	},
 	"Optional: Assign sensor to specific equipment": {
 		"en-US": "Optional: Assign sensor to specific equipment",
-		"es-LA": ""
-	},
-	"Organization": {
-		"en-US": "Organization",
 		"es-LA": ""
 	},
 	"Origin": {
@@ -2539,8 +2299,8 @@
 		"en-US": "Payload JSON",
 		"es-LA": ""
 	},
-	"Payload must contain a \"readings\" array": {
-		"en-US": "Payload must contain a \"readings\" array",
+	"Payload must contain at least one reading": {
+		"en-US": "Payload must contain at least one reading",
 		"es-LA": ""
 	},
 	"Pending": {
@@ -2567,12 +2327,8 @@
 		"en-US": "Please enter email and password",
 		"es-LA": ""
 	},
-	"Please try again later.": {
-		"en-US": "Please try again later.",
-		"es-LA": ""
-	},
-	"POST /api/ingestion/readings": {
-		"en-US": "POST /api/ingestion/readings",
+	"POST /api/v1/ingestion/readings": {
+		"en-US": "POST /api/v1/ingestion/readings",
 		"es-LA": ""
 	},
 	"Postal code": {
@@ -2649,6 +2405,10 @@
 	},
 	"Read-only access to view module content": {
 		"en-US": "Read-only access to view module content",
+		"es-LA": ""
+	},
+	"Reading counts (last 24h)": {
+		"en-US": "Reading counts (last 24h)",
 		"es-LA": ""
 	},
 	"Reading Type (optional)": {
@@ -2739,6 +2499,10 @@
 		"en-US": "Rejected",
 		"es-LA": ""
 	},
+	"Rejected by server": {
+		"en-US": "Rejected by server",
+		"es-LA": ""
+	},
 	"Rejected Rows": {
 		"en-US": "Rejected Rows",
 		"es-LA": ""
@@ -2749,6 +2513,10 @@
 	},
 	"Rejection Reasons Breakdown": {
 		"en-US": "Rejection Reasons Breakdown",
+		"es-LA": ""
+	},
+	"Rejections can be due to invalid sensor id, invalid unit, or other validation errors.": {
+		"en-US": "Rejections can be due to invalid sensor id, invalid unit, or other validation errors.",
 		"es-LA": ""
 	},
 	"Remove {0}": {
@@ -2763,8 +2531,8 @@
 		"en-US": "Remove recipient",
 		"es-LA": ""
 	},
-	"Reported within {0} minutes": {
-		"en-US": "Reported within {0} minutes",
+	"Request failed": {
+		"en-US": "Request failed",
 		"es-LA": ""
 	},
 	"Request ID": {
@@ -2805,14 +2573,6 @@
 	},
 	"Retrospective analysis of system behavior. Answer: \"Has this happened before?\" and \"Is the situation getting better or worse over time?\"": {
 		"en-US": "Retrospective analysis of system behavior. Answer: \"Has this happened before?\" and \"Is the situation getting better or worse over time?\"",
-		"es-LA": ""
-	},
-	"Retry": {
-		"en-US": "Retry",
-		"es-LA": ""
-	},
-	"Retry Ingestion": {
-		"en-US": "Retry Ingestion",
 		"es-LA": ""
 	},
 	"Review accepted and rejected rows": {
@@ -2891,10 +2651,6 @@
 		"en-US": "Sample of Rejected Rows",
 		"es-LA": ""
 	},
-	"Save": {
-		"en-US": "Save",
-		"es-LA": ""
-	},
 	"Save Changes": {
 		"en-US": "Save Changes",
 		"es-LA": ""
@@ -2909,10 +2665,6 @@
 	},
 	"Save Site": {
 		"en-US": "Save Site",
-		"es-LA": ""
-	},
-	"Saving...": {
-		"en-US": "Saving...",
 		"es-LA": ""
 	},
 	"Scale by {0}": {
@@ -2935,36 +2687,8 @@
 		"en-US": "Search by name or email...",
 		"es-LA": ""
 	},
-	"Search by name or location...": {
-		"en-US": "Search by name or location...",
-		"es-LA": ""
-	},
-	"Search by name or type...": {
-		"en-US": "Search by name or type...",
-		"es-LA": ""
-	},
-	"Search by name, address, city...": {
-		"en-US": "Search by name, address, city...",
-		"es-LA": ""
-	},
-	"Search by name, city, country...": {
-		"en-US": "Search by name, city, country...",
-		"es-LA": ""
-	},
-	"Search by name, type, site...": {
-		"en-US": "Search by name, type, site...",
-		"es-LA": ""
-	},
 	"Search by sensor ID, name, site, equipment, or type...": {
 		"en-US": "Search by sensor ID, name, site, equipment, or type...",
-		"es-LA": ""
-	},
-	"Search by serial or type...": {
-		"en-US": "Search by serial or type...",
-		"es-LA": ""
-	},
-	"Search equipment": {
-		"en-US": "Search equipment",
 		"es-LA": ""
 	},
 	"Search roles": {
@@ -2979,10 +2703,6 @@
 		"en-US": "Search sensors",
 		"es-LA": ""
 	},
-	"Search sites": {
-		"en-US": "Search sites",
-		"es-LA": ""
-	},
 	"Search users": {
 		"en-US": "Search users",
 		"es-LA": ""
@@ -2993,6 +2713,10 @@
 	},
 	"Select a role to view its permissions": {
 		"en-US": "Select a role to view its permissions",
+		"es-LA": ""
+	},
+	"Select a sensor": {
+		"en-US": "Select a sensor",
 		"es-LA": ""
 	},
 	"Select a site": {
@@ -3009,10 +2733,6 @@
 	},
 	"Select an equipment to view its core dashboard": {
 		"en-US": "Select an equipment to view its core dashboard",
-		"es-LA": ""
-	},
-	"Select an equipment to view its details": {
-		"en-US": "Select an equipment to view its details",
 		"es-LA": ""
 	},
 	"Select equipment (optional)": {
@@ -3035,16 +2755,12 @@
 		"en-US": "Select severity",
 		"es-LA": ""
 	},
-	"Select status": {
-		"en-US": "Select status",
-		"es-LA": ""
-	},
 	"Select time": {
 		"en-US": "Select time",
 		"es-LA": ""
 	},
-	"Select type": {
-		"en-US": "Select type",
+	"Selected sensor will trigger a": {
+		"en-US": "Selected sensor will trigger a",
 		"es-LA": ""
 	},
 	"selected sensors": {
@@ -3059,20 +2775,24 @@
 		"en-US": "Sending...",
 		"es-LA": ""
 	},
-	"Sensor": {
-		"en-US": "Sensor",
-		"es-LA": ""
-	},
 	"sensor": {
 		"en-US": "sensor",
 		"es-LA": ""
 	},
-	"Sensor created successfully": {
-		"en-US": "Sensor created successfully",
+	"Sensor": {
+		"en-US": "Sensor",
 		"es-LA": ""
 	},
-	"Sensor deleted": {
-		"en-US": "Sensor deleted",
+	"Sensor \"{0}\" will trigger a": {
+		"en-US": "Sensor \"{0}\" will trigger a",
+		"es-LA": ""
+	},
+	"Sensor cannot be changed after creation": {
+		"en-US": "Sensor cannot be changed after creation",
+		"es-LA": ""
+	},
+	"Sensor created successfully": {
+		"en-US": "Sensor created successfully",
 		"es-LA": ""
 	},
 	"Sensor Details": {
@@ -3151,24 +2871,12 @@
 		"en-US": "Sensor serial number",
 		"es-LA": ""
 	},
-	"Sensor serial or identifier": {
-		"en-US": "Sensor serial or identifier",
-		"es-LA": ""
-	},
 	"Sensor Status": {
 		"en-US": "Sensor Status",
 		"es-LA": ""
 	},
 	"Sensor Type": {
 		"en-US": "Sensor Type",
-		"es-LA": ""
-	},
-	"Sensor Type ID": {
-		"en-US": "Sensor Type ID",
-		"es-LA": ""
-	},
-	"Sensor Type ID (optional)": {
-		"en-US": "Sensor Type ID (optional)",
 		"es-LA": ""
 	},
 	"Sensor type is required": {
@@ -3183,20 +2891,12 @@
 		"en-US": "Sensor updated successfully",
 		"es-LA": ""
 	},
-	"Sensors": {
-		"en-US": "Sensors",
-		"es-LA": ""
-	},
 	"sensors": {
 		"en-US": "sensors",
 		"es-LA": ""
 	},
-	"Sensors for {0}": {
-		"en-US": "Sensors for {0}",
-		"es-LA": ""
-	},
-	"Sensors for this equipment": {
-		"en-US": "Sensors for this equipment",
+	"Sensors": {
+		"en-US": "Sensors",
 		"es-LA": ""
 	},
 	"Sensors on this equipment": {
@@ -3205,14 +2905,6 @@
 	},
 	"Serial": {
 		"en-US": "Serial",
-		"es-LA": ""
-	},
-	"Serial / Identifier": {
-		"en-US": "Serial / Identifier",
-		"es-LA": ""
-	},
-	"Serial / Name": {
-		"en-US": "Serial / Name",
 		"es-LA": ""
 	},
 	"Serial is required": {
@@ -3225,6 +2917,10 @@
 	},
 	"Service Guide": {
 		"en-US": "Service Guide",
+		"es-LA": ""
+	},
+	"Set Threshold": {
+		"en-US": "Set Threshold",
 		"es-LA": ""
 	},
 	"Severity": {
@@ -3257,10 +2953,6 @@
 	},
 	"Showing {0} sensors": {
 		"en-US": "Showing {0} sensors",
-		"es-LA": ""
-	},
-	"Showing {0} to {1} of {2} sensors": {
-		"en-US": "Showing {0} to {1} of {2} sensors",
 		"es-LA": ""
 	},
 	"Showing {0} to {1} of {totalItems} results": {
@@ -3319,10 +3011,6 @@
 		"en-US": "Silent Sensors",
 		"es-LA": ""
 	},
-	"Silent:": {
-		"en-US": "Silent:",
-		"es-LA": ""
-	},
 	"Site": {
 		"en-US": "Site",
 		"es-LA": ""
@@ -3333,14 +3021,6 @@
 	},
 	"Site created successfully": {
 		"en-US": "Site created successfully",
-		"es-LA": ""
-	},
-	"Site deleted": {
-		"en-US": "Site deleted",
-		"es-LA": ""
-	},
-	"Site deleted successfully": {
-		"en-US": "Site deleted successfully",
 		"es-LA": ""
 	},
 	"Site Health (24h)": {
@@ -3359,16 +3039,12 @@
 		"en-US": "Site name",
 		"es-LA": ""
 	},
-	"Site Not Found": {
-		"en-US": "Site Not Found",
-		"es-LA": ""
-	},
 	"Site not found": {
 		"en-US": "Site not found",
 		"es-LA": ""
 	},
-	"Site not found.": {
-		"en-US": "Site not found.",
+	"Site Not Found": {
+		"en-US": "Site Not Found",
 		"es-LA": ""
 	},
 	"Site updated successfully": {
@@ -3381,10 +3057,6 @@
 	},
 	"Sites": {
 		"en-US": "Sites",
-		"es-LA": ""
-	},
-	"Sites Overview": {
-		"en-US": "Sites Overview",
 		"es-LA": ""
 	},
 	"Something went wrong": {
@@ -3543,32 +3215,20 @@
 		"en-US": "Test the API endpoint with a sample payload",
 		"es-LA": ""
 	},
-	"The equipment you're looking for doesn't exist.": {
-		"en-US": "The equipment you're looking for doesn't exist.",
+	"the configured range": {
+		"en-US": "the configured range",
 		"es-LA": ""
 	},
-	"The sensor you're looking for doesn't exist or could not be loaded.": {
-		"en-US": "The sensor you're looking for doesn't exist or could not be loaded.",
+	"The equipment you're looking for doesn't exist.": {
+		"en-US": "The equipment you're looking for doesn't exist.",
 		"es-LA": ""
 	},
 	"The sensor you're looking for doesn't exist.": {
 		"en-US": "The sensor you're looking for doesn't exist.",
 		"es-LA": ""
 	},
-	"The site you're looking for doesn't exist or could not be loaded.": {
-		"en-US": "The site you're looking for doesn't exist or could not be loaded.",
-		"es-LA": ""
-	},
 	"The site you're looking for doesn't exist.": {
 		"en-US": "The site you're looking for doesn't exist.",
-		"es-LA": ""
-	},
-	"This cannot be undone. This will permanently delete \"{0}\".": {
-		"en-US": "This cannot be undone. This will permanently delete \"{0}\".",
-		"es-LA": ""
-	},
-	"This cannot be undone. This will permanently delete sensor \"{0}\".": {
-		"en-US": "This cannot be undone. This will permanently delete sensor \"{0}\".",
 		"es-LA": ""
 	},
 	"This equipment does not have climate monitoring sensors installed.": {
@@ -3591,24 +3251,12 @@
 		"en-US": "This sensor has no data field mappings configured.",
 		"es-LA": ""
 	},
-	"This will permanently delete \"{0}\". This action cannot be undone.": {
-		"en-US": "This will permanently delete \"{0}\". This action cannot be undone.",
-		"es-LA": ""
-	},
 	"Threshold": {
 		"en-US": "Threshold",
 		"es-LA": ""
 	},
 	"Threshold duration (seconds)": {
 		"en-US": "Threshold duration (seconds)",
-		"es-LA": "Duración del umbral (segundos)"
-	},
-	"Threshold ID": {
-		"en-US": "Threshold ID",
-		"es-LA": ""
-	},
-	"Threshold ID (optional)": {
-		"en-US": "Threshold ID (optional)",
 		"es-LA": ""
 	},
 	"Threshold is required": {
@@ -3619,20 +3267,16 @@
 		"en-US": "Threshold max",
 		"es-LA": ""
 	},
-	"Threshold max (optional)": {
-		"en-US": "Threshold max (optional)",
-		"es-LA": ""
-	},
 	"Threshold min": {
 		"en-US": "Threshold min",
 		"es-LA": ""
 	},
-	"Threshold min (optional)": {
-		"en-US": "Threshold min (optional)",
+	"Threshold Preview": {
+		"en-US": "Threshold Preview",
 		"es-LA": ""
 	},
-	"Threshold unit (optional)": {
-		"en-US": "Threshold unit (optional)",
+	"Threshold will be created for this sensor": {
+		"en-US": "Threshold will be created for this sensor",
 		"es-LA": ""
 	},
 	"Thresholds": {
@@ -3691,12 +3335,12 @@
 		"en-US": "Total Active",
 		"es-LA": ""
 	},
-	"Total Alerts": {
-		"en-US": "Total Alerts",
-		"es-LA": ""
-	},
 	"total alerts": {
 		"en-US": "total alerts",
+		"es-LA": ""
+	},
+	"Total Alerts": {
+		"en-US": "Total Alerts",
 		"es-LA": ""
 	},
 	"Total Readings": {
@@ -3715,10 +3359,6 @@
 		"en-US": "Total Sensors",
 		"es-LA": ""
 	},
-	"Total Sites": {
-		"en-US": "Total Sites",
-		"es-LA": ""
-	},
 	"Transform": {
 		"en-US": "Transform",
 		"es-LA": ""
@@ -3735,32 +3375,12 @@
 		"en-US": "Triggered",
 		"es-LA": ""
 	},
-	"Try a different search or filter.": {
-		"en-US": "Try a different search or filter.",
-		"es-LA": ""
-	},
-	"Try a different search term": {
-		"en-US": "Try a different search term",
-		"es-LA": ""
-	},
-	"Try a different search term.": {
-		"en-US": "Try a different search term.",
-		"es-LA": ""
-	},
-	"Try a different search.": {
-		"en-US": "Try a different search.",
-		"es-LA": ""
-	},
 	"Try adjusting your search or filter criteria.": {
 		"en-US": "Try adjusting your search or filter criteria.",
 		"es-LA": ""
 	},
 	"Try adjusting your search or filters": {
 		"en-US": "Try adjusting your search or filters",
-		"es-LA": ""
-	},
-	"Try adjusting your search.": {
-		"en-US": "Try adjusting your search.",
 		"es-LA": ""
 	},
 	"Try Again": {
@@ -3843,20 +3463,16 @@
 		"en-US": "Unnamed Site",
 		"es-LA": ""
 	},
+	"Unstable": {
+		"en-US": "Unstable",
+		"es-LA": ""
+	},
 	"Untitled Rule": {
 		"en-US": "Untitled Rule",
 		"es-LA": ""
 	},
 	"Update Equipment": {
 		"en-US": "Update Equipment",
-		"es-LA": ""
-	},
-	"Update equipment details.": {
-		"en-US": "Update equipment details.",
-		"es-LA": ""
-	},
-	"Update equipment information": {
-		"en-US": "Update equipment information",
 		"es-LA": ""
 	},
 	"Update role information and permissions": {
@@ -3867,24 +3483,8 @@
 		"en-US": "Update Sensor",
 		"es-LA": ""
 	},
-	"Update sensor details.": {
-		"en-US": "Update sensor details.",
-		"es-LA": ""
-	},
-	"Update sensor information": {
-		"en-US": "Update sensor information",
-		"es-LA": ""
-	},
 	"Update Site": {
 		"en-US": "Update Site",
-		"es-LA": ""
-	},
-	"Update site details.": {
-		"en-US": "Update site details.",
-		"es-LA": ""
-	},
-	"Update site information": {
-		"en-US": "Update site information",
 		"es-LA": ""
 	},
 	"Update User": {
@@ -3919,10 +3519,6 @@
 		"en-US": "Upload CSV File",
 		"es-LA": ""
 	},
-	"Use any of these accounts to sign in:": {
-		"en-US": "Use any of these accounts to sign in:",
-		"es-LA": ""
-	},
 	"User & Role Management": {
 		"en-US": "User & Role Management",
 		"es-LA": ""
@@ -3937,10 +3533,6 @@
 	},
 	"User Details": {
 		"en-US": "User Details",
-		"es-LA": ""
-	},
-	"User disabled successfully": {
-		"en-US": "User disabled successfully",
 		"es-LA": ""
 	},
 	"User enabled successfully": {
@@ -3959,20 +3551,16 @@
 		"en-US": "User Management",
 		"es-LA": ""
 	},
+	"User menu": {
+		"en-US": "User menu",
+		"es-LA": ""
+	},
 	"User updated successfully": {
 		"en-US": "User updated successfully",
 		"es-LA": ""
 	},
 	"Users": {
 		"en-US": "Users",
-		"es-LA": ""
-	},
-	"UUID": {
-		"en-US": "UUID",
-		"es-LA": ""
-	},
-	"UUID (optional)": {
-		"en-US": "UUID (optional)",
 		"es-LA": ""
 	},
 	"Validate": {
@@ -3995,16 +3583,16 @@
 		"en-US": "View",
 		"es-LA": ""
 	},
-	"View {0} details": {
-		"en-US": "View {0} details",
-		"es-LA": ""
-	},
 	"View All": {
 		"en-US": "View All",
 		"es-LA": ""
 	},
 	"View all →": {
 		"en-US": "View all →",
+		"es-LA": ""
+	},
+	"View All →": {
+		"en-US": "View All →",
 		"es-LA": ""
 	},
 	"View all alerts": {
@@ -4039,12 +3627,12 @@
 		"en-US": "View equipment",
 		"es-LA": ""
 	},
-	"View Equipment": {
-		"en-US": "View Equipment",
-		"es-LA": ""
-	},
 	"View high severity alerts": {
 		"en-US": "View high severity alerts",
+		"es-LA": ""
+	},
+	"View ingestion runs": {
+		"en-US": "View ingestion runs",
 		"es-LA": ""
 	},
 	"View medium severity alerts": {
@@ -4053,10 +3641,6 @@
 	},
 	"View sensor health details": {
 		"en-US": "View sensor health details",
-		"es-LA": ""
-	},
-	"View Sensors": {
-		"en-US": "View Sensors",
 		"es-LA": ""
 	},
 	"Viewer": {
@@ -4089,6 +3673,10 @@
 	},
 	"Warning Range:": {
 		"en-US": "Warning Range:",
+		"es-LA": ""
+	},
+	"Warning:": {
+		"en-US": "Warning:",
 		"es-LA": ""
 	},
 	"Warning: {0} | Critical: {1}": {

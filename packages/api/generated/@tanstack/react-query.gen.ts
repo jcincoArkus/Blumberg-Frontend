@@ -25,6 +25,7 @@ import {
 	deleteSensorV1,
 	deleteSiteV1,
 	deleteThresholdV1,
+	getActiveAlertsV1,
 	getAdminByIdV1,
 	getAlertByIdV1,
 	getAllAdminsV1,
@@ -118,6 +119,8 @@ import type {
 	DeleteSiteV1Error,
 	DeleteThresholdV1Data,
 	DeleteThresholdV1Error,
+	GetActiveAlertsV1Data,
+	GetActiveAlertsV1Response,
 	GetAdminByIdV1Data,
 	GetAdminByIdV1Error,
 	GetAdminByIdV1Response,
@@ -402,6 +405,28 @@ export const getAllAlertsV1Options = (options?: Options<GetAllAlertsV1Data>) =>
 			return data;
 		},
 		queryKey: getAllAlertsV1QueryKey(options),
+	});
+
+export const getActiveAlertsV1QueryKey = (options?: Options<GetActiveAlertsV1Data>) =>
+	createQueryKey("getActiveAlertsV1", options);
+
+export const getActiveAlertsV1Options = (options?: Options<GetActiveAlertsV1Data>) =>
+	queryOptions<
+		GetActiveAlertsV1Response,
+		AxiosError<DefaultError>,
+		GetActiveAlertsV1Response,
+		ReturnType<typeof getActiveAlertsV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getActiveAlertsV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getActiveAlertsV1QueryKey(options),
 	});
 
 export const getAlertByIdV1QueryKey = (options: Options<GetAlertByIdV1Data>) =>

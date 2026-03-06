@@ -8,6 +8,17 @@ export type ActionsResponse = {
 	actions: Array<string> | null;
 };
 
+export type ActiveAlertResponse = {
+	id?: string;
+	severity?: string | null;
+	status?: string | null;
+	sensorSerial?: string | null;
+	sensorTypeName?: string | null;
+	equipmentName?: string | null;
+	triggeredAt?: Date;
+	durationSeconds?: number;
+};
+
 export type AdminRequest = {
 	email: string;
 	password: string;
@@ -773,6 +784,23 @@ export type GetAllAlertsV1Responses = {
 };
 
 export type GetAllAlertsV1Response = GetAllAlertsV1Responses[keyof GetAllAlertsV1Responses];
+
+export type GetActiveAlertsV1Data = {
+	body?: never;
+	path?: never;
+	query?: never;
+	url: "/api/v1/alerts/active";
+};
+
+export type GetActiveAlertsV1Responses = {
+	/**
+	 * OK
+	 */
+	200: Array<ActiveAlertResponse>;
+};
+
+export type GetActiveAlertsV1Response =
+	GetActiveAlertsV1Responses[keyof GetActiveAlertsV1Responses];
 
 export type GetAlertByIdV1Data = {
 	body?: never;

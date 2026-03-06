@@ -9,6 +9,7 @@ import type {
 	CreateSensorV1Response,
 	CreateSiteV1Response,
 	CreateThresholdV1Response,
+	GetActiveAlertsV1Response,
 	GetAdminByIdV1Response,
 	GetAlertByIdV1Response,
 	GetAllAdminsV1Response,
@@ -119,6 +120,20 @@ export const getAllAlertsV1ResponseTransformer = async (
 	data: any,
 ): Promise<GetAllAlertsV1Response> => {
 	data = alertResponsePagedResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+const activeAlertResponseSchemaResponseTransformer = (data: any) => {
+	if (data.triggeredAt) {
+		data.triggeredAt = new Date(data.triggeredAt);
+	}
+	return data;
+};
+
+export const getActiveAlertsV1ResponseTransformer = async (
+	data: any,
+): Promise<GetActiveAlertsV1Response> => {
+	data = data.map((item: any) => activeAlertResponseSchemaResponseTransformer(item));
 	return data;
 };
 

@@ -9,6 +9,7 @@ import { makeAutoObservable } from "~@/mobx";
 import type { Alert, AlertStatus } from "~@/models";
 import { getAlertDuration } from "~@/models";
 
+import { ALERTS_POLL_INTERVAL_MS } from "../constants";
 import type { Disposable } from "../types";
 import { mapAlertResponseToAlert } from "./mapAlertResponseToAlert";
 
@@ -16,14 +17,15 @@ const DEFAULT_PAGE_SIZE = 500;
 
 /**
  * ViewModel for the Alerts & Events page.
- * Uses ObservedQuery for list data and ObservedMutation for acknowledge/resolve (per .llm/skills viewmodel-pattern and api-pattern).
+ * Auto-refreshes via refetchInterval (polling) so new alerts appear without reload.
  */
 class AlertsViewModel implements Disposable {
 	activeTab: AlertStatus | "all" = "all";
 
-	#alertsQuery = getAllAlertsV1ObservedQuery({
-		query: { Page: 1, PageSize: DEFAULT_PAGE_SIZE },
-	});
+	#alertsQuery = getAllAlertsV1ObservedQuery(
+		{ query: { Page: 1, PageSize: DEFAULT_PAGE_SIZE } },
+		{ refetchInterval: ALERTS_POLL_INTERVAL_MS },
+	);
 	#detailQuery = getAlertByIdV1ObservedQuery();
 	#detailAlertId: string | null = null;
 	#ackMutation = acknowledgeAlertV1ObservedMutation();
@@ -94,10 +96,41 @@ class AlertsViewModel implements Disposable {
 		return err instanceof Error ? err.message : err ? String(err) : null;
 	}
 
-	// Computed: filtered alerts based on active tab
+	// Computed: filtered by tab, sorted for display (spec: "insert in correct severity position")
 	get filteredAlerts(): Alert[] {
-		if (this.activeTab === "all") return this.alerts;
-		return this.alerts.filter((alert) => alert.status === this.activeTab);
+		const list =
+			this.activeTab === "all"
+				? this.alerts
+				: this.alerts.filter((alert) => alert.status === this.activeTab);
+		return AlertsViewModel.sortAlertsForDisplay(list);
+	}
+
+	/** Sort order: status (active → acknowledged → resolved), then severity (critical → low), then newest first. */
+	private static sortAlertsForDisplay(alerts: Alert[]): Alert[] {
+		const statusOrder: Record<AlertStatus, number> = {
+			active: 0,
+			acknowledged: 1,
+			resolved: 2,
+		};
+		const severityOrder: Record<string, number> = {
+			critical: 0,
+			high: 1,
+			medium: 2,
+			low: 3,
+		};
+		return [...alerts].sort((a, b) => {
+			const statusA = statusOrder[a.status] ?? 2;
+			const statusB = statusOrder[b.status] ?? 2;
+			if (statusA !== statusB) return statusA - statusB;
+
+			const sevA = severityOrder[a.severity] ?? 4;
+			const sevB = severityOrder[b.severity] ?? 4;
+			if (sevA !== sevB) return sevA - sevB;
+
+			const timeA = new Date(a.createdAt).getTime();
+			const timeB = new Date(b.createdAt).getTime();
+			return timeB - timeA; // newest first
+		});
 	}
 
 	get statusCounts(): Record<AlertStatus | "all", number> {
