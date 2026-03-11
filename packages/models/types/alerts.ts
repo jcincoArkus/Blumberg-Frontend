@@ -1,5 +1,8 @@
+import type { AlertSeverity } from "../alertSeverity";
+
 export type AlertStatus = "active" | "acknowledged" | "resolved";
-export type AlertSeverity = "critical" | "high" | "medium" | "low";
+
+export type { AlertSeverity };
 
 /** Recommended action for an alert (from backend by sensor type + severity). */
 export interface RecommendedAction {

@@ -2,6 +2,7 @@ import { AlertTriangle, Clock } from "lucide-react";
 import { Link } from "react-router";
 
 import { t } from "~@/i18n/macro";
+import { getAlertDuration } from "~@/models";
 import { Badge } from "~@/ui";
 
 import type { Alert } from "../alerts";
@@ -51,9 +52,9 @@ export function RecentAlerts({ alerts }: RecentAlertsProps) {
 					>
 						<div
 							className={`mt-0.5 size-2 shrink-0 rounded-full ${
-								alert.severity === "critical" || alert.severity === "high"
+								alert.severity === "critical"
 									? "bg-red-500"
-									: alert.severity === "medium"
+									: alert.severity === "warning"
 										? "bg-amber-500"
 										: "bg-muted-foreground"
 							}`}
@@ -68,7 +69,7 @@ export function RecentAlerts({ alerts }: RecentAlertsProps) {
 								</Badge>
 								<span className="flex items-center gap-1 text-xs text-muted-foreground">
 									<Clock className="size-3" aria-hidden="true" />
-									{alert.duration}
+									{getAlertDuration(alert)}
 								</span>
 							</div>
 						</div>

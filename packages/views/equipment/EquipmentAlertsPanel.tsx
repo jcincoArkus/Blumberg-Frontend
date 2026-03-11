@@ -2,6 +2,7 @@ import { AlertCircle, AlertTriangle, CheckCircle2, Clock } from "lucide-react";
 import { useState } from "react";
 
 import { t } from "~@/i18n/macro";
+import { getSeverityConfig } from "~@/models";
 import { Badge, Button, cn, DashboardPanel, Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
 
 import type { Alert } from "../alerts";
@@ -21,18 +22,10 @@ function formatTimestamp(dateStr: string) {
 	});
 }
 
-const getSeverityConfig = () =>
-	({
-		critical: { label: t`Critical`, className: "bg-red-100 text-red-700 border-red-200" },
-		high: { label: t`High`, className: "bg-orange-100 text-orange-700 border-orange-200" },
-		medium: { label: t`Medium`, className: "bg-amber-100 text-amber-700 border-amber-200" },
-		low: { label: t`Low`, className: "bg-slate-100 text-slate-700 border-slate-200" },
-	}) as Record<string, { label: string; className: string }>;
-
 function getSeverityBadge(severity: string) {
 	const config = getSeverityConfig();
 	const severityKey = severity.toLowerCase();
-	const cfg = config[severityKey] || config.low;
+	const cfg = config[severityKey as keyof typeof config] ?? config.info;
 
 	return (
 		<Badge variant="outline" className={cn("border text-xs", cfg.className)}>
@@ -59,9 +52,9 @@ export function EquipmentAlertsPanel({ activeAlerts, recentAlerts }: EquipmentAl
 			? activeAlerts
 			: activeAlerts.filter((alert) => {
 					if (severityFilter === "Warning") {
-						return alert.severity === "medium" || alert.severity === "low";
+						return alert.severity === "info";
 					}
-					return alert.severity === "critical" || alert.severity === "high";
+					return alert.severity === "critical" || alert.severity === "warning";
 				});
 
 	const resolvedAlerts = recentAlerts.filter((a) => a.status === "resolved");
@@ -210,7 +203,7 @@ function AlertsList({ alerts, showDuration }: { alerts: Alert[]; showDuration?: 
 					key={alert.id}
 					alert={alert}
 					borderClass={
-						alert.severity === "critical" || alert.severity === "high"
+						alert.severity === "critical" || alert.severity === "warning"
 							? "border-red-200 bg-red-50"
 							: "border-amber-200 bg-amber-50"
 					}

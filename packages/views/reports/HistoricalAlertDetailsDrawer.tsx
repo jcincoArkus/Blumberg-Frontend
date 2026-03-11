@@ -1,6 +1,7 @@
-import { AlertTriangle, Bell, CheckCircle2, Clock, X } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Clock, X } from "lucide-react";
 
 import { t } from "~@/i18n/macro";
+import { getSeverityConfig } from "~@/models";
 import {
 	Badge,
 	Button,
@@ -53,25 +54,8 @@ export function HistoricalAlertDetailsDrawer({
 	};
 
 	const getSeverityBadge = (severity: string) => {
-		const config = {
-			critical: {
-				label: t`Critical`,
-				className: "bg-red-100 text-red-700 border-red-200",
-				icon: AlertTriangle,
-			},
-			high: {
-				label: t`High`,
-				className: "bg-orange-100 text-orange-700 border-orange-200",
-				icon: AlertTriangle,
-			},
-			medium: {
-				label: t`Medium`,
-				className: "bg-amber-100 text-amber-700 border-amber-200",
-				icon: Bell,
-			},
-			low: { label: t`Low`, className: "bg-blue-100 text-blue-700 border-blue-200", icon: Bell },
-		};
-		const cfg = config[severity as keyof typeof config] || config.critical;
+		const config = getSeverityConfig();
+		const cfg = config[severity as keyof typeof config] ?? config.info;
 		const Icon = cfg.icon;
 		return (
 			<Badge variant="outline" className={cn("border font-semibold", cfg.className)}>

@@ -17,41 +17,41 @@ export const AlertSummary: FC<AlertSummaryProps> = ({ activeAlerts, onSeverityCl
 		<div className="flex items-center gap-2">
 			<AlertCircle className="size-4 text-muted-foreground" />
 			<span className="text-muted-foreground">{t`Alerts:`}</span>
-			{activeAlerts.high > 0 && (
+			{activeAlerts.critical > 0 && (
 				<button
 					type="button"
-					onClick={() => onSeverityClick("high")}
+					onClick={() => onSeverityClick("critical")}
 					className="cursor-pointer hover:opacity-80 transition-opacity"
-					title={t`View high severity alerts`}
+					title={t`View critical alerts`}
 				>
 					<Badge variant="destructive" className="h-5 px-1.5 text-xs">
-						{t`${activeAlerts.high} High`}
+						{t`${activeAlerts.critical} Critical`}
 					</Badge>
 				</button>
 			)}
-			{activeAlerts.medium > 0 && (
+			{activeAlerts.warning > 0 && (
 				<button
 					type="button"
-					onClick={() => onSeverityClick("medium")}
+					onClick={() => onSeverityClick("warning")}
 					className="cursor-pointer hover:opacity-80 transition-opacity"
-					title={t`View medium severity alerts`}
+					title={t`View warning alerts`}
 				>
 					<Badge variant="outline" className="h-5 px-1.5 text-xs border-amber-500 text-amber-700">
-						{t`${activeAlerts.medium} Medium`}
+						{t`${activeAlerts.warning} Warning`}
 					</Badge>
 				</button>
 			)}
-			{activeAlerts.low > 0 && (
-				<Link to="/alerts?severity=low">
+			{activeAlerts.info > 0 && (
+				<Link to="/alerts?severity=info">
 					<Badge
 						variant="outline"
 						className="h-5 px-1.5 text-xs hover:opacity-80 transition-opacity cursor-pointer"
 					>
-						{t`${activeAlerts.low} Low`}
+						{t`${activeAlerts.info} Info`}
 					</Badge>
 				</Link>
 			)}
-			{activeAlerts.high === 0 && activeAlerts.medium === 0 && activeAlerts.low === 0 && (
+			{activeAlerts.critical === 0 && activeAlerts.warning === 0 && activeAlerts.info === 0 && (
 				<span className="text-muted-foreground">{t`None`}</span>
 			)}
 		</div>

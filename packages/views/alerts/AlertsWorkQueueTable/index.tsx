@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Link } from "react-router";
 
 import { t } from "~@/i18n/macro";
+import { getSeverityConfig } from "~@/models";
 import { Badge, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~@/ui";
 
 import { AlertDetailsDrawer } from "../AlertDetailsDrawer";
 import type { Alert } from "../types";
 import { AlertActionButtons } from "./AlertActionButtons";
-import { getSeverityConfig, getStatusConfig } from "./constants";
+import { getStatusConfig } from "./constants";
 import { EmptyState } from "./EmptyState";
 import { formatTimestamp } from "./helpers";
 import { Pagination } from "./Pagination";
@@ -67,7 +68,7 @@ export function AlertsWorkQueueTable({
 						</TableHeader>
 						<TableBody>
 							{paginatedAlerts.map((alert) => {
-								const severityInfo = severityConfig[alert.severity];
+								const severityInfo = severityConfig[alert.severity] ?? severityConfig.info;
 								const SeverityIcon = severityInfo.icon;
 								const statusInfo = statusConfig[alert.status];
 								const duration = calculateDuration(alert);

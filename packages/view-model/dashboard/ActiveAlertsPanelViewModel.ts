@@ -1,5 +1,6 @@
 import { t } from "~@/i18n/macro";
 import { makeAutoObservable } from "~@/mobx";
+import { getSeverityOrder } from "~@/models";
 import type { Alert } from "~@/views";
 
 import { dashboardAlertsViewModel } from "./DashboardAlertsViewModel";
@@ -20,10 +21,9 @@ class ActiveAlertsPanelViewModel {
 
 	// Get alerts sorted by severity and time
 	get sortedAlerts(): Alert[] {
-		const severityOrder = { critical: 0, high: 1, medium: 2, low: 3 } as const;
 		return [...this.alerts].sort((a, b) => {
-			const aOrder = severityOrder[a.severity] ?? 3;
-			const bOrder = severityOrder[b.severity] ?? 3;
+			const aOrder = getSeverityOrder(a.severity);
+			const bOrder = getSeverityOrder(b.severity);
 
 			if (aOrder !== bOrder) return aOrder - bOrder;
 

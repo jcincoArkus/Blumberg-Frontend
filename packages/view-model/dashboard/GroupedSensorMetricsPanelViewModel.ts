@@ -91,11 +91,10 @@ class GroupedSensorMetricsPanelViewModel {
 		).length;
 	}
 
+	/** Count of warning-level active/acknowledged alerts (backend Warning). */
 	get highAlerts(): number {
 		return this.alerts.filter(
-			(a) =>
-				(a.severity === "high" || a.severity === "critical") &&
-				(a.status === "active" || a.status === "acknowledged"),
+			(a) => a.severity === "warning" && (a.status === "active" || a.status === "acknowledged"),
 		).length;
 	}
 }

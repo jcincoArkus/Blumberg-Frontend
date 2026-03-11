@@ -11,7 +11,7 @@ interface RecommendedActionsSectionProps {
 
 /**
  * Displays recommended actions for the alert. Only render this section when actions exist.
- * Shows action title and description per the spec; works for Critical/Warning (Medium/High) alerts.
+ * Shows action title and description per the spec; works for Critical and Warning alerts (backend severities).
  */
 export function RecommendedActionsSection({ actions }: RecommendedActionsSectionProps) {
 	if (!actions || actions.length === 0) return null;

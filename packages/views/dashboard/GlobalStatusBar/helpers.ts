@@ -36,11 +36,7 @@ export function getCurrentTime() {
 
 export function getFirstAlertBySeverity(alerts: Alert[], severity: AlertSeverityKey): Alert | null {
 	const severityAlerts = alerts.filter(
-		(a) =>
-			(a.status === "active" || a.status === "acknowledged") &&
-			(severity === "high"
-				? a.severity === "high" || a.severity === "critical"
-				: a.severity === severity),
+		(a) => (a.status === "active" || a.status === "acknowledged") && a.severity === severity,
 	);
 	return severityAlerts.length > 0 ? severityAlerts[0] : null;
 }
