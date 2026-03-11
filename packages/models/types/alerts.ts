@@ -1,6 +1,14 @@
 export type AlertStatus = "active" | "acknowledged" | "resolved";
 export type AlertSeverity = "critical" | "high" | "medium" | "low";
 
+/** Recommended action for an alert (from backend by sensor type + severity). */
+export interface RecommendedAction {
+	id: string;
+	title: string;
+	description: string;
+	displayOrder: number;
+}
+
 export interface Alert {
 	id: string;
 	name: string;
@@ -15,6 +23,8 @@ export interface Alert {
 	siteId?: string;
 	events?: AlertEvent[];
 	notifications?: AlertNotification[];
+	/** Predefined recommended actions (when loaded via GetById). */
+	recommendedActions?: RecommendedAction[];
 }
 
 export interface AlertEvent {

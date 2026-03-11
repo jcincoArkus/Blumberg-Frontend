@@ -122,9 +122,13 @@ import type {
 	GetAllSitesV1Responses,
 	GetAllThresholdsV1Data,
 	GetAllThresholdsV1Responses,
+	GetApiHealthData,
+	GetApiHealthResponses,
 	GetEquipmentByIdV1Data,
 	GetEquipmentByIdV1Errors,
 	GetEquipmentByIdV1Responses,
+	GetHealthData,
+	GetHealthResponses,
 	GetIngestionRunByIdV1Data,
 	GetIngestionRunByIdV1Errors,
 	GetIngestionRunByIdV1Responses,
@@ -248,7 +252,9 @@ import {
 	zGetAllSensorTypesV1Data,
 	zGetAllSitesV1Data,
 	zGetAllThresholdsV1Data,
+	zGetApiHealthData,
 	zGetEquipmentByIdV1Data,
+	zGetHealthData,
 	zGetIngestionRunByIdV1Data,
 	zGetIngestionRunsV1Data,
 	zGetIngestionStatsV1Data,
@@ -460,6 +466,24 @@ export const refreshV1 = <ThrowOnError extends boolean = false>(
 			"Content-Type": "application/json",
 			...options?.headers,
 		},
+	});
+
+export const getHealth = <ThrowOnError extends boolean = false>(
+	options?: Options<GetHealthData, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<GetHealthResponses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetHealthData.parseAsync(data),
+		url: "/health",
+		...options,
+	});
+
+export const getApiHealth = <ThrowOnError extends boolean = false>(
+	options?: Options<GetApiHealthData, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<GetApiHealthResponses, unknown, ThrowOnError>({
+		requestValidator: async (data) => await zGetApiHealthData.parseAsync(data),
+		url: "/api/health",
+		...options,
 	});
 
 export const getAllEquipmentV1 = <ThrowOnError extends boolean = false>(

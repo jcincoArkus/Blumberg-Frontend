@@ -14,7 +14,9 @@ import {
 	getAllSensorTypesV1Options,
 	getAllSitesV1Options,
 	getAllThresholdsV1Options,
+	getApiHealthOptions,
 	getEquipmentByIdV1Options,
+	getHealthOptions,
 	getIngestionRunByIdV1Options,
 	getIngestionRunsV1Options,
 	getIngestionStatsV1Options,
@@ -46,7 +48,9 @@ import type {
 	GetAllSensorTypesV1Data,
 	GetAllSitesV1Data,
 	GetAllThresholdsV1Data,
+	GetApiHealthData,
 	GetEquipmentByIdV1Data,
+	GetHealthData,
 	GetIngestionRunByIdV1Data,
 	GetIngestionRunsV1Data,
 	GetIngestionStatsV1Data,
@@ -91,6 +95,16 @@ export const getAlertByIdV1ObservedQuery = (
 	defaultValues?: Partial<GetAlertByIdV1Data>,
 	observerOptions?: QueryOptions<typeof getAlertByIdV1Options>,
 ) => new ObservedQuery(getAlertByIdV1Options, defaultValues, observerOptions);
+
+export const getHealthObservedQuery = (
+	defaultValues?: Partial<GetHealthData>,
+	observerOptions?: QueryOptions<typeof getHealthOptions>,
+) => new ObservedQuery(getHealthOptions, defaultValues, observerOptions);
+
+export const getApiHealthObservedQuery = (
+	defaultValues?: Partial<GetApiHealthData>,
+	observerOptions?: QueryOptions<typeof getApiHealthOptions>,
+) => new ObservedQuery(getApiHealthOptions, defaultValues, observerOptions);
 
 export const getAllEquipmentV1ObservedQuery = (
 	defaultValues?: Partial<GetAllEquipmentV1Data>,
