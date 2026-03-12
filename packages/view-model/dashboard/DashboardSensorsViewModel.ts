@@ -74,7 +74,6 @@ class DashboardSensorsViewModel {
 
 	constructor() {
 		makeAutoObservable(this);
-		this.#load();
 		// Sync API response into observable so UI updates when request completes
 		this.#syncDisposer = reaction(
 			() => {
