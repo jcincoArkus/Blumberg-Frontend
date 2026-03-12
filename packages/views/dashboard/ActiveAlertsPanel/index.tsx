@@ -31,6 +31,7 @@ export const ActiveAlertsPanel = observer(function ActiveAlertsPanel() {
 	const handleAlertClick = (alert: Alert) => {
 		setSelectedAlert(alert);
 		setIsDrawerOpen(true);
+		vm.loadAlertDetail(alert.id);
 	};
 
 	const listItem = useMemo(
@@ -78,13 +79,20 @@ export const ActiveAlertsPanel = observer(function ActiveAlertsPanel() {
 
 			{selectedAlert && (
 				<AlertDetailsDrawer
-					alert={selectedAlert}
+					alert={vm.getDetailFor(selectedAlert.id) ?? selectedAlert}
 					open={isDrawerOpen}
 					onOpenChange={(open) => {
 						setIsDrawerOpen(open);
-						if (!open) setSelectedAlert(null);
+						if (!open) {
+							vm.clearAlertDetail();
+							setSelectedAlert(null);
+						}
+					}}
+					onAlertUpdate={(alertId, action) => {
+						void vm.updateAlert(alertId, action);
 					}}
 					equipmentName={vm.getEquipmentName(selectedAlert.equipmentId)}
+					isDetailLoading={vm.isDetailLoading}
 				/>
 			)}
 		</>

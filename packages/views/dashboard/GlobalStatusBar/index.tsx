@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { observer } from "~@/mobx";
-import { useGlobalStatusBarViewModel } from "~@/view-model";
+import { useActiveAlertsPanelViewModel, useGlobalStatusBarViewModel } from "~@/view-model";
 
 import { AlertDetailsDrawer } from "../../alerts/AlertDetailsDrawer";
 import { AlertSummary } from "./AlertSummary";
@@ -13,6 +13,7 @@ import type { AlertSeverityKey } from "./types";
 
 export const GlobalStatusBar = observer(function GlobalStatusBar() {
 	const vm = useGlobalStatusBarViewModel();
+	const panelVm = useActiveAlertsPanelViewModel();
 	const [selectedSeverity, setSelectedSeverity] = useState<AlertSeverityKey | null>(null);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -21,6 +22,7 @@ export const GlobalStatusBar = observer(function GlobalStatusBar() {
 		if (firstAlert) {
 			setSelectedSeverity(severity);
 			setIsDrawerOpen(true);
+			panelVm.loadAlertDetail(firstAlert.id);
 		}
 	};
 
@@ -43,14 +45,20 @@ export const GlobalStatusBar = observer(function GlobalStatusBar() {
 
 			{selectedAlert && (
 				<AlertDetailsDrawer
-					alert={selectedAlert}
+					alert={panelVm.getDetailFor(selectedAlert.id) ?? selectedAlert}
 					open={isDrawerOpen}
 					onOpenChange={(open) => {
 						setIsDrawerOpen(open);
 						if (!open) {
+							panelVm.clearAlertDetail();
 							setSelectedSeverity(null);
 						}
 					}}
+					onAlertUpdate={(alertId, action) => {
+						void panelVm.updateAlert(alertId, action);
+					}}
+					equipmentName={panelVm.getEquipmentName(selectedAlert.equipmentId)}
+					isDetailLoading={panelVm.isDetailLoading}
 				/>
 			)}
 		</>

@@ -95,6 +95,12 @@ class DashboardAlertsViewModel implements Disposable {
 		return this.#alertsQuery.hasError;
 	}
 
+	/** Refetch active alerts (e.g. after ack/resolve from dashboard drawer). */
+	refresh = async () => {
+		this.#alertsQuery.invalidate();
+		await this.#alertsQuery.refetch();
+	};
+
 	dispose() {
 		this.#alertsQuery.dispose();
 	}
