@@ -9,8 +9,8 @@ import { SENSOR_TYPE_OPTIONS } from "./constants";
 interface FilterPanelProps {
 	healthFilter: string;
 	onHealthFilterChange: (status: string) => void;
-	qualityFilter: string;
-	onQualityFilterChange: (status: string) => void;
+	// qualityFilter: string;
+	// onQualityFilterChange: (status: string) => void;
 	ingestionFilter: string;
 	onIngestionFilterChange: (status: string) => void;
 	typeFilter: string;
@@ -28,8 +28,8 @@ interface FilterPanelProps {
 export function FilterPanel({
 	healthFilter,
 	onHealthFilterChange,
-	qualityFilter,
-	onQualityFilterChange,
+	// qualityFilter,
+	// onQualityFilterChange,
 	ingestionFilter,
 	onIngestionFilterChange,
 	typeFilter,
@@ -65,7 +65,7 @@ export function FilterPanel({
 				</Select>
 			</div>
 
-			<div>
+			{/* <div>
 				<label className="text-xs font-medium text-muted-foreground mb-1.5 block">
 					{t`Data Quality`}
 				</label>
@@ -80,7 +80,7 @@ export function FilterPanel({
 						<SelectItem value="inconsistent">{t`Inconsistent`}</SelectItem>
 					</SelectContent>
 				</Select>
-			</div>
+			</div> */}
 
 			<div>
 				<label className="text-xs font-medium text-muted-foreground mb-1.5 block">

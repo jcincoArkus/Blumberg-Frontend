@@ -7,7 +7,8 @@ import type { SensorHealthData } from "../types";
 import { HealthBadge } from "./HealthBadge";
 import { formatTimestamp } from "./helpers";
 import { IngestionBadge } from "./IngestionBadge";
-import { QualityBadge } from "./QualityBadge";
+
+// import { QualityBadge } from "./QualityBadge";
 
 interface SensorHealthTableRowProps {
 	item: SensorHealthData;
@@ -59,9 +60,9 @@ export function SensorHealthTableRow({ item, onViewDetails }: SensorHealthTableR
 			<TableCell>
 				<HealthBadge status={item.health?.healthStatus} />
 			</TableCell>
-			<TableCell>
+			{/* <TableCell>
 				<QualityBadge status={item.quality?.qualityStatus} />
-			</TableCell>
+			</TableCell> */}
 			<TableCell>
 				<IngestionBadge source={item.ingestionSource} />
 			</TableCell>

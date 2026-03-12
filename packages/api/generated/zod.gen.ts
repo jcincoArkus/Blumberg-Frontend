@@ -250,6 +250,12 @@ export const zIngestionStatsResponse = z.object({
 			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
 			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
 	),
+	uniqueErrorTypes: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
 });
 
 export const zIngestionStatus = z.union([

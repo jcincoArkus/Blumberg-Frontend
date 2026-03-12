@@ -242,6 +242,7 @@ export type IngestionStatsResponse = {
 	totalRecords?: number;
 	acceptedRecords?: number;
 	rejectedRecords?: number;
+	uniqueErrorTypes?: number;
 };
 
 export enum IngestionStatus {
