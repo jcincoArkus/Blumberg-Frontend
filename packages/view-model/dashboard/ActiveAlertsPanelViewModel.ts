@@ -8,15 +8,16 @@ import { makeAutoObservable } from "~@/mobx";
 import { getSeverityOrder } from "~@/models";
 import type { Alert } from "~@/views";
 
+import { alertsViewModel } from "../alerts";
 import { mapAlertResponseToAlert } from "../alerts/mapAlertResponseToAlert";
-import { dashboardAlertsViewModel } from "./DashboardAlertsViewModel";
 
 /** Max alerts shown in the dashboard overview (keeps card height stable; use Alerts page for full list). */
 const DASHBOARD_ALERTS_OVERVIEW_LIMIT = 5;
 
 /**
  * Singleton ViewModel for the ActiveAlertsPanel component.
- * Provides sorted active alerts, full alert detail for the drawer (events, recommended actions, notifications), and ack/resolve.
+ * Uses the same data source as the Alerts page (getAllAlerts) so the dashboard list matches /alerts.
+ * Provides sorted active+acknowledged alerts, full alert detail for the drawer, and ack/resolve.
  */
 class ActiveAlertsPanelViewModel {
 	#detailQuery = getAlertByIdV1ObservedQuery();
@@ -28,9 +29,9 @@ class ActiveAlertsPanelViewModel {
 		makeAutoObservable(this);
 	}
 
-	// Get active alerts from DashboardAlertsViewModel
+	/** Active + acknowledged alerts from the same source as the Alerts page (GET /alerts). */
 	get alerts(): Alert[] {
-		return dashboardAlertsViewModel.activeAlerts;
+		return [...alertsViewModel.activeAlerts, ...alertsViewModel.acknowledgedAlerts];
 	}
 
 	/** Load full alert by ID (events, recommended actions, notifications) for the details drawer. */
@@ -58,7 +59,7 @@ class ActiveAlertsPanelViewModel {
 		return this.#detailQuery.isLoading;
 	}
 
-	/** Acknowledge or resolve from dashboard drawer; refreshes dashboard list on success. */
+	/** Acknowledge or resolve from dashboard drawer; refreshes list (alertsViewModel) on success. */
 	updateAlert = async (alertId: string, action: "acknowledge" | "resolve") => {
 		try {
 			if (action === "acknowledge") {
@@ -66,7 +67,7 @@ class ActiveAlertsPanelViewModel {
 			} else {
 				await this.#resolveMutation.mutateAsync({ path: { id: alertId } });
 			}
-			await dashboardAlertsViewModel.refresh();
+			await alertsViewModel.refresh();
 			if (this.#detailAlertId === alertId) {
 				this.#detailQuery.invalidate();
 				await this.#detailQuery.refetch();

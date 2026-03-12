@@ -1,6 +1,10 @@
-import type { IDataTableController, StandardQuery } from "~@/data-table";
+import type { ErrorInfo, IDataTableController, StandardQuery } from "~@/data-table";
 import { makeAutoObservable } from "~@/mobx";
-import { activeAlertsPanelViewModel, dashboardAlertsViewModel } from "~@/view-model";
+import {
+	activeAlertsPanelViewModel,
+	alertsViewModel,
+	dashboardAlertsViewModel,
+} from "~@/view-model";
 
 import type { Alert } from "../../alerts/types";
 
@@ -10,7 +14,7 @@ export interface AlertItem extends Alert {
 
 /**
  * DataTable Controller for Active Alerts Panel.
- * Delegates data to ActiveAlertsPanelViewModel (Pattern 2: Controller with ViewModel).
+ * Data comes from ActiveAlertsPanelViewModel (which uses alertsViewModel, same as /alerts page).
  */
 export class ActiveAlertsController implements IDataTableController<AlertItem> {
 	readonly tableId = "active-alerts";
@@ -19,7 +23,6 @@ export class ActiveAlertsController implements IDataTableController<AlertItem> {
 		makeAutoObservable(this);
 	}
 
-	// Delegate to ViewModel (overview limited so dashboard card height stays stable)
 	get data(): AlertItem[] {
 		return activeAlertsPanelViewModel.alertsForOverview as AlertItem[];
 	}
@@ -29,23 +32,26 @@ export class ActiveAlertsController implements IDataTableController<AlertItem> {
 	}
 
 	get isLoading(): boolean {
-		return dashboardAlertsViewModel.isLoading;
+		return alertsViewModel.isLoading;
 	}
 
 	get isFetching(): boolean {
-		return dashboardAlertsViewModel.isFetching;
+		return alertsViewModel.isFetching;
 	}
 
 	get isError(): boolean {
-		return dashboardAlertsViewModel.hasError;
+		return alertsViewModel.hasError;
 	}
 
-	get error(): null {
-		return null;
+	get error(): ErrorInfo | null {
+		const err = alertsViewModel.error;
+		return err != null ? { message: err } : null;
 	}
 
 	async load(_query: StandardQuery): Promise<void> {
-		return Promise.resolve();
+		// Panel list comes from alertsViewModel; still trigger dashboard load for status bar.
+		dashboardAlertsViewModel.load();
+		void alertsViewModel.refresh();
 	}
 
 	dispose(): void {}

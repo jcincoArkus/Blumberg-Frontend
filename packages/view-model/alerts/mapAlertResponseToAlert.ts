@@ -114,7 +114,8 @@ export function mapAlertResponseToAlert(r: AlertResponse): Alert {
 		createdAt,
 		resolvedAt,
 		equipmentId: r.equipmentId,
-		sensorId: r.sensorId,
+		// Use serial for matching to health list sensors (sensor.name = serial)
+		sensorId: r.sensorSerial ?? r.sensorId,
 		siteId: r.siteId,
 		events,
 		recommendedActions: recommendedActions.length > 0 ? recommendedActions : undefined,

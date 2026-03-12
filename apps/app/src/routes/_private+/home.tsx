@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { observer } from "~@/mobx";
+import { dashboardAlertsViewModel, dashboardSensorsViewModel } from "~@/view-model";
 import {
 	ActiveAlertsPanel,
 	AIInsightsPanel,
@@ -15,8 +17,14 @@ import {
  * Dashboard/Home page component.
  * Layout (sidebar + header) is provided by the parent _private layout.
  */
-function Home() {
+const Home = observer(function Home() {
 	const [selectedLocation, setSelectedLocation] = useState<string | null>("1");
+
+	// Trigger alerts + sensors load when dashboard home mounts. Home only mounts when authenticated (_private guard); view models no-op if not.
+	useEffect(() => {
+		dashboardAlertsViewModel.load();
+		dashboardSensorsViewModel.load();
+	}, []);
 
 	return (
 		<div className="space-y-4">
@@ -53,6 +61,6 @@ function Home() {
 			</div>
 		</div>
 	);
-}
+});
 
 export default Home;

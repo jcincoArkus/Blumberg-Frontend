@@ -5,6 +5,7 @@ import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { Badge, Card, CardContent, cn, Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
 import { useDashboardSensorsViewModel, useGroupedSensorMetricsPanelViewModel } from "~@/view-model";
+import { authViewModel } from "~@/view-model/auth";
 
 import { getSensorTypeConfig } from "./constants";
 import { PanelHeader } from "./PanelHeader";
@@ -20,10 +21,11 @@ export const GroupedSensorMetricsPanel = observer(function GroupedSensorMetricsP
 	const sensorsVm = useDashboardSensorsViewModel();
 	const [activeTab, setActiveTab] = useState<string>(vm.orderedTypes[0] ?? "");
 
-	// Refetch sensor health when panel mounts so we have data (e.g. if initial load ran before auth)
+	// Refetch sensor health when panel mounts and user is authenticated. Avoids health request on login.
 	useEffect(() => {
+		if (!authViewModel.isAuthenticated) return;
 		sensorsVm.load();
-	}, [sensorsVm]);
+	}, [sensorsVm, authViewModel.isAuthenticated]);
 
 	const orderedTypes = vm.orderedTypes;
 	const isLoading = vm.isSensorsLoading;

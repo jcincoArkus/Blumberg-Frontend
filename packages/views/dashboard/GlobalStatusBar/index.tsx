@@ -1,5 +1,12 @@
+import { useEffect } from "react";
+
 import { observer } from "~@/mobx";
-import { useGlobalStatusBarViewModel } from "~@/view-model";
+import {
+	dashboardAlertsViewModel,
+	dashboardSensorsViewModel,
+	useGlobalStatusBarViewModel,
+} from "~@/view-model";
+import { authViewModel } from "~@/view-model/auth";
 
 import { AlertSummary } from "./AlertSummary";
 import { CurrentTime } from "./CurrentTime";
@@ -8,6 +15,13 @@ import { StatusIndicator } from "./StatusIndicator";
 
 export const GlobalStatusBar = observer(function GlobalStatusBar() {
 	const vm = useGlobalStatusBarViewModel();
+	const isAuthenticated = authViewModel.isAuthenticated;
+
+	useEffect(() => {
+		if (!isAuthenticated) return;
+		dashboardAlertsViewModel.load();
+		dashboardSensorsViewModel.load();
+	}, [isAuthenticated]);
 
 	return (
 		<div className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 -mx-4 lg:-mx-6">

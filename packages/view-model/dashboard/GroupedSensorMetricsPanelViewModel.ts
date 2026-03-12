@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "~@/mobx";
 
-import { dashboardAlertsViewModel } from "./DashboardAlertsViewModel";
+import { alertsViewModel } from "../alerts";
 import { dashboardSensorsViewModel } from "./DashboardSensorsViewModel";
 
 /** Sensor shape with reading fields used by GroupedSensorMetricsPanel (mock/API) */
@@ -25,7 +25,7 @@ function sensorKey(sensor: SensorWithReading): string {
 
 /**
  * Singleton ViewModel for GroupedSensorMetricsPanel.
- * Delegates to DashboardSensorsViewModel and DashboardAlertsViewModel.
+ * Uses alertsViewModel (same as Active Alerts panel) for per-sensor alert counts; sensors from DashboardSensorsViewModel.
  */
 class GroupedSensorMetricsPanelViewModel {
 	constructor() {
@@ -45,7 +45,7 @@ class GroupedSensorMetricsPanelViewModel {
 	}
 
 	get alerts() {
-		return dashboardAlertsViewModel.activeAlerts;
+		return alertsViewModel.unresolvedAlerts;
 	}
 
 	/** Sensors grouped by type */
@@ -119,16 +119,11 @@ class GroupedSensorMetricsPanelViewModel {
 	}
 
 	get criticalAlerts(): number {
-		return this.alerts.filter(
-			(a) => a.severity === "critical" && (a.status === "active" || a.status === "acknowledged"),
-		).length;
+		return this.alerts.filter((a) => a.severity === "critical").length;
 	}
 
-	/** Count of warning-level active/acknowledged alerts (backend Warning). */
 	get highAlerts(): number {
-		return this.alerts.filter(
-			(a) => a.severity === "warning" && (a.status === "active" || a.status === "acknowledged"),
-		).length;
+		return this.alerts.filter((a) => a.severity === "warning").length;
 	}
 }
 
