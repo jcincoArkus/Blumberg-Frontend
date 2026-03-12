@@ -14,7 +14,7 @@ import {
 	Input,
 	Label,
 } from "~@/ui";
-import { authViewModel, useLoginViewModel } from "~@/view-model";
+import { authViewModel, useLoginViewModel } from "~@/view-model/auth";
 
 import type { Route } from "./+types/login";
 

@@ -5,7 +5,7 @@ import { Outlet, useNavigate } from "react-router";
 import { authorizationController } from "~@/authorization";
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { authViewModel } from "~@/view-model";
+import { authViewModel } from "~@/view-model/auth";
 import { DashboardShell } from "~@/views";
 
 class PrivateRouteController {

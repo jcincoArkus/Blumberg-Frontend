@@ -7,7 +7,7 @@ import { AbilityContext, ability } from "~@/authorization";
 import { config } from "~@/config";
 import { dynamicActivateLocale, I18nProvider, i18n, i18nLoader, Language } from "~@/i18n";
 import { AppDataTableProvider, AppFormProvider } from "~@/ui";
-import { authViewModel, setupAuthRefreshInterceptor } from "~@/view-model";
+import { authViewModel, setupAuthRefreshInterceptor } from "~@/view-model/auth";
 
 await dynamicActivateLocale(config.defaultLocale as Language);
 
