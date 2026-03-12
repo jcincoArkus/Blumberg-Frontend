@@ -4,7 +4,7 @@ import type { FC } from "react";
 import { Badge, Card, CardContent, cn } from "~@/ui";
 
 import { getSensorTypeConfig } from "./constants";
-import { formatTime, getSensorStatus } from "./helpers";
+import { formatTime, getSensorStatusForCard } from "./helpers";
 import type { SensorWithReading } from "./types";
 
 interface SensorWidgetProps {
@@ -15,7 +15,7 @@ interface SensorWidgetProps {
 export const SensorWidget: FC<SensorWidgetProps> = ({ sensor, alertsCount = 0 }) => {
 	const typeConfig = getSensorTypeConfig(sensor.type);
 	const TypeIcon = typeConfig.icon;
-	const statusInfo = getSensorStatus(sensor);
+	const statusInfo = getSensorStatusForCard(sensor, alertsCount);
 	const StatusIcon = statusInfo.icon;
 
 	return (

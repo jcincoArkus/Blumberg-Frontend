@@ -91,7 +91,12 @@ interface ApiIngestionTabProps {
 	recent24hPagination?: DataTablePaginationInfo;
 	onRecent24hPageChange?: (pageIndex: number) => void;
 	/** When provided, KPI cards use these totals (all 24h) instead of summing the current page */
-	last24hStats?: { totalRecords: number; acceptedRecords: number; rejectedRecords: number } | null;
+	last24hStats?: {
+		totalRecords: number;
+		acceptedRecords: number;
+		rejectedRecords: number;
+		uniqueErrorTypes: number;
+	} | null;
 }
 
 export function ApiIngestionTab({
@@ -117,19 +122,23 @@ export function ApiIngestionTab({
 	const isTesting = isSubmittingReadings || localTesting;
 
 	// KPIs: use backend 24h stats when available (all runs in range), else sum current page
+	// errors = unique error types (from backend when available), else distinct count from current page
 	const kpis = last24hStats
 		? {
 				totalRecords: last24hStats.totalRecords,
 				accepted: last24hStats.acceptedRecords,
 				rejected: last24hStats.rejectedRecords,
-				errors: apiRuns24h.reduce((sum, r) => sum + r.errors.length, 0),
+				errors: last24hStats.uniqueErrorTypes,
 			}
-		: {
-				totalRecords: apiRuns24h.reduce((sum, r) => sum + r.totalRecords, 0),
-				accepted: apiRuns24h.reduce((sum, r) => sum + r.acceptedCount, 0),
-				rejected: apiRuns24h.reduce((sum, r) => sum + r.rejectedCount, 0),
-				errors: apiRuns24h.reduce((sum, r) => sum + r.errors.length, 0),
-			};
+		: (() => {
+				const errorCodes = new Set(apiRuns24h.flatMap((r) => r.errors.map((e) => e.code)));
+				return {
+					totalRecords: apiRuns24h.reduce((sum, r) => sum + r.totalRecords, 0),
+					accepted: apiRuns24h.reduce((sum, r) => sum + r.acceptedCount, 0),
+					rejected: apiRuns24h.reduce((sum, r) => sum + r.rejectedCount, 0),
+					errors: errorCodes.size,
+				};
+			})();
 
 	const handleTestPayload = async () => {
 		setTestResult(null);

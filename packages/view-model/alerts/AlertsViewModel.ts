@@ -7,7 +7,7 @@ import {
 } from "~@/api";
 import { makeAutoObservable } from "~@/mobx";
 import type { Alert, AlertStatus } from "~@/models";
-import { getAlertDuration } from "~@/models";
+import { getAlertDuration, getSeverityOrder } from "~@/models";
 
 import { ALERTS_POLL_INTERVAL_MS } from "../constants";
 import type { Disposable } from "../types";
@@ -105,26 +105,20 @@ class AlertsViewModel implements Disposable {
 		return AlertsViewModel.sortAlertsForDisplay(list);
 	}
 
-	/** Sort order: status (active → acknowledged → resolved), then severity (critical → low), then newest first. */
+	/** Sort order: status (active → acknowledged → resolved), then severity (critical → warning → info), then newest first. */
 	private static sortAlertsForDisplay(alerts: Alert[]): Alert[] {
 		const statusOrder: Record<AlertStatus, number> = {
 			active: 0,
 			acknowledged: 1,
 			resolved: 2,
 		};
-		const severityOrder: Record<string, number> = {
-			critical: 0,
-			high: 1,
-			medium: 2,
-			low: 3,
-		};
 		return [...alerts].sort((a, b) => {
 			const statusA = statusOrder[a.status] ?? 2;
 			const statusB = statusOrder[b.status] ?? 2;
 			if (statusA !== statusB) return statusA - statusB;
 
-			const sevA = severityOrder[a.severity] ?? 4;
-			const sevB = severityOrder[b.severity] ?? 4;
+			const sevA = getSeverityOrder(a.severity);
+			const sevB = getSeverityOrder(b.severity);
 			if (sevA !== sevB) return sevA - sevB;
 
 			const timeA = new Date(a.createdAt).getTime();
@@ -150,8 +144,13 @@ class AlertsViewModel implements Disposable {
 		return this.alerts.filter((a) => a.severity === "critical" && a.status === "active");
 	}
 
+	get warningAlerts(): Alert[] {
+		return this.alerts.filter((a) => a.severity === "warning" && a.status === "active");
+	}
+
+	/** Alias for warningAlerts (backend Warning = "high priority" in UI). */
 	get highAlerts(): Alert[] {
-		return this.alerts.filter((a) => a.severity === "high" && a.status === "active");
+		return this.warningAlerts;
 	}
 
 	get acknowledgedAlerts(): Alert[] {

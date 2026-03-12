@@ -27,9 +27,11 @@ const SensorHealthPage = observer(function SensorHealthPage() {
 		<div className="space-y-6">
 			{/* Page Header */}
 			<div>
-				<h1 className="text-xl font-semibold text-foreground">{t`Sensor Health & Data Quality`}</h1>
+				{/* <h1 className="text-xl font-semibold text-foreground">{t`Sensor Health & Data Quality`}</h1> */}
+				<h1 className="text-xl font-semibold text-foreground">{t`Sensor Health`}</h1>
 				<p className="text-sm text-muted-foreground">
-					{t`Monitor sensor health, data quality, and ingestion status. Identify technical issues affecting data reliability.`}
+					{/* {t`Monitor sensor health, data quality, and ingestion status. Identify technical issues affecting data reliability.`} */}
+					{t`Monitor sensor health and ingestion status. Identify technical issues affecting data reliability.`}
 				</p>
 			</div>
 
@@ -38,8 +40,8 @@ const SensorHealthPage = observer(function SensorHealthPage() {
 
 			{/* Sensor Health Table */}
 			<DashboardPanel
-				title={t`Sensor Health & Quality Work Table`}
-				description={t`Search and filter sensors by health status, data quality, ingestion source, site, equipment, or type`}
+				title={t`Sensor Health Work Table`}
+				description={t`Search and filter sensors by health status, ingestion source, site, equipment, or type`}
 			>
 				<MonitoringSensorHealthTable
 					data={vm.sortedData}
@@ -47,8 +49,6 @@ const SensorHealthPage = observer(function SensorHealthPage() {
 					onSearchChange={vm.setSearchQuery}
 					healthFilter={vm.healthFilter}
 					onHealthFilterChange={vm.setHealthFilter}
-					qualityFilter={vm.qualityFilter}
-					onQualityFilterChange={vm.setQualityFilter}
 					ingestionFilter={vm.ingestionFilter}
 					onIngestionFilterChange={vm.setIngestionFilter}
 					typeFilter={vm.typeFilter}

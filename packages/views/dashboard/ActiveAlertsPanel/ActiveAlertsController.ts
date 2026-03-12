@@ -19,13 +19,13 @@ export class ActiveAlertsController implements IDataTableController<AlertItem> {
 		makeAutoObservable(this);
 	}
 
-	// Delegate to ViewModel
+	// Delegate to ViewModel (overview limited so dashboard card height stays stable)
 	get data(): AlertItem[] {
-		return activeAlertsPanelViewModel.sortedAlerts as AlertItem[];
+		return activeAlertsPanelViewModel.alertsForOverview as AlertItem[];
 	}
 
 	get total(): number {
-		return activeAlertsPanelViewModel.sortedAlerts.length;
+		return activeAlertsPanelViewModel.alertsForOverview.length;
 	}
 
 	get isLoading(): boolean {

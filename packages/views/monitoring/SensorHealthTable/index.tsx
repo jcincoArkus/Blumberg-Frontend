@@ -17,8 +17,6 @@ export function SensorHealthTable({
 	onSearchChange,
 	healthFilter,
 	onHealthFilterChange,
-	qualityFilter,
-	onQualityFilterChange,
 	ingestionFilter,
 	onIngestionFilterChange,
 	typeFilter,
@@ -37,7 +35,7 @@ export function SensorHealthTable({
 
 	const activeFiltersCount = [
 		healthFilter !== "all",
-		qualityFilter !== "all",
+		// qualityFilter !== "all",
 		ingestionFilter !== "all",
 		typeFilter !== "all",
 		siteFilter !== "all",
@@ -63,8 +61,8 @@ export function SensorHealthTable({
 				<FilterPanel
 					healthFilter={healthFilter}
 					onHealthFilterChange={onHealthFilterChange}
-					qualityFilter={qualityFilter}
-					onQualityFilterChange={onQualityFilterChange}
+					// qualityFilter={qualityFilter}
+					// onQualityFilterChange={onQualityFilterChange}
 					ingestionFilter={ingestionFilter}
 					onIngestionFilterChange={onIngestionFilterChange}
 					typeFilter={typeFilter}
@@ -78,7 +76,7 @@ export function SensorHealthTable({
 					activeFiltersCount={activeFiltersCount}
 					onClearFilters={() => {
 						onHealthFilterChange("all");
-						onQualityFilterChange("all");
+						// onQualityFilterChange("all");
 						onIngestionFilterChange("all");
 						onTypeFilterChange("all");
 						onSiteFilterChange("all");
@@ -97,7 +95,7 @@ export function SensorHealthTable({
 							<TableHead className="w-35">{t`Equipment`}</TableHead>
 							<TableHead className="w-35">{t`Last Reported`}</TableHead>
 							<TableHead className="w-25">{t`Health`}</TableHead>
-							<TableHead className="w-30">{t`Quality`}</TableHead>
+							{/* <TableHead className="w-30">{t`Quality`}</TableHead> */}
 							<TableHead className="w-30">{t`Ingestion`}</TableHead>
 							<TableHead>{t`Issues`}</TableHead>
 							<TableHead className="w-20 text-right">{t`Actions`}</TableHead>

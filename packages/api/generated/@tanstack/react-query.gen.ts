@@ -36,7 +36,9 @@ import {
 	getAllSensorTypesV1,
 	getAllSitesV1,
 	getAllThresholdsV1,
+	getApiHealth,
 	getEquipmentByIdV1,
+	getHealth,
 	getIngestionRunByIdV1,
 	getIngestionRunsV1,
 	getIngestionStatsV1,
@@ -143,9 +145,11 @@ import type {
 	GetAllSitesV1Response,
 	GetAllThresholdsV1Data,
 	GetAllThresholdsV1Response,
+	GetApiHealthData,
 	GetEquipmentByIdV1Data,
 	GetEquipmentByIdV1Error,
 	GetEquipmentByIdV1Response,
+	GetHealthData,
 	GetIngestionRunByIdV1Data,
 	GetIngestionRunByIdV1Error,
 	GetIngestionRunByIdV1Response,
@@ -538,6 +542,42 @@ export const refreshV1Mutation = (
 	};
 	return mutationOptions;
 };
+
+export const getHealthQueryKey = (options?: Options<GetHealthData>) =>
+	createQueryKey("getHealth", options);
+
+export const getHealthOptions = (options?: Options<GetHealthData>) =>
+	queryOptions<unknown, AxiosError<DefaultError>, unknown, ReturnType<typeof getHealthQueryKey>>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getHealth({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getHealthQueryKey(options),
+	});
+
+export const getApiHealthQueryKey = (options?: Options<GetApiHealthData>) =>
+	createQueryKey("getApiHealth", options);
+
+export const getApiHealthOptions = (options?: Options<GetApiHealthData>) =>
+	queryOptions<unknown, AxiosError<DefaultError>, unknown, ReturnType<typeof getApiHealthQueryKey>>(
+		{
+			queryFn: async ({ queryKey, signal }) => {
+				const { data } = await getApiHealth({
+					...options,
+					...queryKey[0],
+					signal,
+					throwOnError: true,
+				});
+				return data;
+			},
+			queryKey: getApiHealthQueryKey(options),
+		},
+	);
 
 export const getAllEquipmentV1QueryKey = (options?: Options<GetAllEquipmentV1Data>) =>
 	createQueryKey("getAllEquipmentV1", options);

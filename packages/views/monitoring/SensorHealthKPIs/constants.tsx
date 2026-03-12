@@ -1,4 +1,4 @@
-import { Activity, AlertCircle, Clock, Database, XCircle } from "lucide-react";
+import { Activity, AlertCircle, Clock, XCircle } from "lucide-react";
 
 import { t } from "~@/i18n/macro";
 
@@ -59,12 +59,12 @@ export const KPI_CARDS_CONFIG: KPICardConfig[] = [
 		iconClassName: "text-orange-600",
 		subtitle: () => t`Last 24h`,
 	},
-	{
-		key: "qualityIssues",
-		title: t`Data Quality Issues`,
-		icon: Database,
-		className: "border-purple-200 bg-purple-50/50",
-		iconClassName: "text-purple-600",
-		subtitle: () => t`Missing / inconsistent`,
-	},
+	// {
+	// 	key: "qualityIssues",
+	// 	title: t`Data Quality Issues`,
+	// 	icon: Database,
+	// 	className: "border-purple-200 bg-purple-50/50",
+	// 	iconClassName: "text-purple-600",
+	// 	subtitle: () => t`Missing / inconsistent`,
+	// },
 ];

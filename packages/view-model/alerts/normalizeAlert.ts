@@ -1,13 +1,8 @@
 import type { Alert } from "~@/models";
+import { normalizeSeverity as normalizeSeverityFromModel } from "~@/models";
 
-/** Backend severity: Critical, Warning, Info -> view: critical, high, medium, low */
-export function normalizeSeverity(severity: string | null | undefined): Alert["severity"] {
-	const s = (severity ?? "").toLowerCase();
-	if (s === "critical") return "critical";
-	if (s === "warning") return "high";
-	if (s === "info") return "low";
-	return "medium";
-}
+/** Re-export for callers that import from view-model. Backend enum (e.g. "Critical") → frontend AlertSeverity. */
+export const normalizeSeverity = normalizeSeverityFromModel;
 
 /** Backend status: Active, Acknowledged, Resolved -> view: active, acknowledged, resolved */
 export function normalizeStatus(status: string | null | undefined): Alert["status"] {

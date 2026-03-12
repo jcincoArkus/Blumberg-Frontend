@@ -1,8 +1,10 @@
+import type { AlertSeverity } from "~@/models";
+
 import { equipment, siteSensors, sites } from "./sites";
 
 // Types
 export type DateRangePreset = "24h" | "7d" | "30d" | "custom";
-export type AlertSeverity = "critical" | "high" | "medium" | "low";
+export type { AlertSeverity };
 export type AlertStatus = "active" | "acknowledged" | "resolved";
 export type SensorType = "temperature" | "humidity" | "energy" | "pressure";
 
@@ -90,13 +92,13 @@ function generateHistoricalAlerts(days: number = 30): HistoricalAlert[] {
 	const alerts: HistoricalAlert[] = [];
 	const now = new Date();
 
-	const alertPatterns = [
-		{ title: "Temperature threshold exceeded", severity: "high" as AlertSeverity },
-		{ title: "Humidity out of range", severity: "medium" as AlertSeverity },
-		{ title: "Pressure warning", severity: "low" as AlertSeverity },
-		{ title: "Critical temperature failure", severity: "critical" as AlertSeverity },
-		{ title: "Energy consumption spike", severity: "medium" as AlertSeverity },
-		{ title: "Sensor communication lost", severity: "high" as AlertSeverity },
+	const alertPatterns: { title: string; severity: AlertSeverity }[] = [
+		{ title: "Temperature threshold exceeded", severity: "warning" },
+		{ title: "Humidity out of range", severity: "warning" },
+		{ title: "Pressure warning", severity: "info" },
+		{ title: "Critical temperature failure", severity: "critical" },
+		{ title: "Energy consumption spike", severity: "warning" },
+		{ title: "Sensor communication lost", severity: "warning" },
 	];
 
 	let alertId = 1;

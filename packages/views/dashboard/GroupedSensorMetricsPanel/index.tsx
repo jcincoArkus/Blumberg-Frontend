@@ -1,27 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { Badge, Card, CardContent, cn, Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
-import { useGroupedSensorMetricsPanelViewModel } from "~@/view-model";
+import { useDashboardSensorsViewModel, useGroupedSensorMetricsPanelViewModel } from "~@/view-model";
 
 import { getSensorTypeConfig } from "./constants";
 import { PanelHeader } from "./PanelHeader";
 import { SensorWidget } from "./SensorWidget";
 
+/** Max sensor cards shown per tab before "View all" link. Avoids unbounded growth (e.g. 50+ sensors). */
+const SENSORS_DISPLAY_LIMIT = 12;
+
 export type { SensorWithReading } from "./types";
 
 export const GroupedSensorMetricsPanel = observer(function GroupedSensorMetricsPanel() {
 	const vm = useGroupedSensorMetricsPanelViewModel();
+	const sensorsVm = useDashboardSensorsViewModel();
 	const [activeTab, setActiveTab] = useState<string>(vm.orderedTypes[0] ?? "");
 
-	const orderedTypes = vm.orderedTypes;
+	// Refetch sensor health when panel mounts so we have data (e.g. if initial load ran before auth)
+	useEffect(() => {
+		sensorsVm.load();
+	}, [sensorsVm]);
 
-	if (orderedTypes.length === 0) {
+	const orderedTypes = vm.orderedTypes;
+	const isLoading = vm.isSensorsLoading;
+	const hasError = vm.hasSensorsError;
+	const hasNoData = orderedTypes.length === 0;
+
+	if (hasNoData) {
 		return (
 			<Card>
 				<CardContent className="p-6 text-center text-muted-foreground">
-					{t`No sensors available`}
+					{isLoading && !hasError
+						? t`Loading sensors…`
+						: hasError
+							? t`Unable to load sensors. Try again later.`
+							: t`No sensors available`}
 				</CardContent>
 			</Card>
 		);
@@ -35,8 +52,6 @@ export const GroupedSensorMetricsPanel = observer(function GroupedSensorMetricsP
 			<CardContent className="p-0">
 				<PanelHeader
 					totalAlerts={vm.totalAlerts}
-					criticalAlerts={vm.criticalAlerts}
-					highAlerts={vm.highAlerts}
 					sensorCount={vm.sensors.length}
 					categoryCount={orderedTypes.length}
 				/>
@@ -88,6 +103,8 @@ export const GroupedSensorMetricsPanel = observer(function GroupedSensorMetricsP
 						const typeConfig = getSensorTypeConfig(type);
 						const TypeIcon = typeConfig.icon;
 						const alertCount = vm.alertsBySensorType[type] ?? 0;
+						const visibleSensors = vm.getVisibleSensorsForType(type, SENSORS_DISPLAY_LIMIT);
+						const hasMore = typeSensors.length > SENSORS_DISPLAY_LIMIT;
 
 						return (
 							<TabsContent key={type} value={type} className="p-4 m-0">
@@ -113,14 +130,24 @@ export const GroupedSensorMetricsPanel = observer(function GroupedSensorMetricsP
 									</div>
 
 									<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5">
-										{typeSensors.map((sensor) => (
+										{visibleSensors.map((sensor) => (
 											<SensorWidget
 												key={sensor.id}
 												sensor={sensor}
-												alertsCount={vm.alertsBySensor[sensor.id] ?? 0}
+												alertsCount={vm.getAlertCountForSensor(sensor)}
 											/>
 										))}
 									</div>
+									{hasMore && (
+										<div className="pt-1 text-center">
+											<Link
+												to="/monitoring/sensor-health"
+												className="text-xs text-primary hover:underline"
+											>
+												{t`View all`} {typeSensors.length} {t`sensors`} →
+											</Link>
+										</div>
+									)}
 								</div>
 							</TabsContent>
 						);

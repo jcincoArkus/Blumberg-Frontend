@@ -77,15 +77,22 @@ class IngestionViewModel {
 		totalRecords: number;
 		acceptedRecords: number;
 		rejectedRecords: number;
+		uniqueErrorTypes: number;
 	} | null {
 		const data = this.#stats24hQuery.data as
-			| { totalRecords?: number; acceptedRecords?: number; rejectedRecords?: number }
+			| {
+					totalRecords?: number;
+					acceptedRecords?: number;
+					rejectedRecords?: number;
+					uniqueErrorTypes?: number;
+			  }
 			| undefined;
 		if (data == null) return null;
 		return {
 			totalRecords: data.totalRecords ?? 0,
 			acceptedRecords: data.acceptedRecords ?? 0,
 			rejectedRecords: data.rejectedRecords ?? 0,
+			uniqueErrorTypes: data.uniqueErrorTypes ?? 0,
 		};
 	}
 

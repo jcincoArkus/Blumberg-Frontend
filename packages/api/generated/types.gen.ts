@@ -68,6 +68,7 @@ export type AlertResponse = {
 	sensorSerial?: string | null;
 	sensorTypeName?: string | null;
 	events?: Array<AlertEventResponse> | null;
+	recommendedActions?: Array<RecommendedActionResponse> | null;
 };
 
 export type AlertResponsePagedResponse = {
@@ -241,6 +242,7 @@ export type IngestionStatsResponse = {
 	totalRecords?: number;
 	acceptedRecords?: number;
 	rejectedRecords?: number;
+	uniqueErrorTypes?: number;
 };
 
 export enum IngestionStatus {
@@ -275,6 +277,13 @@ export type ProblemDetails = {
 		| string
 		| null
 		| undefined;
+};
+
+export type RecommendedActionResponse = {
+	id?: string;
+	title?: string | null;
+	description?: string | null;
+	displayOrder?: number;
 };
 
 export type RefreshRequest = {
@@ -941,6 +950,34 @@ export type RefreshV1Responses = {
 };
 
 export type RefreshV1Response = RefreshV1Responses[keyof RefreshV1Responses];
+
+export type GetHealthData = {
+	body?: never;
+	path?: never;
+	query?: never;
+	url: "/health";
+};
+
+export type GetHealthResponses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetApiHealthData = {
+	body?: never;
+	path?: never;
+	query?: never;
+	url: "/api/health";
+};
+
+export type GetApiHealthResponses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
 
 export type GetAllEquipmentV1Data = {
 	body?: never;

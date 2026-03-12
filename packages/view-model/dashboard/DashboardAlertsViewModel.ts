@@ -59,12 +59,11 @@ class DashboardAlertsViewModel implements Disposable {
 	/**
 	 * Get alerts grouped by severity
 	 */
-	get alertsBySeverity(): { high: number; medium: number; low: number } {
+	get alertsBySeverity(): { critical: number; warning: number; info: number } {
 		return {
-			high: this.activeAlerts.filter((a) => a.severity === "high" || a.severity === "critical")
-				.length,
-			medium: this.activeAlerts.filter((a) => a.severity === "medium").length,
-			low: this.activeAlerts.filter((a) => a.severity === "low").length,
+			critical: this.activeAlerts.filter((a) => a.severity === "critical").length,
+			warning: this.activeAlerts.filter((a) => a.severity === "warning").length,
+			info: this.activeAlerts.filter((a) => a.severity === "info").length,
 		};
 	}
 
@@ -75,12 +74,12 @@ class DashboardAlertsViewModel implements Disposable {
 		const criticalAlerts = this.alerts.filter(
 			(a) => a.severity === "critical" && (a.status === "active" || a.status === "acknowledged"),
 		).length;
-		const highAlerts = this.alerts.filter(
-			(a) => a.severity === "high" && (a.status === "active" || a.status === "acknowledged"),
+		const warningAlerts = this.alerts.filter(
+			(a) => a.severity === "warning" && (a.status === "active" || a.status === "acknowledged"),
 		).length;
 
 		if (criticalAlerts > 0) return "critical";
-		if (highAlerts > 0) return "degraded";
+		if (warningAlerts > 0) return "degraded";
 		return "healthy";
 	}
 
@@ -95,6 +94,12 @@ class DashboardAlertsViewModel implements Disposable {
 	get hasError(): boolean {
 		return this.#alertsQuery.hasError;
 	}
+
+	/** Refetch active alerts (e.g. after ack/resolve from dashboard drawer). */
+	refresh = async () => {
+		this.#alertsQuery.invalidate();
+		await this.#alertsQuery.refetch();
+	};
 
 	dispose() {
 		this.#alertsQuery.dispose();
