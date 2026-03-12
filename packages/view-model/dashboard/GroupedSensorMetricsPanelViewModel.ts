@@ -93,6 +93,17 @@ class GroupedSensorMetricsPanelViewModel {
 		return this.alertsBySensor[sensorKey(sensor)] ?? 0;
 	}
 
+	/**
+	 * Sensors for a type, sorted by alert count (sensors with alerts first), limited to `limit`.
+	 * Use from the panel with SENSORS_DISPLAY_LIMIT so sorting/filtering stays in ViewModel (component-pattern).
+	 */
+	getVisibleSensorsForType(type: string, limit: number): SensorWithReading[] {
+		const typeSensors = this.sensorsByType[type] ?? [];
+		return [...typeSensors]
+			.sort((a, b) => this.getAlertCountForSensor(b) - this.getAlertCountForSensor(a))
+			.slice(0, limit);
+	}
+
 	/** Ordered list of sensor types (priority order, then rest) */
 	get orderedTypes(): string[] {
 		const byType = this.sensorsByType;

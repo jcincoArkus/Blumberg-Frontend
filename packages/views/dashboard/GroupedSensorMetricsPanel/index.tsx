@@ -103,11 +103,7 @@ export const GroupedSensorMetricsPanel = observer(function GroupedSensorMetricsP
 						const typeConfig = getSensorTypeConfig(type);
 						const TypeIcon = typeConfig.icon;
 						const alertCount = vm.alertsBySensorType[type] ?? 0;
-						// Show sensors with active alerts first (match by sensor name = serial)
-						const sortedByAlerts = [...typeSensors].sort(
-							(a, b) => vm.getAlertCountForSensor(b) - vm.getAlertCountForSensor(a),
-						);
-						const visibleSensors = sortedByAlerts.slice(0, SENSORS_DISPLAY_LIMIT);
+						const visibleSensors = vm.getVisibleSensorsForType(type, SENSORS_DISPLAY_LIMIT);
 						const hasMore = typeSensors.length > SENSORS_DISPLAY_LIMIT;
 
 						return (
