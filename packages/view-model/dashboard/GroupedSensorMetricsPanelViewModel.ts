@@ -18,6 +18,11 @@ export interface SensorWithReading {
 
 const TYPE_ORDER = ["temperature", "humidity", "pressure", "co2", "energy", "o2"] as const;
 
+/** Backend health list uses name = sensor.Serial; alerts use sensorSerial. Use name for matching. */
+function sensorKey(sensor: SensorWithReading): string {
+	return sensor.name ?? sensor.id;
+}
+
 /**
  * Singleton ViewModel for GroupedSensorMetricsPanel.
  * Delegates to DashboardSensorsViewModel and DashboardAlertsViewModel.
@@ -29,6 +34,14 @@ class GroupedSensorMetricsPanelViewModel {
 
 	get sensors(): SensorWithReading[] {
 		return dashboardSensorsViewModel.sensors as unknown as SensorWithReading[];
+	}
+
+	get isSensorsLoading(): boolean {
+		return dashboardSensorsViewModel.isSensorsLoading;
+	}
+
+	get hasSensorsError(): boolean {
+		return dashboardSensorsViewModel.hasSensorsError;
 	}
 
 	get alerts() {
@@ -46,12 +59,12 @@ class GroupedSensorMetricsPanelViewModel {
 		return grouped;
 	}
 
-	/** Alert count per sensor type (from active alerts with sensorId) */
+	/** Alert count per sensor type (from active alerts with sensorId = sensor serial) */
 	get alertsBySensorType(): Record<string, number> {
 		const counts: Record<string, number> = {};
 		for (const alert of this.alerts) {
 			if (!alert.sensorId) continue;
-			const sensor = this.sensors.find((s) => s.id === alert.sensorId);
+			const sensor = this.sensors.find((s) => sensorKey(s) === alert.sensorId);
 			if (sensor) {
 				const t = sensor.type ?? "other";
 				counts[t] = (counts[t] ?? 0) + 1;
@@ -60,7 +73,11 @@ class GroupedSensorMetricsPanelViewModel {
 		return counts;
 	}
 
-	/** Alert count per sensor id */
+	/**
+	 * Alert count per sensor, keyed by sensor serial (name).
+	 * Backend: alerts use sensorSerial, health list uses id (Guid) and name (= serial).
+	 * We key by serial so the panel can look up by sensor.name.
+	 */
 	get alertsBySensor(): Record<string, number> {
 		const counts: Record<string, number> = {};
 		for (const alert of this.alerts) {
@@ -69,6 +86,11 @@ class GroupedSensorMetricsPanelViewModel {
 			}
 		}
 		return counts;
+	}
+
+	/** Alert count for a sensor (use sensor.name = serial to match alerts). */
+	getAlertCountForSensor(sensor: SensorWithReading): number {
+		return this.alertsBySensor[sensorKey(sensor)] ?? 0;
 	}
 
 	/** Ordered list of sensor types (priority order, then rest) */
