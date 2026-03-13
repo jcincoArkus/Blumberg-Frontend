@@ -67,7 +67,9 @@ class AlertsViewModel implements Disposable {
 		for (const r of raw) {
 			const id = r.sensorId as string | undefined;
 			const serial = (r.sensorSerial ?? r.SensorSerial) as string | undefined;
-			if (id && serial) acc[id] = serial;
+			const displayName = serial ?? id ?? "";
+			if (serial) acc[serial] = displayName; // key by serial (alert.sensorId is serial when present)
+			if (id) acc[id] = displayName; // also key by Guid for backward compatibility
 		}
 		return acc;
 	}
@@ -77,8 +79,12 @@ class AlertsViewModel implements Disposable {
 		const raw = this.rawItems as Array<Record<string, unknown>>;
 		for (const r of raw) {
 			const id = r.sensorId as string | undefined;
+			const serial = (r.sensorSerial ?? r.SensorSerial) as string | undefined;
 			const name = (r.sensorTypeName ?? r.SensorTypeName) as string | undefined;
-			if (id && name) acc[id] = name;
+			if (name) {
+				if (serial) acc[serial] = name; // key by serial (alert.sensorId is serial when present)
+				if (id) acc[id] = name; // also key by Guid for backward compatibility
+			}
 		}
 		return acc;
 	}
