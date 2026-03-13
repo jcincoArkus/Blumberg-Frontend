@@ -4,6 +4,7 @@ import {
 	SensorHealthStatus,
 } from "~@/api";
 import { makeAutoObservable, reaction, runInAction } from "~@/mobx";
+import { authViewModel } from "~@/view-model/auth";
 import type { Domain, Sensor } from "~@/views";
 
 import { SENSORS_POLL_INTERVAL_MS } from "../constants";
@@ -57,27 +58,43 @@ function mapHealthItemToSensor(item: SensorHealthListItemResponse): DashboardSen
 	};
 }
 
+type HealthQuery = ReturnType<typeof getSensorHealthListV1ObservedQuery>;
+
 /**
  * Singleton ViewModel for Dashboard Sensors data.
  * Fetches from GET /api/v1/sensors/health (sensors with latest reading).
- * Auto-refreshes via refetchInterval so sensor metrics stay in sync with alerts.
+ * Query is created only on first load() so login page never triggers health requests.
  */
 class DashboardSensorsViewModel {
-	#healthQuery = getSensorHealthListV1ObservedQuery(undefined, {
-		refetchInterval: SENSORS_POLL_INTERVAL_MS,
-	});
+	#healthQuery: HealthQuery | null = null;
 	#syncDisposer: (() => void) | null = null;
 	/** Cached list from API so observer() reliably re-renders when data arrives. */
 	sensorsData: DashboardSensor[] = [];
 
 	activeDomain: Domain = "All";
 
+	#authDisposer: (() => void) | null = null;
+
 	constructor() {
 		makeAutoObservable(this);
-		// Sync API response into observable so UI updates when request completes
+		// Stop polling when user logs out so health requests don't keep firing on login page
+		this.#authDisposer = reaction(
+			() => authViewModel.isAuthenticated,
+			(authenticated) => {
+				if (!authenticated) this.dispose();
+			},
+			{ fireImmediately: false },
+		);
+	}
+
+	#ensureQuery(): HealthQuery {
+		if (this.#healthQuery) return this.#healthQuery;
+		this.#healthQuery = getSensorHealthListV1ObservedQuery(undefined, {
+			refetchInterval: SENSORS_POLL_INTERVAL_MS,
+		});
 		this.#syncDisposer = reaction(
 			() => {
-				const data = this.#healthQuery.data as
+				const data = this.#healthQuery?.data as
 					| { items?: SensorHealthListItemResponse[] }
 					| undefined;
 				return data?.items ?? null;
@@ -89,10 +106,11 @@ class DashboardSensorsViewModel {
 			},
 			{ fireImmediately: true },
 		);
+		return this.#healthQuery;
 	}
 
 	#load() {
-		this.#healthQuery.load({
+		this.#ensureQuery().load({
 			query: {
 				Page: 1,
 				PageSize: DASHBOARD_PAGE_SIZE,
@@ -102,12 +120,12 @@ class DashboardSensorsViewModel {
 
 	/** True while the sensor health list is fetching (initial or refetch). */
 	get isSensorsLoading(): boolean {
-		return this.#healthQuery.isLoading ?? false;
+		return this.#healthQuery?.isLoading ?? false;
 	}
 
 	/** True if the last sensor health list request failed. */
 	get hasSensorsError(): boolean {
-		return this.#healthQuery.hasError ?? false;
+		return this.#healthQuery?.hasError ?? false;
 	}
 
 	/** All sensors from API (unfiltered). */
@@ -157,16 +175,19 @@ class DashboardSensorsViewModel {
 		this.activeDomain = value;
 	};
 
-	/** Refetch sensor health list (e.g. after dashboard mount). */
+	/** Refetch sensor health list (only call from dashboard-mounted components; login page never mounts those). */
 	load = () => {
 		this.#load();
 	};
 
 	/** Clean up query and reaction (viewmodel-pattern). */
 	dispose = () => {
+		this.#authDisposer?.();
+		this.#authDisposer = null;
 		this.#syncDisposer?.();
 		this.#syncDisposer = null;
-		this.#healthQuery.dispose();
+		this.#healthQuery?.dispose();
+		this.#healthQuery = null;
 	};
 }
 

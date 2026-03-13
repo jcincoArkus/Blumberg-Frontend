@@ -1,11 +1,11 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 
 import type { ColumnDef } from "~@/data-table";
 import { DataTable } from "~@/data-table";
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { useActiveAlertsPanelViewModel } from "~@/view-model";
+import { dashboardAlertsViewModel, useActiveAlertsPanelViewModel } from "~@/view-model";
 
 import { AlertDetailsDrawer } from "../../alerts/AlertDetailsDrawer";
 import type { Alert } from "../../alerts/types";
@@ -14,12 +14,7 @@ import { ActiveAlertsController } from "./ActiveAlertsController";
 import { ActiveAlertListItem } from "./ActiveAlertsListItem";
 import { ActiveAlertsListView } from "./ActiveAlertsListView";
 
-const getColumns = (): ColumnDef<AlertItem>[] => [
-	{
-		accessorKey: "name",
-		header: t`Alert`,
-	},
-];
+const getColumns = (): ColumnDef<AlertItem>[] => [{ accessorKey: "name", header: t`Alert` }];
 
 export const ActiveAlertsPanel = observer(function ActiveAlertsPanel() {
 	const vm = useActiveAlertsPanelViewModel();
@@ -27,6 +22,13 @@ export const ActiveAlertsPanel = observer(function ActiveAlertsPanel() {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const controller = useMemo(() => new ActiveAlertsController(), []);
 	const columns = useMemo(() => getColumns(), []);
+
+	// Trigger load when panel mounts (redundant with Home/GlobalStatusBar/DataTable store so at least one runs).
+	useEffect(() => {
+		dashboardAlertsViewModel.load();
+	}, []);
+
+	const alertsForOverview = vm.alertsForOverview;
 
 	const handleAlertClick = (alert: Alert) => {
 		setSelectedAlert(alert);
@@ -51,6 +53,7 @@ export const ActiveAlertsPanel = observer(function ActiveAlertsPanel() {
 				</div>
 				<div className="flex-1 min-h-0 overflow-hidden">
 					<DataTable
+						key={`alerts-${alertsForOverview.length}`}
 						controller={controller}
 						columns={columns}
 						viewMode="list"

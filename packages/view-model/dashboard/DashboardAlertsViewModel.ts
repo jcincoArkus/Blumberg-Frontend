@@ -1,29 +1,59 @@
 import type { ActiveAlertResponse } from "~@/api";
 import { getActiveAlertsV1ObservedQuery } from "~@/api";
-import { makeAutoObservable } from "~@/mobx";
+import { makeAutoObservable, reaction } from "~@/mobx";
+import { authViewModel } from "~@/view-model/auth";
 import type { Alert, Domain } from "~@/views";
 
 import { ALERTS_POLL_INTERVAL_MS } from "../constants";
 import type { Disposable } from "../types";
 import { mapActiveAlertResponseToAlert } from "./mapActiveAlertResponseToAlert";
 
+type AlertsQuery = ReturnType<typeof getActiveAlertsV1ObservedQuery>;
+
 /**
  * Singleton ViewModel for Dashboard Alerts data.
- * Auto-refreshes via refetchInterval (polling) so new alerts appear without reload.
+ * Query is created only on first load() so login page never triggers active requests.
  */
+/** Debounce window: skip load() if last load was within this ms (avoids duplicate requests from multiple triggers). */
+const LOAD_DEBOUNCE_MS = 800;
+
 class DashboardAlertsViewModel implements Disposable {
-	#alertsQuery = getActiveAlertsV1ObservedQuery(undefined, {
-		refetchInterval: ALERTS_POLL_INTERVAL_MS,
-	});
+	#alertsQuery: AlertsQuery | null = null;
+	#lastLoadAt = 0;
 
 	// Observable state for domain filtering
 	activeDomain: Domain = "All";
 	domainSensorIds: Set<string> = new Set();
 
+	#authDisposer: (() => void) | null = null;
+
 	constructor() {
 		makeAutoObservable(this);
-		this.#alertsQuery.load();
+		// Stop polling when user logs out so active requests don't keep firing on login page
+		this.#authDisposer = reaction(
+			() => authViewModel.isAuthenticated,
+			(authenticated) => {
+				if (!authenticated) this.dispose();
+			},
+			{ fireImmediately: false },
+		);
 	}
+
+	#ensureQuery(): AlertsQuery {
+		if (this.#alertsQuery) return this.#alertsQuery;
+		this.#alertsQuery = getActiveAlertsV1ObservedQuery(undefined, {
+			refetchInterval: ALERTS_POLL_INTERVAL_MS,
+		});
+		return this.#alertsQuery;
+	}
+
+	/** Load active alerts. Deduped so multiple triggers (Home, GlobalStatusBar, Panel, DataTable) don't all fire. */
+	load = () => {
+		const now = Date.now();
+		if (now - this.#lastLoadAt < LOAD_DEBOUNCE_MS) return;
+		this.#lastLoadAt = now;
+		this.#ensureQuery().load();
+	};
 
 	/**
 	 * Set active domain filter and sensor IDs for filtering
@@ -34,11 +64,14 @@ class DashboardAlertsViewModel implements Disposable {
 	};
 
 	/**
-	 * Get all alerts (unfiltered)
+	 * Get all alerts (unfiltered). Handles array or { items: [] } from API.
 	 */
 	get allAlerts(): Alert[] {
-		const data = this.#alertsQuery.data as ActiveAlertResponse[] | null | undefined;
-		return (data ?? []).map(mapActiveAlertResponseToAlert);
+		const raw = this.#alertsQuery?.data;
+		const items = Array.isArray(raw)
+			? raw
+			: ((raw as { items?: ActiveAlertResponse[] } | null)?.items ?? []);
+		return (items as ActiveAlertResponse[]).map(mapActiveAlertResponseToAlert);
 	}
 
 	/**
@@ -84,25 +117,31 @@ class DashboardAlertsViewModel implements Disposable {
 	}
 
 	get isLoading(): boolean {
-		return this.#alertsQuery.isLoading;
+		return this.#alertsQuery?.isLoading ?? false;
 	}
 
 	get isFetching(): boolean {
-		return this.#alertsQuery.isFetching;
+		return this.#alertsQuery?.isFetching ?? false;
 	}
 
 	get hasError(): boolean {
-		return this.#alertsQuery.hasError;
+		return this.#alertsQuery?.hasError ?? false;
 	}
 
 	/** Refetch active alerts (e.g. after ack/resolve from dashboard drawer). */
 	refresh = async () => {
-		this.#alertsQuery.invalidate();
-		await this.#alertsQuery.refetch();
+		const q = this.#alertsQuery;
+		if (!q) return;
+		q.invalidate();
+		await q.refetch();
 	};
 
 	dispose() {
-		this.#alertsQuery.dispose();
+		this.#authDisposer?.();
+		this.#authDisposer = null;
+		this.#alertsQuery?.dispose();
+		this.#alertsQuery = null;
+		this.#lastLoadAt = 0;
 	}
 }
 

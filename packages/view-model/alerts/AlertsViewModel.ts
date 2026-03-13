@@ -87,6 +87,10 @@ class AlertsViewModel implements Disposable {
 		return this.#alertsQuery.isLoading;
 	}
 
+	get isFetching(): boolean {
+		return this.#alertsQuery.isFetching;
+	}
+
 	get hasError(): boolean {
 		return this.#alertsQuery.hasError;
 	}
@@ -155,6 +159,29 @@ class AlertsViewModel implements Disposable {
 
 	get acknowledgedAlerts(): Alert[] {
 		return this.alerts.filter((a) => a.status === "acknowledged");
+	}
+
+	/** Active + acknowledged (unresolved) — for dashboard status bar and sensor metrics. */
+	get unresolvedAlerts(): Alert[] {
+		return [...this.activeAlerts, ...this.acknowledgedAlerts];
+	}
+
+	/** Counts by severity for unresolved alerts (dashboard status bar). */
+	get alertsBySeverity(): { critical: number; warning: number; info: number } {
+		const list = this.unresolvedAlerts;
+		return {
+			critical: list.filter((a) => a.severity === "critical").length,
+			warning: list.filter((a) => a.severity === "warning").length,
+			info: list.filter((a) => a.severity === "info").length,
+		};
+	}
+
+	/** System health from unresolved alerts (dashboard status bar). */
+	get systemStatus(): "healthy" | "degraded" | "critical" {
+		const { critical, warning } = this.alertsBySeverity;
+		if (critical > 0) return "critical";
+		if (warning > 0) return "degraded";
+		return "healthy";
 	}
 
 	get resolvedToday(): Alert[] {
