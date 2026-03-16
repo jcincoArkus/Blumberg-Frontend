@@ -40,10 +40,11 @@ const healthStatusFromLabel: Record<string, SensorHealthStatus> = {
 	offline: SensorHealthStatus._5,
 };
 
-/** Map API ingestion source enum to label (0=Api, 1=Csv). */
+/** Map API ingestion source enum to label (0=Api, 1=Csv, 2=Simulated → api). UI shows only api/csv. */
 const ingestionSourceLabel: Record<ApiIngestionSource, "api" | "csv"> = {
 	[ApiIngestionSource._0]: "api",
 	[ApiIngestionSource._1]: "csv",
+	[ApiIngestionSource._2]: "api",
 };
 
 // Constants matching backend SensorService (global expected interval 300s; Stale > 2×, Offline > 5×)
@@ -62,7 +63,7 @@ class MonitoringSensorHealthViewModel {
 
 	searchQuery = "";
 	healthFilter = "all";
-	qualityFilter = "all";
+	// qualityFilter = "all";
 	ingestionFilter = "all";
 	typeFilter = "all";
 	siteFilter = "all";
@@ -183,9 +184,9 @@ class MonitoringSensorHealthViewModel {
 	get filteredData(): SensorHealthData[] {
 		return this.sensorHealthData.filter((data) => {
 			// Health and search filters are server-side; remaining filters are client-side
-			if (this.qualityFilter !== "all") {
-				if (!data.quality || data.quality.qualityStatus !== this.qualityFilter) return false;
-			}
+			// if (this.qualityFilter !== "all") {
+			// 	if (!data.quality || data.quality.qualityStatus !== this.qualityFilter) return false;
+			// }
 			if (this.ingestionFilter !== "all" && data.ingestionSource !== this.ingestionFilter)
 				return false;
 			if (this.typeFilter !== "all" && data.sensor.type !== this.typeFilter) return false;
@@ -280,9 +281,9 @@ class MonitoringSensorHealthViewModel {
 		this.healthFilter = value;
 	};
 
-	setQualityFilter = (value: string) => {
-		this.qualityFilter = value;
-	};
+	// setQualityFilter = (value: string) => {
+	// 	this.qualityFilter = value;
+	// };
 
 	setIngestionFilter = (value: string) => {
 		this.ingestionFilter = value;

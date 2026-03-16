@@ -2,6 +2,7 @@ import { AlertTriangle, Bell, CheckCircle2, Clock, Eye } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { t } from "~@/i18n/macro";
+import { getSeverityConfig } from "~@/models";
 import {
 	Badge,
 	Button,
@@ -45,9 +46,8 @@ export function AlertsHistoryTab({
 		const total = alerts.length;
 		const bySeverity = {
 			critical: alerts.filter((a) => a.severity === "critical").length,
-			high: alerts.filter((a) => a.severity === "high").length,
-			medium: alerts.filter((a) => a.severity === "medium").length,
-			low: alerts.filter((a) => a.severity === "low").length,
+			warning: alerts.filter((a) => a.severity === "warning").length,
+			info: alerts.filter((a) => a.severity === "info").length,
 		};
 
 		const resolved = alerts.filter((a) => a.status === "resolved" && a.durationSeconds);
@@ -92,13 +92,8 @@ export function AlertsHistoryTab({
 	};
 
 	const getSeverityBadge = (severity: AlertSeverity) => {
-		const config = {
-			critical: { label: t`Critical`, className: "bg-red-100 text-red-700 border-red-200" },
-			high: { label: t`High`, className: "bg-orange-100 text-orange-700 border-orange-200" },
-			medium: { label: t`Medium`, className: "bg-amber-100 text-amber-700 border-amber-200" },
-			low: { label: t`Low`, className: "bg-blue-100 text-blue-700 border-blue-200" },
-		};
-		const cfg = config[severity];
+		const config = getSeverityConfig();
+		const cfg = config[severity] ?? config.info;
 		return (
 			<Badge variant="outline" className={cn("border", cfg.className)}>
 				{cfg.label}
@@ -134,11 +129,11 @@ export function AlertsHistoryTab({
 		);
 	};
 
-	// Group alerts by day for chart
+	// Group alerts by day for chart (backend severities: critical, warning, info)
 	const chartData = useMemo(() => {
 		const grouped = new Map<
 			string,
-			{ date: string; count: number; critical: number; high: number; medium: number; low: number }
+			{ date: string; count: number; critical: number; warning: number; info: number }
 		>();
 
 		alerts.forEach((alert) => {
@@ -146,16 +141,15 @@ export function AlertsHistoryTab({
 			const dateKey = date.toLocaleDateString();
 
 			if (!grouped.has(dateKey)) {
-				grouped.set(dateKey, { date: dateKey, count: 0, critical: 0, high: 0, medium: 0, low: 0 });
+				grouped.set(dateKey, { date: dateKey, count: 0, critical: 0, warning: 0, info: 0 });
 			}
 
 			const entry = grouped.get(dateKey);
 			if (!entry) return;
 			entry.count += 1;
 			if (alert.severity === "critical") entry.critical += 1;
-			else if (alert.severity === "high") entry.high += 1;
-			else if (alert.severity === "medium") entry.medium += 1;
-			else if (alert.severity === "low") entry.low += 1;
+			else if (alert.severity === "warning") entry.warning += 1;
+			else if (alert.severity === "info") entry.info += 1;
 		});
 
 		return Array.from(grouped.values()).sort(
@@ -217,19 +211,13 @@ export function AlertsHistoryTab({
 									variant="outline"
 									className="border bg-orange-100 text-orange-700 border-orange-200"
 								>
-									{t`${metrics.bySeverity.high} High`}
-								</Badge>
-								<Badge
-									variant="outline"
-									className="border bg-amber-100 text-amber-700 border-amber-200"
-								>
-									{t`${metrics.bySeverity.medium} Medium`}
+									{t`${metrics.bySeverity.warning} Warning`}
 								</Badge>
 								<Badge
 									variant="outline"
 									className="border bg-blue-100 text-blue-700 border-blue-200"
 								>
-									{t`${metrics.bySeverity.low} Low`}
+									{t`${metrics.bySeverity.info} Info`}
 								</Badge>
 							</div>
 						</CardContent>

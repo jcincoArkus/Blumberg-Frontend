@@ -2,10 +2,10 @@ import { Clock } from "lucide-react";
 import { Link } from "react-router";
 
 import { t } from "~@/i18n/macro";
+import { getSeverityConfig } from "~@/models";
 import { Badge } from "~@/ui";
 
 import type { Alert } from "../types";
-import { getSeverityConfig } from "./constants";
 import { calculateDuration, formatTimestamp } from "./helpers";
 
 interface AlertSummarySectionProps {
@@ -24,7 +24,7 @@ export function AlertSummarySection({
 	siteLocation,
 }: AlertSummarySectionProps) {
 	const severityConfig = getSeverityConfig();
-	const severityInfo = severityConfig[alert.severity];
+	const severityInfo = severityConfig[alert.severity] ?? severityConfig.info;
 	const SeverityIcon = severityInfo.icon;
 	const duration = calculateDuration(alert.createdAt, alert.resolvedAt);
 

@@ -17,6 +17,7 @@ import {
 import { AlertSummarySection } from "./AlertSummarySection";
 import { EventsHistorySection } from "./EventsHistorySection";
 import { NotificationsAuditSection } from "./NotificationsAuditSection";
+import { RecommendedActionsSection } from "./RecommendedActionsSection";
 import type { AlertDetailsDrawerProps } from "./types";
 
 export type { AlertDetailsDrawerProps } from "./types";
@@ -40,6 +41,7 @@ export function AlertDetailsDrawer({
 
 	const events = currentAlert.events ?? [];
 	const notifications = currentAlert.notifications ?? [];
+	const recommendedActions = currentAlert.recommendedActions ?? [];
 
 	const handleUpdate = (action: "acknowledge" | "resolve") => {
 		onAlertUpdate?.(currentAlert.id, action);
@@ -116,6 +118,12 @@ export function AlertDetailsDrawer({
 						siteName={siteName}
 						siteLocation={siteLocation}
 					/>
+					{recommendedActions.length > 0 && (
+						<>
+							<Separator />
+							<RecommendedActionsSection actions={recommendedActions} />
+						</>
+					)}
 					<Separator />
 					<EventsHistorySection events={events} isLoading={isDetailLoading} />
 					<Separator />

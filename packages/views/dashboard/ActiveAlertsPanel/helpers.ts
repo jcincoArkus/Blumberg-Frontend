@@ -64,7 +64,7 @@ export function getSeverityIcon(severity: string) {
 	}
 }
 
-/** Mockup-style row styling: bg, left border, icon circle, badge */
+/** Row styling by severity (backend: Critical, Warning, Info). */
 export function getSeverityStyle(severity: string) {
 	switch (severity) {
 		case "critical":
@@ -76,7 +76,7 @@ export function getSeverityStyle(severity: string) {
 				badgeBg: "bg-red-600",
 				badgeText: "text-white",
 			};
-		case "high":
+		case "warning":
 			return {
 				bg: "bg-orange-50",
 				border: "border-l-4 border-orange-500",
@@ -85,17 +85,8 @@ export function getSeverityStyle(severity: string) {
 				badgeBg: "bg-orange-500",
 				badgeText: "text-white",
 			};
-		case "medium":
-			return {
-				bg: "bg-yellow-50",
-				border: "border-l-4 border-yellow-500",
-				iconBg: "bg-yellow-100",
-				iconColor: "text-yellow-600",
-				badgeBg: "bg-yellow-500",
-				badgeText: "text-white",
-			};
 		default:
-			// Mockup: blue for LOW (e.g. Maintenance, Air)
+			// info
 			return {
 				bg: "bg-slate-50",
 				border: "border-l-4 border-slate-400",
@@ -111,10 +102,8 @@ export function getSeverityColor(severity: string) {
 	switch (severity) {
 		case "critical":
 			return "text-red-700 bg-red-50 border-red-200";
-		case "high":
+		case "warning":
 			return "text-orange-700 bg-orange-50 border-orange-200";
-		case "medium":
-			return "text-amber-700 bg-amber-50 border-amber-200";
 		default:
 			return "text-slate-700 bg-slate-50 border-slate-200";
 	}
@@ -124,10 +113,8 @@ export function getBadgeClassName(severity: string) {
 	switch (severity) {
 		case "critical":
 			return "bg-red-600 text-white border-0";
-		case "high":
+		case "warning":
 			return "bg-orange-500 text-white border-0";
-		case "medium":
-			return "bg-yellow-500 text-white border-0";
 		default:
 			return "bg-blue-500 text-white border-0";
 	}
@@ -137,10 +124,8 @@ export function getTextColor(severity: string) {
 	switch (severity) {
 		case "critical":
 			return "text-red-700";
-		case "high":
+		case "warning":
 			return "text-orange-700";
-		case "medium":
-			return "text-yellow-700";
 		default:
 			return "text-slate-700";
 	}

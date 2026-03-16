@@ -1,5 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { observer } from "~@/mobx";
+import {
+	alertsViewModel,
+	dashboardAlertsViewModel,
+	dashboardSensorsViewModel,
+} from "~@/view-model";
 import {
 	ActiveAlertsPanel,
 	AIInsightsPanel,
@@ -15,8 +21,19 @@ import {
  * Dashboard/Home page component.
  * Layout (sidebar + header) is provided by the parent _private layout.
  */
-function Home() {
+const Home = observer(function Home() {
 	const [selectedLocation, setSelectedLocation] = useState<string | null>("1");
+
+	// Trigger alerts + sensors load when dashboard home mounts. Stop sensor health polling on unmount so /alerts (and other pages) don't keep firing health requests.
+	useEffect(() => {
+		// Ensure all dashboard data sources start loading/polling when Home mounts.
+		alertsViewModel.load();
+		dashboardAlertsViewModel.load();
+		dashboardSensorsViewModel.load();
+		return () => {
+			dashboardSensorsViewModel.dispose();
+		};
+	}, []);
 
 	return (
 		<div className="space-y-4">
@@ -53,6 +70,6 @@ function Home() {
 			</div>
 		</div>
 	);
-}
+});
 
 export default Home;

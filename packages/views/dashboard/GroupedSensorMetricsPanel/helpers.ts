@@ -33,6 +33,24 @@ export function getSensorStatusFromValue(
 export function getSensorStatus(sensor: SensorWithReading): SensorStatusInfo {
 	const value = sensor.value ?? 0;
 	const status = getSensorStatusFromValue(sensor, value);
+	return statusToInfo(status);
+}
+
+/**
+ * Status for sensor card: when the sensor has active alerts, show Alert so the card
+ * reflects the same reality as the Active Alerts section.
+ */
+export function getSensorStatusForCard(
+	sensor: SensorWithReading,
+	alertsCount: number,
+): SensorStatusInfo {
+	if (alertsCount > 0) {
+		return statusToInfo("Alert");
+	}
+	return getSensorStatus(sensor);
+}
+
+function statusToInfo(status: SensorValueStatus): SensorStatusInfo {
 	if (status === "Alert") {
 		return {
 			icon: AlertCircle,

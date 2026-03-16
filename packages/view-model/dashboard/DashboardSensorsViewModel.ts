@@ -1,13 +1,35 @@
-import { makeAutoObservable } from "~@/mobx";
-import { dashboardSensors } from "~@/mock-data";
+import {
+	getSensorHealthListV1ObservedQuery,
+	type SensorHealthListItemResponse,
+	SensorHealthStatus,
+} from "~@/api";
+import { makeAutoObservable, reaction, runInAction } from "~@/mobx";
+import { authViewModel } from "~@/view-model/auth";
 import type { Domain, Sensor } from "~@/views";
 
-// Type for sensors with domain filtering capability
+import { SENSORS_POLL_INTERVAL_MS } from "../constants";
+
+// Dashboard sensor extends Sensor with type and reading fields for metrics panel
 interface DashboardSensor extends Sensor {
 	type: string;
+	value?: number;
+	unit: string;
+	lastSeen?: string;
+	min?: number;
+	max?: number;
 }
 
-// Domain to sensor type mapping
+/** Map API SensorHealthStatus to dashboard Sensor status (active/offline/stale/warning/error). */
+const healthStatusToSensorStatus: Record<SensorHealthStatus, Sensor["status"]> = {
+	[SensorHealthStatus._0]: "active", // healthy
+	[SensorHealthStatus._1]: "warning",
+	[SensorHealthStatus._2]: "error", // critical
+	[SensorHealthStatus._3]: "stale",
+	[SensorHealthStatus._4]: "offline", // silent
+	[SensorHealthStatus._5]: "offline",
+};
+
+// Domain to sensor type mapping (for future domain filter)
 const DOMAIN_TYPES: Record<string, string[]> = {
 	Energy: ["energy"],
 	Climate: ["temperature", "humidity", "co2"],
@@ -15,86 +37,129 @@ const DOMAIN_TYPES: Record<string, string[]> = {
 	Equipment: ["temperature", "humidity", "co2", "pressure", "energy"],
 };
 
+const DASHBOARD_PAGE_SIZE = 500;
+
+function mapHealthItemToSensor(item: SensorHealthListItemResponse): DashboardSensor {
+	const status =
+		item.healthStatus != null
+			? healthStatusToSensorStatus[item.healthStatus]
+			: ("offline" as const);
+	const type = (item.sensorType ?? "other").toLowerCase();
+	return {
+		id: item.id ?? "",
+		name: item.name ?? "",
+		type,
+		status,
+		value: item.lastValue ?? undefined,
+		unit: item.unit ?? "",
+		lastSeen: item.lastSeenAt?.toISOString(),
+		min: undefined,
+		max: undefined,
+	};
+}
+
+type HealthQuery = ReturnType<typeof getSensorHealthListV1ObservedQuery>;
+
 /**
  * Singleton ViewModel for Dashboard Sensors data.
- * Will use hey-api ObservedQuery when endpoints are ready.
- * Currently uses mock data.
+ * Fetches from GET /api/v1/sensors/health (sensors with latest reading).
+ * Query is created only on first load() so login page never triggers health requests.
  */
 class DashboardSensorsViewModel {
-	// TODO: Replace with ObservedQuery when hey-api endpoint is ready
-	// sensorsQuery = new ObservedQuery(getSensorsQuery, {});
-	private readonly _sensors: DashboardSensor[];
+	#healthQuery: HealthQuery | null = null;
+	#syncDisposer: (() => void) | null = null;
+	/** Cached list from API so observer() reliably re-renders when data arrives. */
+	sensorsData: DashboardSensor[] = [];
 
-	// Observable state for domain filtering
 	activeDomain: Domain = "All";
+
+	#authDisposer: (() => void) | null = null;
 
 	constructor() {
 		makeAutoObservable(this);
-		this._sensors = dashboardSensors as DashboardSensor[];
+		// Stop polling when user logs out so health requests don't keep firing on login page
+		this.#authDisposer = reaction(
+			() => authViewModel.isAuthenticated,
+			(authenticated) => {
+				if (!authenticated) this.dispose();
+			},
+			{ fireImmediately: false },
+		);
 	}
 
-	/**
-	 * Set active domain filter
-	 */
-	setActiveDomain = (domain: Domain) => {
-		this.activeDomain = domain;
-	};
+	#ensureQuery(): HealthQuery {
+		if (this.#healthQuery) return this.#healthQuery;
+		this.#healthQuery = getSensorHealthListV1ObservedQuery(undefined, {
+			refetchInterval: SENSORS_POLL_INTERVAL_MS,
+		});
+		this.#syncDisposer = reaction(
+			() => {
+				const data = this.#healthQuery?.data as
+					| { items?: SensorHealthListItemResponse[] }
+					| undefined;
+				return data?.items ?? null;
+			},
+			(items) => {
+				runInAction(() => {
+					this.sensorsData = (items ?? []).map(mapHealthItemToSensor);
+				});
+			},
+			{ fireImmediately: true },
+		);
+		return this.#healthQuery;
+	}
 
-	/**
-	 * Get all sensors (unfiltered)
-	 */
+	#load() {
+		this.#ensureQuery().load({
+			query: {
+				Page: 1,
+				PageSize: DASHBOARD_PAGE_SIZE,
+			},
+		});
+	}
+
+	/** True while the sensor health list is fetching (initial or refetch). */
+	get isSensorsLoading(): boolean {
+		return this.#healthQuery?.isLoading ?? false;
+	}
+
+	/** True if the last sensor health list request failed. */
+	get hasSensorsError(): boolean {
+		return this.#healthQuery?.hasError ?? false;
+	}
+
+	/** All sensors from API (unfiltered). */
 	get allSensors(): DashboardSensor[] {
-		// return this.sensorsQuery.data ?? [];
-		return this._sensors;
+		return this.sensorsData;
 	}
 
-	/**
-	 * Get sensors filtered by active domain
-	 */
+	/** Sensors filtered by active domain. */
 	get sensors(): DashboardSensor[] {
 		if (this.activeDomain === "All") return this.allSensors;
 		const types = DOMAIN_TYPES[this.activeDomain] ?? [];
 		return this.allSensors.filter((s) => types.includes(s.type));
 	}
 
-	/**
-	 * Get sensor IDs for current domain (used by alerts filtering)
-	 */
 	get sensorIds(): Set<string> {
 		return new Set(this.sensors.map((s) => s.id));
 	}
 
-	/**
-	 * Get online sensors count
-	 */
 	get sensorsOnline(): number {
 		return this.sensors.filter((s) => s.status === "active").length;
 	}
 
-	/**
-	 * Get offline sensors
-	 */
 	get offlineSensors(): DashboardSensor[] {
 		return this.sensors.filter((s) => s.status === "offline");
 	}
 
-	/**
-	 * Get stale sensors
-	 */
 	get staleSensors(): DashboardSensor[] {
 		return this.sensors.filter((s) => s.status === "stale");
 	}
 
-	/**
-	 * Get flapping sensors (warning status)
-	 */
 	get flappingSensors(): DashboardSensor[] {
 		return this.sensors.filter((s) => s.status === "warning");
 	}
 
-	/**
-	 * Get sensor reliability metrics
-	 */
 	get sensorReliability() {
 		return {
 			offline: this.offlineSensors.length,
@@ -106,24 +171,26 @@ class DashboardSensorsViewModel {
 		};
 	}
 
-	/**
-	 * Load sensors from API
-	 * TODO: Uncomment when hey-api endpoint is ready
-	 */
-	// load = () => {
-	// 	this.sensorsQuery.load();
-	// };
+	setActiveDomain = (value: Domain) => {
+		this.activeDomain = value;
+	};
 
-	/**
-	 * Dispose of resources
-	 * TODO: Uncomment when hey-api endpoint is ready
-	 */
-	// dispose = () => {
-	// 	this.sensorsQuery.dispose();
-	// };
+	/** Refetch sensor health list (only call from dashboard-mounted components; login page never mounts those). */
+	load = () => {
+		this.#load();
+	};
+
+	/** Clean up query and reaction (viewmodel-pattern). */
+	dispose = () => {
+		this.#authDisposer?.();
+		this.#authDisposer = null;
+		this.#syncDisposer?.();
+		this.#syncDisposer = null;
+		this.#healthQuery?.dispose();
+		this.#healthQuery = null;
+	};
 }
 
-// Export singleton instance
 export const dashboardSensorsViewModel = new DashboardSensorsViewModel();
 
 export function useDashboardSensorsViewModel() {

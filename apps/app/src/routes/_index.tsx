@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
 import { t } from "~@/i18n/macro";
-import { authViewModel } from "~@/view-model";
+import { authViewModel } from "~@/view-model/auth";
 
 import type { Route } from "./+types/_index";
 

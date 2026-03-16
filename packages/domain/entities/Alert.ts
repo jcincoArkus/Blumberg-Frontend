@@ -1,5 +1,8 @@
+import type { AlertSeverity } from "~@/models";
+
 export type AlertStatus = "active" | "acknowledged" | "resolved";
-export type AlertSeverity = "critical" | "high" | "medium" | "low";
+
+export type { AlertSeverity };
 
 export interface AlertEvent {
 	id: string;

@@ -6,8 +6,8 @@ export interface SensorHealthTableProps {
 	onSearchChange: (query: string) => void;
 	healthFilter: string;
 	onHealthFilterChange: (status: string) => void;
-	qualityFilter: string;
-	onQualityFilterChange: (status: string) => void;
+	// qualityFilter: string;
+	// onQualityFilterChange: (status: string) => void;
 	ingestionFilter: string;
 	onIngestionFilterChange: (status: string) => void;
 	typeFilter: string;

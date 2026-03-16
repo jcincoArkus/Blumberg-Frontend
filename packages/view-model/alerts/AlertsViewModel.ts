@@ -5,15 +5,17 @@ import {
 	getAllAlertsV1ObservedQuery,
 	resolveAlertV1ObservedMutation,
 } from "~@/api";
-import { makeAutoObservable } from "~@/mobx";
+import { makeAutoObservable, reaction } from "~@/mobx";
 import type { Alert, AlertStatus } from "~@/models";
-import { getAlertDuration } from "~@/models";
+import { getAlertDuration, getSeverityOrder } from "~@/models";
 
+import { authViewModel } from "../auth";
 import { ALERTS_POLL_INTERVAL_MS } from "../constants";
 import type { Disposable } from "../types";
 import { mapAlertResponseToAlert } from "./mapAlertResponseToAlert";
 
 const DEFAULT_PAGE_SIZE = 500;
+type AlertsQuery = ReturnType<typeof getAllAlertsV1ObservedQuery>;
 
 /**
  * ViewModel for the Alerts & Events page.
@@ -22,14 +24,13 @@ const DEFAULT_PAGE_SIZE = 500;
 class AlertsViewModel implements Disposable {
 	activeTab: AlertStatus | "all" = "all";
 
-	#alertsQuery = getAllAlertsV1ObservedQuery(
-		{ query: { Page: 1, PageSize: DEFAULT_PAGE_SIZE } },
-		{ refetchInterval: ALERTS_POLL_INTERVAL_MS },
-	);
+	#alertsQuery: AlertsQuery;
+	#hasLoaded = false;
 	#detailQuery = getAlertByIdV1ObservedQuery();
 	#detailAlertId: string | null = null;
 	#ackMutation = acknowledgeAlertV1ObservedMutation();
 	#resolveMutation = resolveAlertV1ObservedMutation();
+	#authDisposer: (() => void) | null = null;
 
 	readonly calculateDuration = getAlertDuration;
 	getEquipmentName = (id: string): string => this.equipmentNames[id] ?? "Unknown Equipment";
@@ -37,13 +38,40 @@ class AlertsViewModel implements Disposable {
 	getSensorType = (id: string): string => this.sensorTypes[id] ?? "unknown";
 
 	constructor() {
+		// Create the observed query up front so MobX can track its data,
+		// but don't start network loading until load() is called.
+		this.#alertsQuery = getAllAlertsV1ObservedQuery(
+			{ query: { Page: 1, PageSize: DEFAULT_PAGE_SIZE } },
+			{ refetchInterval: ALERTS_POLL_INTERVAL_MS },
+		);
 		makeAutoObservable(this);
-		this.#alertsQuery.load();
+		// Stop alerts polling when user logs out.
+		this.#authDisposer = reaction(
+			() => authViewModel.isAuthenticated,
+			(isAuthenticated) => {
+				if (!isAuthenticated) {
+					this.dispose();
+				}
+			},
+			{ fireImmediately: false },
+		);
 	}
 
+	load = () => {
+		if (this.#hasLoaded) return;
+		this.#hasLoaded = true;
+		this.#alertsQuery.load();
+	};
+
 	private get rawItems(): AlertResponse[] {
-		const data = this.#alertsQuery.data as AlertResponsePagedResponse | null | undefined;
-		return data?.items ?? [];
+		const raw = this.#alertsQuery.data as
+			| AlertResponsePagedResponse
+			| AlertResponse[]
+			| null
+			| undefined;
+		// The alerts API may return either a paged response ({ items: [] }) or a bare array.
+		if (Array.isArray(raw)) return raw;
+		return raw?.items ?? [];
 	}
 
 	get alerts(): Alert[] {
@@ -67,7 +95,9 @@ class AlertsViewModel implements Disposable {
 		for (const r of raw) {
 			const id = r.sensorId as string | undefined;
 			const serial = (r.sensorSerial ?? r.SensorSerial) as string | undefined;
-			if (id && serial) acc[id] = serial;
+			const displayName = serial ?? id ?? "";
+			if (serial) acc[serial] = displayName; // key by serial (alert.sensorId is serial when present)
+			if (id) acc[id] = displayName; // also key by Guid for backward compatibility
 		}
 		return acc;
 	}
@@ -77,14 +107,22 @@ class AlertsViewModel implements Disposable {
 		const raw = this.rawItems as Array<Record<string, unknown>>;
 		for (const r of raw) {
 			const id = r.sensorId as string | undefined;
+			const serial = (r.sensorSerial ?? r.SensorSerial) as string | undefined;
 			const name = (r.sensorTypeName ?? r.SensorTypeName) as string | undefined;
-			if (id && name) acc[id] = name;
+			if (name) {
+				if (serial) acc[serial] = name; // key by serial (alert.sensorId is serial when present)
+				if (id) acc[id] = name; // also key by Guid for backward compatibility
+			}
 		}
 		return acc;
 	}
 
 	get isLoading(): boolean {
 		return this.#alertsQuery.isLoading;
+	}
+
+	get isFetching(): boolean {
+		return this.#alertsQuery.isFetching;
 	}
 
 	get hasError(): boolean {
@@ -105,26 +143,20 @@ class AlertsViewModel implements Disposable {
 		return AlertsViewModel.sortAlertsForDisplay(list);
 	}
 
-	/** Sort order: status (active → acknowledged → resolved), then severity (critical → low), then newest first. */
+	/** Sort order: status (active → acknowledged → resolved), then severity (critical → warning → info), then newest first. */
 	private static sortAlertsForDisplay(alerts: Alert[]): Alert[] {
 		const statusOrder: Record<AlertStatus, number> = {
 			active: 0,
 			acknowledged: 1,
 			resolved: 2,
 		};
-		const severityOrder: Record<string, number> = {
-			critical: 0,
-			high: 1,
-			medium: 2,
-			low: 3,
-		};
 		return [...alerts].sort((a, b) => {
 			const statusA = statusOrder[a.status] ?? 2;
 			const statusB = statusOrder[b.status] ?? 2;
 			if (statusA !== statusB) return statusA - statusB;
 
-			const sevA = severityOrder[a.severity] ?? 4;
-			const sevB = severityOrder[b.severity] ?? 4;
+			const sevA = getSeverityOrder(a.severity);
+			const sevB = getSeverityOrder(b.severity);
 			if (sevA !== sevB) return sevA - sevB;
 
 			const timeA = new Date(a.createdAt).getTime();
@@ -150,12 +182,40 @@ class AlertsViewModel implements Disposable {
 		return this.alerts.filter((a) => a.severity === "critical" && a.status === "active");
 	}
 
+	get warningAlerts(): Alert[] {
+		return this.alerts.filter((a) => a.severity === "warning" && a.status === "active");
+	}
+
+	/** Alias for warningAlerts (backend Warning = "high priority" in UI). */
 	get highAlerts(): Alert[] {
-		return this.alerts.filter((a) => a.severity === "high" && a.status === "active");
+		return this.warningAlerts;
 	}
 
 	get acknowledgedAlerts(): Alert[] {
 		return this.alerts.filter((a) => a.status === "acknowledged");
+	}
+
+	/** Active + acknowledged (unresolved) — for dashboard status bar and sensor metrics. */
+	get unresolvedAlerts(): Alert[] {
+		return [...this.activeAlerts, ...this.acknowledgedAlerts];
+	}
+
+	/** Counts by severity for unresolved alerts (dashboard status bar). */
+	get alertsBySeverity(): { critical: number; warning: number; info: number } {
+		const list = this.unresolvedAlerts;
+		return {
+			critical: list.filter((a) => a.severity === "critical").length,
+			warning: list.filter((a) => a.severity === "warning").length,
+			info: list.filter((a) => a.severity === "info").length,
+		};
+	}
+
+	/** System health from unresolved alerts (dashboard status bar). */
+	get systemStatus(): "healthy" | "degraded" | "critical" {
+		const { critical, warning } = this.alertsBySeverity;
+		if (critical > 0) return "critical";
+		if (warning > 0) return "degraded";
+		return "healthy";
 	}
 
 	get resolvedToday(): Alert[] {
@@ -202,6 +262,8 @@ class AlertsViewModel implements Disposable {
 	};
 
 	refresh = async () => {
+		// Ensure initial load has been triggered before attempting an async reload.
+		this.#hasLoaded = true;
 		await this.#alertsQuery.loadAsync({
 			query: { Page: 1, PageSize: DEFAULT_PAGE_SIZE },
 		});
@@ -210,8 +272,11 @@ class AlertsViewModel implements Disposable {
 	acknowledgeAlert = async (alertId: string) => {
 		try {
 			await this.#ackMutation.mutateAsync({ path: { id: alertId } });
-			this.#alertsQuery.invalidate();
-			await this.#alertsQuery.refetch();
+			const q = this.#alertsQuery;
+			if (q) {
+				q.invalidate();
+				await q.refetch();
+			}
 			if (this.#detailAlertId === alertId) {
 				this.#detailQuery.invalidate();
 				await this.#detailQuery.refetch();
@@ -224,8 +289,11 @@ class AlertsViewModel implements Disposable {
 	resolveAlert = async (alertId: string) => {
 		try {
 			await this.#resolveMutation.mutateAsync({ path: { id: alertId } });
-			this.#alertsQuery.invalidate();
-			await this.#alertsQuery.refetch();
+			const q = this.#alertsQuery;
+			if (q) {
+				q.invalidate();
+				await q.refetch();
+			}
 			if (this.#detailAlertId === alertId) {
 				this.#detailQuery.invalidate();
 				await this.#detailQuery.refetch();
@@ -244,13 +312,17 @@ class AlertsViewModel implements Disposable {
 	};
 
 	dispose() {
+		this.#authDisposer?.();
+		this.#authDisposer = null;
 		this.#alertsQuery.dispose();
 		this.#detailQuery.dispose();
+		this.#hasLoaded = false;
 	}
 }
 
 export const alertsViewModel = new AlertsViewModel();
 
 export function useAlertsViewModel() {
+	alertsViewModel.load();
 	return alertsViewModel;
 }

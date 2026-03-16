@@ -1,1 +1,8 @@
-export type { Alert, AlertEvent, AlertNotification, AlertSeverity, AlertStatus } from "~@/models";
+export type {
+	Alert,
+	AlertEvent,
+	AlertNotification,
+	AlertSeverity,
+	AlertStatus,
+	RecommendedAction,
+} from "~@/models";

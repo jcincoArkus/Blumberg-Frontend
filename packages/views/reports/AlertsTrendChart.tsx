@@ -16,9 +16,8 @@ interface AlertsTrendChartProps {
 		date: string;
 		count: number;
 		critical: number;
-		high: number;
-		medium: number;
-		low: number;
+		warning: number;
+		info: number;
 	}>;
 }
 
@@ -40,9 +39,8 @@ export function AlertsTrendChart({ data }: AlertsTrendChartProps) {
 				<Tooltip />
 				<Legend />
 				<Bar dataKey="critical" stackId="severity" fill="#ef4444" name={t`Critical`} />
-				<Bar dataKey="high" stackId="severity" fill="#f97316" name={t`High`} />
-				<Bar dataKey="medium" stackId="severity" fill="#f59e0b" name={t`Medium`} />
-				<Bar dataKey="low" stackId="severity" fill="#3b82f6" name={t`Low`} />
+				<Bar dataKey="warning" stackId="severity" fill="#f97316" name={t`Warning`} />
+				<Bar dataKey="info" stackId="severity" fill="#3b82f6" name={t`Info`} />
 			</BarChart>
 		</ResponsiveContainer>
 	);

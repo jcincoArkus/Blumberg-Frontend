@@ -1,5 +1,5 @@
 import type { AlertResponse } from "~@/api";
-import type { Alert, AlertEvent } from "~@/models";
+import type { Alert, AlertEvent, RecommendedAction } from "~@/models";
 
 import { normalizeSeverity, normalizeStatus } from "./normalizeAlert";
 
@@ -85,6 +85,26 @@ export function mapAlertResponseToAlert(r: AlertResponse): Alert {
 	const apiEvents = raw.events ?? raw.Events ?? null;
 	const events = apiEvents && apiEvents.length > 0 ? mapApiEventsToAlertEvents(apiEvents) : [];
 
+	const rawRec = r as AlertResponse & {
+		recommendedActions?: ApiRecommendedAction[] | null;
+		RecommendedActions?: ApiRecommendedAction[] | null;
+	};
+	const apiRec = rawRec.recommendedActions ?? rawRec.RecommendedActions ?? null;
+	const recommendedActions: RecommendedAction[] =
+		apiRec && apiRec.length > 0
+			? apiRec
+					.map((a) => {
+						const row = a as Record<string, unknown>;
+						return {
+							id: String(row.id ?? row.Id ?? ""),
+							title: String(row.title ?? row.Title ?? ""),
+							description: String(row.description ?? row.Description ?? ""),
+							displayOrder: Number(row.displayOrder ?? row.DisplayOrder ?? 0),
+						};
+					})
+					.sort((a, b) => a.displayOrder - b.displayOrder)
+			: [];
+
 	return {
 		id,
 		name: buildTitle(triggeredValue, thresholdMin, thresholdMax),
@@ -94,8 +114,18 @@ export function mapAlertResponseToAlert(r: AlertResponse): Alert {
 		createdAt,
 		resolvedAt,
 		equipmentId: r.equipmentId,
-		sensorId: r.sensorId,
+		// Use serial for matching to health list sensors (sensor.name = serial)
+		sensorId: r.sensorSerial ?? r.sensorId,
 		siteId: r.siteId,
 		events,
+		recommendedActions: recommendedActions.length > 0 ? recommendedActions : undefined,
 	};
 }
+
+/** API recommended action shape (camelCase or PascalCase from backend). */
+type ApiRecommendedAction = {
+	id?: string;
+	title?: string;
+	description?: string;
+	displayOrder?: number;
+};

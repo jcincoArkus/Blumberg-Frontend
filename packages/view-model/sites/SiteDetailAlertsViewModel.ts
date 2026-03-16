@@ -37,20 +37,19 @@ export class SiteDetailAlertsViewModel implements Disposable {
 		return this.alerts.filter((a) => a.status === "acknowledged" || a.status === "resolved");
 	}
 
-	get alertCountBySeverity(): { high: number; medium: number; low: number } {
+	get alertCountBySeverity(): { critical: number; warning: number; info: number } {
 		return {
-			high: this.activeAlerts.filter((a) => a.severity === "high" || a.severity === "critical")
-				.length,
-			medium: this.activeAlerts.filter((a) => a.severity === "medium").length,
-			low: this.activeAlerts.filter((a) => a.severity === "low").length,
+			critical: this.activeAlerts.filter((a) => a.severity === "critical").length,
+			warning: this.activeAlerts.filter((a) => a.severity === "warning").length,
+			info: this.activeAlerts.filter((a) => a.severity === "info").length,
 		};
 	}
 
 	get siteHealth(): "healthy" | "degraded" | "critical" {
-		const { high, medium } = this.alertCountBySeverity;
+		const { critical, warning } = this.alertCountBySeverity;
 
-		if (high > 0) return "critical";
-		if (medium > 0) return "degraded";
+		if (critical > 0) return "critical";
+		if (warning > 0) return "degraded";
 		return "healthy";
 	}
 

@@ -1,5 +1,8 @@
+import type { AlertSeverity } from "~@/models";
+
 export type DateRangePreset = "24h" | "7d" | "30d" | "custom";
-export type AlertSeverity = "critical" | "high" | "medium" | "low";
+
+export type { AlertSeverity };
 export type AlertStatus = "active" | "acknowledged" | "resolved";
 export type SensorType = "temperature" | "humidity" | "energy" | "pressure";
 
