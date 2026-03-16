@@ -20,10 +20,13 @@ import {
 const Home = observer(function Home() {
 	const [selectedLocation, setSelectedLocation] = useState<string | null>("1");
 
-	// Trigger alerts + sensors load when dashboard home mounts. Home only mounts when authenticated (_private guard); view models no-op if not.
+	// Trigger alerts + sensors load when dashboard home mounts. Stop sensor health polling on unmount so /alerts (and other pages) don't keep firing health requests.
 	useEffect(() => {
 		dashboardAlertsViewModel.load();
 		dashboardSensorsViewModel.load();
+		return () => {
+			dashboardSensorsViewModel.dispose();
+		};
 	}, []);
 
 	return (

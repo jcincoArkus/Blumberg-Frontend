@@ -49,9 +49,9 @@ export class ActiveAlertsController implements IDataTableController<AlertItem> {
 	}
 
 	async load(_query: StandardQuery): Promise<void> {
-		// Panel list comes from alertsViewModel; still trigger dashboard load for status bar.
+		// Ensure both dashboard-specific alerts (active overview) and full alerts list are loaded.
+		alertsViewModel.load();
 		dashboardAlertsViewModel.load();
-		void alertsViewModel.refresh();
 	}
 
 	dispose(): void {}
