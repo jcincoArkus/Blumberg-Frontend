@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 
 import { observer } from "~@/mobx";
-import { dashboardAlertsViewModel, dashboardSensorsViewModel } from "~@/view-model";
+import {
+	alertsViewModel,
+	dashboardAlertsViewModel,
+	dashboardSensorsViewModel,
+} from "~@/view-model";
 import {
 	ActiveAlertsPanel,
 	AIInsightsPanel,
@@ -22,6 +26,8 @@ const Home = observer(function Home() {
 
 	// Trigger alerts + sensors load when dashboard home mounts. Stop sensor health polling on unmount so /alerts (and other pages) don't keep firing health requests.
 	useEffect(() => {
+		// Ensure all dashboard data sources start loading/polling when Home mounts.
+		alertsViewModel.load();
 		dashboardAlertsViewModel.load();
 		dashboardSensorsViewModel.load();
 		return () => {
