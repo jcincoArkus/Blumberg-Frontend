@@ -24,7 +24,7 @@ type AlertsQuery = ReturnType<typeof getAllAlertsV1ObservedQuery>;
 class AlertsViewModel implements Disposable {
 	activeTab: AlertStatus | "all" = "all";
 
-	#alertsQuery: AlertsQuery | null = null;
+	#alertsQuery: AlertsQuery;
 	#hasLoaded = false;
 	#detailQuery = getAlertByIdV1ObservedQuery();
 	#detailAlertId: string | null = null;
@@ -38,6 +38,12 @@ class AlertsViewModel implements Disposable {
 	getSensorType = (id: string): string => this.sensorTypes[id] ?? "unknown";
 
 	constructor() {
+		// Create the observed query up front so MobX can track its data,
+		// but don't start network loading until load() is called.
+		this.#alertsQuery = getAllAlertsV1ObservedQuery(
+			{ query: { Page: 1, PageSize: DEFAULT_PAGE_SIZE } },
+			{ refetchInterval: ALERTS_POLL_INTERVAL_MS },
+		);
 		makeAutoObservable(this);
 		// Stop alerts polling when user logs out.
 		this.#authDisposer = reaction(
@@ -51,24 +57,21 @@ class AlertsViewModel implements Disposable {
 		);
 	}
 
-	#ensureAlertsQuery(): AlertsQuery {
-		if (this.#alertsQuery) return this.#alertsQuery;
-		this.#alertsQuery = getAllAlertsV1ObservedQuery(
-			{ query: { Page: 1, PageSize: DEFAULT_PAGE_SIZE } },
-			{ refetchInterval: ALERTS_POLL_INTERVAL_MS },
-		);
-		return this.#alertsQuery;
-	}
-
 	load = () => {
 		if (this.#hasLoaded) return;
 		this.#hasLoaded = true;
-		this.#ensureAlertsQuery().load();
+		this.#alertsQuery.load();
 	};
 
 	private get rawItems(): AlertResponse[] {
-		const data = this.#alertsQuery?.data as AlertResponsePagedResponse | null | undefined;
-		return data?.items ?? [];
+		const raw = this.#alertsQuery.data as
+			| AlertResponsePagedResponse
+			| AlertResponse[]
+			| null
+			| undefined;
+		// The alerts API may return either a paged response ({ items: [] }) or a bare array.
+		if (Array.isArray(raw)) return raw;
+		return raw?.items ?? [];
 	}
 
 	get alerts(): Alert[] {
@@ -115,19 +118,19 @@ class AlertsViewModel implements Disposable {
 	}
 
 	get isLoading(): boolean {
-		return this.#alertsQuery?.isLoading ?? false;
+		return this.#alertsQuery.isLoading;
 	}
 
 	get isFetching(): boolean {
-		return this.#alertsQuery?.isFetching ?? false;
+		return this.#alertsQuery.isFetching;
 	}
 
 	get hasError(): boolean {
-		return this.#alertsQuery?.hasError ?? false;
+		return this.#alertsQuery.hasError;
 	}
 
 	get error(): string | null {
-		const err = this.#alertsQuery?.error;
+		const err = this.#alertsQuery.error;
 		return err instanceof Error ? err.message : err ? String(err) : null;
 	}
 
@@ -260,9 +263,8 @@ class AlertsViewModel implements Disposable {
 
 	refresh = async () => {
 		// Ensure initial load has been triggered before attempting an async reload.
-		const q = this.#ensureAlertsQuery();
 		this.#hasLoaded = true;
-		await q.loadAsync({
+		await this.#alertsQuery.loadAsync({
 			query: { Page: 1, PageSize: DEFAULT_PAGE_SIZE },
 		});
 	};
@@ -312,8 +314,7 @@ class AlertsViewModel implements Disposable {
 	dispose() {
 		this.#authDisposer?.();
 		this.#authDisposer = null;
-		this.#alertsQuery?.dispose();
-		this.#alertsQuery = null;
+		this.#alertsQuery.dispose();
 		this.#detailQuery.dispose();
 		this.#hasLoaded = false;
 	}
