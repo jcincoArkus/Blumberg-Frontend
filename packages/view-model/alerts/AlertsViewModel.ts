@@ -5,15 +5,17 @@ import {
 	getAllAlertsV1ObservedQuery,
 	resolveAlertV1ObservedMutation,
 } from "~@/api";
-import { makeAutoObservable } from "~@/mobx";
+import { makeAutoObservable, reaction } from "~@/mobx";
 import type { Alert, AlertStatus } from "~@/models";
 import { getAlertDuration, getSeverityOrder } from "~@/models";
 
+import { authViewModel } from "../auth";
 import { ALERTS_POLL_INTERVAL_MS } from "../constants";
 import type { Disposable } from "../types";
 import { mapAlertResponseToAlert } from "./mapAlertResponseToAlert";
 
 const DEFAULT_PAGE_SIZE = 500;
+type AlertsQuery = ReturnType<typeof getAllAlertsV1ObservedQuery>;
 
 /**
  * ViewModel for the Alerts & Events page.
@@ -22,14 +24,13 @@ const DEFAULT_PAGE_SIZE = 500;
 class AlertsViewModel implements Disposable {
 	activeTab: AlertStatus | "all" = "all";
 
-	#alertsQuery = getAllAlertsV1ObservedQuery(
-		{ query: { Page: 1, PageSize: DEFAULT_PAGE_SIZE } },
-		{ refetchInterval: ALERTS_POLL_INTERVAL_MS },
-	);
+	#alertsQuery: AlertsQuery | null = null;
+	#hasLoaded = false;
 	#detailQuery = getAlertByIdV1ObservedQuery();
 	#detailAlertId: string | null = null;
 	#ackMutation = acknowledgeAlertV1ObservedMutation();
 	#resolveMutation = resolveAlertV1ObservedMutation();
+	#authDisposer: (() => void) | null = null;
 
 	readonly calculateDuration = getAlertDuration;
 	getEquipmentName = (id: string): string => this.equipmentNames[id] ?? "Unknown Equipment";
@@ -38,11 +39,35 @@ class AlertsViewModel implements Disposable {
 
 	constructor() {
 		makeAutoObservable(this);
-		this.#alertsQuery.load();
+		// Stop alerts polling when user logs out.
+		this.#authDisposer = reaction(
+			() => authViewModel.isAuthenticated,
+			(isAuthenticated) => {
+				if (!isAuthenticated) {
+					this.dispose();
+				}
+			},
+			{ fireImmediately: false },
+		);
 	}
 
+	#ensureAlertsQuery(): AlertsQuery {
+		if (this.#alertsQuery) return this.#alertsQuery;
+		this.#alertsQuery = getAllAlertsV1ObservedQuery(
+			{ query: { Page: 1, PageSize: DEFAULT_PAGE_SIZE } },
+			{ refetchInterval: ALERTS_POLL_INTERVAL_MS },
+		);
+		return this.#alertsQuery;
+	}
+
+	load = () => {
+		if (this.#hasLoaded) return;
+		this.#hasLoaded = true;
+		this.#ensureAlertsQuery().load();
+	};
+
 	private get rawItems(): AlertResponse[] {
-		const data = this.#alertsQuery.data as AlertResponsePagedResponse | null | undefined;
+		const data = this.#alertsQuery?.data as AlertResponsePagedResponse | null | undefined;
 		return data?.items ?? [];
 	}
 
@@ -90,19 +115,19 @@ class AlertsViewModel implements Disposable {
 	}
 
 	get isLoading(): boolean {
-		return this.#alertsQuery.isLoading;
+		return this.#alertsQuery?.isLoading ?? false;
 	}
 
 	get isFetching(): boolean {
-		return this.#alertsQuery.isFetching;
+		return this.#alertsQuery?.isFetching ?? false;
 	}
 
 	get hasError(): boolean {
-		return this.#alertsQuery.hasError;
+		return this.#alertsQuery?.hasError ?? false;
 	}
 
 	get error(): string | null {
-		const err = this.#alertsQuery.error;
+		const err = this.#alertsQuery?.error;
 		return err instanceof Error ? err.message : err ? String(err) : null;
 	}
 
@@ -234,7 +259,10 @@ class AlertsViewModel implements Disposable {
 	};
 
 	refresh = async () => {
-		await this.#alertsQuery.loadAsync({
+		// Ensure initial load has been triggered before attempting an async reload.
+		const q = this.#ensureAlertsQuery();
+		this.#hasLoaded = true;
+		await q.loadAsync({
 			query: { Page: 1, PageSize: DEFAULT_PAGE_SIZE },
 		});
 	};
@@ -242,8 +270,11 @@ class AlertsViewModel implements Disposable {
 	acknowledgeAlert = async (alertId: string) => {
 		try {
 			await this.#ackMutation.mutateAsync({ path: { id: alertId } });
-			this.#alertsQuery.invalidate();
-			await this.#alertsQuery.refetch();
+			const q = this.#alertsQuery;
+			if (q) {
+				q.invalidate();
+				await q.refetch();
+			}
 			if (this.#detailAlertId === alertId) {
 				this.#detailQuery.invalidate();
 				await this.#detailQuery.refetch();
@@ -256,8 +287,11 @@ class AlertsViewModel implements Disposable {
 	resolveAlert = async (alertId: string) => {
 		try {
 			await this.#resolveMutation.mutateAsync({ path: { id: alertId } });
-			this.#alertsQuery.invalidate();
-			await this.#alertsQuery.refetch();
+			const q = this.#alertsQuery;
+			if (q) {
+				q.invalidate();
+				await q.refetch();
+			}
 			if (this.#detailAlertId === alertId) {
 				this.#detailQuery.invalidate();
 				await this.#detailQuery.refetch();
@@ -276,13 +310,18 @@ class AlertsViewModel implements Disposable {
 	};
 
 	dispose() {
-		this.#alertsQuery.dispose();
+		this.#authDisposer?.();
+		this.#authDisposer = null;
+		this.#alertsQuery?.dispose();
+		this.#alertsQuery = null;
 		this.#detailQuery.dispose();
+		this.#hasLoaded = false;
 	}
 }
 
 export const alertsViewModel = new AlertsViewModel();
 
 export function useAlertsViewModel() {
+	alertsViewModel.load();
 	return alertsViewModel;
 }

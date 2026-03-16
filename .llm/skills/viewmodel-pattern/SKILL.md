@@ -19,7 +19,7 @@ Pattern for implementing ViewModels using a **Singleton + Hook Pattern** with **
    - **Domain ViewModels**: Own data and business logic (e.g., `ItemsViewModel`)
    - **Component ViewModels**: Proxy/delegate to domain ViewModels (e.g., `ItemsPanelViewModel`)
 
-## Template: Domain ViewModel
+## Template: Domain ViewModel (Lazy Network Loading)
 
 ```typescript
 import { makeAutoObservable } from "~@/mobx";
@@ -27,14 +27,26 @@ import { getAllItemsV1ObservedQuery } from "~@/api";
 import type { Item } from "~@/models";
 
 class ItemsViewModel {
-  #itemsQuery = getAllItemsV1ObservedQuery();
+  #itemsQuery: ReturnType<typeof getAllItemsV1ObservedQuery> | null = null;
+  #hasLoaded = false;
 
   activeCategory: string = "All";
   selectedIds: Set<string> = new Set();
 
   constructor() {
     makeAutoObservable(this);
-    this.#itemsQuery.load();
+  }
+
+  #ensureQuery() {
+    if (this.#itemsQuery) return this.#itemsQuery;
+    this.#itemsQuery = getAllItemsV1ObservedQuery();
+    return this.#itemsQuery;
+  }
+
+  load = () => {
+    if (this.#hasLoaded) return;
+    this.#hasLoaded = true;
+    this.#ensureQuery().load();
   }
 
   // Actions
@@ -52,7 +64,7 @@ class ItemsViewModel {
 
   // Computed properties
   get items(): Item[] {
-    return this.#itemsQuery.data?.data ?? [];
+    return this.#itemsQuery?.data?.data ?? [];
   }
 
   get activeItems(): Item[] {
@@ -73,25 +85,31 @@ class ItemsViewModel {
   }
 
   get isLoading(): boolean {
-    return this.#itemsQuery.isLoading;
+    return this.#itemsQuery?.isLoading ?? false;
   }
 
   refresh = async () => {
-    await this.#itemsQuery.loadAsync();
+    const q = this.#ensureQuery();
+    this.#hasLoaded = true;
+    await q.loadAsync();
   };
 
   invalidate = () => {
-    this.#itemsQuery.invalidate();
+    this.#itemsQuery?.invalidate();
   };
 
   dispose = () => {
-    this.#itemsQuery.dispose();
+    this.#itemsQuery?.dispose();
+    this.#itemsQuery = null;
+    this.#hasLoaded = false;
   };
 }
 
 export const itemsViewModel = new ItemsViewModel();
 
 export function useItemsViewModel() {
+  // Lazy, idempotent network load – safe to call from multiple components.
+  itemsViewModel.load();
   return itemsViewModel;
 }
 ```
