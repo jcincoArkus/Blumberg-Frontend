@@ -1,0 +1,3750 @@
+{
+	" | Threshold: {0} {1}": {
+		"en-US": " | Threshold: {0} {1}",
+		"es-LA": ""
+	},
+	"—": {
+		"en-US": "—",
+		"es-LA": ""
+	},
+	"{0} active alert{1}": {
+		"en-US": "{0} active alert{1}",
+		"es-LA": ""
+	},
+	"{0} Critical": {
+		"en-US": "{0} Critical",
+		"es-LA": ""
+	},
+	"{0} High": {
+		"en-US": "{0} High",
+		"es-LA": ""
+	},
+	"{0} in stock": {
+		"en-US": "{0} in stock",
+		"es-LA": ""
+	},
+	"{0} Low": {
+		"en-US": "{0} Low",
+		"es-LA": ""
+	},
+	"{0} Medium": {
+		"en-US": "{0} Medium",
+		"es-LA": ""
+	},
+	"{0} points": {
+		"en-US": "{0} points",
+		"es-LA": ""
+	},
+	"{0} Read": {
+		"en-US": "{0} Read",
+		"es-LA": ""
+	},
+	"{0} Read access": {
+		"en-US": "{0} Read access",
+		"es-LA": ""
+	},
+	"{0} role(s) selected": {
+		"en-US": "{0} role(s) selected",
+		"es-LA": ""
+	},
+	"{0} Write": {
+		"en-US": "{0} Write",
+		"es-LA": ""
+	},
+	"{0} Write access": {
+		"en-US": "{0} Write access",
+		"es-LA": ""
+	},
+	"{0}% active": {
+		"en-US": "{0}% active",
+		"es-LA": ""
+	},
+	"{0}% of total": {
+		"en-US": "{0}% of total",
+		"es-LA": ""
+	},
+	"{0}% rejection rate": {
+		"en-US": "{0}% rejection rate",
+		"es-LA": ""
+	},
+	"{0}% resolution rate": {
+		"en-US": "{0}% resolution rate",
+		"es-LA": ""
+	},
+	"{0}% success rate": {
+		"en-US": "{0}% success rate",
+		"es-LA": ""
+	},
+	"{ageFormatted} ago": {
+		"en-US": "{ageFormatted} ago",
+		"es-LA": ""
+	},
+	"{count} rejected readings in the last 24 hours.": {
+		"en-US": "{count} rejected readings in the last 24 hours.",
+		"es-LA": ""
+	},
+	"{diffDays} days ago": {
+		"en-US": "{diffDays} days ago",
+		"es-LA": ""
+	},
+	"{diffHours} hours ago": {
+		"en-US": "{diffHours} hours ago",
+		"es-LA": ""
+	},
+	"{diffMins} min ago": {
+		"en-US": "{diffMins} min ago",
+		"es-LA": ""
+	},
+	"{equipmentName} - {equipmentType} | {0} sensor{1} installed": {
+		"en-US": "{equipmentName} - {equipmentType} | {0} sensor{1} installed",
+		"es-LA": ""
+	},
+	"{hours} hours {mins} minutes": {
+		"en-US": "{hours} hours {mins} minutes",
+		"es-LA": ""
+	},
+	"{locationCount} total": {
+		"en-US": "{locationCount} total",
+		"es-LA": ""
+	},
+	"{minutes} minutes": {
+		"en-US": "{minutes} minutes",
+		"es-LA": ""
+	},
+	"{sensorsOnline} / {totalSensors} sensors online": {
+		"en-US": "{sensorsOnline} / {totalSensors} sensors online",
+		"es-LA": ""
+	},
+	"{totalSensors} sensors operational": {
+		"en-US": "{totalSensors} sensors operational",
+		"es-LA": ""
+	},
+	"{type} Sensors": {
+		"en-US": "{type} Sensors",
+		"es-LA": ""
+	},
+	"+{0} more": {
+		"en-US": "+{0} more",
+		"es-LA": ""
+	},
+	"⚠️ Active sensor without data mapping. Add at least one mapping to receive data.": {
+		"en-US": "⚠️ Active sensor without data mapping. Add at least one mapping to receive data.",
+		"es-LA": ""
+	},
+	"1 rejected reading in the last 24 hours.": {
+		"en-US": "1 rejected reading in the last 24 hours.",
+		"es-LA": ""
+	},
+	"2 minutes": {
+		"en-US": "2 minutes",
+		"es-LA": ""
+	},
+	"24h": {
+		"en-US": "24h",
+		"es-LA": ""
+	},
+	"24h Power Consumption": {
+		"en-US": "24h Power Consumption",
+		"es-LA": ""
+	},
+	"34 sensors active": {
+		"en-US": "34 sensors active",
+		"es-LA": ""
+	},
+	"7d": {
+		"en-US": "7d",
+		"es-LA": ""
+	},
+	"A sensor must be selected": {
+		"en-US": "A sensor must be selected",
+		"es-LA": ""
+	},
+	"Ability to acknowledge or resolve alerts": {
+		"en-US": "Ability to acknowledge or resolve alerts",
+		"es-LA": ""
+	},
+	"Ability to change module settings": {
+		"en-US": "Ability to change module settings",
+		"es-LA": ""
+	},
+	"Ability to create new records": {
+		"en-US": "Ability to create new records",
+		"es-LA": ""
+	},
+	"Ability to modify existing records": {
+		"en-US": "Ability to modify existing records",
+		"es-LA": ""
+	},
+	"Ability to remove records": {
+		"en-US": "Ability to remove records",
+		"es-LA": ""
+	},
+	"above {0} {1}": {
+		"en-US": "above {0} {1}",
+		"es-LA": ""
+	},
+	"Above maximum ({0}{1})": {
+		"en-US": "Above maximum ({0}{1})",
+		"es-LA": ""
+	},
+	"above target": {
+		"en-US": "above target",
+		"es-LA": ""
+	},
+	"Above warning threshold ({warningThreshold}{0})": {
+		"en-US": "Above warning threshold ({warningThreshold}{0})",
+		"es-LA": ""
+	},
+	"Accepted": {
+		"en-US": "Accepted",
+		"es-LA": ""
+	},
+	"Accepted Rows": {
+		"en-US": "Accepted Rows",
+		"es-LA": ""
+	},
+	"Accepted Rows Imported": {
+		"en-US": "Accepted Rows Imported",
+		"es-LA": ""
+	},
+	"Access Denied": {
+		"en-US": "Access Denied",
+		"es-LA": ""
+	},
+	"Ack": {
+		"en-US": "Ack",
+		"es-LA": ""
+	},
+	"Ack/Resolve": {
+		"en-US": "Ack/Resolve",
+		"es-LA": ""
+	},
+	"Acknowledge": {
+		"en-US": "Acknowledge",
+		"es-LA": ""
+	},
+	"Acknowledge alert": {
+		"en-US": "Acknowledge alert",
+		"es-LA": ""
+	},
+	"Acknowledged": {
+		"en-US": "Acknowledged",
+		"es-LA": ""
+	},
+	"Acknowledged ({0})": {
+		"en-US": "Acknowledged ({0})",
+		"es-LA": ""
+	},
+	"Acknowledged At": {
+		"en-US": "Acknowledged At",
+		"es-LA": ""
+	},
+	"Acknowledged: {0}": {
+		"en-US": "Acknowledged: {0}",
+		"es-LA": ""
+	},
+	"across": {
+		"en-US": "across",
+		"es-LA": ""
+	},
+	"Actions": {
+		"en-US": "Actions",
+		"es-LA": ""
+	},
+	"Active": {
+		"en-US": "Active",
+		"es-LA": ""
+	},
+	"Active ({0})": {
+		"en-US": "Active ({0})",
+		"es-LA": ""
+	},
+	"Active Alerts": {
+		"en-US": "Active Alerts",
+		"es-LA": ""
+	},
+	"Active and recent alerts for this equipment": {
+		"en-US": "Active and recent alerts for this equipment",
+		"es-LA": ""
+	},
+	"Active sensors should have at least one mapping. Add a mapping to receive data.": {
+		"en-US": "Active sensors should have at least one mapping. Add a mapping to receive data.",
+		"es-LA": ""
+	},
+	"Active sensors will receive and process data": {
+		"en-US": "Active sensors will receive and process data",
+		"es-LA": ""
+	},
+	"Active Warranty": {
+		"en-US": "Active Warranty",
+		"es-LA": ""
+	},
+	"Activity and Login": {
+		"en-US": "Activity and Login",
+		"es-LA": ""
+	},
+	"Actual": {
+		"en-US": "Actual",
+		"es-LA": ""
+	},
+	"Add a new user to the system": {
+		"en-US": "Add a new user to the system",
+		"es-LA": ""
+	},
+	"Add a sensor to get started.": {
+		"en-US": "Add a sensor to get started.",
+		"es-LA": ""
+	},
+	"Add Equipment": {
+		"en-US": "Add Equipment",
+		"es-LA": ""
+	},
+	"Add equipment to a site to get started.": {
+		"en-US": "Add equipment to a site to get started.",
+		"es-LA": ""
+	},
+	"Add equipment to get started.": {
+		"en-US": "Add equipment to get started.",
+		"es-LA": ""
+	},
+	"Add Mapping": {
+		"en-US": "Add Mapping",
+		"es-LA": ""
+	},
+	"Add mappings to configure how incoming data is processed": {
+		"en-US": "Add mappings to configure how incoming data is processed",
+		"es-LA": ""
+	},
+	"Add New": {
+		"en-US": "Add New",
+		"es-LA": ""
+	},
+	"Add Recipient": {
+		"en-US": "Add Recipient",
+		"es-LA": ""
+	},
+	"Add Sensor": {
+		"en-US": "Add Sensor",
+		"es-LA": ""
+	},
+	"Add sensors to equipment to get started.": {
+		"en-US": "Add sensors to equipment to get started.",
+		"es-LA": ""
+	},
+	"Add Site": {
+		"en-US": "Add Site",
+		"es-LA": ""
+	},
+	"Address": {
+		"en-US": "Address",
+		"es-LA": ""
+	},
+	"Address is required": {
+		"en-US": "Address is required",
+		"es-LA": ""
+	},
+	"admin": {
+		"en-US": "admin",
+		"es-LA": ""
+	},
+	"Admin": {
+		"en-US": "Admin",
+		"es-LA": ""
+	},
+	"AI Insights": {
+		"en-US": "AI Insights",
+		"es-LA": ""
+	},
+	"Air Filter (Primary)": {
+		"en-US": "Air Filter (Primary)",
+		"es-LA": ""
+	},
+	"Alert": {
+		"en-US": "Alert",
+		"es-LA": ""
+	},
+	"Alert Details": {
+		"en-US": "Alert Details",
+		"es-LA": ""
+	},
+	"Alert distribution by severity over time": {
+		"en-US": "Alert distribution by severity over time",
+		"es-LA": ""
+	},
+	"Alert Rules": {
+		"en-US": "Alert Rules",
+		"es-LA": ""
+	},
+	"Alert Summary": {
+		"en-US": "Alert Summary",
+		"es-LA": ""
+	},
+	"Alert Title": {
+		"en-US": "Alert Title",
+		"es-LA": ""
+	},
+	"alert when readings are outside": {
+		"en-US": "alert when readings are outside",
+		"es-LA": ""
+	},
+	"Alerting Configuration": {
+		"en-US": "Alerting Configuration",
+		"es-LA": ""
+	},
+	"Alerts": {
+		"en-US": "Alerts",
+		"es-LA": ""
+	},
+	"Alerts & Events": {
+		"en-US": "Alerts & Events",
+		"es-LA": ""
+	},
+	"Alerts History": {
+		"en-US": "Alerts History",
+		"es-LA": ""
+	},
+	"Alerts Table": {
+		"en-US": "Alerts Table",
+		"es-LA": ""
+	},
+	"Alerts Trend": {
+		"en-US": "Alerts Trend",
+		"es-LA": ""
+	},
+	"Alerts Volume (24h)": {
+		"en-US": "Alerts Volume (24h)",
+		"es-LA": ""
+	},
+	"Alerts Work Queue": {
+		"en-US": "Alerts Work Queue",
+		"es-LA": ""
+	},
+	"Alerts:": {
+		"en-US": "Alerts:",
+		"es-LA": ""
+	},
+	"All": {
+		"en-US": "All",
+		"es-LA": ""
+	},
+	"All Equipment": {
+		"en-US": "All Equipment",
+		"es-LA": ""
+	},
+	"All Quality": {
+		"en-US": "All Quality",
+		"es-LA": ""
+	},
+	"All Roles": {
+		"en-US": "All Roles",
+		"es-LA": ""
+	},
+	"All Sensors": {
+		"en-US": "All Sensors",
+		"es-LA": ""
+	},
+	"All Sensors on this Equipment ({0})": {
+		"en-US": "All Sensors on this Equipment ({0})",
+		"es-LA": ""
+	},
+	"All Severities": {
+		"en-US": "All Severities",
+		"es-LA": ""
+	},
+	"All Sites": {
+		"en-US": "All Sites",
+		"es-LA": ""
+	},
+	"All Sources": {
+		"en-US": "All Sources",
+		"es-LA": ""
+	},
+	"All Status": {
+		"en-US": "All Status",
+		"es-LA": ""
+	},
+	"All systems operating normally": {
+		"en-US": "All systems operating normally",
+		"es-LA": ""
+	},
+	"All systems operational": {
+		"en-US": "All systems operational",
+		"es-LA": ""
+	},
+	"All Types": {
+		"en-US": "All Types",
+		"es-LA": ""
+	},
+	"An unexpected error occurred.": {
+		"en-US": "An unexpected error occurred.",
+		"es-LA": ""
+	},
+	"ANALYTICS": {
+		"en-US": "ANALYTICS",
+		"es-LA": ""
+	},
+	"Annual refrigerant check and top-up": {
+		"en-US": "Annual refrigerant check and top-up",
+		"es-LA": ""
+	},
+	"API": {
+		"en-US": "API",
+		"es-LA": ""
+	},
+	"API Endpoint Summary": {
+		"en-US": "API Endpoint Summary",
+		"es-LA": ""
+	},
+	"API Ingestion": {
+		"en-US": "API Ingestion",
+		"es-LA": ""
+	},
+	"API ingestion runs from the last 24 hours": {
+		"en-US": "API ingestion runs from the last 24 hours",
+		"es-LA": ""
+	},
+	"Apply filters to all views in this module": {
+		"en-US": "Apply filters to all views in this module",
+		"es-LA": ""
+	},
+	"Approaching threshold limits": {
+		"en-US": "Approaching threshold limits",
+		"es-LA": ""
+	},
+	"AQI": {
+		"en-US": "AQI",
+		"es-LA": ""
+	},
+	"Are you sure you want to delete \"{0}\"? This action cannot be undone. Users with this role will lose these permissions.": {
+		"en-US": "Are you sure you want to delete \"{0}\"? This action cannot be undone. Users with this role will lose these permissions.",
+		"es-LA": ""
+	},
+	"Are you sure you want to delete this alert rule? This action cannot be undone.": {
+		"en-US": "Are you sure you want to delete this alert rule? This action cannot be undone.",
+		"es-LA": ""
+	},
+	"At least one equipment must be selected": {
+		"en-US": "At least one equipment must be selected",
+		"es-LA": ""
+	},
+	"At least one role is required.": {
+		"en-US": "At least one role is required.",
+		"es-LA": ""
+	},
+	"At least one sensor type is required": {
+		"en-US": "At least one sensor type is required",
+		"es-LA": ""
+	},
+	"At least one site must be selected": {
+		"en-US": "At least one site must be selected",
+		"es-LA": ""
+	},
+	"At least one threshold (min or max) is required": {
+		"en-US": "At least one threshold (min or max) is required",
+		"es-LA": ""
+	},
+	"At least one valid email recipient is required": {
+		"en-US": "At least one valid email recipient is required",
+		"es-LA": ""
+	},
+	"Auto-populated based on sensor type": {
+		"en-US": "Auto-populated based on sensor type",
+		"es-LA": ""
+	},
+	"Average Value": {
+		"en-US": "Average Value",
+		"es-LA": ""
+	},
+	"Avg": {
+		"en-US": "Avg",
+		"es-LA": ""
+	},
+	"Avg Duration": {
+		"en-US": "Avg Duration",
+		"es-LA": ""
+	},
+	"Avg Pressure": {
+		"en-US": "Avg Pressure",
+		"es-LA": ""
+	},
+	"Avg Temp": {
+		"en-US": "Avg Temp",
+		"es-LA": ""
+	},
+	"Back": {
+		"en-US": "Back",
+		"es-LA": ""
+	},
+	"Back to Dashboard": {
+		"en-US": "Back to Dashboard",
+		"es-LA": ""
+	},
+	"Back to Equipment": {
+		"en-US": "Back to Equipment",
+		"es-LA": ""
+	},
+	"Back to Equipment Details": {
+		"en-US": "Back to Equipment Details",
+		"es-LA": ""
+	},
+	"Back to Sensor": {
+		"en-US": "Back to Sensor",
+		"es-LA": ""
+	},
+	"Back to Sensors": {
+		"en-US": "Back to Sensors",
+		"es-LA": ""
+	},
+	"Back to Site": {
+		"en-US": "Back to Site",
+		"es-LA": ""
+	},
+	"Back to Sites": {
+		"en-US": "Back to Sites",
+		"es-LA": ""
+	},
+	"Based on recent patterns": {
+		"en-US": "Based on recent patterns",
+		"es-LA": ""
+	},
+	"Basic Information": {
+		"en-US": "Basic Information",
+		"es-LA": ""
+	},
+	"below {0} {1}": {
+		"en-US": "below {0} {1}",
+		"es-LA": ""
+	},
+	"Below minimum ({0}{1})": {
+		"en-US": "Below minimum ({0}{1})",
+		"es-LA": ""
+	},
+	"Belt Drive": {
+		"en-US": "Belt Drive",
+		"es-LA": ""
+	},
+	"Blumberg Supply Chain": {
+		"en-US": "Blumberg Supply Chain",
+		"es-LA": ""
+	},
+	"By Severity": {
+		"en-US": "By Severity",
+		"es-LA": ""
+	},
+	"C:": {
+		"en-US": "C:",
+		"es-LA": ""
+	},
+	"Cancel": {
+		"en-US": "Cancel",
+		"es-LA": ""
+	},
+	"Capacity": {
+		"en-US": "Capacity",
+		"es-LA": ""
+	},
+	"categories": {
+		"en-US": "categories",
+		"es-LA": ""
+	},
+	"category": {
+		"en-US": "category",
+		"es-LA": ""
+	},
+	"City": {
+		"en-US": "City",
+		"es-LA": ""
+	},
+	"City / State": {
+		"en-US": "City / State",
+		"es-LA": ""
+	},
+	"City is required": {
+		"en-US": "City is required",
+		"es-LA": ""
+	},
+	"Classification Logic": {
+		"en-US": "Classification Logic",
+		"es-LA": ""
+	},
+	"Clear Filters": {
+		"en-US": "Clear Filters",
+		"es-LA": ""
+	},
+	"Clear search": {
+		"en-US": "Clear search",
+		"es-LA": ""
+	},
+	"Click on any alert to view details, event history, and notification audit": {
+		"en-US": "Click on any alert to view details, event history, and notification audit",
+		"es-LA": ""
+	},
+	"Climate": {
+		"en-US": "Climate",
+		"es-LA": ""
+	},
+	"Climate Alerts": {
+		"en-US": "Climate Alerts",
+		"es-LA": ""
+	},
+	"Climate Control": {
+		"en-US": "Climate Control",
+		"es-LA": ""
+	},
+	"Climate Sensors Detail ({0})": {
+		"en-US": "Climate Sensors Detail ({0})",
+		"es-LA": ""
+	},
+	"Close": {
+		"en-US": "Close",
+		"es-LA": ""
+	},
+	"Close drawer": {
+		"en-US": "Close drawer",
+		"es-LA": ""
+	},
+	"Close menu": {
+		"en-US": "Close menu",
+		"es-LA": ""
+	},
+	"CO2": {
+		"en-US": "CO2",
+		"es-LA": ""
+	},
+	"CO₂": {
+		"en-US": "CO₂",
+		"es-LA": ""
+	},
+	"CO2 Saved": {
+		"en-US": "CO2 Saved",
+		"es-LA": ""
+	},
+	"CO2 Sensors": {
+		"en-US": "CO2 Sensors",
+		"es-LA": ""
+	},
+	"Collapse sidebar": {
+		"en-US": "Collapse sidebar",
+		"es-LA": ""
+	},
+	"Column Mapping": {
+		"en-US": "Column Mapping",
+		"es-LA": ""
+	},
+	"Compare to Previous Period": {
+		"en-US": "Compare to Previous Period",
+		"es-LA": ""
+	},
+	"Complete information about this sensor": {
+		"en-US": "Complete information about this sensor",
+		"es-LA": ""
+	},
+	"Complete information and event history for this alert": {
+		"en-US": "Complete information and event history for this alert",
+		"es-LA": ""
+	},
+	"Completed": {
+		"en-US": "Completed",
+		"es-LA": ""
+	},
+	"Completeness": {
+		"en-US": "Completeness",
+		"es-LA": ""
+	},
+	"Compressor bearing replacement": {
+		"en-US": "Compressor bearing replacement",
+		"es-LA": ""
+	},
+	"Compressor Oil (Gallon)": {
+		"en-US": "Compressor Oil (Gallon)",
+		"es-LA": ""
+	},
+	"Configuration": {
+		"en-US": "Configuration",
+		"es-LA": ""
+	},
+	"Configure": {
+		"en-US": "Configure",
+		"es-LA": ""
+	},
+	"Configure alert thresholds, notifications, and targeting for this rule.": {
+		"en-US": "Configure alert thresholds, notifications, and targeting for this rule.",
+		"es-LA": ""
+	},
+	"Configure automatic alerts for sensor readings that exceed defined thresholds.": {
+		"en-US": "Configure automatic alerts for sensor readings that exceed defined thresholds.",
+		"es-LA": ""
+	},
+	"Configure sensor identification, measurement, installation context, and data mapping.": {
+		"en-US": "Configure sensor identification, measurement, installation context, and data mapping.",
+		"es-LA": ""
+	},
+	"Confirm Import": {
+		"en-US": "Confirm Import",
+		"es-LA": ""
+	},
+	"Consistency": {
+		"en-US": "Consistency",
+		"es-LA": ""
+	},
+	"Contact": {
+		"en-US": "Contact",
+		"es-LA": ""
+	},
+	"Context": {
+		"en-US": "Context",
+		"es-LA": ""
+	},
+	"Continue to Import": {
+		"en-US": "Continue to Import",
+		"es-LA": ""
+	},
+	"Cooldown Period (minutes)": {
+		"en-US": "Cooldown Period (minutes)",
+		"es-LA": ""
+	},
+	"Copy Example": {
+		"en-US": "Copy Example",
+		"es-LA": ""
+	},
+	"Cost": {
+		"en-US": "Cost",
+		"es-LA": ""
+	},
+	"Count": {
+		"en-US": "Count",
+		"es-LA": ""
+	},
+	"Country": {
+		"en-US": "Country",
+		"es-LA": ""
+	},
+	"Country is required": {
+		"en-US": "Country is required",
+		"es-LA": ""
+	},
+	"Create": {
+		"en-US": "Create",
+		"es-LA": ""
+	},
+	"Create a new custom role": {
+		"en-US": "Create a new custom role",
+		"es-LA": ""
+	},
+	"Create Alert Rule": {
+		"en-US": "Create Alert Rule",
+		"es-LA": ""
+	},
+	"Create Equipment": {
+		"en-US": "Create Equipment",
+		"es-LA": ""
+	},
+	"Create Role": {
+		"en-US": "Create Role",
+		"es-LA": ""
+	},
+	"Create Rule": {
+		"en-US": "Create Rule",
+		"es-LA": ""
+	},
+	"Create Sensor": {
+		"en-US": "Create Sensor",
+		"es-LA": ""
+	},
+	"Create Sensor Threshold": {
+		"en-US": "Create Sensor Threshold",
+		"es-LA": ""
+	},
+	"Create Site": {
+		"en-US": "Create Site",
+		"es-LA": ""
+	},
+	"Create Threshold": {
+		"en-US": "Create Threshold",
+		"es-LA": ""
+	},
+	"Create User": {
+		"en-US": "Create User",
+		"es-LA": ""
+	},
+	"Create your first alert rule to start monitoring your sensors.": {
+		"en-US": "Create your first alert rule to start monitoring your sensors.",
+		"es-LA": ""
+	},
+	"Create your first site to get started.": {
+		"en-US": "Create your first site to get started.",
+		"es-LA": ""
+	},
+	"Create your first user to get started": {
+		"en-US": "Create your first user to get started",
+		"es-LA": ""
+	},
+	"Created": {
+		"en-US": "Created",
+		"es-LA": ""
+	},
+	"Created At": {
+		"en-US": "Created At",
+		"es-LA": ""
+	},
+	"Critical": {
+		"en-US": "Critical",
+		"es-LA": ""
+	},
+	"Critical:": {
+		"en-US": "Critical:",
+		"es-LA": ""
+	},
+	"CSV": {
+		"en-US": "CSV",
+		"es-LA": ""
+	},
+	"CSV Template": {
+		"en-US": "CSV Template",
+		"es-LA": ""
+	},
+	"CSV Upload": {
+		"en-US": "CSV Upload",
+		"es-LA": ""
+	},
+	"Current": {
+		"en-US": "Current",
+		"es-LA": ""
+	},
+	"Current Load": {
+		"en-US": "Current Load",
+		"es-LA": ""
+	},
+	"Current Period": {
+		"en-US": "Current Period",
+		"es-LA": ""
+	},
+	"Current Sensor Readings": {
+		"en-US": "Current Sensor Readings",
+		"es-LA": ""
+	},
+	"Current Threshold": {
+		"en-US": "Current Threshold",
+		"es-LA": ""
+	},
+	"Current Value": {
+		"en-US": "Current Value",
+		"es-LA": ""
+	},
+	"Current value is outside acceptable range": {
+		"en-US": "Current value is outside acceptable range",
+		"es-LA": ""
+	},
+	"Current values compared against defined thresholds": {
+		"en-US": "Current values compared against defined thresholds",
+		"es-LA": ""
+	},
+	"Current:": {
+		"en-US": "Current:",
+		"es-LA": ""
+	},
+	"Current: {0} {1}": {
+		"en-US": "Current: {0} {1}",
+		"es-LA": ""
+	},
+	"custom": {
+		"en-US": "custom",
+		"es-LA": ""
+	},
+	"Custom": {
+		"en-US": "Custom",
+		"es-LA": ""
+	},
+	"Daily Estimate": {
+		"en-US": "Daily Estimate",
+		"es-LA": ""
+	},
+	"Dashboards": {
+		"en-US": "Dashboards",
+		"es-LA": ""
+	},
+	"Data": {
+		"en-US": "Data",
+		"es-LA": ""
+	},
+	"Data Field Mapping": {
+		"en-US": "Data Field Mapping",
+		"es-LA": ""
+	},
+	"Data Gaps": {
+		"en-US": "Data Gaps",
+		"es-LA": ""
+	},
+	"Data Ingestion": {
+		"en-US": "Data Ingestion",
+		"es-LA": ""
+	},
+	"Data Quality": {
+		"en-US": "Data Quality",
+		"es-LA": ""
+	},
+	"Data Quality Diagnostics": {
+		"en-US": "Data Quality Diagnostics",
+		"es-LA": ""
+	},
+	"Data Quality Issues": {
+		"en-US": "Data Quality Issues",
+		"es-LA": ""
+	},
+	"Date": {
+		"en-US": "Date",
+		"es-LA": ""
+	},
+	"Date Range": {
+		"en-US": "Date Range",
+		"es-LA": ""
+	},
+	"Deactivated": {
+		"en-US": "Deactivated",
+		"es-LA": ""
+	},
+	"Define the normal operating range for a specific sensor.": {
+		"en-US": "Define the normal operating range for a specific sensor.",
+		"es-LA": ""
+	},
+	"Degraded": {
+		"en-US": "Degraded",
+		"es-LA": ""
+	},
+	"Delete": {
+		"en-US": "Delete",
+		"es-LA": ""
+	},
+	"Delete \"{0}\"?": {
+		"en-US": "Delete \"{0}\"?",
+		"es-LA": ""
+	},
+	"Delete Alert Rule": {
+		"en-US": "Delete Alert Rule",
+		"es-LA": ""
+	},
+	"Delete role": {
+		"en-US": "Delete role",
+		"es-LA": ""
+	},
+	"Delete Role": {
+		"en-US": "Delete Role",
+		"es-LA": ""
+	},
+	"Delete sensor \"{0}\"?": {
+		"en-US": "Delete sensor \"{0}\"?",
+		"es-LA": ""
+	},
+	"Delete site \"{0}\"?": {
+		"en-US": "Delete site \"{0}\"?",
+		"es-LA": ""
+	},
+	"Describe what this role is for...": {
+		"en-US": "Describe what this role is for...",
+		"es-LA": ""
+	},
+	"Description": {
+		"en-US": "Description",
+		"es-LA": ""
+	},
+	"Detailed sensor readings (showing first 100)": {
+		"en-US": "Detailed sensor readings (showing first 100)",
+		"es-LA": ""
+	},
+	"Dimensions": {
+		"en-US": "Dimensions",
+		"es-LA": ""
+	},
+	"Disable": {
+		"en-US": "Disable",
+		"es-LA": ""
+	},
+	"Disable rule": {
+		"en-US": "Disable rule",
+		"es-LA": ""
+	},
+	"Disabled": {
+		"en-US": "Disabled",
+		"es-LA": ""
+	},
+	"Display Name": {
+		"en-US": "Display Name",
+		"es-LA": ""
+	},
+	"Documentation for the sensor data ingestion API": {
+		"en-US": "Documentation for the sensor data ingestion API",
+		"es-LA": ""
+	},
+	"Documents": {
+		"en-US": "Documents",
+		"es-LA": ""
+	},
+	"Download a template with the correct format": {
+		"en-US": "Download a template with the correct format",
+		"es-LA": ""
+	},
+	"Download Rejected Rows CSV": {
+		"en-US": "Download Rejected Rows CSV",
+		"es-LA": ""
+	},
+	"Download Template": {
+		"en-US": "Download Template",
+		"es-LA": ""
+	},
+	"Drop CSV file here or click to browse": {
+		"en-US": "Drop CSV file here or click to browse",
+		"es-LA": ""
+	},
+	"Duplicate": {
+		"en-US": "Duplicate",
+		"es-LA": ""
+	},
+	"Duration": {
+		"en-US": "Duration",
+		"es-LA": ""
+	},
+	"Duration in seconds": {
+		"en-US": "Duration in seconds",
+		"es-LA": ""
+	},
+	"Duration: {0}": {
+		"en-US": "Duration: {0}",
+		"es-LA": ""
+	},
+	"e.g. HVAC, Pump": {
+		"en-US": "e.g. HVAC, Pump",
+		"es-LA": ""
+	},
+	"e.g., 15 (optional)": {
+		"en-US": "e.g., 15 (optional)",
+		"es-LA": ""
+	},
+	"e.g., APM Editor": {
+		"en-US": "e.g., APM Editor",
+		"es-LA": ""
+	},
+	"e.g., High Temperature Alert": {
+		"en-US": "e.g., High Temperature Alert",
+		"es-LA": ""
+	},
+	"e.g., Main Temperature Sensor": {
+		"en-US": "e.g., Main Temperature Sensor",
+		"es-LA": ""
+	},
+	"e.g., North wall, bay 3": {
+		"en-US": "e.g., North wall, bay 3",
+		"es-LA": ""
+	},
+	"e.g., sensor-001": {
+		"en-US": "e.g., sensor-001",
+		"es-LA": ""
+	},
+	"e.g., temp_value": {
+		"en-US": "e.g., temp_value",
+		"es-LA": ""
+	},
+	"Edit": {
+		"en-US": "Edit",
+		"es-LA": ""
+	},
+	"Edit Alert Rule": {
+		"en-US": "Edit Alert Rule",
+		"es-LA": ""
+	},
+	"Edit Equipment": {
+		"en-US": "Edit Equipment",
+		"es-LA": ""
+	},
+	"Edit role": {
+		"en-US": "Edit role",
+		"es-LA": ""
+	},
+	"Edit Role": {
+		"en-US": "Edit Role",
+		"es-LA": ""
+	},
+	"Edit Sensor": {
+		"en-US": "Edit Sensor",
+		"es-LA": ""
+	},
+	"Edit Sensor Threshold": {
+		"en-US": "Edit Sensor Threshold",
+		"es-LA": ""
+	},
+	"Edit Site": {
+		"en-US": "Edit Site",
+		"es-LA": ""
+	},
+	"Edit the sensor to configure data mapping.": {
+		"en-US": "Edit the sensor to configure data mapping.",
+		"es-LA": ""
+	},
+	"Edit User": {
+		"en-US": "Edit User",
+		"es-LA": ""
+	},
+	"Efficiency": {
+		"en-US": "Efficiency",
+		"es-LA": ""
+	},
+	"Email": {
+		"en-US": "Email",
+		"es-LA": ""
+	},
+	"Email *": {
+		"en-US": "Email *",
+		"es-LA": ""
+	},
+	"Enable": {
+		"en-US": "Enable",
+		"es-LA": ""
+	},
+	"Enable rule": {
+		"en-US": "Enable rule",
+		"es-LA": ""
+	},
+	"Enabled": {
+		"en-US": "Enabled",
+		"es-LA": ""
+	},
+	"End Date": {
+		"en-US": "End Date",
+		"es-LA": ""
+	},
+	"Endpoint URL": {
+		"en-US": "Endpoint URL",
+		"es-LA": ""
+	},
+	"Energy": {
+		"en-US": "Energy",
+		"es-LA": ""
+	},
+	"Energy Monitoring": {
+		"en-US": "Energy Monitoring",
+		"es-LA": ""
+	},
+	"Enter JSON payload...": {
+		"en-US": "Enter JSON payload...",
+		"es-LA": ""
+	},
+	"Enter your email and password to access the app": {
+		"en-US": "Enter your email and password to access the app",
+		"es-LA": ""
+	},
+	"Equipment": {
+		"en-US": "Equipment",
+		"es-LA": ""
+	},
+	"Equipment at this site": {
+		"en-US": "Equipment at this site",
+		"es-LA": ""
+	},
+	"Equipment created successfully": {
+		"en-US": "Equipment created successfully",
+		"es-LA": ""
+	},
+	"Equipment Details": {
+		"en-US": "Equipment Details",
+		"es-LA": ""
+	},
+	"Equipment ID: {equipmentId}": {
+		"en-US": "Equipment ID: {equipmentId}",
+		"es-LA": ""
+	},
+	"Equipment is required": {
+		"en-US": "Equipment is required",
+		"es-LA": ""
+	},
+	"Equipment name": {
+		"en-US": "Equipment name",
+		"es-LA": ""
+	},
+	"Equipment Name": {
+		"en-US": "Equipment Name",
+		"es-LA": ""
+	},
+	"Equipment not found": {
+		"en-US": "Equipment not found",
+		"es-LA": ""
+	},
+	"Equipment Not Found": {
+		"en-US": "Equipment Not Found",
+		"es-LA": ""
+	},
+	"Equipment Overview": {
+		"en-US": "Equipment Overview",
+		"es-LA": ""
+	},
+	"Equipment Type": {
+		"en-US": "Equipment Type",
+		"es-LA": ""
+	},
+	"Equipment updated successfully": {
+		"en-US": "Equipment updated successfully",
+		"es-LA": ""
+	},
+	"Error": {
+		"en-US": "Error",
+		"es-LA": ""
+	},
+	"Error Breakdown": {
+		"en-US": "Error Breakdown",
+		"es-LA": ""
+	},
+	"Error Code": {
+		"en-US": "Error Code",
+		"es-LA": ""
+	},
+	"Error code: {0}": {
+		"en-US": "Error code: {0}",
+		"es-LA": ""
+	},
+	"Error Types": {
+		"en-US": "Error Types",
+		"es-LA": ""
+	},
+	"Errors": {
+		"en-US": "Errors",
+		"es-LA": ""
+	},
+	"Escalated": {
+		"en-US": "Escalated",
+		"es-LA": ""
+	},
+	"Escalation Rule": {
+		"en-US": "Escalation Rule",
+		"es-LA": ""
+	},
+	"Events History": {
+		"en-US": "Events History",
+		"es-LA": ""
+	},
+	"Every {0} minutes": {
+		"en-US": "Every {0} minutes",
+		"es-LA": ""
+	},
+	"Expand sidebar": {
+		"en-US": "Expand sidebar",
+		"es-LA": ""
+	},
+	"Expected": {
+		"en-US": "Expected",
+		"es-LA": ""
+	},
+	"Expected Payload": {
+		"en-US": "Expected Payload",
+		"es-LA": ""
+	},
+	"Expected Reporting Interval": {
+		"en-US": "Expected Reporting Interval",
+		"es-LA": ""
+	},
+	"Expected within {timeHorizon}": {
+		"en-US": "Expected within {timeHorizon}",
+		"es-LA": ""
+	},
+	"Expires": {
+		"en-US": "Expires",
+		"es-LA": ""
+	},
+	"Factor (e.g., 1.8)": {
+		"en-US": "Factor (e.g., 1.8)",
+		"es-LA": ""
+	},
+	"Failed to create equipment": {
+		"en-US": "Failed to create equipment",
+		"es-LA": ""
+	},
+	"Failed to create sensor": {
+		"en-US": "Failed to create sensor",
+		"es-LA": ""
+	},
+	"Failed to create site": {
+		"en-US": "Failed to create site",
+		"es-LA": ""
+	},
+	"Failed to create threshold": {
+		"en-US": "Failed to create threshold",
+		"es-LA": ""
+	},
+	"Failed to update equipment": {
+		"en-US": "Failed to update equipment",
+		"es-LA": ""
+	},
+	"Failed to update sensor": {
+		"en-US": "Failed to update sensor",
+		"es-LA": ""
+	},
+	"Failed to update site": {
+		"en-US": "Failed to update site",
+		"es-LA": ""
+	},
+	"Field Mapping": {
+		"en-US": "Field Mapping",
+		"es-LA": ""
+	},
+	"File Name": {
+		"en-US": "File Name",
+		"es-LA": ""
+	},
+	"Filter {0}": {
+		"en-US": "Filter {0}",
+		"es-LA": ""
+	},
+	"Filter by name or email...": {
+		"en-US": "Filter by name or email...",
+		"es-LA": ""
+	},
+	"Filter options": {
+		"en-US": "Filter options",
+		"es-LA": ""
+	},
+	"Filter:": {
+		"en-US": "Filter:",
+		"es-LA": ""
+	},
+	"Filters": {
+		"en-US": "Filters",
+		"es-LA": ""
+	},
+	"First": {
+		"en-US": "First",
+		"es-LA": ""
+	},
+	"for more than": {
+		"en-US": "for more than",
+		"es-LA": ""
+	},
+	"Fresh + reliability < 70%": {
+		"en-US": "Fresh + reliability < 70%",
+		"es-LA": ""
+	},
+	"Fresh + reliability > 90%": {
+		"en-US": "Fresh + reliability > 90%",
+		"es-LA": ""
+	},
+	"Fresh + reliability 70–90%": {
+		"en-US": "Fresh + reliability 70–90%",
+		"es-LA": ""
+	},
+	"Freshness": {
+		"en-US": "Freshness",
+		"es-LA": ""
+	},
+	"Full parts and labor coverage": {
+		"en-US": "Full parts and labor coverage",
+		"es-LA": ""
+	},
+	"Good": {
+		"en-US": "Good",
+		"es-LA": ""
+	},
+	"Google": {
+		"en-US": "Google",
+		"es-LA": ""
+	},
+	"Health": {
+		"en-US": "Health",
+		"es-LA": ""
+	},
+	"Health Status": {
+		"en-US": "Health Status",
+		"es-LA": ""
+	},
+	"Healthy": {
+		"en-US": "Healthy",
+		"es-LA": ""
+	},
+	"Healthy Sensors": {
+		"en-US": "Healthy Sensors",
+		"es-LA": ""
+	},
+	"Healthy:": {
+		"en-US": "Healthy:",
+		"es-LA": ""
+	},
+	"High": {
+		"en-US": "High",
+		"es-LA": ""
+	},
+	"High Priority": {
+		"en-US": "High Priority",
+		"es-LA": ""
+	},
+	"Historical alert records (showing first 100)": {
+		"en-US": "Historical alert records (showing first 100)",
+		"es-LA": ""
+	},
+	"Historical Data & Reporting": {
+		"en-US": "Historical Data & Reporting",
+		"es-LA": ""
+	},
+	"Historical Reports": {
+		"en-US": "Historical Reports",
+		"es-LA": ""
+	},
+	"Historical Sensor Readings": {
+		"en-US": "Historical Sensor Readings",
+		"es-LA": ""
+	},
+	"Historical Trend": {
+		"en-US": "Historical Trend",
+		"es-LA": ""
+	},
+	"How incoming payload fields map to system schema": {
+		"en-US": "How incoming payload fields map to system schema",
+		"es-LA": ""
+	},
+	"Humidity": {
+		"en-US": "Humidity",
+		"es-LA": ""
+	},
+	"Humidity Sensors": {
+		"en-US": "Humidity Sensors",
+		"es-LA": ""
+	},
+	"Humidity Trends (24h)": {
+		"en-US": "Humidity Trends (24h)",
+		"es-LA": ""
+	},
+	"ID: {0}": {
+		"en-US": "ID: {0}",
+		"es-LA": ""
+	},
+	"Identification": {
+		"en-US": "Identification",
+		"es-LA": ""
+	},
+	"Import Accepted Rows": {
+		"en-US": "Import Accepted Rows",
+		"es-LA": ""
+	},
+	"Import completed successfully": {
+		"en-US": "Import completed successfully",
+		"es-LA": ""
+	},
+	"Import Results": {
+		"en-US": "Import Results",
+		"es-LA": ""
+	},
+	"Improving": {
+		"en-US": "Improving",
+		"es-LA": ""
+	},
+	"In Progress": {
+		"en-US": "In Progress",
+		"es-LA": ""
+	},
+	"Inactive": {
+		"en-US": "Inactive",
+		"es-LA": ""
+	},
+	"Incoming Field": {
+		"en-US": "Incoming Field",
+		"es-LA": ""
+	},
+	"Incoming Field Name": {
+		"en-US": "Incoming Field Name",
+		"es-LA": ""
+	},
+	"Inconsistency Summary": {
+		"en-US": "Inconsistency Summary",
+		"es-LA": ""
+	},
+	"Inconsistent": {
+		"en-US": "Inconsistent",
+		"es-LA": ""
+	},
+	"Inconsistent Points": {
+		"en-US": "Inconsistent Points",
+		"es-LA": ""
+	},
+	"Ingestion": {
+		"en-US": "Ingestion",
+		"es-LA": ""
+	},
+	"Ingestion Errors": {
+		"en-US": "Ingestion Errors",
+		"es-LA": ""
+	},
+	"Ingestion History": {
+		"en-US": "Ingestion History",
+		"es-LA": ""
+	},
+	"Ingestion Run Details": {
+		"en-US": "Ingestion Run Details",
+		"es-LA": ""
+	},
+	"Ingestion Source": {
+		"en-US": "Ingestion Source",
+		"es-LA": ""
+	},
+	"Insight": {
+		"en-US": "Insight",
+		"es-LA": ""
+	},
+	"Installation Context": {
+		"en-US": "Installation Context",
+		"es-LA": ""
+	},
+	"Installation Manual": {
+		"en-US": "Installation Manual",
+		"es-LA": ""
+	},
+	"Installed": {
+		"en-US": "Installed",
+		"es-LA": ""
+	},
+	"Interior Map": {
+		"en-US": "Interior Map",
+		"es-LA": ""
+	},
+	"Invalid email address.": {
+		"en-US": "Invalid email address.",
+		"es-LA": ""
+	},
+	"Invalid email or password": {
+		"en-US": "Invalid email or password",
+		"es-LA": ""
+	},
+	"Invalid JSON payload": {
+		"en-US": "Invalid JSON payload",
+		"es-LA": ""
+	},
+	"Invalid timestamp: {0}": {
+		"en-US": "Invalid timestamp: {0}",
+		"es-LA": ""
+	},
+	"Invite Pending": {
+		"en-US": "Invite Pending",
+		"es-LA": ""
+	},
+	"Invite Users": {
+		"en-US": "Invite Users",
+		"es-LA": ""
+	},
+	"Issues": {
+		"en-US": "Issues",
+		"es-LA": ""
+	},
+	"John Admin": {
+		"en-US": "John Admin",
+		"es-LA": ""
+	},
+	"John Doe": {
+		"en-US": "John Doe",
+		"es-LA": ""
+	},
+	"john.doe@example.com": {
+		"en-US": "john.doe@example.com",
+		"es-LA": ""
+	},
+	"JSON payload input": {
+		"en-US": "JSON payload input",
+		"es-LA": ""
+	},
+	"Last": {
+		"en-US": "Last",
+		"es-LA": ""
+	},
+	"Last 1h": {
+		"en-US": "Last 1h",
+		"es-LA": ""
+	},
+	"Last 24h": {
+		"en-US": "Last 24h",
+		"es-LA": ""
+	},
+	"Last 30d": {
+		"en-US": "Last 30d",
+		"es-LA": ""
+	},
+	"Last 7d": {
+		"en-US": "Last 7d",
+		"es-LA": ""
+	},
+	"Last Active": {
+		"en-US": "Last Active",
+		"es-LA": ""
+	},
+	"Last Login": {
+		"en-US": "Last Login",
+		"es-LA": ""
+	},
+	"Last ordered: {0}": {
+		"en-US": "Last ordered: {0}",
+		"es-LA": ""
+	},
+	"Last Reading": {
+		"en-US": "Last Reading",
+		"es-LA": ""
+	},
+	"Last Reported": {
+		"en-US": "Last Reported",
+		"es-LA": ""
+	},
+	"Last Seen": {
+		"en-US": "Last Seen",
+		"es-LA": ""
+	},
+	"Last updated: {0}": {
+		"en-US": "Last updated: {0}",
+		"es-LA": ""
+	},
+	"Late / delayed": {
+		"en-US": "Late / delayed",
+		"es-LA": ""
+	},
+	"Late beyond {0} min (2× expected)": {
+		"en-US": "Late beyond {0} min (2× expected)",
+		"es-LA": ""
+	},
+	"Leave empty to use default": {
+		"en-US": "Leave empty to use default",
+		"es-LA": ""
+	},
+	"Lifecycle": {
+		"en-US": "Lifecycle",
+		"es-LA": ""
+	},
+	"Loading alerts…": {
+		"en-US": "Loading alerts…",
+		"es-LA": ""
+	},
+	"Loading diagnostics…": {
+		"en-US": "Loading diagnostics…",
+		"es-LA": ""
+	},
+	"Loading ingestion runs...": {
+		"en-US": "Loading ingestion runs...",
+		"es-LA": ""
+	},
+	"Loading map...": {
+		"en-US": "Loading map...",
+		"es-LA": ""
+	},
+	"Loading runs...": {
+		"en-US": "Loading runs...",
+		"es-LA": ""
+	},
+	"Loading threshold...": {
+		"en-US": "Loading threshold...",
+		"es-LA": ""
+	},
+	"Loading...": {
+		"en-US": "Loading...",
+		"es-LA": ""
+	},
+	"Loading…": {
+		"en-US": "Loading…",
+		"es-LA": ""
+	},
+	"Location": {
+		"en-US": "Location",
+		"es-LA": ""
+	},
+	"Locations": {
+		"en-US": "Locations",
+		"es-LA": ""
+	},
+	"locations across North America": {
+		"en-US": "locations across North America",
+		"es-LA": ""
+	},
+	"Login Methods": {
+		"en-US": "Login Methods",
+		"es-LA": ""
+	},
+	"Logout": {
+		"en-US": "Logout",
+		"es-LA": ""
+	},
+	"Low": {
+		"en-US": "Low",
+		"es-LA": ""
+	},
+	"Maintenance": {
+		"en-US": "Maintenance",
+		"es-LA": ""
+	},
+	"Maintenance History": {
+		"en-US": "Maintenance History",
+		"es-LA": ""
+	},
+	"Manage equipment across sites": {
+		"en-US": "Manage equipment across sites",
+		"es-LA": ""
+	},
+	"Manage facility locations": {
+		"en-US": "Manage facility locations",
+		"es-LA": ""
+	},
+	"Manage sensors across equipment": {
+		"en-US": "Manage sensors across equipment",
+		"es-LA": ""
+	},
+	"Manage users, roles, and permissions": {
+		"en-US": "Manage users, roles, and permissions",
+		"es-LA": ""
+	},
+	"managed": {
+		"en-US": "managed",
+		"es-LA": ""
+	},
+	"Managed": {
+		"en-US": "Managed",
+		"es-LA": ""
+	},
+	"Manual Notification": {
+		"en-US": "Manual Notification",
+		"es-LA": ""
+	},
+	"Manufacturer": {
+		"en-US": "Manufacturer",
+		"es-LA": ""
+	},
+	"Map incoming payload fields to sensor types": {
+		"en-US": "Map incoming payload fields to sensor types",
+		"es-LA": ""
+	},
+	"Mapped": {
+		"en-US": "Mapped",
+		"es-LA": ""
+	},
+	"Mapping": {
+		"en-US": "Mapping",
+		"es-LA": ""
+	},
+	"Mapping {0}": {
+		"en-US": "Mapping {0}",
+		"es-LA": ""
+	},
+	"Mapping Preview": {
+		"en-US": "Mapping Preview",
+		"es-LA": ""
+	},
+	"Maps To": {
+		"en-US": "Maps To",
+		"es-LA": ""
+	},
+	"Max": {
+		"en-US": "Max",
+		"es-LA": ""
+	},
+	"Max value": {
+		"en-US": "Max value",
+		"es-LA": ""
+	},
+	"Max value is required": {
+		"en-US": "Max value is required",
+		"es-LA": ""
+	},
+	"Max:": {
+		"en-US": "Max:",
+		"es-LA": ""
+	},
+	"Max: {0}": {
+		"en-US": "Max: {0}",
+		"es-LA": ""
+	},
+	"Measurement": {
+		"en-US": "Measurement",
+		"es-LA": ""
+	},
+	"Medium": {
+		"en-US": "Medium",
+		"es-LA": ""
+	},
+	"Message": {
+		"en-US": "Message",
+		"es-LA": ""
+	},
+	"MFA": {
+		"en-US": "MFA",
+		"es-LA": ""
+	},
+	"Min": {
+		"en-US": "Min",
+		"es-LA": ""
+	},
+	"Min / Max": {
+		"en-US": "Min / Max",
+		"es-LA": ""
+	},
+	"Min must be less than max": {
+		"en-US": "Min must be less than max",
+		"es-LA": ""
+	},
+	"Min value": {
+		"en-US": "Min value",
+		"es-LA": ""
+	},
+	"Min value is required": {
+		"en-US": "Min value is required",
+		"es-LA": ""
+	},
+	"Min:": {
+		"en-US": "Min:",
+		"es-LA": ""
+	},
+	"Min: {0}": {
+		"en-US": "Min: {0}",
+		"es-LA": ""
+	},
+	"Missing": {
+		"en-US": "Missing",
+		"es-LA": ""
+	},
+	"Missing / inconsistent": {
+		"en-US": "Missing / inconsistent",
+		"es-LA": ""
+	},
+	"Missing Count": {
+		"en-US": "Missing Count",
+		"es-LA": ""
+	},
+	"Missing Data Summary": {
+		"en-US": "Missing Data Summary",
+		"es-LA": ""
+	},
+	"Missing or gaps": {
+		"en-US": "Missing or gaps",
+		"es-LA": ""
+	},
+	"Model": {
+		"en-US": "Model",
+		"es-LA": ""
+	},
+	"Modified": {
+		"en-US": "Modified",
+		"es-LA": ""
+	},
+	"Module": {
+		"en-US": "Module",
+		"es-LA": ""
+	},
+	"Monitor sensor health, data quality, and ingestion status. Identify technical issues affecting data reliability.": {
+		"en-US": "Monitor sensor health, data quality, and ingestion status. Identify technical issues affecting data reliability.",
+		"es-LA": ""
+	},
+	"Monitor sensor status, battery levels, and connectivity across all sites": {
+		"en-US": "Monitor sensor status, battery levels, and connectivity across all sites",
+		"es-LA": ""
+	},
+	"Monitoring": {
+		"en-US": "Monitoring",
+		"es-LA": ""
+	},
+	"N/A": {
+		"en-US": "N/A",
+		"es-LA": ""
+	},
+	"Name": {
+		"en-US": "Name",
+		"es-LA": ""
+	},
+	"Name is required": {
+		"en-US": "Name is required",
+		"es-LA": ""
+	},
+	"Name must be at least 2 characters.": {
+		"en-US": "Name must be at least 2 characters.",
+		"es-LA": ""
+	},
+	"Never": {
+		"en-US": "Never",
+		"es-LA": ""
+	},
+	"Never reported": {
+		"en-US": "Never reported",
+		"es-LA": ""
+	},
+	"New Equipment": {
+		"en-US": "New Equipment",
+		"es-LA": ""
+	},
+	"New Role": {
+		"en-US": "New Role",
+		"es-LA": ""
+	},
+	"New Sensor": {
+		"en-US": "New Sensor",
+		"es-LA": ""
+	},
+	"New Site": {
+		"en-US": "New Site",
+		"es-LA": ""
+	},
+	"Next": {
+		"en-US": "Next",
+		"es-LA": ""
+	},
+	"No access": {
+		"en-US": "No access",
+		"es-LA": ""
+	},
+	"No active alerts": {
+		"en-US": "No active alerts",
+		"es-LA": ""
+	},
+	"No Alert Rules": {
+		"en-US": "No Alert Rules",
+		"es-LA": ""
+	},
+	"No alerts available for the selected period and filters": {
+		"en-US": "No alerts available for the selected period and filters",
+		"es-LA": ""
+	},
+	"No alerts found": {
+		"en-US": "No alerts found",
+		"es-LA": ""
+	},
+	"No alerts match the selected filter": {
+		"en-US": "No alerts match the selected filter",
+		"es-LA": ""
+	},
+	"No API ingestion runs in the last 24 hours": {
+		"en-US": "No API ingestion runs in the last 24 hours",
+		"es-LA": ""
+	},
+	"No Climate Sensors": {
+		"en-US": "No Climate Sensors",
+		"es-LA": ""
+	},
+	"No data available for chart": {
+		"en-US": "No data available for chart",
+		"es-LA": ""
+	},
+	"No data beyond threshold": {
+		"en-US": "No data beyond threshold",
+		"es-LA": ""
+	},
+	"No data found": {
+		"en-US": "No data found",
+		"es-LA": ""
+	},
+	"No data mappings configured": {
+		"en-US": "No data mappings configured",
+		"es-LA": ""
+	},
+	"No data quality information available for this sensor.": {
+		"en-US": "No data quality information available for this sensor.",
+		"es-LA": ""
+	},
+	"No Energy Sensors": {
+		"en-US": "No Energy Sensors",
+		"es-LA": ""
+	},
+	"No equipment at this site": {
+		"en-US": "No equipment at this site",
+		"es-LA": ""
+	},
+	"No equipment available": {
+		"en-US": "No equipment available",
+		"es-LA": ""
+	},
+	"No equipment yet": {
+		"en-US": "No equipment yet",
+		"es-LA": ""
+	},
+	"No events recorded": {
+		"en-US": "No events recorded",
+		"es-LA": ""
+	},
+	"No ingestion errors in the last 24 hours.": {
+		"en-US": "No ingestion errors in the last 24 hours.",
+		"es-LA": ""
+	},
+	"No ingestion runs found": {
+		"en-US": "No ingestion runs found",
+		"es-LA": ""
+	},
+	"No insights available": {
+		"en-US": "No insights available",
+		"es-LA": ""
+	},
+	"No notifications sent": {
+		"en-US": "No notifications sent",
+		"es-LA": ""
+	},
+	"No readings found": {
+		"en-US": "No readings found",
+		"es-LA": ""
+	},
+	"No recent alerts": {
+		"en-US": "No recent alerts",
+		"es-LA": ""
+	},
+	"No Refrigeration Sensors": {
+		"en-US": "No Refrigeration Sensors",
+		"es-LA": ""
+	},
+	"No report or beyond {0} min (5× expected)": {
+		"en-US": "No report or beyond {0} min (5× expected)",
+		"es-LA": ""
+	},
+	"No roles": {
+		"en-US": "No roles",
+		"es-LA": ""
+	},
+	"No roles assigned": {
+		"en-US": "No roles assigned",
+		"es-LA": ""
+	},
+	"No roles found": {
+		"en-US": "No roles found",
+		"es-LA": ""
+	},
+	"No sensor data available": {
+		"en-US": "No sensor data available",
+		"es-LA": ""
+	},
+	"No sensor data available for charting": {
+		"en-US": "No sensor data available for charting",
+		"es-LA": ""
+	},
+	"No sensor readings available for the selected period and filters": {
+		"en-US": "No sensor readings available for the selected period and filters",
+		"es-LA": ""
+	},
+	"No sensors available": {
+		"en-US": "No sensors available",
+		"es-LA": ""
+	},
+	"No sensors available for comparison.": {
+		"en-US": "No sensors available for comparison.",
+		"es-LA": ""
+	},
+	"No sensors available for this equipment.": {
+		"en-US": "No sensors available for this equipment.",
+		"es-LA": ""
+	},
+	"No sensors found": {
+		"en-US": "No sensors found",
+		"es-LA": ""
+	},
+	"No sensors on this equipment": {
+		"en-US": "No sensors on this equipment",
+		"es-LA": ""
+	},
+	"No sensors yet": {
+		"en-US": "No sensors yet",
+		"es-LA": ""
+	},
+	"No sites available": {
+		"en-US": "No sites available",
+		"es-LA": ""
+	},
+	"No sites yet": {
+		"en-US": "No sites yet",
+		"es-LA": ""
+	},
+	"No thresholds available": {
+		"en-US": "No thresholds available",
+		"es-LA": ""
+	},
+	"No types available": {
+		"en-US": "No types available",
+		"es-LA": ""
+	},
+	"No users found": {
+		"en-US": "No users found",
+		"es-LA": ""
+	},
+	"None": {
+		"en-US": "None",
+		"es-LA": ""
+	},
+	"Normal Range:": {
+		"en-US": "Normal Range:",
+		"es-LA": ""
+	},
+	"Not mapped": {
+		"en-US": "Not mapped",
+		"es-LA": ""
+	},
+	"Note": {
+		"en-US": "Note",
+		"es-LA": ""
+	},
+	"Notes": {
+		"en-US": "Notes",
+		"es-LA": ""
+	},
+	"Notifications": {
+		"en-US": "Notifications",
+		"es-LA": ""
+	},
+	"Notifications Audit": {
+		"en-US": "Notifications Audit",
+		"es-LA": ""
+	},
+	"Number of Users": {
+		"en-US": "Number of Users",
+		"es-LA": ""
+	},
+	"O2": {
+		"en-US": "O2",
+		"es-LA": ""
+	},
+	"Offline": {
+		"en-US": "Offline",
+		"es-LA": ""
+	},
+	"Offline:": {
+		"en-US": "Offline:",
+		"es-LA": ""
+	},
+	"Offline/Stale": {
+		"en-US": "Offline/Stale",
+		"es-LA": ""
+	},
+	"Offset (e.g., 32)": {
+		"en-US": "Offset (e.g., 32)",
+		"es-LA": ""
+	},
+	"Offset by {0}": {
+		"en-US": "Offset by {0}",
+		"es-LA": ""
+	},
+	"OK": {
+		"en-US": "OK",
+		"es-LA": ""
+	},
+	"On-Call Rotation": {
+		"en-US": "On-Call Rotation",
+		"es-LA": ""
+	},
+	"Online": {
+		"en-US": "Online",
+		"es-LA": ""
+	},
+	"Open menu": {
+		"en-US": "Open menu",
+		"es-LA": ""
+	},
+	"Open menu for {0}": {
+		"en-US": "Open menu for {0}",
+		"es-LA": ""
+	},
+	"Operating within normal parameters": {
+		"en-US": "Operating within normal parameters",
+		"es-LA": ""
+	},
+	"Operational work queue - Track alerts through their lifecycle and review event history": {
+		"en-US": "Operational work queue - Track alerts through their lifecycle and review event history",
+		"es-LA": ""
+	},
+	"OPERATIONS": {
+		"en-US": "OPERATIONS",
+		"es-LA": ""
+	},
+	"Operator": {
+		"en-US": "Operator",
+		"es-LA": ""
+	},
+	"Optional description or notes": {
+		"en-US": "Optional description or notes",
+		"es-LA": ""
+	},
+	"Optional description...": {
+		"en-US": "Optional description...",
+		"es-LA": ""
+	},
+	"Optional notes about this user...": {
+		"en-US": "Optional notes about this user...",
+		"es-LA": ""
+	},
+	"Optional: Assign sensor to specific equipment": {
+		"en-US": "Optional: Assign sensor to specific equipment",
+		"es-LA": ""
+	},
+	"Origin": {
+		"en-US": "Origin",
+		"es-LA": ""
+	},
+	"Other": {
+		"en-US": "Other",
+		"es-LA": ""
+	},
+	"out of range": {
+		"en-US": "out of range",
+		"es-LA": ""
+	},
+	"outside {0} - {1} {2}": {
+		"en-US": "outside {0} - {1} {2}",
+		"es-LA": ""
+	},
+	"Overdue": {
+		"en-US": "Overdue",
+		"es-LA": ""
+	},
+	"Overlay previous period trend for comparison": {
+		"en-US": "Overlay previous period trend for comparison",
+		"es-LA": ""
+	},
+	"Page {0} of {totalPages}": {
+		"en-US": "Page {0} of {totalPages}",
+		"es-LA": ""
+	},
+	"Parts Catalog": {
+		"en-US": "Parts Catalog",
+		"es-LA": ""
+	},
+	"Password": {
+		"en-US": "Password",
+		"es-LA": ""
+	},
+	"Payload JSON": {
+		"en-US": "Payload JSON",
+		"es-LA": ""
+	},
+	"Payload must contain at least one reading": {
+		"en-US": "Payload must contain at least one reading",
+		"es-LA": ""
+	},
+	"Pending": {
+		"en-US": "Pending",
+		"es-LA": ""
+	},
+	"Permission Actions:": {
+		"en-US": "Permission Actions:",
+		"es-LA": ""
+	},
+	"Permissions": {
+		"en-US": "Permissions",
+		"es-LA": ""
+	},
+	"Physical Location": {
+		"en-US": "Physical Location",
+		"es-LA": ""
+	},
+	"PLATFORM": {
+		"en-US": "PLATFORM",
+		"es-LA": ""
+	},
+	"Please enter email and password": {
+		"en-US": "Please enter email and password",
+		"es-LA": ""
+	},
+	"POST /api/v1/ingestion/readings": {
+		"en-US": "POST /api/v1/ingestion/readings",
+		"es-LA": ""
+	},
+	"Postal code": {
+		"en-US": "Postal code",
+		"es-LA": ""
+	},
+	"Postal Code": {
+		"en-US": "Postal Code",
+		"es-LA": ""
+	},
+	"Postal code is required": {
+		"en-US": "Postal code is required",
+		"es-LA": ""
+	},
+	"Pressure": {
+		"en-US": "Pressure",
+		"es-LA": ""
+	},
+	"Pressure Sensors ({0})": {
+		"en-US": "Pressure Sensors ({0})",
+		"es-LA": ""
+	},
+	"Pressure Trend (24h)": {
+		"en-US": "Pressure Trend (24h)",
+		"es-LA": ""
+	},
+	"Preview (first 20 rows)": {
+		"en-US": "Preview (first 20 rows)",
+		"es-LA": ""
+	},
+	"Preview & Column Mapping": {
+		"en-US": "Preview & Column Mapping",
+		"es-LA": ""
+	},
+	"Previous": {
+		"en-US": "Previous",
+		"es-LA": ""
+	},
+	"Previous Period": {
+		"en-US": "Previous Period",
+		"es-LA": ""
+	},
+	"Quality": {
+		"en-US": "Quality",
+		"es-LA": ""
+	},
+	"Quality Score Indicators": {
+		"en-US": "Quality Score Indicators",
+		"es-LA": ""
+	},
+	"Quarterly filter replacement and coil cleaning": {
+		"en-US": "Quarterly filter replacement and coil cleaning",
+		"es-LA": ""
+	},
+	"Quarterly preventive maintenance": {
+		"en-US": "Quarterly preventive maintenance",
+		"es-LA": ""
+	},
+	"Range:": {
+		"en-US": "Range:",
+		"es-LA": ""
+	},
+	"Range: {0} - {1}": {
+		"en-US": "Range: {0} - {1}",
+		"es-LA": ""
+	},
+	"Range: {min} - {max} {0}": {
+		"en-US": "Range: {min} - {max} {0}",
+		"es-LA": ""
+	},
+	"Read": {
+		"en-US": "Read",
+		"es-LA": ""
+	},
+	"Read-only access to view module content": {
+		"en-US": "Read-only access to view module content",
+		"es-LA": ""
+	},
+	"Reading counts (last 24h)": {
+		"en-US": "Reading counts (last 24h)",
+		"es-LA": ""
+	},
+	"Reading Type (optional)": {
+		"en-US": "Reading Type (optional)",
+		"es-LA": ""
+	},
+	"readings are": {
+		"en-US": "readings are",
+		"es-LA": ""
+	},
+	"Readings History": {
+		"en-US": "Readings History",
+		"es-LA": ""
+	},
+	"Readings Table": {
+		"en-US": "Readings Table",
+		"es-LA": ""
+	},
+	"Reason": {
+		"en-US": "Reason",
+		"es-LA": ""
+	},
+	"Reason (optional)": {
+		"en-US": "Reason (optional)",
+		"es-LA": ""
+	},
+	"Receive sensor readings from multiple sources. Support API automatic data and CSV file uploads.": {
+		"en-US": "Receive sensor readings from multiple sources. Support API automatic data and CSV file uploads.",
+		"es-LA": ""
+	},
+	"Received": {
+		"en-US": "Received",
+		"es-LA": ""
+	},
+	"Recent ({0})": {
+		"en-US": "Recent ({0})",
+		"es-LA": ""
+	},
+	"Recent Ingestion Log (Last 24h)": {
+		"en-US": "Recent Ingestion Log (Last 24h)",
+		"es-LA": ""
+	},
+	"Recipient {0}": {
+		"en-US": "Recipient {0}",
+		"es-LA": ""
+	},
+	"Recipients": {
+		"en-US": "Recipients",
+		"es-LA": ""
+	},
+	"Redirecting to sign in...": {
+		"en-US": "Redirecting to sign in...",
+		"es-LA": ""
+	},
+	"Redirecting...": {
+		"en-US": "Redirecting...",
+		"es-LA": ""
+	},
+	"Refrigerant": {
+		"en-US": "Refrigerant",
+		"es-LA": ""
+	},
+	"Refrigeration": {
+		"en-US": "Refrigeration",
+		"es-LA": ""
+	},
+	"Refrigeration Alerts": {
+		"en-US": "Refrigeration Alerts",
+		"es-LA": ""
+	},
+	"Refrigeration System": {
+		"en-US": "Refrigeration System",
+		"es-LA": ""
+	},
+	"Register Sensor": {
+		"en-US": "Register Sensor",
+		"es-LA": ""
+	},
+	"Register your first sensor to get started": {
+		"en-US": "Register your first sensor to get started",
+		"es-LA": ""
+	},
+	"Register, configure, and manage sensors across all sites.": {
+		"en-US": "Register, configure, and manage sensors across all sites.",
+		"es-LA": ""
+	},
+	"Rejected": {
+		"en-US": "Rejected",
+		"es-LA": ""
+	},
+	"Rejected by server": {
+		"en-US": "Rejected by server",
+		"es-LA": ""
+	},
+	"Rejected Rows": {
+		"en-US": "Rejected Rows",
+		"es-LA": ""
+	},
+	"Rejected Rows Sample": {
+		"en-US": "Rejected Rows Sample",
+		"es-LA": ""
+	},
+	"Rejection Reasons Breakdown": {
+		"en-US": "Rejection Reasons Breakdown",
+		"es-LA": ""
+	},
+	"Rejections can be due to invalid sensor id, invalid unit, or other validation errors.": {
+		"en-US": "Rejections can be due to invalid sensor id, invalid unit, or other validation errors.",
+		"es-LA": ""
+	},
+	"Remove {0}": {
+		"en-US": "Remove {0}",
+		"es-LA": ""
+	},
+	"Remove mapping {0}": {
+		"en-US": "Remove mapping {0}",
+		"es-LA": ""
+	},
+	"Remove recipient": {
+		"en-US": "Remove recipient",
+		"es-LA": ""
+	},
+	"Request failed": {
+		"en-US": "Request failed",
+		"es-LA": ""
+	},
+	"Request ID": {
+		"en-US": "Request ID",
+		"es-LA": ""
+	},
+	"Reset Filters": {
+		"en-US": "Reset Filters",
+		"es-LA": ""
+	},
+	"Resolve": {
+		"en-US": "Resolve",
+		"es-LA": ""
+	},
+	"Resolve alert": {
+		"en-US": "Resolve alert",
+		"es-LA": ""
+	},
+	"Resolved": {
+		"en-US": "Resolved",
+		"es-LA": ""
+	},
+	"Resolved ({0})": {
+		"en-US": "Resolved ({0})",
+		"es-LA": ""
+	},
+	"Resolved At": {
+		"en-US": "Resolved At",
+		"es-LA": ""
+	},
+	"Resolved Today": {
+		"en-US": "Resolved Today",
+		"es-LA": ""
+	},
+	"Resolved: {0}": {
+		"en-US": "Resolved: {0}",
+		"es-LA": ""
+	},
+	"Retrospective analysis of system behavior. Answer: \"Has this happened before?\" and \"Is the situation getting better or worse over time?\"": {
+		"en-US": "Retrospective analysis of system behavior. Answer: \"Has this happened before?\" and \"Is the situation getting better or worse over time?\"",
+		"es-LA": ""
+	},
+	"Review accepted and rejected rows": {
+		"en-US": "Review accepted and rejected rows",
+		"es-LA": ""
+	},
+	"Review import summary before proceeding": {
+		"en-US": "Review import summary before proceeding",
+		"es-LA": ""
+	},
+	"Review parsed data and map columns to expected fields": {
+		"en-US": "Review parsed data and map columns to expected fields",
+		"es-LA": ""
+	},
+	"Rising": {
+		"en-US": "Rising",
+		"es-LA": ""
+	},
+	"Role": {
+		"en-US": "Role",
+		"es-LA": ""
+	},
+	"Role created successfully": {
+		"en-US": "Role created successfully",
+		"es-LA": ""
+	},
+	"Role deleted successfully": {
+		"en-US": "Role deleted successfully",
+		"es-LA": ""
+	},
+	"Role Name": {
+		"en-US": "Role Name",
+		"es-LA": ""
+	},
+	"Role updated successfully": {
+		"en-US": "Role updated successfully",
+		"es-LA": ""
+	},
+	"Roles": {
+		"en-US": "Roles",
+		"es-LA": ""
+	},
+	"Roles & Permissions": {
+		"en-US": "Roles & Permissions",
+		"es-LA": ""
+	},
+	"Row": {
+		"en-US": "Row",
+		"es-LA": ""
+	},
+	"Row #": {
+		"en-US": "Row #",
+		"es-LA": ""
+	},
+	"Rows per page:": {
+		"en-US": "Rows per page:",
+		"es-LA": ""
+	},
+	"Rule Name": {
+		"en-US": "Rule Name",
+		"es-LA": ""
+	},
+	"Rule Preview": {
+		"en-US": "Rule Preview",
+		"es-LA": ""
+	},
+	"Run ID": {
+		"en-US": "Run ID",
+		"es-LA": ""
+	},
+	"SAML": {
+		"en-US": "SAML",
+		"es-LA": ""
+	},
+	"Sample of Rejected Rows": {
+		"en-US": "Sample of Rejected Rows",
+		"es-LA": ""
+	},
+	"Save Changes": {
+		"en-US": "Save Changes",
+		"es-LA": ""
+	},
+	"Save Equipment": {
+		"en-US": "Save Equipment",
+		"es-LA": ""
+	},
+	"Save Sensor": {
+		"en-US": "Save Sensor",
+		"es-LA": ""
+	},
+	"Save Site": {
+		"en-US": "Save Site",
+		"es-LA": ""
+	},
+	"Scale by {0}": {
+		"en-US": "Scale by {0}",
+		"es-LA": ""
+	},
+	"Scheduled": {
+		"en-US": "Scheduled",
+		"es-LA": ""
+	},
+	"Scope": {
+		"en-US": "Scope",
+		"es-LA": ""
+	},
+	"Search and filter sensors by health status, data quality, ingestion source, site, equipment, or type": {
+		"en-US": "Search and filter sensors by health status, data quality, ingestion source, site, equipment, or type",
+		"es-LA": ""
+	},
+	"Search by name or email...": {
+		"en-US": "Search by name or email...",
+		"es-LA": ""
+	},
+	"Search by sensor ID, name, site, equipment, or type...": {
+		"en-US": "Search by sensor ID, name, site, equipment, or type...",
+		"es-LA": ""
+	},
+	"Search roles": {
+		"en-US": "Search roles",
+		"es-LA": ""
+	},
+	"Search roles...": {
+		"en-US": "Search roles...",
+		"es-LA": ""
+	},
+	"Search sensors": {
+		"en-US": "Search sensors",
+		"es-LA": ""
+	},
+	"Search users": {
+		"en-US": "Search users",
+		"es-LA": ""
+	},
+	"Search...": {
+		"en-US": "Search...",
+		"es-LA": ""
+	},
+	"Select a role to view its permissions": {
+		"en-US": "Select a role to view its permissions",
+		"es-LA": ""
+	},
+	"Select a sensor": {
+		"en-US": "Select a sensor",
+		"es-LA": ""
+	},
+	"Select a site": {
+		"en-US": "Select a site",
+		"es-LA": ""
+	},
+	"Select All": {
+		"en-US": "Select All",
+		"es-LA": ""
+	},
+	"Select all permissions in {0}": {
+		"en-US": "Select all permissions in {0}",
+		"es-LA": ""
+	},
+	"Select an equipment to view its core dashboard": {
+		"en-US": "Select an equipment to view its core dashboard",
+		"es-LA": ""
+	},
+	"Select equipment (optional)": {
+		"en-US": "Select equipment (optional)",
+		"es-LA": ""
+	},
+	"Select field": {
+		"en-US": "Select field",
+		"es-LA": ""
+	},
+	"Select roles...": {
+		"en-US": "Select roles...",
+		"es-LA": ""
+	},
+	"Select scope": {
+		"en-US": "Select scope",
+		"es-LA": ""
+	},
+	"Select severity": {
+		"en-US": "Select severity",
+		"es-LA": ""
+	},
+	"Select time": {
+		"en-US": "Select time",
+		"es-LA": ""
+	},
+	"Selected sensor will trigger a": {
+		"en-US": "Selected sensor will trigger a",
+		"es-LA": ""
+	},
+	"selected sensors": {
+		"en-US": "selected sensors",
+		"es-LA": ""
+	},
+	"Send Test": {
+		"en-US": "Send Test",
+		"es-LA": ""
+	},
+	"Sending...": {
+		"en-US": "Sending...",
+		"es-LA": ""
+	},
+	"sensor": {
+		"en-US": "sensor",
+		"es-LA": ""
+	},
+	"Sensor": {
+		"en-US": "Sensor",
+		"es-LA": ""
+	},
+	"Sensor \"{0}\" will trigger a": {
+		"en-US": "Sensor \"{0}\" will trigger a",
+		"es-LA": ""
+	},
+	"Sensor cannot be changed after creation": {
+		"en-US": "Sensor cannot be changed after creation",
+		"es-LA": ""
+	},
+	"Sensor created successfully": {
+		"en-US": "Sensor created successfully",
+		"es-LA": ""
+	},
+	"Sensor Details": {
+		"en-US": "Sensor Details",
+		"es-LA": ""
+	},
+	"Sensor filters": {
+		"en-US": "Sensor filters",
+		"es-LA": ""
+	},
+	"Sensor Health": {
+		"en-US": "Sensor Health",
+		"es-LA": ""
+	},
+	"Sensor Health & Data Quality": {
+		"en-US": "Sensor Health & Data Quality",
+		"es-LA": ""
+	},
+	"Sensor Health & Quality Diagnostics": {
+		"en-US": "Sensor Health & Quality Diagnostics",
+		"es-LA": ""
+	},
+	"Sensor Health & Quality Work Table": {
+		"en-US": "Sensor Health & Quality Work Table",
+		"es-LA": ""
+	},
+	"Sensor health statistics": {
+		"en-US": "Sensor health statistics",
+		"es-LA": ""
+	},
+	"Sensor ID": {
+		"en-US": "Sensor ID",
+		"es-LA": ""
+	},
+	"Sensor ID (required)": {
+		"en-US": "Sensor ID (required)",
+		"es-LA": ""
+	},
+	"Sensor ID cannot be changed after creation": {
+		"en-US": "Sensor ID cannot be changed after creation",
+		"es-LA": ""
+	},
+	"Sensor Limits Comparison": {
+		"en-US": "Sensor Limits Comparison",
+		"es-LA": ""
+	},
+	"Sensor Management": {
+		"en-US": "Sensor Management",
+		"es-LA": ""
+	},
+	"Sensor Metrics": {
+		"en-US": "Sensor Metrics",
+		"es-LA": ""
+	},
+	"Sensor Name / ID": {
+		"en-US": "Sensor Name / ID",
+		"es-LA": ""
+	},
+	"Sensor not found": {
+		"en-US": "Sensor not found",
+		"es-LA": ""
+	},
+	"Sensor Not Found": {
+		"en-US": "Sensor Not Found",
+		"es-LA": ""
+	},
+	"Sensor readings over time": {
+		"en-US": "Sensor readings over time",
+		"es-LA": ""
+	},
+	"Sensor readings over time (with previous period comparison)": {
+		"en-US": "Sensor readings over time (with previous period comparison)",
+		"es-LA": ""
+	},
+	"Sensor serial number": {
+		"en-US": "Sensor serial number",
+		"es-LA": ""
+	},
+	"Sensor Status": {
+		"en-US": "Sensor Status",
+		"es-LA": ""
+	},
+	"Sensor Type": {
+		"en-US": "Sensor Type",
+		"es-LA": ""
+	},
+	"Sensor type is required": {
+		"en-US": "Sensor type is required",
+		"es-LA": ""
+	},
+	"Sensor Types": {
+		"en-US": "Sensor Types",
+		"es-LA": ""
+	},
+	"Sensor updated successfully": {
+		"en-US": "Sensor updated successfully",
+		"es-LA": ""
+	},
+	"sensors": {
+		"en-US": "sensors",
+		"es-LA": ""
+	},
+	"Sensors": {
+		"en-US": "Sensors",
+		"es-LA": ""
+	},
+	"Sensors on this equipment": {
+		"en-US": "Sensors on this equipment",
+		"es-LA": ""
+	},
+	"Serial": {
+		"en-US": "Serial",
+		"es-LA": ""
+	},
+	"Serial is required": {
+		"en-US": "Serial is required",
+		"es-LA": ""
+	},
+	"Serial Number": {
+		"en-US": "Serial Number",
+		"es-LA": ""
+	},
+	"Service Guide": {
+		"en-US": "Service Guide",
+		"es-LA": ""
+	},
+	"Set Threshold": {
+		"en-US": "Set Threshold",
+		"es-LA": ""
+	},
+	"Severity": {
+		"en-US": "Severity",
+		"es-LA": ""
+	},
+	"Severity Threshold": {
+		"en-US": "Severity Threshold",
+		"es-LA": ""
+	},
+	"Showing {0} climate sensor{1} - Temperature ({2}), Humidity ({3}), CO2 ({4})": {
+		"en-US": "Showing {0} climate sensor{1} - Temperature ({2}), Humidity ({3}), CO2 ({4})",
+		"es-LA": ""
+	},
+	"Showing {0} energy sensor{1}: {2}": {
+		"en-US": "Showing {0} energy sensor{1}: {2}",
+		"es-LA": ""
+	},
+	"Showing {0} of {1} sensors": {
+		"en-US": "Showing {0} of {1} sensors",
+		"es-LA": ""
+	},
+	"Showing {0} refrigeration sensor{1} - Temperature ({2}), Pressure ({3})": {
+		"en-US": "Showing {0} refrigeration sensor{1} - Temperature ({2}), Pressure ({3})",
+		"es-LA": ""
+	},
+	"Showing {0} sensor{1}": {
+		"en-US": "Showing {0} sensor{1}",
+		"es-LA": ""
+	},
+	"Showing {0} sensors": {
+		"en-US": "Showing {0} sensors",
+		"es-LA": ""
+	},
+	"Showing {0} to {1} of {totalItems} results": {
+		"en-US": "Showing {0} to {1} of {totalItems} results",
+		"es-LA": ""
+	},
+	"Showing {0} user(s)": {
+		"en-US": "Showing {0} user(s)",
+		"es-LA": ""
+	},
+	"Showing {from} to {to} of {totalItems} alerts": {
+		"en-US": "Showing {from} to {to} of {totalItems} alerts",
+		"es-LA": ""
+	},
+	"Showing 1 sensor": {
+		"en-US": "Showing 1 sensor",
+		"es-LA": ""
+	},
+	"Showing data for the last 24 hours": {
+		"en-US": "Showing data for the last 24 hours",
+		"es-LA": ""
+	},
+	"Showing data for the last 7 days": {
+		"en-US": "Showing data for the last 7 days",
+		"es-LA": ""
+	},
+	"Showing first {0} rejected rows": {
+		"en-US": "Showing first {0} rejected rows",
+		"es-LA": ""
+	},
+	"Showing first 100 of {0} alerts": {
+		"en-US": "Showing first 100 of {0} alerts",
+		"es-LA": ""
+	},
+	"Showing first 100 of {0} readings": {
+		"en-US": "Showing first 100 of {0} readings",
+		"es-LA": ""
+	},
+	"Showing first 20 of {0} rows": {
+		"en-US": "Showing first 20 of {0} rows",
+		"es-LA": ""
+	},
+	"Sign in": {
+		"en-US": "Sign in",
+		"es-LA": ""
+	},
+	"Signing in...": {
+		"en-US": "Signing in...",
+		"es-LA": ""
+	},
+	"Silent": {
+		"en-US": "Silent",
+		"es-LA": ""
+	},
+	"Silent Sensors": {
+		"en-US": "Silent Sensors",
+		"es-LA": ""
+	},
+	"Site": {
+		"en-US": "Site",
+		"es-LA": ""
+	},
+	"Site / Facility Overview": {
+		"en-US": "Site / Facility Overview",
+		"es-LA": ""
+	},
+	"Site created successfully": {
+		"en-US": "Site created successfully",
+		"es-LA": ""
+	},
+	"Site Health (24h)": {
+		"en-US": "Site Health (24h)",
+		"es-LA": ""
+	},
+	"Site Information": {
+		"en-US": "Site Information",
+		"es-LA": ""
+	},
+	"Site is required": {
+		"en-US": "Site is required",
+		"es-LA": ""
+	},
+	"Site name": {
+		"en-US": "Site name",
+		"es-LA": ""
+	},
+	"Site not found": {
+		"en-US": "Site not found",
+		"es-LA": ""
+	},
+	"Site Not Found": {
+		"en-US": "Site Not Found",
+		"es-LA": ""
+	},
+	"Site updated successfully": {
+		"en-US": "Site updated successfully",
+		"es-LA": ""
+	},
+	"Site:": {
+		"en-US": "Site:",
+		"es-LA": ""
+	},
+	"Sites": {
+		"en-US": "Sites",
+		"es-LA": ""
+	},
+	"Something went wrong": {
+		"en-US": "Something went wrong",
+		"es-LA": ""
+	},
+	"Source": {
+		"en-US": "Source",
+		"es-LA": ""
+	},
+	"Spare Parts Inventory": {
+		"en-US": "Spare Parts Inventory",
+		"es-LA": ""
+	},
+	"Specific Equipment": {
+		"en-US": "Specific Equipment",
+		"es-LA": ""
+	},
+	"Specific Sites": {
+		"en-US": "Specific Sites",
+		"es-LA": ""
+	},
+	"SSO": {
+		"en-US": "SSO",
+		"es-LA": ""
+	},
+	"Stable": {
+		"en-US": "Stable",
+		"es-LA": ""
+	},
+	"Stale": {
+		"en-US": "Stale",
+		"es-LA": ""
+	},
+	"Stale Sensors": {
+		"en-US": "Stale Sensors",
+		"es-LA": ""
+	},
+	"Stale:": {
+		"en-US": "Stale:",
+		"es-LA": ""
+	},
+	"Start Date": {
+		"en-US": "Start Date",
+		"es-LA": ""
+	},
+	"State": {
+		"en-US": "State",
+		"es-LA": ""
+	},
+	"State / Region": {
+		"en-US": "State / Region",
+		"es-LA": ""
+	},
+	"State is required": {
+		"en-US": "State is required",
+		"es-LA": ""
+	},
+	"State or region": {
+		"en-US": "State or region",
+		"es-LA": ""
+	},
+	"Status": {
+		"en-US": "Status",
+		"es-LA": ""
+	},
+	"Status:": {
+		"en-US": "Status:",
+		"es-LA": ""
+	},
+	"Street address": {
+		"en-US": "Street address",
+		"es-LA": ""
+	},
+	"Supply Chain": {
+		"en-US": "Supply Chain",
+		"es-LA": ""
+	},
+	"Supported columns: sensor_id, timestamp, value, unit, reading_type": {
+		"en-US": "Supported columns: sensor_id, timestamp, value, unit, reading_type",
+		"es-LA": ""
+	},
+	"System": {
+		"en-US": "System",
+		"es-LA": ""
+	},
+	"System Alert": {
+		"en-US": "System Alert",
+		"es-LA": ""
+	},
+	"System Overview": {
+		"en-US": "System Overview",
+		"es-LA": ""
+	},
+	"System Status": {
+		"en-US": "System Status",
+		"es-LA": ""
+	},
+	"System Update": {
+		"en-US": "System Update",
+		"es-LA": ""
+	},
+	"System:": {
+		"en-US": "System:",
+		"es-LA": ""
+	},
+	"Target": {
+		"en-US": "Target",
+		"es-LA": ""
+	},
+	"Technical Specifications": {
+		"en-US": "Technical Specifications",
+		"es-LA": ""
+	},
+	"Technician": {
+		"en-US": "Technician",
+		"es-LA": ""
+	},
+	"Temp Sensors": {
+		"en-US": "Temp Sensors",
+		"es-LA": ""
+	},
+	"Temperature": {
+		"en-US": "Temperature",
+		"es-LA": ""
+	},
+	"Temperature Sensor": {
+		"en-US": "Temperature Sensor",
+		"es-LA": ""
+	},
+	"Temperature Sensors": {
+		"en-US": "Temperature Sensors",
+		"es-LA": ""
+	},
+	"Temperature Sensors ({0})": {
+		"en-US": "Temperature Sensors ({0})",
+		"es-LA": ""
+	},
+	"Temperature Trend (24h)": {
+		"en-US": "Temperature Trend (24h)",
+		"es-LA": ""
+	},
+	"Temperature Trends (24h)": {
+		"en-US": "Temperature Trends (24h)",
+		"es-LA": ""
+	},
+	"Test Payload": {
+		"en-US": "Test Payload",
+		"es-LA": ""
+	},
+	"Test Results": {
+		"en-US": "Test Results",
+		"es-LA": ""
+	},
+	"Test the API endpoint with a sample payload": {
+		"en-US": "Test the API endpoint with a sample payload",
+		"es-LA": ""
+	},
+	"the configured range": {
+		"en-US": "the configured range",
+		"es-LA": ""
+	},
+	"The equipment you're looking for doesn't exist.": {
+		"en-US": "The equipment you're looking for doesn't exist.",
+		"es-LA": ""
+	},
+	"The sensor you're looking for doesn't exist.": {
+		"en-US": "The sensor you're looking for doesn't exist.",
+		"es-LA": ""
+	},
+	"The site you're looking for doesn't exist.": {
+		"en-US": "The site you're looking for doesn't exist.",
+		"es-LA": ""
+	},
+	"This equipment does not have climate monitoring sensors installed.": {
+		"en-US": "This equipment does not have climate monitoring sensors installed.",
+		"es-LA": ""
+	},
+	"This equipment does not have energy monitoring sensors installed.": {
+		"en-US": "This equipment does not have energy monitoring sensors installed.",
+		"es-LA": ""
+	},
+	"This equipment does not have refrigeration monitoring sensors installed.": {
+		"en-US": "This equipment does not have refrigeration monitoring sensors installed.",
+		"es-LA": ""
+	},
+	"This page is restricted to administrators only. Please contact your system administrator if you believe this is an error.": {
+		"en-US": "This page is restricted to administrators only. Please contact your system administrator if you believe this is an error.",
+		"es-LA": ""
+	},
+	"This sensor has no data field mappings configured.": {
+		"en-US": "This sensor has no data field mappings configured.",
+		"es-LA": ""
+	},
+	"Threshold": {
+		"en-US": "Threshold",
+		"es-LA": ""
+	},
+	"Threshold duration (seconds)": {
+		"en-US": "Threshold duration (seconds)",
+		"es-LA": ""
+	},
+	"Threshold is required": {
+		"en-US": "Threshold is required",
+		"es-LA": ""
+	},
+	"Threshold max": {
+		"en-US": "Threshold max",
+		"es-LA": ""
+	},
+	"Threshold min": {
+		"en-US": "Threshold min",
+		"es-LA": ""
+	},
+	"Threshold Preview": {
+		"en-US": "Threshold Preview",
+		"es-LA": ""
+	},
+	"Threshold will be created for this sensor": {
+		"en-US": "Threshold will be created for this sensor",
+		"es-LA": ""
+	},
+	"Thresholds": {
+		"en-US": "Thresholds",
+		"es-LA": ""
+	},
+	"Time": {
+		"en-US": "Time",
+		"es-LA": ""
+	},
+	"Time before re-alerting after an alert is triggered.": {
+		"en-US": "Time before re-alerting after an alert is triggered.",
+		"es-LA": ""
+	},
+	"Time Out of Range": {
+		"en-US": "Time Out of Range",
+		"es-LA": ""
+	},
+	"Time to resolution": {
+		"en-US": "Time to resolution",
+		"es-LA": ""
+	},
+	"Time: {label}": {
+		"en-US": "Time: {label}",
+		"es-LA": ""
+	},
+	"Timestamp": {
+		"en-US": "Timestamp",
+		"es-LA": ""
+	},
+	"Timestamp (required)": {
+		"en-US": "Timestamp (required)",
+		"es-LA": ""
+	},
+	"Title": {
+		"en-US": "Title",
+		"es-LA": ""
+	},
+	"Toggle {0} status": {
+		"en-US": "Toggle {0} status",
+		"es-LA": ""
+	},
+	"Toggle sensor active status": {
+		"en-US": "Toggle sensor active status",
+		"es-LA": ""
+	},
+	"Toggle sensor status": {
+		"en-US": "Toggle sensor status",
+		"es-LA": ""
+	},
+	"Toggle user status": {
+		"en-US": "Toggle user status",
+		"es-LA": ""
+	},
+	"Total Active": {
+		"en-US": "Total Active",
+		"es-LA": ""
+	},
+	"total alerts": {
+		"en-US": "total alerts",
+		"es-LA": ""
+	},
+	"Total Alerts": {
+		"en-US": "Total Alerts",
+		"es-LA": ""
+	},
+	"Total Readings": {
+		"en-US": "Total Readings",
+		"es-LA": ""
+	},
+	"Total Records": {
+		"en-US": "Total Records",
+		"es-LA": ""
+	},
+	"Total Rows": {
+		"en-US": "Total Rows",
+		"es-LA": ""
+	},
+	"Total Sensors": {
+		"en-US": "Total Sensors",
+		"es-LA": ""
+	},
+	"Transform": {
+		"en-US": "Transform",
+		"es-LA": ""
+	},
+	"Transform (Optional)": {
+		"en-US": "Transform (Optional)",
+		"es-LA": ""
+	},
+	"Trends": {
+		"en-US": "Trends",
+		"es-LA": ""
+	},
+	"Triggered": {
+		"en-US": "Triggered",
+		"es-LA": ""
+	},
+	"Try adjusting your search or filter criteria.": {
+		"en-US": "Try adjusting your search or filter criteria.",
+		"es-LA": ""
+	},
+	"Try adjusting your search or filters": {
+		"en-US": "Try adjusting your search or filters",
+		"es-LA": ""
+	},
+	"Try Again": {
+		"en-US": "Try Again",
+		"es-LA": ""
+	},
+	"Type": {
+		"en-US": "Type",
+		"es-LA": ""
+	},
+	"Type is required": {
+		"en-US": "Type is required",
+		"es-LA": ""
+	},
+	"Type:": {
+		"en-US": "Type:",
+		"es-LA": ""
+	},
+	"Unassigned": {
+		"en-US": "Unassigned",
+		"es-LA": ""
+	},
+	"Unique error types": {
+		"en-US": "Unique error types",
+		"es-LA": ""
+	},
+	"Unique identifier for this sensor": {
+		"en-US": "Unique identifier for this sensor",
+		"es-LA": ""
+	},
+	"Unit": {
+		"en-US": "Unit",
+		"es-LA": ""
+	},
+	"Unit (optional)": {
+		"en-US": "Unit (optional)",
+		"es-LA": ""
+	},
+	"Unit Override": {
+		"en-US": "Unit Override",
+		"es-LA": ""
+	},
+	"Unit Override (Optional)": {
+		"en-US": "Unit Override (Optional)",
+		"es-LA": ""
+	},
+	"unknown": {
+		"en-US": "unknown",
+		"es-LA": ""
+	},
+	"Unknown": {
+		"en-US": "Unknown",
+		"es-LA": ""
+	},
+	"Unknown Equipment": {
+		"en-US": "Unknown Equipment",
+		"es-LA": ""
+	},
+	"Unknown Sensor": {
+		"en-US": "Unknown Sensor",
+		"es-LA": ""
+	},
+	"Unknown Site": {
+		"en-US": "Unknown Site",
+		"es-LA": ""
+	},
+	"Unmapped": {
+		"en-US": "Unmapped",
+		"es-LA": ""
+	},
+	"Unnamed": {
+		"en-US": "Unnamed",
+		"es-LA": ""
+	},
+	"Unnamed Equipment": {
+		"en-US": "Unnamed Equipment",
+		"es-LA": ""
+	},
+	"Unnamed Site": {
+		"en-US": "Unnamed Site",
+		"es-LA": ""
+	},
+	"Unstable": {
+		"en-US": "Unstable",
+		"es-LA": ""
+	},
+	"Untitled Rule": {
+		"en-US": "Untitled Rule",
+		"es-LA": ""
+	},
+	"Update Equipment": {
+		"en-US": "Update Equipment",
+		"es-LA": ""
+	},
+	"Update role information and permissions": {
+		"en-US": "Update role information and permissions",
+		"es-LA": ""
+	},
+	"Update Sensor": {
+		"en-US": "Update Sensor",
+		"es-LA": ""
+	},
+	"Update Site": {
+		"en-US": "Update Site",
+		"es-LA": ""
+	},
+	"Update User": {
+		"en-US": "Update User",
+		"es-LA": ""
+	},
+	"Update user information and permissions": {
+		"en-US": "Update user information and permissions",
+		"es-LA": ""
+	},
+	"Update user information and roles": {
+		"en-US": "Update user information and roles",
+		"es-LA": ""
+	},
+	"Updated": {
+		"en-US": "Updated",
+		"es-LA": ""
+	},
+	"Upload a CSV file with sensor readings or download the template": {
+		"en-US": "Upload a CSV file with sensor readings or download the template",
+		"es-LA": ""
+	},
+	"Upload Another File": {
+		"en-US": "Upload Another File",
+		"es-LA": ""
+	},
+	"Upload CSV file": {
+		"en-US": "Upload CSV file",
+		"es-LA": ""
+	},
+	"Upload CSV File": {
+		"en-US": "Upload CSV File",
+		"es-LA": ""
+	},
+	"User & Role Management": {
+		"en-US": "User & Role Management",
+		"es-LA": ""
+	},
+	"User created successfully": {
+		"en-US": "User created successfully",
+		"es-LA": ""
+	},
+	"User deactivated successfully": {
+		"en-US": "User deactivated successfully",
+		"es-LA": ""
+	},
+	"User Details": {
+		"en-US": "User Details",
+		"es-LA": ""
+	},
+	"User enabled successfully": {
+		"en-US": "User enabled successfully",
+		"es-LA": ""
+	},
+	"User is active": {
+		"en-US": "User is active",
+		"es-LA": ""
+	},
+	"User is deactivated": {
+		"en-US": "User is deactivated",
+		"es-LA": ""
+	},
+	"User Management": {
+		"en-US": "User Management",
+		"es-LA": ""
+	},
+	"User menu": {
+		"en-US": "User menu",
+		"es-LA": ""
+	},
+	"User updated successfully": {
+		"en-US": "User updated successfully",
+		"es-LA": ""
+	},
+	"Users": {
+		"en-US": "Users",
+		"es-LA": ""
+	},
+	"Validate": {
+		"en-US": "Validate",
+		"es-LA": ""
+	},
+	"Validation Results": {
+		"en-US": "Validation Results",
+		"es-LA": ""
+	},
+	"Value": {
+		"en-US": "Value",
+		"es-LA": ""
+	},
+	"Value (required)": {
+		"en-US": "Value (required)",
+		"es-LA": ""
+	},
+	"View": {
+		"en-US": "View",
+		"es-LA": ""
+	},
+	"View All": {
+		"en-US": "View All",
+		"es-LA": ""
+	},
+	"View all →": {
+		"en-US": "View all →",
+		"es-LA": ""
+	},
+	"View All →": {
+		"en-US": "View All →",
+		"es-LA": ""
+	},
+	"View all alerts": {
+		"en-US": "View all alerts",
+		"es-LA": ""
+	},
+	"View all ingestion runs from API and CSV sources": {
+		"en-US": "View all ingestion runs from API and CSV sources",
+		"es-LA": ""
+	},
+	"View and manage equipment at this site": {
+		"en-US": "View and manage equipment at this site",
+		"es-LA": ""
+	},
+	"View and manage sensors on this equipment": {
+		"en-US": "View and manage sensors on this equipment",
+		"es-LA": ""
+	},
+	"View details": {
+		"en-US": "View details",
+		"es-LA": ""
+	},
+	"View Details": {
+		"en-US": "View Details",
+		"es-LA": ""
+	},
+	"View details for run {0}": {
+		"en-US": "View details for run {0}",
+		"es-LA": ""
+	},
+	"View equipment": {
+		"en-US": "View equipment",
+		"es-LA": ""
+	},
+	"View high severity alerts": {
+		"en-US": "View high severity alerts",
+		"es-LA": ""
+	},
+	"View ingestion runs": {
+		"en-US": "View ingestion runs",
+		"es-LA": ""
+	},
+	"View medium severity alerts": {
+		"en-US": "View medium severity alerts",
+		"es-LA": ""
+	},
+	"View sensor health details": {
+		"en-US": "View sensor health details",
+		"es-LA": ""
+	},
+	"Viewer": {
+		"en-US": "Viewer",
+		"es-LA": ""
+	},
+	"Voltage": {
+		"en-US": "Voltage",
+		"es-LA": ""
+	},
+	"vs last period": {
+		"en-US": "vs last period",
+		"es-LA": ""
+	},
+	"vs previous period": {
+		"en-US": "vs previous period",
+		"es-LA": ""
+	},
+	"W:": {
+		"en-US": "W:",
+		"es-LA": ""
+	},
+	"Warn:": {
+		"en-US": "Warn:",
+		"es-LA": ""
+	},
+	"Warning": {
+		"en-US": "Warning",
+		"es-LA": ""
+	},
+	"Warning Range:": {
+		"en-US": "Warning Range:",
+		"es-LA": ""
+	},
+	"Warning:": {
+		"en-US": "Warning:",
+		"es-LA": ""
+	},
+	"Warning: {0} | Critical: {1}": {
+		"en-US": "Warning: {0} | Critical: {1}",
+		"es-LA": ""
+	},
+	"Warranty Information": {
+		"en-US": "Warranty Information",
+		"es-LA": ""
+	},
+	"Weekly Consumption vs Target": {
+		"en-US": "Weekly Consumption vs Target",
+		"es-LA": ""
+	},
+	"Weight": {
+		"en-US": "Weight",
+		"es-LA": ""
+	},
+	"when": {
+		"en-US": "when",
+		"es-LA": ""
+	},
+	"will trigger a": {
+		"en-US": "will trigger a",
+		"es-LA": ""
+	},
+	"Wiring Diagram": {
+		"en-US": "Wiring Diagram",
+		"es-LA": ""
+	},
+	"Worsening": {
+		"en-US": "Worsening",
+		"es-LA": ""
+	},
+	"Write": {
+		"en-US": "Write",
+		"es-LA": ""
+	},
+	"You are editing your own account. Some options may be restricted.": {
+		"en-US": "You are editing your own account. Some options may be restricted.",
+		"es-LA": ""
+	},
+	"You are editing your own account. You cannot demote yourself or disable your account.": {
+		"en-US": "You are editing your own account. You cannot demote yourself or disable your account.",
+		"es-LA": ""
+	},
+	"You cannot change your own role": {
+		"en-US": "You cannot change your own role",
+		"es-LA": ""
+	},
+	"You cannot deactivate your own account": {
+		"en-US": "You cannot deactivate your own account",
+		"es-LA": ""
+	},
+	"You cannot demote yourself or disable your own account": {
+		"en-US": "You cannot demote yourself or disable your own account",
+		"es-LA": ""
+	},
+	"You cannot disable your own account": {
+		"en-US": "You cannot disable your own account",
+		"es-LA": ""
+	},
+	"You cannot remove your own admin role": {
+		"en-US": "You cannot remove your own admin role",
+		"es-LA": ""
+	},
+	"You don't have permission to access this page.": {
+		"en-US": "You don't have permission to access this page.",
+		"es-LA": ""
+	}
+}

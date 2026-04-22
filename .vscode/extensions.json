@@ -1,0 +1,15 @@
+{
+	"recommendations": [
+		"typescriptteam.native-preview",
+		"biomejs.biome",
+		"Gruntfuggly.todo-tree",
+		"aaron-bond.better-comments",
+		"eamodio.gitlens",
+		"gruntfuggly.todo-tree",
+		"possan.nbsp-vscode",
+		"streetsidesoftware.code-spell-checker",
+		"wayou.vscode-todo-highlight",
+		"dbaeumer.vscode-eslint",
+		"bradlc.vscode-tailwindcss"
+	]
+}
