@@ -1,11 +1,17 @@
 import {
 	Activity,
+	ArrowLeftRight,
 	Bell,
+	Box,
 	Building2,
 	FileText,
+	Gauge,
+	Layers,
 	LayoutDashboard,
 	Server,
 	Settings,
+	Tag,
+	Truck,
 	Upload,
 	Users,
 } from "lucide-react";
@@ -59,6 +65,41 @@ export const navSections: NavSection[] = [
 				label: t`Equipment Overview`,
 				href: "/equipment-overview",
 				icon: <Server className="size-5" />,
+			},
+		],
+	},
+	{
+		section: t`INVENTORY`,
+		items: [
+			{
+				label: t`Dashboard`,
+				href: "/inventory/dashboard",
+				icon: <Gauge className="size-5" />,
+			},
+			{
+				label: t`Inventory`,
+				href: "/inventory",
+				icon: <Box className="size-5" />,
+			},
+			{
+				label: t`Intake`,
+				href: "/inventory/intake",
+				icon: <Truck className="size-5" />,
+			},
+			{
+				label: t`Movements`,
+				href: "/inventory/movements",
+				icon: <ArrowLeftRight className="size-5" />,
+			},
+			{
+				label: t`Products`,
+				href: "/inventory/products",
+				icon: <Tag className="size-5" />,
+			},
+			{
+				label: t`Lots`,
+				href: "/inventory/lots",
+				icon: <Layers className="size-5" />,
 			},
 		],
 	},
