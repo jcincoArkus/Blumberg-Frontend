@@ -192,3 +192,11 @@ export {
 	SiteTrendCharts,
 	siteFormValuesFromResponse,
 } from "./sites";
+export {
+	InventoryDashboardView,
+	InventoryView,
+	IntakeView,
+	MovementsView,
+	ProductsView,
+	LotsView,
+} from "./inventory";

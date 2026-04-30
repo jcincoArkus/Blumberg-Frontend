@@ -46,7 +46,7 @@ function parseStartOptions(args: string[], defaults: AppScriptConfig): StartOpti
 			app: { type: "string", default: defaults.defaultApp },
 			mode: { type: "string" },
 			port: { type: "string", default: defaults.defaultPort ?? "4080" },
-			locale: { type: "string", default: defaults.defaultLocale ?? "en-XA" },
+			locale: { type: "string", default: defaults.defaultLocale ?? "en-US" },
 		},
 		allowPositionals: false,
 	});
