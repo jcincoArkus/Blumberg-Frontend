@@ -8,6 +8,8 @@ import type {
 } from "~@/api";
 import {
 	createIntakeShipmentV1ObservedMutation,
+	createInventoryCategoryV1ObservedMutation,
+	createInventoryProductV1ObservedMutation,
 	createShipmentLineV1ObservedMutation,
 	getInventoryCategoriesV1ObservedQuery,
 	getInventoryLotsV1ObservedQuery,
@@ -149,6 +151,8 @@ class InventoryViewModel implements Disposable {
 
 	createShipmentMutation = createIntakeShipmentV1ObservedMutation();
 	createLineMutation = createShipmentLineV1ObservedMutation();
+	createProductMutation = createInventoryProductV1ObservedMutation();
+	createCategoryMutation = createInventoryCategoryV1ObservedMutation();
 
 	constructor() {
 		makeAutoObservable(this);
@@ -235,6 +239,16 @@ class InventoryViewModel implements Disposable {
 		this.#lotsQuery.invalidate();
 		this.#movementsQuery.invalidate();
 		await Promise.all([this.#lotsQuery.refetch(), this.#movementsQuery.refetch()]);
+	};
+
+	refreshProducts = async () => {
+		this.#productsQuery.invalidate();
+		await this.#productsQuery.refetch();
+	};
+
+	refreshCategories = async () => {
+		this.#categoriesQuery.invalidate();
+		await this.#categoriesQuery.refetch();
 	};
 
 	dispose() {
