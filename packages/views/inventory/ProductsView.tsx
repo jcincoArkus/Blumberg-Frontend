@@ -2,16 +2,19 @@ import { Download, Plus, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { t } from "~@/i18n/macro";
+import { observer } from "~@/mobx";
+import { useInventoryViewModel } from "~@/view-model";
 
-import { categories, categoryById, fmtMoney, products } from "./data";
+import { fmtMoney } from "./data";
 import "./inventory.css";
 
-export function ProductsView() {
+export const ProductsView = observer(function ProductsView() {
+	const vm = useInventoryViewModel();
 	const [catFilter, setCatFilter] = useState<string>("all");
 	const [search, setSearch] = useState("");
 
 	const rows = useMemo(() => {
-		let list = products.slice();
+		let list = vm.products.slice();
 		if (catFilter !== "all") list = list.filter((p) => p.cat === catFilter);
 		if (search) {
 			const q = search.toLowerCase();
@@ -20,7 +23,7 @@ export function ProductsView() {
 			);
 		}
 		return list;
-	}, [catFilter, search]);
+	}, [vm.products, catFilter, search]);
 
 	return (
 		<div className="inventory-module">
@@ -28,7 +31,7 @@ export function ProductsView() {
 				<div>
 					<div className="ttl">{t`Products`}</div>
 					<div className="sub">
-						{products.length} {t`active SKUs · catalog used by intake and lots`}
+						{vm.products.length} {t`active SKUs · catalog used by intake and lots`}
 					</div>
 				</div>
 				<div className="right">
@@ -51,7 +54,7 @@ export function ProductsView() {
 						>
 							{t`All`}
 						</button>
-						{categories.map((c) => (
+						{vm.categories.map((c) => (
 							<button
 								type="button"
 								key={c.id}
@@ -73,56 +76,62 @@ export function ProductsView() {
 					</div>
 				</div>
 
-				<div style={{ overflowX: "auto" }}>
-					<table className="tbl">
-						<thead>
-							<tr>
-								<th>{t`Product`}</th>
-								<th>{t`Category`}</th>
-								<th>{t`Unit`}</th>
-								<th style={{ textAlign: "right" }}>{t`kg / box`}</th>
-								<th style={{ textAlign: "right" }}>{t`Shelf life`}</th>
-								<th style={{ textAlign: "right" }}>{t`Price`}</th>
-							</tr>
-						</thead>
-						<tbody>
-							{rows.map((p) => {
-								const cat = categoryById(p.cat);
-								return (
-									<tr key={p.id}>
-										<td>
-											<div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-												<span
-													className="cat-dot"
-													style={{
-														background: cat.color,
-														boxShadow: "inset 0 0 0 1px rgba(0,0,0,.06)",
-													}}
-												/>
-												<div>
-													<div className="pname">{p.name}</div>
-													<div className="psku">{p.sku}</div>
+				{vm.isLoading ? (
+					<div style={{ padding: "40px 16px", textAlign: "center", color: "var(--inv-ink-400)" }}>
+						{t`Loading products…`}
+					</div>
+				) : (
+					<div style={{ overflowX: "auto" }}>
+						<table className="tbl">
+							<thead>
+								<tr>
+									<th>{t`Product`}</th>
+									<th>{t`Category`}</th>
+									<th>{t`Unit`}</th>
+									<th style={{ textAlign: "right" }}>{t`kg / box`}</th>
+									<th style={{ textAlign: "right" }}>{t`Shelf life`}</th>
+									<th style={{ textAlign: "right" }}>{t`Price`}</th>
+								</tr>
+							</thead>
+							<tbody>
+								{rows.map((p) => {
+									const cat = vm.categoryById(p.cat);
+									return (
+										<tr key={p.id}>
+											<td>
+												<div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+													<span
+														className="cat-dot"
+														style={{
+															background: cat.color,
+															boxShadow: "inset 0 0 0 1px rgba(0,0,0,.06)",
+														}}
+													/>
+													<div>
+														<div className="pname">{p.name}</div>
+														<div className="psku">{p.sku}</div>
+													</div>
 												</div>
-											</div>
-										</td>
-										<td>{cat.name}</td>
-										<td>{p.unit}</td>
-										<td className="num">{p.kgPerBox != null ? p.kgPerBox.toFixed(1) : "—"}</td>
-										<td className="num">{p.shelfLife}d</td>
-										<td className="num">{fmtMoney(p.price)}</td>
-									</tr>
-								);
-							})}
-						</tbody>
-					</table>
-				</div>
+											</td>
+											<td>{cat.name}</td>
+											<td>{p.unit}</td>
+											<td className="num">{p.kgPerBox != null ? p.kgPerBox.toFixed(1) : "—"}</td>
+											<td className="num">{p.shelfLife}d</td>
+											<td className="num">{fmtMoney(p.price)}</td>
+										</tr>
+									);
+								})}
+							</tbody>
+						</table>
+					</div>
+				)}
 
 				<div className="legend">
 					<span style={{ marginLeft: "auto" }}>
-						{t`Showing`} {rows.length} {t`of`} {products.length} {t`products`}
+						{t`Showing`} {rows.length} {t`of`} {vm.products.length} {t`products`}
 					</span>
 				</div>
 			</div>
 		</div>
 	);
-}
+});

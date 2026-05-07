@@ -3,8 +3,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 import { t } from "~@/i18n/macro";
+import { observer } from "~@/mobx";
+import { useInventoryViewModel } from "~@/view-model";
 
-import { addDays, fmtDateShort, fmtMoney, productById, sites, siteById, products, TODAY } from "./data";
+import { addDays, fmtDateShort, fmtMoney } from "./data";
 import "./inventory.css";
 
 type IntakeUnit = "kg" | "unit" | "box";
@@ -19,34 +21,63 @@ type LineItem = {
 	shelfDays: number;
 };
 
-export function IntakeView() {
+export const IntakeView = observer(function IntakeView() {
 	const navigate = useNavigate();
-	const [poNumber] = useState("PO-2285");
-	const [supplier, setSupplier] = useState("Distrib. Michoacán");
-	const [site, setSite] = useState("cdmx");
-	const [zone, setZone] = useState("Cold Room A");
-	const [arrivalDate, setArrivalDate] = useState("2026-04-29");
-	const [arrivalTime, setArrivalTime] = useState("11:30");
-	const [vehicle, setVehicle] = useState("Truck 04 · MX-7821");
-	const [tempCheck, setTempCheck] = useState("4");
+	const vm = useInventoryViewModel();
 
-	const [lines, setLines] = useState<LineItem[]>([
-		{ id: 1, productId: "p-hass", qty: 8, unit: "box", cost: 126.0, lotSuffix: "", shelfDays: 7 },
-		{ id: 2, productId: "p-jala", qty: 90, unit: "kg", cost: 16.0, lotSuffix: "", shelfDays: 12 },
-		{ id: 3, productId: "p-cilantro", qty: 200, unit: "unit", cost: 3.5, lotSuffix: "", shelfDays: 4 },
-	]);
+	const [poNumber] = useState("PO-2285");
+	const [supplier, setSupplier] = useState("");
+	const [site, setSite] = useState("");
+	const [zone, setZone] = useState("");
+	const [arrivalDate, setArrivalDate] = useState(new Date().toISOString().slice(0, 10));
+	const [arrivalTime, setArrivalTime] = useState("11:30");
+	const [vehicle, setVehicle] = useState("");
+	const [tempCheck, setTempCheck] = useState("4");
+	const [receivedBy, setReceivedBy] = useState("");
+	const [saving, setSaving] = useState(false);
+
+	const firstProduct = vm.products[0];
+	const [lines, setLines] = useState<LineItem[]>(() =>
+		firstProduct
+			? [
+					{
+						id: 1,
+						productId: firstProduct.id,
+						qty: 1,
+						unit: "kg",
+						cost: 0,
+						lotSuffix: "",
+						shelfDays: firstProduct.shelfLife,
+					},
+				]
+			: [],
+	);
+
+	const currentSite = vm.siteById(site);
+	const zones = currentSite.zones;
 
 	const updateLine = <K extends keyof LineItem>(id: number, k: K, v: LineItem[K]) =>
 		setLines((ls) => ls.map((l) => (l.id === id ? { ...l, [k]: v } : l)));
 	const removeLine = (id: number) => setLines((ls) => ls.filter((l) => l.id !== id));
-	const addLine = () =>
+	const addLine = () => {
+		const p = vm.products[0];
+		if (!p) return;
 		setLines((ls) => [
 			...ls,
-			{ id: Date.now(), productId: "p-tom-rom", qty: 1, unit: "box", cost: 0, lotSuffix: "", shelfDays: 10 },
+			{
+				id: Date.now(),
+				productId: p.id,
+				qty: 1,
+				unit: "kg",
+				cost: 0,
+				lotSuffix: "",
+				shelfDays: p.shelfLife,
+			},
 		]);
+	};
 
 	const enriched = lines.map((l) => {
-		const p = productById(l.productId);
+		const p = vm.productById(l.productId);
 		const kgPerBox = p.kgPerBox;
 		let kgEquiv: number | null = null;
 		if (l.unit === "kg") kgEquiv = l.qty;
@@ -59,6 +90,49 @@ export function IntakeView() {
 	const tax = subtotal * 0.16;
 	const grand = subtotal + tax;
 	const totalKg = enriched.reduce((s, l) => s + (l.kgEquiv ?? 0), 0);
+
+	const handleSave = async () => {
+		if (!site || !supplier || !receivedBy || lines.length === 0) return;
+		setSaving(true);
+		try {
+			const arrivedAt = new Date(`${arrivalDate}T${arrivalTime}`);
+			const shipment = await vm.createShipmentMutation.mutateAsync({
+				body: {
+					poReference: poNumber,
+					supplierId: supplier,
+					vehicle: vehicle || undefined,
+					siteId: site,
+					receivingZone: zone,
+					coldChainTempC: tempCheck ? Number(tempCheck) : undefined,
+					arrivedAt,
+					receivedBy,
+					status: "received",
+				},
+			});
+			const shipmentId = (shipment as { id?: string }).id;
+			if (shipmentId) {
+				await Promise.all(
+					lines.map((l) =>
+						vm.createLineMutation.mutateAsync({
+							body: {
+								shipmentId,
+								productId: l.productId,
+								qty: l.qty,
+								unit: l.unit,
+								costPerUnit: l.cost,
+							},
+						}),
+					),
+				);
+			}
+			vm.refresh();
+			navigate("/inventory");
+		} catch {
+			// Error surfaced via vm.createShipmentMutation.error
+		} finally {
+			setSaving(false);
+		}
+	};
 
 	return (
 		<div className="inventory-module">
@@ -76,8 +150,14 @@ export function IntakeView() {
 					<button type="button" className="btn">
 						<Printer size={14} /> {t`Print receipt`}
 					</button>
-					<button type="button" className="btn btn-primary">
-						<Check size={14} /> {t`Save · create`} {lines.length} {t`lots`}
+					<button
+						type="button"
+						className="btn btn-primary"
+						disabled={saving}
+						onClick={() => void handleSave()}
+					>
+						<Check size={14} />{" "}
+						{saving ? t`Saving…` : `${t`Save · create`} ${lines.length} ${t`lots`}`}
 					</button>
 				</div>
 			</div>
@@ -100,12 +180,14 @@ export function IntakeView() {
 									value={supplier}
 									onChange={(e) => setSupplier(e.target.value)}
 								>
-									<option>Distrib. Michoacán</option>
-									<option>Hortícola del Bajío</option>
-									<option>Citrícola Veracruz</option>
-									<option>Frutas Pacífico</option>
-									<option>Verduras del Norte</option>
-									<option>Mercado Central</option>
+									<option value="">{t`Select supplier…`}</option>
+									{/* Suppliers from API would go here; using placeholder for now */}
+									<option value="distrib-michoacan">Distrib. Michoacán</option>
+									<option value="horticola-bajio">Hortícola del Bajío</option>
+									<option value="citricola-veracruz">Citrícola Veracruz</option>
+									<option value="frutas-pacifico">Frutas Pacífico</option>
+									<option value="verduras-norte">Verduras del Norte</option>
+									<option value="mercado-central">Mercado Central</option>
 								</select>
 							</div>
 							<div>
@@ -129,10 +211,12 @@ export function IntakeView() {
 									value={site}
 									onChange={(e) => {
 										setSite(e.target.value);
-										setZone(siteById(e.target.value).zones[0]);
+										const s = vm.siteById(e.target.value);
+										setZone(s.zones[0] ?? "");
 									}}
 								>
-									{sites.map((s) => (
+									<option value="">{t`Select site…`}</option>
+									{vm.sites.map((s) => (
 										<option key={s.id} value={s.id}>
 											{s.name}
 										</option>
@@ -147,7 +231,8 @@ export function IntakeView() {
 									value={zone}
 									onChange={(e) => setZone(e.target.value)}
 								>
-									{siteById(site).zones.map((z) => (
+									<option value="">{t`Select zone…`}</option>
+									{zones.map((z) => (
 										<option key={z}>{z}</option>
 									))}
 								</select>
@@ -186,7 +271,12 @@ export function IntakeView() {
 							</div>
 							<div>
 								<label className="label" htmlFor="intake-by">{t`Received by`}</label>
-								<input id="intake-by" className="input" defaultValue="M. Reyes" />
+								<input
+									id="intake-by"
+									className="input"
+									value={receivedBy}
+									onChange={(e) => setReceivedBy(e.target.value)}
+								/>
 							</div>
 						</div>
 					</div>
@@ -221,9 +311,13 @@ export function IntakeView() {
 											<td>
 												<select
 													value={l.productId}
-													onChange={(e) => updateLine(l.id, "productId", e.target.value)}
+													onChange={(e) => {
+														const p = vm.productById(e.target.value);
+														updateLine(l.id, "productId", e.target.value);
+														updateLine(l.id, "shelfDays", p.shelfLife);
+													}}
 												>
-													{products.map((p) => (
+													{vm.products.map((p) => (
 														<option key={p.id} value={p.id}>
 															{p.name}
 														</option>
@@ -267,7 +361,13 @@ export function IntakeView() {
 											>
 												{fmtMoney(l.total)}
 											</td>
-											<td style={{ fontVariantNumeric: "tabular-nums", color: "var(--inv-ink-500)", fontSize: 12.5 }}>
+											<td
+												style={{
+													fontVariantNumeric: "tabular-nums",
+													color: "var(--inv-ink-500)",
+													fontSize: 12.5,
+												}}
+											>
 												{l.kgEquiv != null ? `${l.kgEquiv.toFixed(1)} kg` : "—"}
 												{l.unit === "box" && l.p.kgPerBox && (
 													<div style={{ fontSize: 11, color: "var(--inv-ink-400)" }}>
@@ -288,7 +388,7 @@ export function IntakeView() {
 												>
 													<Clock size={13} /> {l.p.shelfLife}d
 													<span style={{ color: "var(--inv-ink-400)", fontSize: 11 }}>
-														· {t`exp`} {fmtDateShort(addDays(TODAY, l.p.shelfLife))}
+														· {t`exp`} {fmtDateShort(addDays(new Date(), l.p.shelfLife))}
 													</span>
 												</div>
 											</td>
@@ -303,7 +403,12 @@ export function IntakeView() {
 							</table>
 						</div>
 
-						<button type="button" className="btn btn-sm" style={{ marginTop: 12 }} onClick={addLine}>
+						<button
+							type="button"
+							className="btn btn-sm"
+							style={{ marginTop: 12 }}
+							onClick={addLine}
+						>
 							<Plus size={12} /> {t`Add line`}
 						</button>
 					</div>
@@ -317,10 +422,15 @@ export function IntakeView() {
 						</div>
 						<div className="field-grid cols-3">
 							{enriched.map((l, i) => {
-								const auto = `L-26044-${String(20 + i).padStart(2, "0")}`;
+								const today = new Date();
+								const yymm = `${String(today.getFullYear()).slice(2)}${String(today.getMonth() + 1).padStart(2, "0")}`;
+								const auto = `L-${yymm}${String(today.getDate()).padStart(2, "0")}-${String(20 + i).padStart(2, "0")}`;
 								return (
 									<div key={l.id}>
-										<label className="label" style={{ display: "flex", justifyContent: "space-between" }}>
+										<label
+											className="label"
+											style={{ display: "flex", justifyContent: "space-between" }}
+										>
 											<span>{l.p.name}</span>
 											<span style={{ color: "var(--inv-ink-400)", fontWeight: 400 }}>
 												{l.qty} {l.unit}
@@ -371,11 +481,33 @@ export function IntakeView() {
 							</div>
 						</div>
 
-						<div style={{ marginTop: 14, padding: "11px", background: "var(--inv-surface)", borderRadius: 8 }}>
-							<div style={{ fontSize: 12, fontWeight: 600, color: "var(--inv-ink-900)", marginBottom: 6 }}>
+						<div
+							style={{
+								marginTop: 14,
+								padding: "11px",
+								background: "var(--inv-surface)",
+								borderRadius: 8,
+							}}
+						>
+							<div
+								style={{
+									fontSize: 12,
+									fontWeight: 600,
+									color: "var(--inv-ink-900)",
+									marginBottom: 6,
+								}}
+							>
 								{t`Cold-chain check`}
 							</div>
-							<div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "var(--inv-ink-700)" }}>
+							<div
+								style={{
+									display: "flex",
+									alignItems: "center",
+									gap: 8,
+									fontSize: 12,
+									color: "var(--inv-ink-700)",
+								}}
+							>
 								<Snowflake size={14} /> {tempCheck} °C — {t`within tolerance`}
 								<span style={{ marginLeft: "auto" }} className="chip chip-leaf">
 									OK
@@ -387,4 +519,4 @@ export function IntakeView() {
 			</div>
 		</div>
 	);
-}
+});

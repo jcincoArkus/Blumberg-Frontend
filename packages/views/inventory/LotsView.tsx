@@ -2,28 +2,25 @@ import { Download, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { t } from "~@/i18n/macro";
+import { observer } from "~@/mobx";
+import { useInventoryViewModel } from "~@/view-model";
 
-import {
-	expStatus,
-	fmtDateShort,
-	fmtMoney,
-	lots,
-	productById,
-	siteById,
-} from "./data";
+import { expStatus, fmtDateShort, fmtMoney } from "./data";
 import "./inventory.css";
 
-export function LotsView() {
+export const LotsView = observer(function LotsView() {
+	const vm = useInventoryViewModel();
 	const [search, setSearch] = useState("");
 
 	const rows = useMemo(() => {
-		const list = lots
+		const list = vm.lots
 			.map((l) => {
-				const p = productById(l.productId);
-				const site = siteById(l.siteId);
+				const p = vm.productById(l.productId);
+				const site = vm.siteById(l.siteId);
 				const exp = expStatus(l.exp);
+				const expDate = l.exp;
 				const value = l.qty * l.costPerUnit;
-				return { ...l, p, site, exp, value };
+				return { ...l, p, site, exp, expDate, value };
 			})
 			.sort((a, b) => a.id.localeCompare(b.id));
 
@@ -35,7 +32,7 @@ export function LotsView() {
 				r.p.name.toLowerCase().includes(q) ||
 				r.supplier.toLowerCase().includes(q),
 		);
-	}, [search]);
+	}, [vm, search]);
 
 	return (
 		<div className="inventory-module">
@@ -43,7 +40,7 @@ export function LotsView() {
 				<div>
 					<div className="ttl">{t`Lots`}</div>
 					<div className="sub">
-						{lots.length} {t`active lots · sortable by lot ID`}
+						{vm.lots.length} {t`active lots · sortable by lot ID`}
 					</div>
 				</div>
 				<div className="right">
@@ -66,61 +63,67 @@ export function LotsView() {
 					</div>
 				</div>
 
-				<div style={{ overflowX: "auto" }}>
-					<table className="tbl">
-						<thead>
-							<tr>
-								<th>{t`Lot`}</th>
-								<th>{t`Product`}</th>
-								<th>{t`Supplier`}</th>
-								<th>{t`Site`}</th>
-								<th>{t`Entry`}</th>
-								<th>{t`Expiration`}</th>
-								<th style={{ textAlign: "right" }}>{t`Qty`}</th>
-								<th style={{ textAlign: "right" }}>{t`Value`}</th>
-							</tr>
-						</thead>
-						<tbody>
-							{rows.map((r) => (
-								<tr key={r.id} className={r.exp.tone}>
-									<td>
-										<div className="lotid">{r.id}</div>
-									</td>
-									<td>
-										<div className="pname">{r.p.name}</div>
-										<div className="psku">{r.p.sku}</div>
-									</td>
-									<td>{r.supplier}</td>
-									<td>
-										<div style={{ color: "var(--inv-ink-900)", fontWeight: 500 }}>
-											{r.site.name.split(" · ")[0]}
-										</div>
-										<div className="meta">{r.zone}</div>
-									</td>
-									<td>{fmtDateShort(r.entry)}</td>
-									<td>
-										<div className="exp-cell">
-											<div className={`d ${r.exp.tone}`}>{r.exp.label}</div>
-											<div className="when">{fmtDateShort(r.exp)}</div>
-										</div>
-									</td>
-									<td className="num">
-										{r.qty.toLocaleString()}{" "}
-										<span style={{ color: "var(--inv-ink-400)", fontWeight: 400 }}>{r.unit}</span>
-									</td>
-									<td className="num">{fmtMoney(r.value)}</td>
+				{vm.isLoading ? (
+					<div style={{ padding: "40px 16px", textAlign: "center", color: "var(--inv-ink-400)" }}>
+						{t`Loading lots…`}
+					</div>
+				) : (
+					<div style={{ overflowX: "auto" }}>
+						<table className="tbl">
+							<thead>
+								<tr>
+									<th>{t`Lot`}</th>
+									<th>{t`Product`}</th>
+									<th>{t`Supplier`}</th>
+									<th>{t`Site`}</th>
+									<th>{t`Entry`}</th>
+									<th>{t`Expiration`}</th>
+									<th style={{ textAlign: "right" }}>{t`Qty`}</th>
+									<th style={{ textAlign: "right" }}>{t`Value`}</th>
 								</tr>
-							))}
-						</tbody>
-					</table>
-				</div>
+							</thead>
+							<tbody>
+								{rows.map((r) => (
+									<tr key={r.id} className={r.exp.tone}>
+										<td>
+											<div className="lotid">{r.id}</div>
+										</td>
+										<td>
+											<div className="pname">{r.p.name}</div>
+											<div className="psku">{r.p.sku}</div>
+										</td>
+										<td>{r.supplier}</td>
+										<td>
+											<div style={{ color: "var(--inv-ink-900)", fontWeight: 500 }}>
+												{r.site.name.split(" · ")[0]}
+											</div>
+											<div className="meta">{r.zone}</div>
+										</td>
+										<td>{fmtDateShort(r.entry)}</td>
+										<td>
+											<div className="exp-cell">
+												<div className={`d ${r.exp.tone}`}>{r.exp.label}</div>
+												<div className="when">{fmtDateShort(r.expDate)}</div>
+											</div>
+										</td>
+										<td className="num">
+											{r.qty.toLocaleString()}{" "}
+											<span style={{ color: "var(--inv-ink-400)", fontWeight: 400 }}>{r.unit}</span>
+										</td>
+										<td className="num">{fmtMoney(r.value)}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				)}
 
 				<div className="legend">
 					<span style={{ marginLeft: "auto" }}>
-						{t`Showing`} {rows.length} {t`of`} {lots.length} {t`lots`}
+						{t`Showing`} {rows.length} {t`of`} {vm.lots.length} {t`lots`}
 					</span>
 				</div>
 			</div>
 		</div>
 	);
-}
+});
