@@ -29,7 +29,7 @@
 		"indentStyle": "tab",
 		"indentWidth": 2,
 		"lineWidth": 100,
-		"lineEnding": "lf"
+		"lineEnding": "crlf"
 	},
 	"linter": {
 		"enabled": false
@@ -54,7 +54,7 @@
 	},
 	"json": {
 		"formatter": {
-			"enabled": true,
+			"enabled": false,
 			"indentStyle": "tab",
 			"indentWidth": 4,
 			"lineWidth": 100,
