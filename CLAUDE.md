@@ -64,6 +64,7 @@ React Router 7 with filesystem routes. Conventions:
 - `bun api:gen` regenerates `packages/api/generated/` from `packages/api/openapi.yaml`
 - Client config lives in `packages/api/client.ts` (Axios + qs for array params with `repeat` format)
 - Do not hand-write API calls — edit the OpenAPI spec and regenerate
+- **Before running `bun api:gen`**, verify the `inputPath` in `packages/api/openapi.config.ts` points to your local backend repo. The path is machine-specific (e.g. `./../Blumberg-Backend/Adapters/OpenApi/openapi.yaml`) and is not committed with a guaranteed value.
 
 ### Forms
 Schema-driven headless engine in `packages/forms/`. Define a typed `FormSchema`, use `<Form>` component — no manual JSX per field. Supports conditional visibility (`shownIf`), multi-step, and Zod validation. See `packages/forms/README.md`.

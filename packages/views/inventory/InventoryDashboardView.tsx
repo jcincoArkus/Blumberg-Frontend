@@ -3,21 +3,10 @@ import { useMemo } from "react";
 import { Link } from "react-router";
 
 import { t } from "~@/i18n/macro";
+import { observer } from "~@/mobx";
+import { type InvMovementType, useInventoryViewModel } from "~@/view-model";
 
-import {
-	categories,
-	categoryById,
-	expStatus,
-	fmtMoney,
-	fmtTime,
-	lots,
-	movements,
-	productById,
-	sites,
-	siteById,
-	TODAY,
-	type MovementType,
-} from "./data";
+import { expStatus, fmtMoney, fmtTime } from "./data";
 import "./inventory.css";
 
 const TYPE_ICON = {
@@ -26,9 +15,9 @@ const TYPE_ICON = {
 	waste: Trash2,
 	adjustment: Pencil,
 	transfer: ArrowLeftRight,
-} as const satisfies Record<MovementType, unknown>;
+} as const satisfies Record<InvMovementType, unknown>;
 
-const TYPE_LABEL: Record<MovementType, string> = {
+const TYPE_LABEL: Record<InvMovementType, string> = {
 	intake: "Intake",
 	output: "Sale",
 	waste: "Waste",
@@ -61,7 +50,15 @@ function StatCard({
 	);
 }
 
-function SectionCard({ title, sub, children }: { title: string; sub?: string; children: React.ReactNode }) {
+function SectionCard({
+	title,
+	sub,
+	children,
+}: {
+	title: string;
+	sub?: string;
+	children: React.ReactNode;
+}) {
 	return (
 		<div className="card" style={{ overflow: "hidden" }}>
 			<div
@@ -83,7 +80,15 @@ function SectionCard({ title, sub, children }: { title: string; sub?: string; ch
 
 function Bar({ pct, color }: { pct: number; color?: string }) {
 	return (
-		<div style={{ width: "100%", height: 6, background: "var(--inv-mint-100)", borderRadius: 3, overflow: "hidden" }}>
+		<div
+			style={{
+				width: "100%",
+				height: 6,
+				background: "var(--inv-mint-100)",
+				borderRadius: 3,
+				overflow: "hidden",
+			}}
+		>
 			<div
 				style={{
 					width: `${Math.max(2, Math.round(pct * 100))}%`,
@@ -96,44 +101,47 @@ function Bar({ pct, color }: { pct: number; color?: string }) {
 	);
 }
 
-export function InventoryDashboardView() {
+export const InventoryDashboardView = observer(function InventoryDashboardView() {
+	const vm = useInventoryViewModel();
+
 	const enriched = useMemo(
 		() =>
-			lots.map((l) => {
-				const p = productById(l.productId);
-				const cat = categoryById(p.cat);
-				const site = siteById(l.siteId);
+			vm.lots.map((l) => {
+				const p = vm.productById(l.productId);
+				const cat = vm.categoryById(p.cat);
+				const site = vm.siteById(l.siteId);
 				const exp = expStatus(l.exp);
 				const value = l.qty * l.costPerUnit;
 				const kg = l.unit === "kg" ? l.qty : p.kgPerBox ? l.qty * p.kgPerBox : 0;
 				return { ...l, p, cat, site, exp, value, kg };
 			}),
-		[],
+		[vm],
 	);
 
 	const totals = useMemo(() => {
 		const totalValue = enriched.reduce((s, l) => s + l.value, 0);
 		const totalKg = enriched.reduce((s, l) => s + l.kg, 0);
 		const totalUnits = enriched.reduce((s, l) => s + l.qty, 0);
-		const expSoon = enriched.filter((l) => l.exp.tone === "soon" || l.exp.tone === "critical").length;
-		const expired = enriched.filter((l) => l.exp.tone === "expired").length;
-		return { totalValue, totalKg, totalUnits, expSoon, expired };
+		const expSoon = enriched.filter(
+			(l) => l.exp.tone === "soon" || l.exp.tone === "critical",
+		).length;
+		return { totalValue, totalKg, totalUnits, expSoon };
 	}, [enriched]);
 
 	const bySite = useMemo(() => {
 		const totalValue = totals.totalValue || 1;
-		return sites
+		return vm.sites
 			.map((s) => {
 				const slots = enriched.filter((l) => l.siteId === s.id);
 				const value = slots.reduce((sum, l) => sum + l.value, 0);
 				return { site: s, count: slots.length, value, share: value / totalValue };
 			})
 			.sort((a, b) => b.value - a.value);
-	}, [enriched, totals.totalValue]);
+	}, [enriched, totals.totalValue, vm.sites]);
 
 	const byCategory = useMemo(() => {
 		const totalValue = totals.totalValue || 1;
-		return categories
+		return vm.categories
 			.map((c) => {
 				const slots = enriched.filter((l) => l.cat.id === c.id);
 				const value = slots.reduce((sum, l) => sum + l.value, 0);
@@ -141,12 +149,26 @@ export function InventoryDashboardView() {
 			})
 			.filter((row) => row.count > 0)
 			.sort((a, b) => b.value - a.value);
-	}, [enriched, totals.totalValue]);
+	}, [enriched, totals.totalValue, vm.categories]);
 
 	const expirationBuckets = useMemo(() => {
 		const buckets = [
-			{ key: "expired", label: t`Past`, range: "≤ 0d", tone: "expired" as const, count: 0, value: 0 },
-			{ key: "critical", label: t`≤ 2d`, range: "0–2d", tone: "critical" as const, count: 0, value: 0 },
+			{
+				key: "expired",
+				label: t`Past`,
+				range: "≤ 0d",
+				tone: "expired" as const,
+				count: 0,
+				value: 0,
+			},
+			{
+				key: "critical",
+				label: t`≤ 2d`,
+				range: "0–2d",
+				tone: "critical" as const,
+				count: 0,
+				value: 0,
+			},
 			{ key: "soon", label: t`≤ 5d`, range: "3–5d", tone: "soon" as const, count: 0, value: 0 },
 			{ key: "ok", label: t`> 5d`, range: "> 5d", tone: "ok" as const, count: 0, value: 0 },
 		];
@@ -162,18 +184,27 @@ export function InventoryDashboardView() {
 	}, [enriched]);
 
 	const movementsLast7 = useMemo(() => {
-		const cutoff = new Date(TODAY);
+		const cutoff = new Date();
 		cutoff.setDate(cutoff.getDate() - 7);
-		const recent = movements.filter((m) => m.at >= cutoff);
-		const by: Record<MovementType, number> = { intake: 0, output: 0, waste: 0, adjustment: 0, transfer: 0 };
+		const recent = vm.movements.filter((m) => m.at >= cutoff);
+		const by: Record<InvMovementType, number> = {
+			intake: 0,
+			output: 0,
+			waste: 0,
+			adjustment: 0,
+			transfer: 0,
+		};
 		recent.forEach((m) => {
 			by[m.type]++;
 		});
 		return { total: recent.length, by, recent };
-	}, []);
+	}, [vm.movements]);
 
 	const topProducts = useMemo(() => {
-		const map = new Map<string, { product: ReturnType<typeof productById>; value: number; lots: number }>();
+		const map = new Map<
+			string,
+			{ product: ReturnType<typeof vm.productById>; value: number; lots: number }
+		>();
 		enriched.forEach((l) => {
 			const cur = map.get(l.p.id) ?? { product: l.p, value: 0, lots: 0 };
 			cur.value += l.value;
@@ -183,7 +214,7 @@ export function InventoryDashboardView() {
 		return Array.from(map.values())
 			.sort((a, b) => b.value - a.value)
 			.slice(0, 5);
-	}, [enriched]);
+	}, [enriched, vm.productById]);
 
 	const expColors: Record<"expired" | "critical" | "soon" | "ok", string> = {
 		expired: "var(--inv-rose-fg)",
@@ -191,6 +222,22 @@ export function InventoryDashboardView() {
 		soon: "var(--inv-amber-fg)",
 		ok: "var(--inv-teal-700)",
 	};
+
+	if (vm.isLoading) {
+		return (
+			<div className="inventory-module">
+				<div className="page-h">
+					<div>
+						<div className="ttl">{t`Inventory dashboard`}</div>
+						<div className="sub">{t`Snapshot across all sites · last 7 days of activity`}</div>
+					</div>
+				</div>
+				<div style={{ padding: "40px 16px", textAlign: "center", color: "var(--inv-ink-400)" }}>
+					{t`Loading…`}
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="inventory-module">
@@ -213,7 +260,7 @@ export function InventoryDashboardView() {
 				<StatCard
 					label={t`Active lots`}
 					value={enriched.length}
-					sub={`${sites.length} ${t`sites`}`}
+					sub={`${vm.sites.length} ${t`sites`}`}
 					accent={0.85}
 				/>
 				<StatCard
@@ -245,11 +292,17 @@ export function InventoryDashboardView() {
 					marginBottom: 14,
 				}}
 			>
-				<SectionCard title={t`By site`} sub={`${sites.length} ${t`locations`}`}>
+				<SectionCard title={t`By site`} sub={`${vm.sites.length} ${t`locations`}`}>
 					<div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
 						{bySite.map((row) => (
 							<div key={row.site.id}>
-								<div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
+								<div
+									style={{
+										display: "flex",
+										alignItems: "baseline",
+										justifyContent: "space-between",
+									}}
+								>
 									<div style={{ fontSize: 13, fontWeight: 500, color: "var(--inv-ink-900)" }}>
 										{row.site.name.split(" · ")[0]}
 									</div>
@@ -272,7 +325,10 @@ export function InventoryDashboardView() {
 								<div style={{ display: "flex", alignItems: "center", gap: 8 }}>
 									<span
 										className="cat-dot"
-										style={{ background: row.cat.color, boxShadow: "inset 0 0 0 1px rgba(0,0,0,.06)" }}
+										style={{
+											background: row.cat.color,
+											boxShadow: "inset 0 0 0 1px rgba(0,0,0,.06)",
+										}}
 									/>
 									<div style={{ fontSize: 13, fontWeight: 500, color: "var(--inv-ink-900)" }}>
 										{row.cat.name}
@@ -349,45 +405,50 @@ export function InventoryDashboardView() {
 					</div>
 				</SectionCard>
 
-				<SectionCard title={t`Movements · last 7 days`} sub={`${movementsLast7.total} ${t`events`}`}>
+				<SectionCard
+					title={t`Movements · last 7 days`}
+					sub={`${movementsLast7.total} ${t`events`}`}
+				>
 					<div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 }}>
-						{(["intake", "output", "waste", "adjustment", "transfer"] as MovementType[]).map((type) => {
-							const Icn = TYPE_ICON[type];
-							return (
-								<div
-									key={type}
-									style={{
-										border: "1px solid var(--inv-line)",
-										borderRadius: 9,
-										padding: "10px 12px",
-									}}
-								>
+						{(["intake", "output", "waste", "adjustment", "transfer"] as InvMovementType[]).map(
+							(type) => {
+								const Icn = TYPE_ICON[type];
+								return (
 									<div
+										key={type}
 										style={{
-											display: "flex",
-											alignItems: "center",
-											gap: 6,
-											fontSize: 11.5,
-											color: "var(--inv-ink-500)",
-											fontWeight: 500,
+											border: "1px solid var(--inv-line)",
+											borderRadius: 9,
+											padding: "10px 12px",
 										}}
 									>
-										<Icn size={12} /> {TYPE_LABEL[type]}
+										<div
+											style={{
+												display: "flex",
+												alignItems: "center",
+												gap: 6,
+												fontSize: 11.5,
+												color: "var(--inv-ink-500)",
+												fontWeight: 500,
+											}}
+										>
+											<Icn size={12} /> {TYPE_LABEL[type]}
+										</div>
+										<div
+											style={{
+												fontSize: 20,
+												fontWeight: 600,
+												color: "var(--inv-ink-900)",
+												marginTop: 4,
+												fontVariantNumeric: "tabular-nums",
+											}}
+										>
+											{movementsLast7.by[type]}
+										</div>
 									</div>
-									<div
-										style={{
-											fontSize: 20,
-											fontWeight: 600,
-											color: "var(--inv-ink-900)",
-											marginTop: 4,
-											fontVariantNumeric: "tabular-nums",
-										}}
-									>
-										{movementsLast7.by[type]}
-									</div>
-								</div>
-							);
-						})}
+								);
+							},
+						)}
 					</div>
 					<div style={{ marginTop: 14 }}>
 						<Link
@@ -424,9 +485,12 @@ export function InventoryDashboardView() {
 						</thead>
 						<tbody>
 							{movementsLast7.recent.slice(0, 6).map((m) => {
-								const p = productById(m.productId);
+								const p = vm.productById(m.productId);
 								const Icn = TYPE_ICON[m.type];
-								const isNeg = m.type === "output" || m.type === "waste" || (m.type === "adjustment" && m.qty < 0);
+								const isNeg =
+									m.type === "output" ||
+									m.type === "waste" ||
+									(m.type === "adjustment" && m.qty < 0);
 								const isPos = m.type === "intake" || (m.type === "adjustment" && m.qty > 0);
 								const sign = isNeg ? "-" : isPos ? "+" : "";
 								return (
@@ -445,7 +509,9 @@ export function InventoryDashboardView() {
 												{sign}
 												{Math.abs(m.qty).toLocaleString()}
 											</span>
-											<span style={{ color: "var(--inv-ink-400)", fontWeight: 400, marginLeft: 4 }}>{m.unit}</span>
+											<span style={{ color: "var(--inv-ink-400)", fontWeight: 400, marginLeft: 4 }}>
+												{m.unit}
+											</span>
 										</td>
 									</tr>
 								);
@@ -457,14 +523,17 @@ export function InventoryDashboardView() {
 				<SectionCard title={t`Top products by value`} sub={t`top 5`}>
 					<div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
 						{topProducts.map((row) => {
-							const cat = categoryById(row.product.cat);
+							const cat = vm.categoryById(row.product.cat);
 							const max = topProducts[0]?.value || 1;
 							return (
 								<div key={row.product.id}>
 									<div style={{ display: "flex", alignItems: "center", gap: 8 }}>
 										<span
 											className="cat-dot"
-											style={{ background: cat.color, boxShadow: "inset 0 0 0 1px rgba(0,0,0,.06)" }}
+											style={{
+												background: cat.color,
+												boxShadow: "inset 0 0 0 1px rgba(0,0,0,.06)",
+											}}
 										/>
 										<div style={{ fontSize: 13, color: "var(--inv-ink-900)", fontWeight: 500 }}>
 											{row.product.name}
@@ -472,7 +541,10 @@ export function InventoryDashboardView() {
 										<div style={{ marginLeft: "auto", fontSize: 12, color: "var(--inv-ink-500)" }}>
 											{row.lots} {t`lots`}
 										</div>
-										<div className="mono" style={{ fontSize: 12, color: "var(--inv-ink-900)", fontWeight: 500 }}>
+										<div
+											className="mono"
+											style={{ fontSize: 12, color: "var(--inv-ink-900)", fontWeight: 500 }}
+										>
 											{fmtMoney(row.value)}
 										</div>
 									</div>
@@ -487,4 +559,4 @@ export function InventoryDashboardView() {
 			</div>
 		</div>
 	);
-}
+});

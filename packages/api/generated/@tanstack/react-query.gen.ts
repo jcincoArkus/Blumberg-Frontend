@@ -13,16 +13,33 @@ import {
 	createAdminV1,
 	createEquipmentV1,
 	createIngestionApiKeyV1,
+	createIntakeShipmentV1,
+	createInventoryCategoryV1,
+	createInventoryLotV1,
+	createInventoryMovementV1,
+	createInventoryProductV1,
+	createInventorySiteV1,
+	createInventorySiteZoneV1,
+	createInventorySupplierV1,
 	createRoleV1,
 	createSensorTypeV1,
 	createSensorV1,
+	createShipmentLineV1,
 	createSiteV1,
 	createThresholdV1,
 	deleteAdminV1,
 	deleteEquipmentV1,
+	deleteIntakeShipmentV1,
+	deleteInventoryCategoryV1,
+	deleteInventoryLotV1,
+	deleteInventoryProductV1,
+	deleteInventorySiteV1,
+	deleteInventorySiteZoneV1,
+	deleteInventorySupplierV1,
 	deleteRoleV1,
 	deleteSensorTypeV1,
 	deleteSensorV1,
+	deleteShipmentLineV1,
 	deleteSiteV1,
 	deleteThresholdV1,
 	getActiveAlertsV1,
@@ -42,6 +59,22 @@ import {
 	getIngestionRunByIdV1,
 	getIngestionRunsV1,
 	getIngestionStatsV1,
+	getIntakeShipmentByIdV1,
+	getIntakeShipmentsV1,
+	getInventoryCategoriesV1,
+	getInventoryCategoryByIdV1,
+	getInventoryLotByCodeV1,
+	getInventoryLotsV1,
+	getInventoryMovementByIdV1,
+	getInventoryMovementsV1,
+	getInventoryProductByIdV1,
+	getInventoryProductsV1,
+	getInventorySiteByIdV1,
+	getInventorySitesV1,
+	getInventorySiteZoneByIdV1,
+	getInventorySiteZonesV1,
+	getInventorySupplierByIdV1,
+	getInventorySuppliersV1,
 	getPermissionActionsV1,
 	getPermissionResourcesV1,
 	getRoleByNameV1,
@@ -53,6 +86,8 @@ import {
 	getSensorReadingsV1,
 	getSensorRejectionCountV1,
 	getSensorTypeByIdV1,
+	getShipmentLineByIdV1,
+	getShipmentLinesV1,
 	getSiteByIdV1,
 	getThresholdByIdV1,
 	getUserRolesV1,
@@ -69,9 +104,17 @@ import {
 	revokeIngestionApiKeyV1,
 	updateAdminV1,
 	updateEquipmentV1,
+	updateIntakeShipmentV1,
+	updateInventoryCategoryV1,
+	updateInventoryLotV1,
+	updateInventoryProductV1,
+	updateInventorySiteV1,
+	updateInventorySiteZoneV1,
+	updateInventorySupplierV1,
 	updateRoleV1,
 	updateSensorTypeV1,
 	updateSensorV1,
+	updateShipmentLineV1,
 	updateSiteV1,
 	updateThresholdV1,
 } from "../sdk.gen";
@@ -94,6 +137,22 @@ import type {
 	CreateIngestionApiKeyV1Data,
 	CreateIngestionApiKeyV1Error,
 	CreateIngestionApiKeyV1Response,
+	CreateIntakeShipmentV1Data,
+	CreateIntakeShipmentV1Response,
+	CreateInventoryCategoryV1Data,
+	CreateInventoryCategoryV1Response,
+	CreateInventoryLotV1Data,
+	CreateInventoryLotV1Response,
+	CreateInventoryMovementV1Data,
+	CreateInventoryMovementV1Response,
+	CreateInventoryProductV1Data,
+	CreateInventoryProductV1Response,
+	CreateInventorySiteV1Data,
+	CreateInventorySiteV1Response,
+	CreateInventorySiteZoneV1Data,
+	CreateInventorySiteZoneV1Response,
+	CreateInventorySupplierV1Data,
+	CreateInventorySupplierV1Response,
 	CreateRoleV1Data,
 	CreateRoleV1Response,
 	CreateSensorTypeV1Data,
@@ -102,6 +161,8 @@ import type {
 	CreateSensorV1Data,
 	CreateSensorV1Error,
 	CreateSensorV1Response,
+	CreateShipmentLineV1Data,
+	CreateShipmentLineV1Response,
 	CreateSiteV1Data,
 	CreateSiteV1Error,
 	CreateSiteV1Response,
@@ -112,11 +173,19 @@ import type {
 	DeleteAdminV1Error,
 	DeleteEquipmentV1Data,
 	DeleteEquipmentV1Error,
+	DeleteIntakeShipmentV1Data,
+	DeleteInventoryCategoryV1Data,
+	DeleteInventoryLotV1Data,
+	DeleteInventoryProductV1Data,
+	DeleteInventorySiteV1Data,
+	DeleteInventorySiteZoneV1Data,
+	DeleteInventorySupplierV1Data,
 	DeleteRoleV1Data,
 	DeleteSensorTypeV1Data,
 	DeleteSensorTypeV1Error,
 	DeleteSensorV1Data,
 	DeleteSensorV1Error,
+	DeleteShipmentLineV1Data,
 	DeleteSiteV1Data,
 	DeleteSiteV1Error,
 	DeleteThresholdV1Data,
@@ -159,6 +228,38 @@ import type {
 	GetIngestionStatsV1Data,
 	GetIngestionStatsV1Error,
 	GetIngestionStatsV1Response,
+	GetIntakeShipmentByIdV1Data,
+	GetIntakeShipmentByIdV1Response,
+	GetIntakeShipmentsV1Data,
+	GetIntakeShipmentsV1Response,
+	GetInventoryCategoriesV1Data,
+	GetInventoryCategoriesV1Response,
+	GetInventoryCategoryByIdV1Data,
+	GetInventoryCategoryByIdV1Response,
+	GetInventoryLotByCodeV1Data,
+	GetInventoryLotByCodeV1Response,
+	GetInventoryLotsV1Data,
+	GetInventoryLotsV1Response,
+	GetInventoryMovementByIdV1Data,
+	GetInventoryMovementByIdV1Response,
+	GetInventoryMovementsV1Data,
+	GetInventoryMovementsV1Response,
+	GetInventoryProductByIdV1Data,
+	GetInventoryProductByIdV1Response,
+	GetInventoryProductsV1Data,
+	GetInventoryProductsV1Response,
+	GetInventorySiteByIdV1Data,
+	GetInventorySiteByIdV1Response,
+	GetInventorySitesV1Data,
+	GetInventorySitesV1Response,
+	GetInventorySiteZoneByIdV1Data,
+	GetInventorySiteZoneByIdV1Response,
+	GetInventorySiteZonesV1Data,
+	GetInventorySiteZonesV1Response,
+	GetInventorySupplierByIdV1Data,
+	GetInventorySupplierByIdV1Response,
+	GetInventorySuppliersV1Data,
+	GetInventorySuppliersV1Response,
 	GetPermissionActionsV1Data,
 	GetPermissionActionsV1Response,
 	GetPermissionResourcesV1Data,
@@ -186,6 +287,10 @@ import type {
 	GetSensorTypeByIdV1Data,
 	GetSensorTypeByIdV1Error,
 	GetSensorTypeByIdV1Response,
+	GetShipmentLineByIdV1Data,
+	GetShipmentLineByIdV1Response,
+	GetShipmentLinesV1Data,
+	GetShipmentLinesV1Response,
 	GetSiteByIdV1Data,
 	GetSiteByIdV1Error,
 	GetSiteByIdV1Response,
@@ -222,6 +327,13 @@ import type {
 	UpdateEquipmentV1Data,
 	UpdateEquipmentV1Error,
 	UpdateEquipmentV1Response,
+	UpdateIntakeShipmentV1Data,
+	UpdateInventoryCategoryV1Data,
+	UpdateInventoryLotV1Data,
+	UpdateInventoryProductV1Data,
+	UpdateInventorySiteV1Data,
+	UpdateInventorySiteZoneV1Data,
+	UpdateInventorySupplierV1Data,
 	UpdateRoleV1Data,
 	UpdateRoleV1Response,
 	UpdateSensorTypeV1Data,
@@ -230,6 +342,7 @@ import type {
 	UpdateSensorV1Data,
 	UpdateSensorV1Error,
 	UpdateSensorV1Response,
+	UpdateShipmentLineV1Data,
 	UpdateSiteV1Data,
 	UpdateSiteV1Error,
 	UpdateSiteV1Response,
@@ -1780,6 +1893,975 @@ export const replaceUserRolesV1Mutation = (
 	> = {
 		mutationFn: async (fnOptions) => {
 			const { data } = await replaceUserRolesV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getInventoryCategoriesV1QueryKey = (options?: Options<GetInventoryCategoriesV1Data>) =>
+	createQueryKey("getInventoryCategoriesV1", options);
+
+export const getInventoryCategoriesV1Options = (options?: Options<GetInventoryCategoriesV1Data>) =>
+	queryOptions<
+		GetInventoryCategoriesV1Response,
+		AxiosError<DefaultError>,
+		GetInventoryCategoriesV1Response,
+		ReturnType<typeof getInventoryCategoriesV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getInventoryCategoriesV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getInventoryCategoriesV1QueryKey(options),
+	});
+
+export const createInventoryCategoryV1Mutation = (
+	options?: Partial<Options<CreateInventoryCategoryV1Data>>,
+): UseMutationOptions<
+	CreateInventoryCategoryV1Response,
+	AxiosError<DefaultError>,
+	Options<CreateInventoryCategoryV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		CreateInventoryCategoryV1Response,
+		AxiosError<DefaultError>,
+		Options<CreateInventoryCategoryV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await createInventoryCategoryV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const deleteInventoryCategoryV1Mutation = (
+	options?: Partial<Options<DeleteInventoryCategoryV1Data>>,
+): UseMutationOptions<
+	unknown,
+	AxiosError<DefaultError>,
+	Options<DeleteInventoryCategoryV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DefaultError>,
+		Options<DeleteInventoryCategoryV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await deleteInventoryCategoryV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getInventoryCategoryByIdV1QueryKey = (
+	options: Options<GetInventoryCategoryByIdV1Data>,
+) => createQueryKey("getInventoryCategoryByIdV1", options);
+
+export const getInventoryCategoryByIdV1Options = (
+	options: Options<GetInventoryCategoryByIdV1Data>,
+) =>
+	queryOptions<
+		GetInventoryCategoryByIdV1Response,
+		AxiosError<DefaultError>,
+		GetInventoryCategoryByIdV1Response,
+		ReturnType<typeof getInventoryCategoryByIdV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getInventoryCategoryByIdV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getInventoryCategoryByIdV1QueryKey(options),
+	});
+
+export const updateInventoryCategoryV1Mutation = (
+	options?: Partial<Options<UpdateInventoryCategoryV1Data>>,
+): UseMutationOptions<
+	unknown,
+	AxiosError<DefaultError>,
+	Options<UpdateInventoryCategoryV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DefaultError>,
+		Options<UpdateInventoryCategoryV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await updateInventoryCategoryV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getInventorySitesV1QueryKey = (options?: Options<GetInventorySitesV1Data>) =>
+	createQueryKey("getInventorySitesV1", options);
+
+export const getInventorySitesV1Options = (options?: Options<GetInventorySitesV1Data>) =>
+	queryOptions<
+		GetInventorySitesV1Response,
+		AxiosError<DefaultError>,
+		GetInventorySitesV1Response,
+		ReturnType<typeof getInventorySitesV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getInventorySitesV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getInventorySitesV1QueryKey(options),
+	});
+
+export const createInventorySiteV1Mutation = (
+	options?: Partial<Options<CreateInventorySiteV1Data>>,
+): UseMutationOptions<
+	CreateInventorySiteV1Response,
+	AxiosError<DefaultError>,
+	Options<CreateInventorySiteV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		CreateInventorySiteV1Response,
+		AxiosError<DefaultError>,
+		Options<CreateInventorySiteV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await createInventorySiteV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const deleteInventorySiteV1Mutation = (
+	options?: Partial<Options<DeleteInventorySiteV1Data>>,
+): UseMutationOptions<unknown, AxiosError<DefaultError>, Options<DeleteInventorySiteV1Data>> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DefaultError>,
+		Options<DeleteInventorySiteV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await deleteInventorySiteV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getInventorySiteByIdV1QueryKey = (options: Options<GetInventorySiteByIdV1Data>) =>
+	createQueryKey("getInventorySiteByIdV1", options);
+
+export const getInventorySiteByIdV1Options = (options: Options<GetInventorySiteByIdV1Data>) =>
+	queryOptions<
+		GetInventorySiteByIdV1Response,
+		AxiosError<DefaultError>,
+		GetInventorySiteByIdV1Response,
+		ReturnType<typeof getInventorySiteByIdV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getInventorySiteByIdV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getInventorySiteByIdV1QueryKey(options),
+	});
+
+export const updateInventorySiteV1Mutation = (
+	options?: Partial<Options<UpdateInventorySiteV1Data>>,
+): UseMutationOptions<unknown, AxiosError<DefaultError>, Options<UpdateInventorySiteV1Data>> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DefaultError>,
+		Options<UpdateInventorySiteV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await updateInventorySiteV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getInventorySiteZonesV1QueryKey = (options?: Options<GetInventorySiteZonesV1Data>) =>
+	createQueryKey("getInventorySiteZonesV1", options);
+
+export const getInventorySiteZonesV1Options = (options?: Options<GetInventorySiteZonesV1Data>) =>
+	queryOptions<
+		GetInventorySiteZonesV1Response,
+		AxiosError<DefaultError>,
+		GetInventorySiteZonesV1Response,
+		ReturnType<typeof getInventorySiteZonesV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getInventorySiteZonesV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getInventorySiteZonesV1QueryKey(options),
+	});
+
+export const createInventorySiteZoneV1Mutation = (
+	options?: Partial<Options<CreateInventorySiteZoneV1Data>>,
+): UseMutationOptions<
+	CreateInventorySiteZoneV1Response,
+	AxiosError<DefaultError>,
+	Options<CreateInventorySiteZoneV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		CreateInventorySiteZoneV1Response,
+		AxiosError<DefaultError>,
+		Options<CreateInventorySiteZoneV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await createInventorySiteZoneV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const deleteInventorySiteZoneV1Mutation = (
+	options?: Partial<Options<DeleteInventorySiteZoneV1Data>>,
+): UseMutationOptions<
+	unknown,
+	AxiosError<DefaultError>,
+	Options<DeleteInventorySiteZoneV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DefaultError>,
+		Options<DeleteInventorySiteZoneV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await deleteInventorySiteZoneV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getInventorySiteZoneByIdV1QueryKey = (
+	options: Options<GetInventorySiteZoneByIdV1Data>,
+) => createQueryKey("getInventorySiteZoneByIdV1", options);
+
+export const getInventorySiteZoneByIdV1Options = (
+	options: Options<GetInventorySiteZoneByIdV1Data>,
+) =>
+	queryOptions<
+		GetInventorySiteZoneByIdV1Response,
+		AxiosError<DefaultError>,
+		GetInventorySiteZoneByIdV1Response,
+		ReturnType<typeof getInventorySiteZoneByIdV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getInventorySiteZoneByIdV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getInventorySiteZoneByIdV1QueryKey(options),
+	});
+
+export const updateInventorySiteZoneV1Mutation = (
+	options?: Partial<Options<UpdateInventorySiteZoneV1Data>>,
+): UseMutationOptions<
+	unknown,
+	AxiosError<DefaultError>,
+	Options<UpdateInventorySiteZoneV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DefaultError>,
+		Options<UpdateInventorySiteZoneV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await updateInventorySiteZoneV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getInventorySuppliersV1QueryKey = (options?: Options<GetInventorySuppliersV1Data>) =>
+	createQueryKey("getInventorySuppliersV1", options);
+
+export const getInventorySuppliersV1Options = (options?: Options<GetInventorySuppliersV1Data>) =>
+	queryOptions<
+		GetInventorySuppliersV1Response,
+		AxiosError<DefaultError>,
+		GetInventorySuppliersV1Response,
+		ReturnType<typeof getInventorySuppliersV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getInventorySuppliersV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getInventorySuppliersV1QueryKey(options),
+	});
+
+export const createInventorySupplierV1Mutation = (
+	options?: Partial<Options<CreateInventorySupplierV1Data>>,
+): UseMutationOptions<
+	CreateInventorySupplierV1Response,
+	AxiosError<DefaultError>,
+	Options<CreateInventorySupplierV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		CreateInventorySupplierV1Response,
+		AxiosError<DefaultError>,
+		Options<CreateInventorySupplierV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await createInventorySupplierV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const deleteInventorySupplierV1Mutation = (
+	options?: Partial<Options<DeleteInventorySupplierV1Data>>,
+): UseMutationOptions<
+	unknown,
+	AxiosError<DefaultError>,
+	Options<DeleteInventorySupplierV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DefaultError>,
+		Options<DeleteInventorySupplierV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await deleteInventorySupplierV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getInventorySupplierByIdV1QueryKey = (
+	options: Options<GetInventorySupplierByIdV1Data>,
+) => createQueryKey("getInventorySupplierByIdV1", options);
+
+export const getInventorySupplierByIdV1Options = (
+	options: Options<GetInventorySupplierByIdV1Data>,
+) =>
+	queryOptions<
+		GetInventorySupplierByIdV1Response,
+		AxiosError<DefaultError>,
+		GetInventorySupplierByIdV1Response,
+		ReturnType<typeof getInventorySupplierByIdV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getInventorySupplierByIdV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getInventorySupplierByIdV1QueryKey(options),
+	});
+
+export const updateInventorySupplierV1Mutation = (
+	options?: Partial<Options<UpdateInventorySupplierV1Data>>,
+): UseMutationOptions<
+	unknown,
+	AxiosError<DefaultError>,
+	Options<UpdateInventorySupplierV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DefaultError>,
+		Options<UpdateInventorySupplierV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await updateInventorySupplierV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getInventoryProductsV1QueryKey = (options?: Options<GetInventoryProductsV1Data>) =>
+	createQueryKey("getInventoryProductsV1", options);
+
+export const getInventoryProductsV1Options = (options?: Options<GetInventoryProductsV1Data>) =>
+	queryOptions<
+		GetInventoryProductsV1Response,
+		AxiosError<DefaultError>,
+		GetInventoryProductsV1Response,
+		ReturnType<typeof getInventoryProductsV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getInventoryProductsV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getInventoryProductsV1QueryKey(options),
+	});
+
+export const createInventoryProductV1Mutation = (
+	options?: Partial<Options<CreateInventoryProductV1Data>>,
+): UseMutationOptions<
+	CreateInventoryProductV1Response,
+	AxiosError<DefaultError>,
+	Options<CreateInventoryProductV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		CreateInventoryProductV1Response,
+		AxiosError<DefaultError>,
+		Options<CreateInventoryProductV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await createInventoryProductV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const deleteInventoryProductV1Mutation = (
+	options?: Partial<Options<DeleteInventoryProductV1Data>>,
+): UseMutationOptions<unknown, AxiosError<DefaultError>, Options<DeleteInventoryProductV1Data>> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DefaultError>,
+		Options<DeleteInventoryProductV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await deleteInventoryProductV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getInventoryProductByIdV1QueryKey = (
+	options: Options<GetInventoryProductByIdV1Data>,
+) => createQueryKey("getInventoryProductByIdV1", options);
+
+export const getInventoryProductByIdV1Options = (options: Options<GetInventoryProductByIdV1Data>) =>
+	queryOptions<
+		GetInventoryProductByIdV1Response,
+		AxiosError<DefaultError>,
+		GetInventoryProductByIdV1Response,
+		ReturnType<typeof getInventoryProductByIdV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getInventoryProductByIdV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getInventoryProductByIdV1QueryKey(options),
+	});
+
+export const updateInventoryProductV1Mutation = (
+	options?: Partial<Options<UpdateInventoryProductV1Data>>,
+): UseMutationOptions<unknown, AxiosError<DefaultError>, Options<UpdateInventoryProductV1Data>> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DefaultError>,
+		Options<UpdateInventoryProductV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await updateInventoryProductV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getInventoryLotsV1QueryKey = (options?: Options<GetInventoryLotsV1Data>) =>
+	createQueryKey("getInventoryLotsV1", options);
+
+export const getInventoryLotsV1Options = (options?: Options<GetInventoryLotsV1Data>) =>
+	queryOptions<
+		GetInventoryLotsV1Response,
+		AxiosError<DefaultError>,
+		GetInventoryLotsV1Response,
+		ReturnType<typeof getInventoryLotsV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getInventoryLotsV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getInventoryLotsV1QueryKey(options),
+	});
+
+export const createInventoryLotV1Mutation = (
+	options?: Partial<Options<CreateInventoryLotV1Data>>,
+): UseMutationOptions<
+	CreateInventoryLotV1Response,
+	AxiosError<DefaultError>,
+	Options<CreateInventoryLotV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		CreateInventoryLotV1Response,
+		AxiosError<DefaultError>,
+		Options<CreateInventoryLotV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await createInventoryLotV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const deleteInventoryLotV1Mutation = (
+	options?: Partial<Options<DeleteInventoryLotV1Data>>,
+): UseMutationOptions<unknown, AxiosError<DefaultError>, Options<DeleteInventoryLotV1Data>> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DefaultError>,
+		Options<DeleteInventoryLotV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await deleteInventoryLotV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getInventoryLotByCodeV1QueryKey = (options: Options<GetInventoryLotByCodeV1Data>) =>
+	createQueryKey("getInventoryLotByCodeV1", options);
+
+export const getInventoryLotByCodeV1Options = (options: Options<GetInventoryLotByCodeV1Data>) =>
+	queryOptions<
+		GetInventoryLotByCodeV1Response,
+		AxiosError<DefaultError>,
+		GetInventoryLotByCodeV1Response,
+		ReturnType<typeof getInventoryLotByCodeV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getInventoryLotByCodeV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getInventoryLotByCodeV1QueryKey(options),
+	});
+
+export const updateInventoryLotV1Mutation = (
+	options?: Partial<Options<UpdateInventoryLotV1Data>>,
+): UseMutationOptions<unknown, AxiosError<DefaultError>, Options<UpdateInventoryLotV1Data>> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DefaultError>,
+		Options<UpdateInventoryLotV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await updateInventoryLotV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getInventoryMovementsV1QueryKey = (options?: Options<GetInventoryMovementsV1Data>) =>
+	createQueryKey("getInventoryMovementsV1", options);
+
+export const getInventoryMovementsV1Options = (options?: Options<GetInventoryMovementsV1Data>) =>
+	queryOptions<
+		GetInventoryMovementsV1Response,
+		AxiosError<DefaultError>,
+		GetInventoryMovementsV1Response,
+		ReturnType<typeof getInventoryMovementsV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getInventoryMovementsV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getInventoryMovementsV1QueryKey(options),
+	});
+
+export const createInventoryMovementV1Mutation = (
+	options?: Partial<Options<CreateInventoryMovementV1Data>>,
+): UseMutationOptions<
+	CreateInventoryMovementV1Response,
+	AxiosError<DefaultError>,
+	Options<CreateInventoryMovementV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		CreateInventoryMovementV1Response,
+		AxiosError<DefaultError>,
+		Options<CreateInventoryMovementV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await createInventoryMovementV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getInventoryMovementByIdV1QueryKey = (
+	options: Options<GetInventoryMovementByIdV1Data>,
+) => createQueryKey("getInventoryMovementByIdV1", options);
+
+export const getInventoryMovementByIdV1Options = (
+	options: Options<GetInventoryMovementByIdV1Data>,
+) =>
+	queryOptions<
+		GetInventoryMovementByIdV1Response,
+		AxiosError<DefaultError>,
+		GetInventoryMovementByIdV1Response,
+		ReturnType<typeof getInventoryMovementByIdV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getInventoryMovementByIdV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getInventoryMovementByIdV1QueryKey(options),
+	});
+
+export const getIntakeShipmentsV1QueryKey = (options?: Options<GetIntakeShipmentsV1Data>) =>
+	createQueryKey("getIntakeShipmentsV1", options);
+
+export const getIntakeShipmentsV1Options = (options?: Options<GetIntakeShipmentsV1Data>) =>
+	queryOptions<
+		GetIntakeShipmentsV1Response,
+		AxiosError<DefaultError>,
+		GetIntakeShipmentsV1Response,
+		ReturnType<typeof getIntakeShipmentsV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getIntakeShipmentsV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getIntakeShipmentsV1QueryKey(options),
+	});
+
+export const createIntakeShipmentV1Mutation = (
+	options?: Partial<Options<CreateIntakeShipmentV1Data>>,
+): UseMutationOptions<
+	CreateIntakeShipmentV1Response,
+	AxiosError<DefaultError>,
+	Options<CreateIntakeShipmentV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		CreateIntakeShipmentV1Response,
+		AxiosError<DefaultError>,
+		Options<CreateIntakeShipmentV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await createIntakeShipmentV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const deleteIntakeShipmentV1Mutation = (
+	options?: Partial<Options<DeleteIntakeShipmentV1Data>>,
+): UseMutationOptions<unknown, AxiosError<DefaultError>, Options<DeleteIntakeShipmentV1Data>> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DefaultError>,
+		Options<DeleteIntakeShipmentV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await deleteIntakeShipmentV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getIntakeShipmentByIdV1QueryKey = (options: Options<GetIntakeShipmentByIdV1Data>) =>
+	createQueryKey("getIntakeShipmentByIdV1", options);
+
+export const getIntakeShipmentByIdV1Options = (options: Options<GetIntakeShipmentByIdV1Data>) =>
+	queryOptions<
+		GetIntakeShipmentByIdV1Response,
+		AxiosError<DefaultError>,
+		GetIntakeShipmentByIdV1Response,
+		ReturnType<typeof getIntakeShipmentByIdV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getIntakeShipmentByIdV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getIntakeShipmentByIdV1QueryKey(options),
+	});
+
+export const updateIntakeShipmentV1Mutation = (
+	options?: Partial<Options<UpdateIntakeShipmentV1Data>>,
+): UseMutationOptions<unknown, AxiosError<DefaultError>, Options<UpdateIntakeShipmentV1Data>> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DefaultError>,
+		Options<UpdateIntakeShipmentV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await updateIntakeShipmentV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getShipmentLinesV1QueryKey = (options?: Options<GetShipmentLinesV1Data>) =>
+	createQueryKey("getShipmentLinesV1", options);
+
+export const getShipmentLinesV1Options = (options?: Options<GetShipmentLinesV1Data>) =>
+	queryOptions<
+		GetShipmentLinesV1Response,
+		AxiosError<DefaultError>,
+		GetShipmentLinesV1Response,
+		ReturnType<typeof getShipmentLinesV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getShipmentLinesV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getShipmentLinesV1QueryKey(options),
+	});
+
+export const createShipmentLineV1Mutation = (
+	options?: Partial<Options<CreateShipmentLineV1Data>>,
+): UseMutationOptions<
+	CreateShipmentLineV1Response,
+	AxiosError<DefaultError>,
+	Options<CreateShipmentLineV1Data>
+> => {
+	const mutationOptions: UseMutationOptions<
+		CreateShipmentLineV1Response,
+		AxiosError<DefaultError>,
+		Options<CreateShipmentLineV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await createShipmentLineV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const deleteShipmentLineV1Mutation = (
+	options?: Partial<Options<DeleteShipmentLineV1Data>>,
+): UseMutationOptions<unknown, AxiosError<DefaultError>, Options<DeleteShipmentLineV1Data>> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DefaultError>,
+		Options<DeleteShipmentLineV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await deleteShipmentLineV1({
+				...options,
+				...fnOptions,
+				throwOnError: true,
+			});
+			return data;
+		},
+	};
+	return mutationOptions;
+};
+
+export const getShipmentLineByIdV1QueryKey = (options: Options<GetShipmentLineByIdV1Data>) =>
+	createQueryKey("getShipmentLineByIdV1", options);
+
+export const getShipmentLineByIdV1Options = (options: Options<GetShipmentLineByIdV1Data>) =>
+	queryOptions<
+		GetShipmentLineByIdV1Response,
+		AxiosError<DefaultError>,
+		GetShipmentLineByIdV1Response,
+		ReturnType<typeof getShipmentLineByIdV1QueryKey>
+	>({
+		queryFn: async ({ queryKey, signal }) => {
+			const { data } = await getShipmentLineByIdV1({
+				...options,
+				...queryKey[0],
+				signal,
+				throwOnError: true,
+			});
+			return data;
+		},
+		queryKey: getShipmentLineByIdV1QueryKey(options),
+	});
+
+export const updateShipmentLineV1Mutation = (
+	options?: Partial<Options<UpdateShipmentLineV1Data>>,
+): UseMutationOptions<unknown, AxiosError<DefaultError>, Options<UpdateShipmentLineV1Data>> => {
+	const mutationOptions: UseMutationOptions<
+		unknown,
+		AxiosError<DefaultError>,
+		Options<UpdateShipmentLineV1Data>
+	> = {
+		mutationFn: async (fnOptions) => {
+			const { data } = await updateShipmentLineV1({
 				...options,
 				...fnOptions,
 				throwOnError: true,

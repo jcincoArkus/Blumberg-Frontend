@@ -562,6 +562,267 @@ export type UserRolesResponse = {
 	roles: Array<string> | null;
 };
 
+export type InventoryCategoryRequest = {
+	name: string;
+	color: string;
+};
+
+export type InventoryCategoryResponse = {
+	id?: string;
+	name?: string | null;
+	color?: string | null;
+	createdAt?: Date;
+	updatedAt?: Date | null;
+};
+
+export type InventoryCategoryResponsePagedResponse = {
+	items?: Array<InventoryCategoryResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+	readonly totalPages?: number;
+};
+
+export type InventorySiteRequest = {
+	name: string;
+};
+
+export type InventorySiteResponse = {
+	id?: string;
+	name?: string | null;
+	createdAt?: Date;
+	updatedAt?: Date | null;
+};
+
+export type InventorySiteResponsePagedResponse = {
+	items?: Array<InventorySiteResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+	readonly totalPages?: number;
+};
+
+export type InventorySiteZoneRequest = {
+	siteId: string;
+	name: string;
+};
+
+export type InventorySiteZoneResponse = {
+	id?: string;
+	siteId?: string;
+	name?: string | null;
+	createdAt?: Date;
+	updatedAt?: Date | null;
+};
+
+export type InventorySiteZoneResponsePagedResponse = {
+	items?: Array<InventorySiteZoneResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+	readonly totalPages?: number;
+};
+
+export type InventorySupplierRequest = {
+	name: string;
+};
+
+export type InventorySupplierResponse = {
+	id?: string;
+	name?: string | null;
+	createdAt?: Date;
+	updatedAt?: Date | null;
+};
+
+export type InventorySupplierResponsePagedResponse = {
+	items?: Array<InventorySupplierResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+	readonly totalPages?: number;
+};
+
+export type InventoryProductRequest = {
+	sku: string;
+	name: string;
+	categoryId: string;
+	unit: string;
+	kgPerBox?: number | null;
+	shelfLifeDays: number;
+	price: number;
+};
+
+export type InventoryProductResponse = {
+	id?: string;
+	sku?: string | null;
+	name?: string | null;
+	categoryId?: string;
+	categoryName?: string | null;
+	categoryColor?: string | null;
+	unit?: string | null;
+	kgPerBox?: number | null;
+	shelfLifeDays?: number;
+	price?: number;
+	createdAt?: Date;
+	updatedAt?: Date | null;
+};
+
+export type InventoryProductResponsePagedResponse = {
+	items?: Array<InventoryProductResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+	readonly totalPages?: number;
+};
+
+export type InventoryLotRequest = {
+	lotCode: string;
+	productId: string;
+	qty: number;
+	unit: string;
+	entryAt: Date;
+	expiresAt: Date;
+	siteId: string;
+	zone: string;
+	supplierId?: string | null;
+	costPerUnit: number;
+};
+
+export type InventoryLotResponse = {
+	lotCode?: string | null;
+	productId?: string;
+	productName?: string | null;
+	productSku?: string | null;
+	qty?: number;
+	unit?: string | null;
+	entryAt?: Date;
+	expiresAt?: Date;
+	siteId?: string;
+	siteName?: string | null;
+	zone?: string | null;
+	supplierId?: string | null;
+	supplierName?: string | null;
+	costPerUnit?: number;
+	createdAt?: Date;
+	updatedAt?: Date | null;
+};
+
+export type InventoryLotResponsePagedResponse = {
+	items?: Array<InventoryLotResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+	readonly totalPages?: number;
+};
+
+export type InventoryMovementRequest = {
+	type: string;
+	occurredAt: Date;
+	productId: string;
+	qty: number;
+	unit: string;
+	lotCode?: string | null;
+	siteId: string;
+	destSiteId?: string | null;
+	performedBy: string;
+	note?: string | null;
+};
+
+export type InventoryMovementResponse = {
+	id?: string;
+	type?: string | null;
+	occurredAt?: Date;
+	productId?: string;
+	productName?: string | null;
+	productSku?: string | null;
+	qty?: number;
+	unit?: string | null;
+	lotCode?: string | null;
+	siteId?: string;
+	siteName?: string | null;
+	destSiteId?: string | null;
+	performedBy?: string | null;
+	note?: string | null;
+	createdAt?: Date;
+};
+
+export type InventoryMovementResponsePagedResponse = {
+	items?: Array<InventoryMovementResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+	readonly totalPages?: number;
+};
+
+export type IntakeShipmentRequest = {
+	poReference: string;
+	supplierId: string;
+	vehicle?: string | null;
+	driver?: string | null;
+	siteId: string;
+	receivingZone: string;
+	coldChainTempC?: number | null;
+	arrivedAt: Date;
+	receivedBy: string;
+	status: string;
+};
+
+export type IntakeShipmentResponse = {
+	id?: string;
+	poReference?: string | null;
+	supplierId?: string;
+	supplierName?: string | null;
+	vehicle?: string | null;
+	driver?: string | null;
+	siteId?: string;
+	siteName?: string | null;
+	receivingZone?: string | null;
+	coldChainTempC?: number | null;
+	arrivedAt?: Date;
+	receivedBy?: string | null;
+	status?: string | null;
+	createdAt?: Date;
+	updatedAt?: Date | null;
+};
+
+export type IntakeShipmentResponsePagedResponse = {
+	items?: Array<IntakeShipmentResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+	readonly totalPages?: number;
+};
+
+export type ShipmentLineRequest = {
+	shipmentId: string;
+	productId: string;
+	lotCode?: string | null;
+	qty: number;
+	unit: string;
+	costPerUnit: number;
+};
+
+export type ShipmentLineResponse = {
+	id?: string;
+	shipmentId?: string;
+	productId?: string;
+	productName?: string | null;
+	lotCode?: string | null;
+	qty?: number;
+	unit?: string | null;
+	costPerUnit?: number;
+	createdAt?: Date;
+	updatedAt?: Date | null;
+};
+
+export type ShipmentLineResponsePagedResponse = {
+	items?: Array<ShipmentLineResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+	readonly totalPages?: number;
+};
+
 export type AdminResponsePagedResponseWritable = {
 	items?: Array<AdminResponse> | null;
 	totalCount?: number;
@@ -634,6 +895,69 @@ export type SiteResponsePagedResponseWritable = {
 
 export type ThresholdResponsePagedResponseWritable = {
 	items?: Array<ThresholdResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+};
+
+export type InventoryCategoryResponsePagedResponseWritable = {
+	items?: Array<InventoryCategoryResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+};
+
+export type InventorySiteResponsePagedResponseWritable = {
+	items?: Array<InventorySiteResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+};
+
+export type InventorySiteZoneResponsePagedResponseWritable = {
+	items?: Array<InventorySiteZoneResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+};
+
+export type InventorySupplierResponsePagedResponseWritable = {
+	items?: Array<InventorySupplierResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+};
+
+export type InventoryProductResponsePagedResponseWritable = {
+	items?: Array<InventoryProductResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+};
+
+export type InventoryLotResponsePagedResponseWritable = {
+	items?: Array<InventoryLotResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+};
+
+export type InventoryMovementResponsePagedResponseWritable = {
+	items?: Array<InventoryMovementResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+};
+
+export type IntakeShipmentResponsePagedResponseWritable = {
+	items?: Array<IntakeShipmentResponse> | null;
+	totalCount?: number;
+	page?: number;
+	pageSize?: number;
+};
+
+export type ShipmentLineResponsePagedResponseWritable = {
+	items?: Array<ShipmentLineResponse> | null;
 	totalCount?: number;
 	page?: number;
 	pageSize?: number;
@@ -2267,6 +2591,1082 @@ export type ReplaceUserRolesV1Data = {
 };
 
 export type ReplaceUserRolesV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetInventoryCategoriesV1Data = {
+	body?: never;
+	path?: never;
+	query?: {
+		Page?: number;
+		PageSize?: number;
+	};
+	url: "/api/v1/inventory/categories";
+};
+
+export type GetInventoryCategoriesV1Errors = {
+	/**
+	 * Internal Server Error
+	 */
+	500: unknown;
+};
+
+export type GetInventoryCategoriesV1Responses = {
+	/**
+	 * OK
+	 */
+	200: InventoryCategoryResponsePagedResponse;
+};
+
+export type GetInventoryCategoriesV1Response =
+	GetInventoryCategoriesV1Responses[keyof GetInventoryCategoriesV1Responses];
+
+export type CreateInventoryCategoryV1Data = {
+	body?: InventoryCategoryRequest;
+	path?: never;
+	query?: never;
+	url: "/api/v1/inventory/categories";
+};
+
+export type CreateInventoryCategoryV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: unknown;
+};
+
+export type CreateInventoryCategoryV1Responses = {
+	/**
+	 * Created
+	 */
+	201: InventoryCategoryResponse;
+};
+
+export type CreateInventoryCategoryV1Response =
+	CreateInventoryCategoryV1Responses[keyof CreateInventoryCategoryV1Responses];
+
+export type DeleteInventoryCategoryV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/categories/{id}";
+};
+
+export type DeleteInventoryCategoryV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type DeleteInventoryCategoryV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetInventoryCategoryByIdV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/categories/{id}";
+};
+
+export type GetInventoryCategoryByIdV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type GetInventoryCategoryByIdV1Responses = {
+	/**
+	 * OK
+	 */
+	200: InventoryCategoryResponse;
+};
+
+export type GetInventoryCategoryByIdV1Response =
+	GetInventoryCategoryByIdV1Responses[keyof GetInventoryCategoryByIdV1Responses];
+
+export type UpdateInventoryCategoryV1Data = {
+	body?: InventoryCategoryRequest;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/categories/{id}";
+};
+
+export type UpdateInventoryCategoryV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type UpdateInventoryCategoryV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetInventorySitesV1Data = {
+	body?: never;
+	path?: never;
+	query?: {
+		Page?: number;
+		PageSize?: number;
+	};
+	url: "/api/v1/inventory/sites";
+};
+
+export type GetInventorySitesV1Errors = {
+	/**
+	 * Internal Server Error
+	 */
+	500: unknown;
+};
+
+export type GetInventorySitesV1Responses = {
+	/**
+	 * OK
+	 */
+	200: InventorySiteResponsePagedResponse;
+};
+
+export type GetInventorySitesV1Response =
+	GetInventorySitesV1Responses[keyof GetInventorySitesV1Responses];
+
+export type CreateInventorySiteV1Data = {
+	body?: InventorySiteRequest;
+	path?: never;
+	query?: never;
+	url: "/api/v1/inventory/sites";
+};
+
+export type CreateInventorySiteV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: unknown;
+};
+
+export type CreateInventorySiteV1Responses = {
+	/**
+	 * Created
+	 */
+	201: InventorySiteResponse;
+};
+
+export type CreateInventorySiteV1Response =
+	CreateInventorySiteV1Responses[keyof CreateInventorySiteV1Responses];
+
+export type DeleteInventorySiteV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/sites/{id}";
+};
+
+export type DeleteInventorySiteV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type DeleteInventorySiteV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetInventorySiteByIdV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/sites/{id}";
+};
+
+export type GetInventorySiteByIdV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type GetInventorySiteByIdV1Responses = {
+	/**
+	 * OK
+	 */
+	200: InventorySiteResponse;
+};
+
+export type GetInventorySiteByIdV1Response =
+	GetInventorySiteByIdV1Responses[keyof GetInventorySiteByIdV1Responses];
+
+export type UpdateInventorySiteV1Data = {
+	body?: InventorySiteRequest;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/sites/{id}";
+};
+
+export type UpdateInventorySiteV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type UpdateInventorySiteV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetInventorySiteZonesV1Data = {
+	body?: never;
+	path?: never;
+	query?: {
+		SiteId?: string | null;
+		Page?: number;
+		PageSize?: number;
+	};
+	url: "/api/v1/inventory/site-zones";
+};
+
+export type GetInventorySiteZonesV1Errors = {
+	/**
+	 * Internal Server Error
+	 */
+	500: unknown;
+};
+
+export type GetInventorySiteZonesV1Responses = {
+	/**
+	 * OK
+	 */
+	200: InventorySiteZoneResponsePagedResponse;
+};
+
+export type GetInventorySiteZonesV1Response =
+	GetInventorySiteZonesV1Responses[keyof GetInventorySiteZonesV1Responses];
+
+export type CreateInventorySiteZoneV1Data = {
+	body?: InventorySiteZoneRequest;
+	path?: never;
+	query?: never;
+	url: "/api/v1/inventory/site-zones";
+};
+
+export type CreateInventorySiteZoneV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: unknown;
+};
+
+export type CreateInventorySiteZoneV1Responses = {
+	/**
+	 * Created
+	 */
+	201: InventorySiteZoneResponse;
+};
+
+export type CreateInventorySiteZoneV1Response =
+	CreateInventorySiteZoneV1Responses[keyof CreateInventorySiteZoneV1Responses];
+
+export type DeleteInventorySiteZoneV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/site-zones/{id}";
+};
+
+export type DeleteInventorySiteZoneV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type DeleteInventorySiteZoneV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetInventorySiteZoneByIdV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/site-zones/{id}";
+};
+
+export type GetInventorySiteZoneByIdV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type GetInventorySiteZoneByIdV1Responses = {
+	/**
+	 * OK
+	 */
+	200: InventorySiteZoneResponse;
+};
+
+export type GetInventorySiteZoneByIdV1Response =
+	GetInventorySiteZoneByIdV1Responses[keyof GetInventorySiteZoneByIdV1Responses];
+
+export type UpdateInventorySiteZoneV1Data = {
+	body?: InventorySiteZoneRequest;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/site-zones/{id}";
+};
+
+export type UpdateInventorySiteZoneV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type UpdateInventorySiteZoneV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetInventorySuppliersV1Data = {
+	body?: never;
+	path?: never;
+	query?: {
+		Page?: number;
+		PageSize?: number;
+	};
+	url: "/api/v1/inventory/suppliers";
+};
+
+export type GetInventorySuppliersV1Errors = {
+	/**
+	 * Internal Server Error
+	 */
+	500: unknown;
+};
+
+export type GetInventorySuppliersV1Responses = {
+	/**
+	 * OK
+	 */
+	200: InventorySupplierResponsePagedResponse;
+};
+
+export type GetInventorySuppliersV1Response =
+	GetInventorySuppliersV1Responses[keyof GetInventorySuppliersV1Responses];
+
+export type CreateInventorySupplierV1Data = {
+	body?: InventorySupplierRequest;
+	path?: never;
+	query?: never;
+	url: "/api/v1/inventory/suppliers";
+};
+
+export type CreateInventorySupplierV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: unknown;
+};
+
+export type CreateInventorySupplierV1Responses = {
+	/**
+	 * Created
+	 */
+	201: InventorySupplierResponse;
+};
+
+export type CreateInventorySupplierV1Response =
+	CreateInventorySupplierV1Responses[keyof CreateInventorySupplierV1Responses];
+
+export type DeleteInventorySupplierV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/suppliers/{id}";
+};
+
+export type DeleteInventorySupplierV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type DeleteInventorySupplierV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetInventorySupplierByIdV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/suppliers/{id}";
+};
+
+export type GetInventorySupplierByIdV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type GetInventorySupplierByIdV1Responses = {
+	/**
+	 * OK
+	 */
+	200: InventorySupplierResponse;
+};
+
+export type GetInventorySupplierByIdV1Response =
+	GetInventorySupplierByIdV1Responses[keyof GetInventorySupplierByIdV1Responses];
+
+export type UpdateInventorySupplierV1Data = {
+	body?: InventorySupplierRequest;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/suppliers/{id}";
+};
+
+export type UpdateInventorySupplierV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type UpdateInventorySupplierV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetInventoryProductsV1Data = {
+	body?: never;
+	path?: never;
+	query?: {
+		CategoryId?: string | null;
+		Page?: number;
+		PageSize?: number;
+	};
+	url: "/api/v1/inventory/products";
+};
+
+export type GetInventoryProductsV1Errors = {
+	/**
+	 * Internal Server Error
+	 */
+	500: unknown;
+};
+
+export type GetInventoryProductsV1Responses = {
+	/**
+	 * OK
+	 */
+	200: InventoryProductResponsePagedResponse;
+};
+
+export type GetInventoryProductsV1Response =
+	GetInventoryProductsV1Responses[keyof GetInventoryProductsV1Responses];
+
+export type CreateInventoryProductV1Data = {
+	body?: InventoryProductRequest;
+	path?: never;
+	query?: never;
+	url: "/api/v1/inventory/products";
+};
+
+export type CreateInventoryProductV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: unknown;
+};
+
+export type CreateInventoryProductV1Responses = {
+	/**
+	 * Created
+	 */
+	201: InventoryProductResponse;
+};
+
+export type CreateInventoryProductV1Response =
+	CreateInventoryProductV1Responses[keyof CreateInventoryProductV1Responses];
+
+export type DeleteInventoryProductV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/products/{id}";
+};
+
+export type DeleteInventoryProductV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type DeleteInventoryProductV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetInventoryProductByIdV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/products/{id}";
+};
+
+export type GetInventoryProductByIdV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type GetInventoryProductByIdV1Responses = {
+	/**
+	 * OK
+	 */
+	200: InventoryProductResponse;
+};
+
+export type GetInventoryProductByIdV1Response =
+	GetInventoryProductByIdV1Responses[keyof GetInventoryProductByIdV1Responses];
+
+export type UpdateInventoryProductV1Data = {
+	body?: InventoryProductRequest;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/products/{id}";
+};
+
+export type UpdateInventoryProductV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type UpdateInventoryProductV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetInventoryLotsV1Data = {
+	body?: never;
+	path?: never;
+	query?: {
+		ProductId?: string | null;
+		SiteId?: string | null;
+		ExpiringBefore?: Date | null;
+		Page?: number;
+		PageSize?: number;
+	};
+	url: "/api/v1/inventory/lots";
+};
+
+export type GetInventoryLotsV1Errors = {
+	/**
+	 * Internal Server Error
+	 */
+	500: unknown;
+};
+
+export type GetInventoryLotsV1Responses = {
+	/**
+	 * OK
+	 */
+	200: InventoryLotResponsePagedResponse;
+};
+
+export type GetInventoryLotsV1Response =
+	GetInventoryLotsV1Responses[keyof GetInventoryLotsV1Responses];
+
+export type CreateInventoryLotV1Data = {
+	body?: InventoryLotRequest;
+	path?: never;
+	query?: never;
+	url: "/api/v1/inventory/lots";
+};
+
+export type CreateInventoryLotV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: unknown;
+};
+
+export type CreateInventoryLotV1Responses = {
+	/**
+	 * Created
+	 */
+	201: InventoryLotResponse;
+};
+
+export type CreateInventoryLotV1Response =
+	CreateInventoryLotV1Responses[keyof CreateInventoryLotV1Responses];
+
+export type DeleteInventoryLotV1Data = {
+	body?: never;
+	path: {
+		lotCode: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/lots/{lotCode}";
+};
+
+export type DeleteInventoryLotV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type DeleteInventoryLotV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetInventoryLotByCodeV1Data = {
+	body?: never;
+	path: {
+		lotCode: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/lots/{lotCode}";
+};
+
+export type GetInventoryLotByCodeV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type GetInventoryLotByCodeV1Responses = {
+	/**
+	 * OK
+	 */
+	200: InventoryLotResponse;
+};
+
+export type GetInventoryLotByCodeV1Response =
+	GetInventoryLotByCodeV1Responses[keyof GetInventoryLotByCodeV1Responses];
+
+export type UpdateInventoryLotV1Data = {
+	body?: InventoryLotRequest;
+	path: {
+		lotCode: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/lots/{lotCode}";
+};
+
+export type UpdateInventoryLotV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type UpdateInventoryLotV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetInventoryMovementsV1Data = {
+	body?: never;
+	path?: never;
+	query?: {
+		Type?: string | null;
+		ProductId?: string | null;
+		SiteId?: string | null;
+		LotCode?: string | null;
+		From?: Date | null;
+		To?: Date | null;
+		Page?: number;
+		PageSize?: number;
+	};
+	url: "/api/v1/inventory/movements";
+};
+
+export type GetInventoryMovementsV1Errors = {
+	/**
+	 * Internal Server Error
+	 */
+	500: unknown;
+};
+
+export type GetInventoryMovementsV1Responses = {
+	/**
+	 * OK
+	 */
+	200: InventoryMovementResponsePagedResponse;
+};
+
+export type GetInventoryMovementsV1Response =
+	GetInventoryMovementsV1Responses[keyof GetInventoryMovementsV1Responses];
+
+export type CreateInventoryMovementV1Data = {
+	body?: InventoryMovementRequest;
+	path?: never;
+	query?: never;
+	url: "/api/v1/inventory/movements";
+};
+
+export type CreateInventoryMovementV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: unknown;
+};
+
+export type CreateInventoryMovementV1Responses = {
+	/**
+	 * Created
+	 */
+	201: InventoryMovementResponse;
+};
+
+export type CreateInventoryMovementV1Response =
+	CreateInventoryMovementV1Responses[keyof CreateInventoryMovementV1Responses];
+
+export type GetInventoryMovementByIdV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/movements/{id}";
+};
+
+export type GetInventoryMovementByIdV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type GetInventoryMovementByIdV1Responses = {
+	/**
+	 * OK
+	 */
+	200: InventoryMovementResponse;
+};
+
+export type GetInventoryMovementByIdV1Response =
+	GetInventoryMovementByIdV1Responses[keyof GetInventoryMovementByIdV1Responses];
+
+export type GetIntakeShipmentsV1Data = {
+	body?: never;
+	path?: never;
+	query?: {
+		SupplierId?: string | null;
+		SiteId?: string | null;
+		Status?: string | null;
+		Page?: number;
+		PageSize?: number;
+	};
+	url: "/api/v1/inventory/intake-shipments";
+};
+
+export type GetIntakeShipmentsV1Errors = {
+	/**
+	 * Internal Server Error
+	 */
+	500: unknown;
+};
+
+export type GetIntakeShipmentsV1Responses = {
+	/**
+	 * OK
+	 */
+	200: IntakeShipmentResponsePagedResponse;
+};
+
+export type GetIntakeShipmentsV1Response =
+	GetIntakeShipmentsV1Responses[keyof GetIntakeShipmentsV1Responses];
+
+export type CreateIntakeShipmentV1Data = {
+	body?: IntakeShipmentRequest;
+	path?: never;
+	query?: never;
+	url: "/api/v1/inventory/intake-shipments";
+};
+
+export type CreateIntakeShipmentV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: unknown;
+};
+
+export type CreateIntakeShipmentV1Responses = {
+	/**
+	 * Created
+	 */
+	201: IntakeShipmentResponse;
+};
+
+export type CreateIntakeShipmentV1Response =
+	CreateIntakeShipmentV1Responses[keyof CreateIntakeShipmentV1Responses];
+
+export type DeleteIntakeShipmentV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/intake-shipments/{id}";
+};
+
+export type DeleteIntakeShipmentV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type DeleteIntakeShipmentV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetIntakeShipmentByIdV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/intake-shipments/{id}";
+};
+
+export type GetIntakeShipmentByIdV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type GetIntakeShipmentByIdV1Responses = {
+	/**
+	 * OK
+	 */
+	200: IntakeShipmentResponse;
+};
+
+export type GetIntakeShipmentByIdV1Response =
+	GetIntakeShipmentByIdV1Responses[keyof GetIntakeShipmentByIdV1Responses];
+
+export type UpdateIntakeShipmentV1Data = {
+	body?: IntakeShipmentRequest;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/intake-shipments/{id}";
+};
+
+export type UpdateIntakeShipmentV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type UpdateIntakeShipmentV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetShipmentLinesV1Data = {
+	body?: never;
+	path?: never;
+	query?: {
+		ShipmentId?: string | null;
+		Page?: number;
+		PageSize?: number;
+	};
+	url: "/api/v1/inventory/shipment-lines";
+};
+
+export type GetShipmentLinesV1Errors = {
+	/**
+	 * Internal Server Error
+	 */
+	500: unknown;
+};
+
+export type GetShipmentLinesV1Responses = {
+	/**
+	 * OK
+	 */
+	200: ShipmentLineResponsePagedResponse;
+};
+
+export type GetShipmentLinesV1Response =
+	GetShipmentLinesV1Responses[keyof GetShipmentLinesV1Responses];
+
+export type CreateShipmentLineV1Data = {
+	body?: ShipmentLineRequest;
+	path?: never;
+	query?: never;
+	url: "/api/v1/inventory/shipment-lines";
+};
+
+export type CreateShipmentLineV1Errors = {
+	/**
+	 * Bad Request
+	 */
+	400: unknown;
+};
+
+export type CreateShipmentLineV1Responses = {
+	/**
+	 * Created
+	 */
+	201: ShipmentLineResponse;
+};
+
+export type CreateShipmentLineV1Response =
+	CreateShipmentLineV1Responses[keyof CreateShipmentLineV1Responses];
+
+export type DeleteShipmentLineV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/shipment-lines/{id}";
+};
+
+export type DeleteShipmentLineV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type DeleteShipmentLineV1Responses = {
+	/**
+	 * OK
+	 */
+	200: unknown;
+};
+
+export type GetShipmentLineByIdV1Data = {
+	body?: never;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/shipment-lines/{id}";
+};
+
+export type GetShipmentLineByIdV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type GetShipmentLineByIdV1Responses = {
+	/**
+	 * OK
+	 */
+	200: ShipmentLineResponse;
+};
+
+export type GetShipmentLineByIdV1Response =
+	GetShipmentLineByIdV1Responses[keyof GetShipmentLineByIdV1Responses];
+
+export type UpdateShipmentLineV1Data = {
+	body?: ShipmentLineRequest;
+	path: {
+		id: string;
+	};
+	query?: never;
+	url: "/api/v1/inventory/shipment-lines/{id}";
+};
+
+export type UpdateShipmentLineV1Errors = {
+	/**
+	 * Not Found
+	 */
+	404: unknown;
+};
+
+export type UpdateShipmentLineV1Responses = {
 	/**
 	 * OK
 	 */

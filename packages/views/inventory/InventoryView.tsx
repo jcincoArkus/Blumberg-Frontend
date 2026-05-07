@@ -13,28 +13,25 @@ import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 
 import { t } from "~@/i18n/macro";
-
+import { observer } from "~@/mobx";
 import {
-	categoryById,
-	expStatus,
-	fmtDateShort,
-	fmtMoney,
-	daysUntil,
-	lots as ALL_LOTS,
-	productById,
-	siteById,
-	sites,
-	type Lot,
-} from "./data";
+	type InvCategory,
+	type InvLot,
+	type InvProduct,
+	type InvSite,
+	useInventoryViewModel,
+} from "~@/view-model";
+
+import { daysUntil, type ExpStatus, expStatus, fmtDateShort, fmtMoney } from "./data";
 import "./inventory.css";
 
 type SortKey = "exp" | "name" | "qty";
 
-type EnrichedLot = Lot & {
-	p: ReturnType<typeof productById>;
-	cat: ReturnType<typeof categoryById>;
-	site: ReturnType<typeof siteById>;
-	exp: ReturnType<typeof expStatus>;
+type EnrichedLot = Omit<InvLot, "exp"> & {
+	p: InvProduct;
+	cat: InvCategory;
+	site: InvSite;
+	exp: ExpStatus;
 	expDate: Date;
 	onhandKg: number | null;
 	value: number;
@@ -65,18 +62,19 @@ function StatCard({
 	);
 }
 
-export function InventoryView() {
+export const InventoryView = observer(function InventoryView() {
 	const navigate = useNavigate();
+	const vm = useInventoryViewModel();
 	const [siteFilter, setSiteFilter] = useState<string>("all");
 	const [catFilter] = useState<string>("all");
 	const [search, setSearch] = useState("");
 	const [sortBy] = useState<SortKey>("exp");
 
 	const lots: EnrichedLot[] = useMemo(() => {
-		let rows: EnrichedLot[] = ALL_LOTS.map((l) => {
-			const p = productById(l.productId);
-			const cat = categoryById(p.cat);
-			const site = siteById(l.siteId);
+		let rows: EnrichedLot[] = vm.lots.map((l) => {
+			const p = vm.productById(l.productId);
+			const cat = vm.categoryById(p.cat);
+			const site = vm.siteById(l.siteId);
 			const exp = expStatus(l.exp);
 			const onhandKg = p.kgPerBox && l.unit !== "kg" ? l.qty * p.kgPerBox : null;
 			const value = l.qty * l.costPerUnit;
@@ -97,7 +95,7 @@ export function InventoryView() {
 		if (sortBy === "name") rows.sort((a, b) => a.p.name.localeCompare(b.p.name));
 		if (sortBy === "qty") rows.sort((a, b) => b.qty - a.qty);
 		return rows;
-	}, [siteFilter, catFilter, search, sortBy]);
+	}, [vm, siteFilter, catFilter, search, sortBy]);
 
 	const totals = useMemo(() => {
 		const totalLots = lots.length;
@@ -117,7 +115,7 @@ export function InventoryView() {
 					</div>
 				</div>
 				<div className="right">
-					<button type="button" className="btn">
+					<button type="button" className="btn" onClick={() => vm.refresh()}>
 						<RefreshCw size={14} /> {t`Sync`}
 					</button>
 					<button type="button" className="btn">
@@ -137,7 +135,7 @@ export function InventoryView() {
 				<StatCard
 					label={t`Active lots`}
 					value={totals.totalLots}
-					sub={t`across 3 sites`}
+					sub={`${vm.sites.length} ${t`sites`}`}
 					accent={0.85}
 				/>
 				<StatCard
@@ -172,7 +170,7 @@ export function InventoryView() {
 						>
 							{t`All sites`}
 						</button>
-						{sites.map((s) => (
+						{vm.sites.map((s) => (
 							<button
 								type="button"
 								key={s.id}
@@ -189,7 +187,7 @@ export function InventoryView() {
 					<button type="button" className="filterbtn">
 						<Filter size={13} /> {t`Category`}:{" "}
 						<span className="v">
-							{catFilter === "all" ? t`All` : categoryById(catFilter).name}
+							{catFilter === "all" ? t`All` : vm.categoryById(catFilter).name}
 						</span>
 						<ChevronDown size={12} />
 					</button>
@@ -210,102 +208,110 @@ export function InventoryView() {
 					</div>
 				</div>
 
-				<div style={{ overflowX: "auto" }}>
-					<table className="tbl">
-						<thead>
-							<tr>
-								<th>{t`Product`}</th>
-								<th>{t`Lot`}</th>
-								<th>{t`Site / Zone`}</th>
-								<th>{t`Entry`}</th>
-								<th style={{ textAlign: "right" }}>{t`On hand`}</th>
-								<th style={{ textAlign: "right", minWidth: 110 }}>{t`Expiration`}</th>
-								<th style={{ textAlign: "right" }}>{t`Value`}</th>
-								<th style={{ width: 80 }} />
-							</tr>
-						</thead>
-						<tbody>
-							{lots.map((l) => (
-								<tr key={l.id} className={l.exp.tone}>
-									<td>
-										<div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-											<span
-												className="cat-dot"
-												style={{
-													background: l.cat.color,
-													boxShadow: "inset 0 0 0 1px rgba(0,0,0,.06)",
-												}}
-											/>
-											<div>
-												<div className="pname">{l.p.name}</div>
-												<div className="psku">
-													{l.p.sku} · {l.cat.name}
+				{vm.isLoading ? (
+					<div style={{ padding: "40px 16px", textAlign: "center", color: "var(--inv-ink-400)" }}>
+						{t`Loading inventory…`}
+					</div>
+				) : (
+					<div style={{ overflowX: "auto" }}>
+						<table className="tbl">
+							<thead>
+								<tr>
+									<th>{t`Product`}</th>
+									<th>{t`Lot`}</th>
+									<th>{t`Site / Zone`}</th>
+									<th>{t`Entry`}</th>
+									<th style={{ textAlign: "right" }}>{t`On hand`}</th>
+									<th style={{ textAlign: "right", minWidth: 110 }}>{t`Expiration`}</th>
+									<th style={{ textAlign: "right" }}>{t`Value`}</th>
+									<th style={{ width: 80 }} />
+								</tr>
+							</thead>
+							<tbody>
+								{lots.map((l) => (
+									<tr key={l.id} className={l.exp.tone}>
+										<td>
+											<div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+												<span
+													className="cat-dot"
+													style={{
+														background: l.cat.color,
+														boxShadow: "inset 0 0 0 1px rgba(0,0,0,.06)",
+													}}
+												/>
+												<div>
+													<div className="pname">{l.p.name}</div>
+													<div className="psku">
+														{l.p.sku} · {l.cat.name}
+													</div>
 												</div>
 											</div>
-										</div>
-									</td>
-									<td>
-										<div className="lotid">{l.id}</div>
-										<div className="meta">{l.supplier}</div>
-									</td>
-									<td>
-										<div style={{ color: "var(--inv-ink-900)", fontWeight: 500 }}>
-											{l.site.name.split(" · ")[0]}
-										</div>
-										<div className="meta">{l.zone}</div>
-									</td>
-									<td>
-										<div style={{ color: "var(--inv-ink-900)" }}>{fmtDateShort(l.entry)}</div>
-										<div className="meta">{Math.abs(daysUntil(l.entry))}d ago</div>
-									</td>
-									<td className="num">
-										{l.qty.toLocaleString()}{" "}
-										<span style={{ color: "var(--inv-ink-400)", fontWeight: 400 }}>{l.unit}</span>
-										{l.onhandKg != null && (
-											<div className="meta" style={{ textAlign: "right" }}>
-												≈ {l.onhandKg.toFixed(1)} kg
+										</td>
+										<td>
+											<div className="lotid">{l.id}</div>
+											<div className="meta">{l.supplier}</div>
+										</td>
+										<td>
+											<div style={{ color: "var(--inv-ink-900)", fontWeight: 500 }}>
+												{l.site.name.split(" · ")[0]}
 											</div>
-										)}
-									</td>
-									<td>
-										<div className="exp-cell">
-											<div className={`d ${l.exp.tone}`}>{l.exp.label}</div>
-											<div className="when">{fmtDateShort(l.expDate)}</div>
-										</div>
-									</td>
-									<td className="num">{fmtMoney(l.value)}</td>
-									<td>
-										<div className="row-actions">
-											<button type="button" className="icn-btn" title={t`Adjust`}>
-												<Pencil size={13} />
-											</button>
-											<button type="button" className="icn-btn" title={t`Mark waste`}>
-												<Trash2 size={13} />
-											</button>
-										</div>
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
-				</div>
+											<div className="meta">{l.zone}</div>
+										</td>
+										<td>
+											<div style={{ color: "var(--inv-ink-900)" }}>{fmtDateShort(l.entry)}</div>
+											<div className="meta">{Math.abs(daysUntil(l.entry))}d ago</div>
+										</td>
+										<td className="num">
+											{l.qty.toLocaleString()}{" "}
+											<span style={{ color: "var(--inv-ink-400)", fontWeight: 400 }}>{l.unit}</span>
+											{l.onhandKg != null && (
+												<div className="meta" style={{ textAlign: "right" }}>
+													≈ {l.onhandKg.toFixed(1)} kg
+												</div>
+											)}
+										</td>
+										<td>
+											<div className="exp-cell">
+												<div className={`d ${l.exp.tone}`}>{l.exp.label}</div>
+												<div className="when">{fmtDateShort(l.expDate)}</div>
+											</div>
+										</td>
+										<td className="num">{fmtMoney(l.value)}</td>
+										<td>
+											<div className="row-actions">
+												<button type="button" className="icn-btn" title={t`Adjust`}>
+													<Pencil size={13} />
+												</button>
+												<button type="button" className="icn-btn" title={t`Mark waste`}>
+													<Trash2 size={13} />
+												</button>
+											</div>
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				)}
 
 				<div className="legend">
 					<span>{t`Expiration`}:</span>
 					<span className="it">
-						<span className="b" style={{ background: "var(--inv-rose-fg)" }} /> {t`≤ 2 days · critical`}
+						<span className="b" style={{ background: "var(--inv-rose-fg)" }} />{" "}
+						{t`≤ 2 days · critical`}
 					</span>
 					<span className="it">
-						<span className="b" style={{ background: "var(--inv-amber-fg)" }} /> {t`≤ 5 days · soon`}
+						<span className="b" style={{ background: "var(--inv-amber-fg)" }} />{" "}
+						{t`≤ 5 days · soon`}
 					</span>
 					<span className="it">
 						<span className="b" style={{ background: "var(--inv-ink-300)" }} /> {t`> 5 days · ok`}
 					</span>
 					<span style={{ marginLeft: "auto" }}>
-						{t`Showing`} {lots.length} {t`of`} {ALL_LOTS.length} {t`lots`}
+						{t`Showing`} {lots.length} {t`of`} {vm.lots.length} {t`lots`}
 					</span>
 				</div>
 			</div>
 		</div>
 	);
-}
+});

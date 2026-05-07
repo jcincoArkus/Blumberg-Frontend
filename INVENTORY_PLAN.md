@@ -250,27 +250,27 @@ Semantic colors: `--inv-amber`, `--inv-rose`, `--inv-leaf`, `--inv-info`
 
 ## What's Not Yet Wired
 
-- [ ] **API integration** — all data comes from `data.ts` static mocks; needs `bun api:gen` + real endpoints
+- [x] **API integration** — inventory endpoints added to openapi.yaml, `bun api:gen` run, all views use real API via InventoryViewModel
 - [ ] **Category filter** in `InventoryView` (select renders but doesn't filter)
 - [ ] **Sort dropdown** in `InventoryView` (select renders but doesn't sort)
 - [ ] **Export CSV** in `MovementsView` and `LotsView`
 - [ ] **Adjust action** (pencil icon) in `InventoryView` row — no modal/form yet
 - [ ] **Mark waste action** (trash icon) in `InventoryView` row — no confirmation/form yet
-- [ ] **IntakeView save** — `console.log` only; needs mutation + lot creation API call
+- [x] **IntakeView save** — wired to `createIntakeShipmentV1` + `createShipmentLineV1` mutations
 - [ ] **IntakeView print receipt** — no implementation
 - [ ] **Date range filter** in `MovementsView` ("Last 7 days" button)
-- [ ] **ViewModels** — no `packages/view-model/` VMs exist for inventory yet; all state is in-component
-- [ ] **Route registration** — views need to be wired into `apps/app/src/routes/` under `_private+/`
+- [x] **ViewModels** — `packages/view-model/inventory/InventoryViewModel.ts` singleton created (lots, movements, products, categories, sites, zones)
+- [x] **Route registration** — views need to be wired into `apps/app/src/routes/` under `_private+/`
 - [ ] **i18n strings** — `t` macro is used but `bun i18n:extract` + `bun i18n:compile` need to be run
 
 ---
 
 ## Next Development Steps (Suggested Order)
 
-1. Register routes under `apps/app/src/routes/_private+/inventory/`
-2. Add OpenAPI endpoints for lots, movements, products, and intake to `packages/api/openapi.yaml` → `bun api:gen`
-3. Create ViewModels in `packages/view-model/inventory/` (singleton for filters/list, instance for intake form)
-4. Replace mock data with `ObservedQuery` / `ObservedMutation` calls
+1. ~~Register routes under `apps/app/src/routes/_private+/inventory/`~~ ✓
+2. ~~Add OpenAPI endpoints for lots, movements, products, and intake to `packages/api/openapi.yaml` → `bun api:gen`~~ ✓
+3. ~~Create ViewModels in `packages/view-model/inventory/` (singleton for filters/list, instance for intake form)~~ ✓
+4. ~~Replace mock data with `ObservedQuery` / `ObservedMutation` calls~~ ✓
 5. Wire up remaining UI actions: category/sort filters, adjust, mark-waste, export CSV
 6. Run `bun i18n:extract && bun i18n:compile`
 7. Add CASL authorization rules via `bun authorization:generate`

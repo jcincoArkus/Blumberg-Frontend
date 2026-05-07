@@ -873,6 +873,464 @@ export const zUserRolesResponse = z.object({
 	roles: z.union([z.array(z.string()), z.null()]),
 });
 
+export const zInventoryCategoryRequest = z.object({
+	name: z.string().max(100),
+	color: z.string().max(50),
+});
+
+export const zInventoryCategoryResponse = z.object({
+	id: z.optional(z.uuid()),
+	name: z.optional(z.union([z.string(), z.null()])),
+	color: z.optional(z.union([z.string(), z.null()])),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+});
+
+export const zInventoryCategoryResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zInventoryCategoryResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
+});
+
+export const zInventorySiteRequest = z.object({
+	name: z.string().max(200),
+});
+
+export const zInventorySiteResponse = z.object({
+	id: z.optional(z.uuid()),
+	name: z.optional(z.union([z.string(), z.null()])),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+});
+
+export const zInventorySiteResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zInventorySiteResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
+});
+
+export const zInventorySiteZoneRequest = z.object({
+	siteId: z.uuid(),
+	name: z.string().max(100),
+});
+
+export const zInventorySiteZoneResponse = z.object({
+	id: z.optional(z.uuid()),
+	siteId: z.optional(z.uuid()),
+	name: z.optional(z.union([z.string(), z.null()])),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+});
+
+export const zInventorySiteZoneResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zInventorySiteZoneResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
+});
+
+export const zInventorySupplierRequest = z.object({
+	name: z.string().max(200),
+});
+
+export const zInventorySupplierResponse = z.object({
+	id: z.optional(z.uuid()),
+	name: z.optional(z.union([z.string(), z.null()])),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+});
+
+export const zInventorySupplierResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zInventorySupplierResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
+});
+
+export const zInventoryProductRequest = z.object({
+	sku: z.string().max(50),
+	name: z.string().max(200),
+	categoryId: z.uuid(),
+	unit: z.string(),
+	kgPerBox: z.optional(z.union([z.number(), z.null()])),
+	shelfLifeDays: z
+		.int()
+		.gte(1)
+		.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	price: z.number().gte(0),
+});
+
+export const zInventoryProductResponse = z.object({
+	id: z.optional(z.uuid()),
+	sku: z.optional(z.union([z.string(), z.null()])),
+	name: z.optional(z.union([z.string(), z.null()])),
+	categoryId: z.optional(z.uuid()),
+	categoryName: z.optional(z.union([z.string(), z.null()])),
+	categoryColor: z.optional(z.union([z.string(), z.null()])),
+	unit: z.optional(z.union([z.string(), z.null()])),
+	kgPerBox: z.optional(z.union([z.number(), z.null()])),
+	shelfLifeDays: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	price: z.optional(z.number()),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+});
+
+export const zInventoryProductResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zInventoryProductResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
+});
+
+export const zInventoryLotRequest = z.object({
+	lotCode: z.string().max(50),
+	productId: z.uuid(),
+	qty: z.number().gte(0),
+	unit: z.string(),
+	entryAt: z.iso.datetime({ offset: true, local: true }),
+	expiresAt: z.iso.datetime({ offset: true, local: true }),
+	siteId: z.uuid(),
+	zone: z.string().max(100),
+	supplierId: z.optional(z.union([z.uuid(), z.null()])),
+	costPerUnit: z.number().gte(0),
+});
+
+export const zInventoryLotResponse = z.object({
+	lotCode: z.optional(z.union([z.string(), z.null()])),
+	productId: z.optional(z.uuid()),
+	productName: z.optional(z.union([z.string(), z.null()])),
+	productSku: z.optional(z.union([z.string(), z.null()])),
+	qty: z.optional(z.number()),
+	unit: z.optional(z.union([z.string(), z.null()])),
+	entryAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	expiresAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	siteId: z.optional(z.uuid()),
+	siteName: z.optional(z.union([z.string(), z.null()])),
+	zone: z.optional(z.union([z.string(), z.null()])),
+	supplierId: z.optional(z.union([z.uuid(), z.null()])),
+	supplierName: z.optional(z.union([z.string(), z.null()])),
+	costPerUnit: z.optional(z.number()),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+});
+
+export const zInventoryLotResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zInventoryLotResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
+});
+
+export const zInventoryMovementRequest = z.object({
+	type: z.string(),
+	occurredAt: z.iso.datetime({ offset: true, local: true }),
+	productId: z.uuid(),
+	qty: z.number(),
+	unit: z.string(),
+	lotCode: z.optional(z.union([z.string().max(50), z.null()])),
+	siteId: z.uuid(),
+	destSiteId: z.optional(z.union([z.uuid(), z.null()])),
+	performedBy: z.string().max(200),
+	note: z.optional(z.union([z.string(), z.null()])),
+});
+
+export const zInventoryMovementResponse = z.object({
+	id: z.optional(z.uuid()),
+	type: z.optional(z.union([z.string(), z.null()])),
+	occurredAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	productId: z.optional(z.uuid()),
+	productName: z.optional(z.union([z.string(), z.null()])),
+	productSku: z.optional(z.union([z.string(), z.null()])),
+	qty: z.optional(z.number()),
+	unit: z.optional(z.union([z.string(), z.null()])),
+	lotCode: z.optional(z.union([z.string(), z.null()])),
+	siteId: z.optional(z.uuid()),
+	siteName: z.optional(z.union([z.string(), z.null()])),
+	destSiteId: z.optional(z.union([z.uuid(), z.null()])),
+	performedBy: z.optional(z.union([z.string(), z.null()])),
+	note: z.optional(z.union([z.string(), z.null()])),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+});
+
+export const zInventoryMovementResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zInventoryMovementResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
+});
+
+export const zIntakeShipmentRequest = z.object({
+	poReference: z.string().max(100),
+	supplierId: z.uuid(),
+	vehicle: z.optional(z.union([z.string().max(200), z.null()])),
+	driver: z.optional(z.union([z.string().max(200), z.null()])),
+	siteId: z.uuid(),
+	receivingZone: z.string().max(100),
+	coldChainTempC: z.optional(z.union([z.number(), z.null()])),
+	arrivedAt: z.iso.datetime({ offset: true, local: true }),
+	receivedBy: z.string().max(200),
+	status: z.string(),
+});
+
+export const zIntakeShipmentResponse = z.object({
+	id: z.optional(z.uuid()),
+	poReference: z.optional(z.union([z.string(), z.null()])),
+	supplierId: z.optional(z.uuid()),
+	supplierName: z.optional(z.union([z.string(), z.null()])),
+	vehicle: z.optional(z.union([z.string(), z.null()])),
+	driver: z.optional(z.union([z.string(), z.null()])),
+	siteId: z.optional(z.uuid()),
+	siteName: z.optional(z.union([z.string(), z.null()])),
+	receivingZone: z.optional(z.union([z.string(), z.null()])),
+	coldChainTempC: z.optional(z.union([z.number(), z.null()])),
+	arrivedAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	receivedBy: z.optional(z.union([z.string(), z.null()])),
+	status: z.optional(z.union([z.string(), z.null()])),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+});
+
+export const zIntakeShipmentResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zIntakeShipmentResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
+});
+
+export const zShipmentLineRequest = z.object({
+	shipmentId: z.uuid(),
+	productId: z.uuid(),
+	lotCode: z.optional(z.union([z.string().max(50), z.null()])),
+	qty: z.number().gt(0),
+	unit: z.string(),
+	costPerUnit: z.number().gte(0),
+});
+
+export const zShipmentLineResponse = z.object({
+	id: z.optional(z.uuid()),
+	shipmentId: z.optional(z.uuid()),
+	productId: z.optional(z.uuid()),
+	productName: z.optional(z.union([z.string(), z.null()])),
+	lotCode: z.optional(z.union([z.string(), z.null()])),
+	qty: z.optional(z.number()),
+	unit: z.optional(z.union([z.string(), z.null()])),
+	costPerUnit: z.optional(z.number()),
+	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
+	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+});
+
+export const zShipmentLineResponsePagedResponse = z.object({
+	items: z.optional(z.union([z.array(zShipmentLineResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	totalPages: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" })
+			.readonly(),
+	),
+});
+
 export const zAdminResponsePagedResponseWritable = z.object({
 	items: z.optional(z.union([z.array(zAdminResponse), z.null()])),
 	totalCount: z.optional(
@@ -1095,6 +1553,204 @@ export const zSiteResponsePagedResponseWritable = z.object({
 
 export const zThresholdResponsePagedResponseWritable = z.object({
 	items: z.optional(z.union([z.array(zThresholdResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
+export const zInventoryCategoryResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zInventoryCategoryResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
+export const zInventorySiteResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zInventorySiteResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
+export const zInventorySiteZoneResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zInventorySiteZoneResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
+export const zInventorySupplierResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zInventorySupplierResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
+export const zInventoryProductResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zInventoryProductResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
+export const zInventoryLotResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zInventoryLotResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
+export const zInventoryMovementResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zInventoryMovementResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
+export const zIntakeShipmentResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zIntakeShipmentResponse), z.null()])),
+	totalCount: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	page: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+	pageSize: z.optional(
+		z
+			.int()
+			.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+			.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+	),
+});
+
+export const zShipmentLineResponsePagedResponseWritable = z.object({
+	items: z.optional(z.union([z.array(zShipmentLineResponse), z.null()])),
 	totalCount: z.optional(
 		z
 			.int()
@@ -1812,6 +2468,466 @@ export const zReplaceUserRolesV1Data = z.object({
 	body: z.optional(zAssignRolesToUserRequest),
 	path: z.object({
 		userId: z.string(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetInventoryCategoriesV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
+});
+
+export const zCreateInventoryCategoryV1Data = z.object({
+	body: z.optional(zInventoryCategoryRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zDeleteInventoryCategoryV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetInventoryCategoryByIdV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zUpdateInventoryCategoryV1Data = z.object({
+	body: z.optional(zInventoryCategoryRequest),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetInventorySitesV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
+});
+
+export const zCreateInventorySiteV1Data = z.object({
+	body: z.optional(zInventorySiteRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zDeleteInventorySiteV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetInventorySiteByIdV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zUpdateInventorySiteV1Data = z.object({
+	body: z.optional(zInventorySiteRequest),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetInventorySiteZonesV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			SiteId: z.optional(z.union([z.uuid(), z.null()])),
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
+});
+
+export const zCreateInventorySiteZoneV1Data = z.object({
+	body: z.optional(zInventorySiteZoneRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zDeleteInventorySiteZoneV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetInventorySiteZoneByIdV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zUpdateInventorySiteZoneV1Data = z.object({
+	body: z.optional(zInventorySiteZoneRequest),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetInventorySuppliersV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
+});
+
+export const zCreateInventorySupplierV1Data = z.object({
+	body: z.optional(zInventorySupplierRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zDeleteInventorySupplierV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetInventorySupplierByIdV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zUpdateInventorySupplierV1Data = z.object({
+	body: z.optional(zInventorySupplierRequest),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetInventoryProductsV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			CategoryId: z.optional(z.union([z.uuid(), z.null()])),
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
+});
+
+export const zCreateInventoryProductV1Data = z.object({
+	body: z.optional(zInventoryProductRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zDeleteInventoryProductV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetInventoryProductByIdV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zUpdateInventoryProductV1Data = z.object({
+	body: z.optional(zInventoryProductRequest),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetInventoryLotsV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			ProductId: z.optional(z.union([z.uuid(), z.null()])),
+			SiteId: z.optional(z.union([z.uuid(), z.null()])),
+			ExpiringBefore: z.optional(
+				z.union([z.iso.datetime({ offset: true, local: true }), z.null()]),
+			),
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
+});
+
+export const zCreateInventoryLotV1Data = z.object({
+	body: z.optional(zInventoryLotRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zDeleteInventoryLotV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		lotCode: z.string(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetInventoryLotByCodeV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		lotCode: z.string(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zUpdateInventoryLotV1Data = z.object({
+	body: z.optional(zInventoryLotRequest),
+	path: z.object({
+		lotCode: z.string(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetInventoryMovementsV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			Type: z.optional(z.union([z.string(), z.null()])),
+			ProductId: z.optional(z.union([z.uuid(), z.null()])),
+			SiteId: z.optional(z.union([z.uuid(), z.null()])),
+			LotCode: z.optional(z.union([z.string(), z.null()])),
+			From: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+			To: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
+});
+
+export const zCreateInventoryMovementV1Data = z.object({
+	body: z.optional(zInventoryMovementRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zGetInventoryMovementByIdV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetIntakeShipmentsV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			SupplierId: z.optional(z.union([z.uuid(), z.null()])),
+			SiteId: z.optional(z.union([z.uuid(), z.null()])),
+			Status: z.optional(z.union([z.string(), z.null()])),
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
+});
+
+export const zCreateIntakeShipmentV1Data = z.object({
+	body: z.optional(zIntakeShipmentRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zDeleteIntakeShipmentV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetIntakeShipmentByIdV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zUpdateIntakeShipmentV1Data = z.object({
+	body: z.optional(zIntakeShipmentRequest),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetShipmentLinesV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.optional(z.never()),
+	query: z.optional(
+		z.object({
+			ShipmentId: z.optional(z.union([z.uuid(), z.null()])),
+			Page: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+			PageSize: z.optional(
+				z
+					.int()
+					.min(-2147483648, { error: "Invalid value: Expected int32 to be >= -2147483648" })
+					.max(2147483647, { error: "Invalid value: Expected int32 to be <= 2147483647" }),
+			),
+		}),
+	),
+});
+
+export const zCreateShipmentLineV1Data = z.object({
+	body: z.optional(zShipmentLineRequest),
+	path: z.optional(z.never()),
+	query: z.optional(z.never()),
+});
+
+export const zDeleteShipmentLineV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zGetShipmentLineByIdV1Data = z.object({
+	body: z.optional(z.never()),
+	path: z.object({
+		id: z.uuid(),
+	}),
+	query: z.optional(z.never()),
+});
+
+export const zUpdateShipmentLineV1Data = z.object({
+	body: z.optional(zShipmentLineRequest),
+	path: z.object({
+		id: z.uuid(),
 	}),
 	query: z.optional(z.never()),
 });

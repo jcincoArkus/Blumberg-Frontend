@@ -5,8 +5,17 @@ import type {
 	CreateAdminV1Response,
 	CreateEquipmentV1Response,
 	CreateIngestionApiKeyV1Response,
+	CreateIntakeShipmentV1Response,
+	CreateInventoryCategoryV1Response,
+	CreateInventoryLotV1Response,
+	CreateInventoryMovementV1Response,
+	CreateInventoryProductV1Response,
+	CreateInventorySiteV1Response,
+	CreateInventorySiteZoneV1Response,
+	CreateInventorySupplierV1Response,
 	CreateSensorTypeV1Response,
 	CreateSensorV1Response,
+	CreateShipmentLineV1Response,
 	CreateSiteV1Response,
 	CreateThresholdV1Response,
 	GetActiveAlertsV1Response,
@@ -22,11 +31,29 @@ import type {
 	GetEquipmentByIdV1Response,
 	GetIngestionRunByIdV1Response,
 	GetIngestionRunsV1Response,
+	GetIntakeShipmentByIdV1Response,
+	GetIntakeShipmentsV1Response,
+	GetInventoryCategoriesV1Response,
+	GetInventoryCategoryByIdV1Response,
+	GetInventoryLotByCodeV1Response,
+	GetInventoryLotsV1Response,
+	GetInventoryMovementByIdV1Response,
+	GetInventoryMovementsV1Response,
+	GetInventoryProductByIdV1Response,
+	GetInventoryProductsV1Response,
+	GetInventorySiteByIdV1Response,
+	GetInventorySitesV1Response,
+	GetInventorySiteZoneByIdV1Response,
+	GetInventorySiteZonesV1Response,
+	GetInventorySupplierByIdV1Response,
+	GetInventorySuppliersV1Response,
 	GetSensorByIdV1Response,
 	GetSensorHealthByIdV1Response,
 	GetSensorHealthListV1Response,
 	GetSensorReadingsV1Response,
 	GetSensorTypeByIdV1Response,
+	GetShipmentLineByIdV1Response,
+	GetShipmentLinesV1Response,
 	GetSiteByIdV1Response,
 	GetThresholdByIdV1Response,
 	ListIngestionApiKeysV1Response,
@@ -555,5 +582,370 @@ export const updateThresholdV1ResponseTransformer = async (
 	data: any,
 ): Promise<UpdateThresholdV1Response> => {
 	data = thresholdResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+const inventoryCategoryResponseSchemaResponseTransformer = (data: any) => {
+	if (data.createdAt) {
+		data.createdAt = new Date(data.createdAt);
+	}
+	if (data.updatedAt) {
+		data.updatedAt = new Date(data.updatedAt);
+	}
+	return data;
+};
+
+const inventoryCategoryResponsePagedResponseSchemaResponseTransformer = (data: any) => {
+	if (data.items) {
+		data.items = data.items.map((item: any) =>
+			inventoryCategoryResponseSchemaResponseTransformer(item),
+		);
+	}
+	return data;
+};
+
+export const getInventoryCategoriesV1ResponseTransformer = async (
+	data: any,
+): Promise<GetInventoryCategoriesV1Response> => {
+	data = inventoryCategoryResponsePagedResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const createInventoryCategoryV1ResponseTransformer = async (
+	data: any,
+): Promise<CreateInventoryCategoryV1Response> => {
+	data = inventoryCategoryResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const getInventoryCategoryByIdV1ResponseTransformer = async (
+	data: any,
+): Promise<GetInventoryCategoryByIdV1Response> => {
+	data = inventoryCategoryResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+const inventorySiteResponseSchemaResponseTransformer = (data: any) => {
+	if (data.createdAt) {
+		data.createdAt = new Date(data.createdAt);
+	}
+	if (data.updatedAt) {
+		data.updatedAt = new Date(data.updatedAt);
+	}
+	return data;
+};
+
+const inventorySiteResponsePagedResponseSchemaResponseTransformer = (data: any) => {
+	if (data.items) {
+		data.items = data.items.map((item: any) =>
+			inventorySiteResponseSchemaResponseTransformer(item),
+		);
+	}
+	return data;
+};
+
+export const getInventorySitesV1ResponseTransformer = async (
+	data: any,
+): Promise<GetInventorySitesV1Response> => {
+	data = inventorySiteResponsePagedResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const createInventorySiteV1ResponseTransformer = async (
+	data: any,
+): Promise<CreateInventorySiteV1Response> => {
+	data = inventorySiteResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const getInventorySiteByIdV1ResponseTransformer = async (
+	data: any,
+): Promise<GetInventorySiteByIdV1Response> => {
+	data = inventorySiteResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+const inventorySiteZoneResponseSchemaResponseTransformer = (data: any) => {
+	if (data.createdAt) {
+		data.createdAt = new Date(data.createdAt);
+	}
+	if (data.updatedAt) {
+		data.updatedAt = new Date(data.updatedAt);
+	}
+	return data;
+};
+
+const inventorySiteZoneResponsePagedResponseSchemaResponseTransformer = (data: any) => {
+	if (data.items) {
+		data.items = data.items.map((item: any) =>
+			inventorySiteZoneResponseSchemaResponseTransformer(item),
+		);
+	}
+	return data;
+};
+
+export const getInventorySiteZonesV1ResponseTransformer = async (
+	data: any,
+): Promise<GetInventorySiteZonesV1Response> => {
+	data = inventorySiteZoneResponsePagedResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const createInventorySiteZoneV1ResponseTransformer = async (
+	data: any,
+): Promise<CreateInventorySiteZoneV1Response> => {
+	data = inventorySiteZoneResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const getInventorySiteZoneByIdV1ResponseTransformer = async (
+	data: any,
+): Promise<GetInventorySiteZoneByIdV1Response> => {
+	data = inventorySiteZoneResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+const inventorySupplierResponseSchemaResponseTransformer = (data: any) => {
+	if (data.createdAt) {
+		data.createdAt = new Date(data.createdAt);
+	}
+	if (data.updatedAt) {
+		data.updatedAt = new Date(data.updatedAt);
+	}
+	return data;
+};
+
+const inventorySupplierResponsePagedResponseSchemaResponseTransformer = (data: any) => {
+	if (data.items) {
+		data.items = data.items.map((item: any) =>
+			inventorySupplierResponseSchemaResponseTransformer(item),
+		);
+	}
+	return data;
+};
+
+export const getInventorySuppliersV1ResponseTransformer = async (
+	data: any,
+): Promise<GetInventorySuppliersV1Response> => {
+	data = inventorySupplierResponsePagedResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const createInventorySupplierV1ResponseTransformer = async (
+	data: any,
+): Promise<CreateInventorySupplierV1Response> => {
+	data = inventorySupplierResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const getInventorySupplierByIdV1ResponseTransformer = async (
+	data: any,
+): Promise<GetInventorySupplierByIdV1Response> => {
+	data = inventorySupplierResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+const inventoryProductResponseSchemaResponseTransformer = (data: any) => {
+	if (data.createdAt) {
+		data.createdAt = new Date(data.createdAt);
+	}
+	if (data.updatedAt) {
+		data.updatedAt = new Date(data.updatedAt);
+	}
+	return data;
+};
+
+const inventoryProductResponsePagedResponseSchemaResponseTransformer = (data: any) => {
+	if (data.items) {
+		data.items = data.items.map((item: any) =>
+			inventoryProductResponseSchemaResponseTransformer(item),
+		);
+	}
+	return data;
+};
+
+export const getInventoryProductsV1ResponseTransformer = async (
+	data: any,
+): Promise<GetInventoryProductsV1Response> => {
+	data = inventoryProductResponsePagedResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const createInventoryProductV1ResponseTransformer = async (
+	data: any,
+): Promise<CreateInventoryProductV1Response> => {
+	data = inventoryProductResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const getInventoryProductByIdV1ResponseTransformer = async (
+	data: any,
+): Promise<GetInventoryProductByIdV1Response> => {
+	data = inventoryProductResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+const inventoryLotResponseSchemaResponseTransformer = (data: any) => {
+	if (data.entryAt) {
+		data.entryAt = new Date(data.entryAt);
+	}
+	if (data.expiresAt) {
+		data.expiresAt = new Date(data.expiresAt);
+	}
+	if (data.createdAt) {
+		data.createdAt = new Date(data.createdAt);
+	}
+	if (data.updatedAt) {
+		data.updatedAt = new Date(data.updatedAt);
+	}
+	return data;
+};
+
+const inventoryLotResponsePagedResponseSchemaResponseTransformer = (data: any) => {
+	if (data.items) {
+		data.items = data.items.map((item: any) => inventoryLotResponseSchemaResponseTransformer(item));
+	}
+	return data;
+};
+
+export const getInventoryLotsV1ResponseTransformer = async (
+	data: any,
+): Promise<GetInventoryLotsV1Response> => {
+	data = inventoryLotResponsePagedResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const createInventoryLotV1ResponseTransformer = async (
+	data: any,
+): Promise<CreateInventoryLotV1Response> => {
+	data = inventoryLotResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const getInventoryLotByCodeV1ResponseTransformer = async (
+	data: any,
+): Promise<GetInventoryLotByCodeV1Response> => {
+	data = inventoryLotResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+const inventoryMovementResponseSchemaResponseTransformer = (data: any) => {
+	if (data.occurredAt) {
+		data.occurredAt = new Date(data.occurredAt);
+	}
+	if (data.createdAt) {
+		data.createdAt = new Date(data.createdAt);
+	}
+	return data;
+};
+
+const inventoryMovementResponsePagedResponseSchemaResponseTransformer = (data: any) => {
+	if (data.items) {
+		data.items = data.items.map((item: any) =>
+			inventoryMovementResponseSchemaResponseTransformer(item),
+		);
+	}
+	return data;
+};
+
+export const getInventoryMovementsV1ResponseTransformer = async (
+	data: any,
+): Promise<GetInventoryMovementsV1Response> => {
+	data = inventoryMovementResponsePagedResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const createInventoryMovementV1ResponseTransformer = async (
+	data: any,
+): Promise<CreateInventoryMovementV1Response> => {
+	data = inventoryMovementResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const getInventoryMovementByIdV1ResponseTransformer = async (
+	data: any,
+): Promise<GetInventoryMovementByIdV1Response> => {
+	data = inventoryMovementResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+const intakeShipmentResponseSchemaResponseTransformer = (data: any) => {
+	if (data.arrivedAt) {
+		data.arrivedAt = new Date(data.arrivedAt);
+	}
+	if (data.createdAt) {
+		data.createdAt = new Date(data.createdAt);
+	}
+	if (data.updatedAt) {
+		data.updatedAt = new Date(data.updatedAt);
+	}
+	return data;
+};
+
+const intakeShipmentResponsePagedResponseSchemaResponseTransformer = (data: any) => {
+	if (data.items) {
+		data.items = data.items.map((item: any) =>
+			intakeShipmentResponseSchemaResponseTransformer(item),
+		);
+	}
+	return data;
+};
+
+export const getIntakeShipmentsV1ResponseTransformer = async (
+	data: any,
+): Promise<GetIntakeShipmentsV1Response> => {
+	data = intakeShipmentResponsePagedResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const createIntakeShipmentV1ResponseTransformer = async (
+	data: any,
+): Promise<CreateIntakeShipmentV1Response> => {
+	data = intakeShipmentResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const getIntakeShipmentByIdV1ResponseTransformer = async (
+	data: any,
+): Promise<GetIntakeShipmentByIdV1Response> => {
+	data = intakeShipmentResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+const shipmentLineResponseSchemaResponseTransformer = (data: any) => {
+	if (data.createdAt) {
+		data.createdAt = new Date(data.createdAt);
+	}
+	if (data.updatedAt) {
+		data.updatedAt = new Date(data.updatedAt);
+	}
+	return data;
+};
+
+const shipmentLineResponsePagedResponseSchemaResponseTransformer = (data: any) => {
+	if (data.items) {
+		data.items = data.items.map((item: any) => shipmentLineResponseSchemaResponseTransformer(item));
+	}
+	return data;
+};
+
+export const getShipmentLinesV1ResponseTransformer = async (
+	data: any,
+): Promise<GetShipmentLinesV1Response> => {
+	data = shipmentLineResponsePagedResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const createShipmentLineV1ResponseTransformer = async (
+	data: any,
+): Promise<CreateShipmentLineV1Response> => {
+	data = shipmentLineResponseSchemaResponseTransformer(data);
+	return data;
+};
+
+export const getShipmentLineByIdV1ResponseTransformer = async (
+	data: any,
+): Promise<GetShipmentLineByIdV1Response> => {
+	data = shipmentLineResponseSchemaResponseTransformer(data);
 	return data;
 };
