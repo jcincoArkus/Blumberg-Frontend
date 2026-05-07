@@ -2,7 +2,7 @@
 
 > **Source branch:** `Inventory`  
 > **Module path:** `packages/views/inventory/`  
-> **Status:** In-progress — all data is mock/static; no API integration yet.
+> **Status:** In-progress — API integrated; product/category creation modals live.
 
 ---
 
@@ -10,14 +10,17 @@
 
 ```
 packages/views/inventory/
-├── index.ts                    # Barrel: exports all 6 view components
+├── index.ts                    # Barrel: exports all view components
 ├── data.ts                     # Types, constants, mock data, utility fns
 ├── inventory.css               # Scoped CSS (.inventory-module namespace)
 ├── InventoryDashboardView.tsx  # Executive KPI overview screen
 ├── InventoryView.tsx           # Main lot inventory table
 ├── LotsView.tsx                # Simplified lot-focused table
 ├── IntakeView.tsx              # Goods receipt multi-step form
-└── MovementsView.tsx           # Audit trail / movement history
+├── MovementsView.tsx           # Audit trail / movement history
+├── ProductsView.tsx            # Product catalog with category filter + search
+├── AddProductModal.tsx         # Dialog: create new product (wired to API)
+└── AddCategoryModal.tsx        # Dialog: create new category with color picker (wired to API)
 ```
 
 ---
@@ -179,7 +182,35 @@ packages/views/inventory/
 
 ---
 
-### 5. `MovementsView` — Audit Trail
+### 5. `ProductsView` — Product Catalog
+
+**Route:** `/inventory/products`
+
+**Toolbar:**
+- Category filter (segment buttons — All + one per category, populated from API)
+- Full-text search (name, SKU)
+
+**Table columns:** Product (name + SKU + category color dot) · Category · Unit · kg/box · Shelf life · Price
+
+**Actions (header):**
+- **Add category** (Tag icon) → opens `AddCategoryModal`
+- **Add product** (Plus icon) → opens `AddProductModal`
+- Export button (not yet wired)
+
+**Footer:** "Showing X of Y products"
+
+#### `AddProductModal`
+Fields: Name · SKU · Category (select, populated from `vm.categories`) · Unit (kg/unit/box) · kg per box (shown only when unit = box) · Shelf life (days) · Price (MXN/unit)  
+On save: `createProductMutation.mutateAsync({ body })` → `refreshProducts()` → close  
+Validation: all fields required; kg/box required when unit = box
+
+#### `AddCategoryModal`
+Fields: Name · Color (8 preset swatches + free color picker input)  
+On save: `createCategoryMutation.mutateAsync({ body })` → `refreshCategories()` → close
+
+---
+
+### 6. `MovementsView` — Audit Trail
 
 **Route:** `/inventory/movements`
 
@@ -251,17 +282,41 @@ Semantic colors: `--inv-amber`, `--inv-rose`, `--inv-leaf`, `--inv-info`
 ## What's Not Yet Wired
 
 - [x] **API integration** — inventory endpoints added to openapi.yaml, `bun api:gen` run, all views use real API via InventoryViewModel
+- [x] **Add Product modal** — `AddProductModal.tsx` wired to `createInventoryProductV1`
+- [x] **Add Category modal** — `AddCategoryModal.tsx` wired to `createInventoryCategoryV1`
+- [ ] **Edit / Delete product** — no modal yet; only creation is implemented
+- [ ] **Edit / Delete category** — no modal yet; only creation is implemented
 - [ ] **Category filter** in `InventoryView` (select renders but doesn't filter)
 - [ ] **Sort dropdown** in `InventoryView` (select renders but doesn't sort)
-- [ ] **Export CSV** in `MovementsView` and `LotsView`
+- [ ] **Export CSV** in `MovementsView`, `LotsView`, and `ProductsView`
 - [ ] **Adjust action** (pencil icon) in `InventoryView` row — no modal/form yet
 - [ ] **Mark waste action** (trash icon) in `InventoryView` row — no confirmation/form yet
 - [x] **IntakeView save** — wired to `createIntakeShipmentV1` + `createShipmentLineV1` mutations
+- [ ] **IntakeView supplier dropdown** — still uses hardcoded options; should load from `getInventorySuppliersV1`
 - [ ] **IntakeView print receipt** — no implementation
 - [ ] **Date range filter** in `MovementsView` ("Last 7 days" button)
 - [x] **ViewModels** — `packages/view-model/inventory/InventoryViewModel.ts` singleton created (lots, movements, products, categories, sites, zones)
-- [x] **Route registration** — views need to be wired into `apps/app/src/routes/` under `_private+/`
+- [x] **Route registration** — views wired into `apps/app/src/routes/_private+/inventory+/`
 - [ ] **i18n strings** — `t` macro is used but `bun i18n:extract` + `bun i18n:compile` need to be run
+
+---
+
+## Known Issues & Gotchas
+
+### Non-standard UUIDs from the backend
+The backend generates UUIDs that do not conform to RFC 4122 (e.g., version/variant nibbles outside the standard range, like `11111111-0001-0001-0001-000000000005`). The `@hey-api/openapi-ts` code generator emits `z.uuid()` validators for all `format: uuid` fields in the OpenAPI spec, and Zod's strict UUID regex rejects these IDs before the HTTP request is even sent.
+
+**Fix applied:** `validator: false` in `packages/api/openapi.config.ts` under `@hey-api/sdk`. This disables client-side Zod validation of request bodies globally. The Zod schemas in `zod.gen.ts` are still generated and available, but they are not wired into the SDK request pipeline.  
+**Impact:** If you re-enable `validator: true` in the future, all inventory mutations (and any other mutation passing backend-generated IDs) will break again until the backend switches to standard UUIDs.
+
+### Dialog portal and `.inventory-module` CSS scope
+The `Dialog` component from `~@/ui` (Radix UI) renders into a portal outside the normal DOM tree, so the `.inventory-module` CSS scope does not automatically apply. The pattern used in `AddProductModal` and `AddCategoryModal` is to wrap inner content in `<div className="inventory-module">` so the CSS custom properties (`--inv-*`) and utility classes (`.btn`, `.input`, `.label`, `.field-grid`) work correctly inside the dialog.
+
+### Adding new mutations to InventoryViewModel
+When wiring a new API action (e.g., edit product, delete category), add the `ObservedMutation` instance to `InventoryViewModel` alongside the existing ones. Also add a `refreshX()` method that calls `.invalidate()` + `.refetch()` on the relevant query so the list updates immediately after a mutation succeeds. See `refreshProducts` / `refreshCategories` for the pattern.
+
+### `openapi.config.ts` input path is machine-specific
+The `inputPath` in `packages/api/openapi.config.ts` must point to the local backend repo. It is not committed with a guaranteed value — verify it before running `bun api:gen`. The expected relative path is `./../Blumberg-Backend/Adapters/OpenApi/openapi.yaml` (or `../backend/...` depending on the machine).
 
 ---
 
@@ -271,6 +326,10 @@ Semantic colors: `--inv-amber`, `--inv-rose`, `--inv-leaf`, `--inv-info`
 2. ~~Add OpenAPI endpoints for lots, movements, products, and intake to `packages/api/openapi.yaml` → `bun api:gen`~~ ✓
 3. ~~Create ViewModels in `packages/view-model/inventory/` (singleton for filters/list, instance for intake form)~~ ✓
 4. ~~Replace mock data with `ObservedQuery` / `ObservedMutation` calls~~ ✓
-5. Wire up remaining UI actions: category/sort filters, adjust, mark-waste, export CSV
-6. Run `bun i18n:extract && bun i18n:compile`
-7. Add CASL authorization rules via `bun authorization:generate`
+5. ~~Add Product and Category creation modals to `ProductsView`~~ ✓
+6. Wire up Edit/Delete actions for products and categories (follow `AddProductModal` pattern)
+7. Wire up remaining `InventoryView` UI actions: category filter, sort dropdown, adjust modal, mark-waste confirmation
+8. Wire `IntakeView` supplier dropdown to `getInventorySuppliersV1` (currently hardcoded)
+9. Implement Export CSV in `MovementsView`, `LotsView`, `ProductsView`
+10. Run `bun i18n:extract && bun i18n:compile`
+11. Add CASL authorization rules via `bun authorization:generate`
