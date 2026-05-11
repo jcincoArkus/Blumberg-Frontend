@@ -12,10 +12,10 @@ import { useMemo, useState } from "react";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
+import { Button, cn } from "~@/ui";
 import { type InvMovementType, useInventoryViewModel } from "~@/view-model";
 
 import { daysUntil, fmtDate, fmtTime, type Movement } from "./data";
-import "./inventory.css";
 
 const TYPE_ICON: Record<InvMovementType, LucideIcon> = {
 	intake: ArrowDown,
@@ -82,35 +82,59 @@ export const MovementsView = observer(function MovementsView() {
 
 	const filterTypes: InvMovementType[] = ["intake", "output", "waste", "adjustment", "transfer"];
 
+	const typeColorMap: Record<InvMovementType, string> = {
+		intake: "bg-green-50 text-green-700",
+		output: "bg-blue-50 text-blue-700",
+		waste: "bg-red-50 text-red-700",
+		adjustment: "bg-amber-50 text-amber-700",
+		transfer: "bg-gray-100 text-gray-700",
+	};
+
 	return (
-		<div className="inventory-module">
-			<div className="page-h">
+		<div className="space-y-6">
+			<div className="flex items-start gap-4">
 				<div>
-					<div className="ttl">{t`Movements`}</div>
-					<div className="sub">{t`Every intake, sale, waste mark, adjustment and transfer · audit trail`}</div>
+					<h1 className="text-xl font-semibold tracking-tight text-gray-900">{t`Movements`}</h1>
+					<p className="text-sm text-gray-600 mt-1">{t`Every intake, sale, waste mark, adjustment and transfer · audit trail`}</p>
 				</div>
-				<div className="right">
-					<button type="button" className="btn">
+				<div className="ml-auto flex items-center gap-2">
+					<Button variant="outline" size="sm">
 						<Calendar size={14} /> {t`Last 7 days`}
-					</button>
-					<button type="button" className="btn">
+					</Button>
+					<Button variant="outline" size="sm">
 						<Download size={14} /> {t`Export CSV`}
-					</button>
+					</Button>
 				</div>
 			</div>
 
-			<div className="mov-summary">
-				<div
-					className={`mov-tile ${filter === "all" ? "on" : ""}`}
+			<div className="grid grid-cols-6 gap-3">
+				<button
+					className={cn(
+						"p-3 rounded-lg border transition-colors cursor-pointer text-left",
+						filter === "all"
+							? "bg-teal-700 border-teal-700 text-white"
+							: "bg-white border-gray-200 hover:border-teal-500",
+					)}
 					onClick={() => setFilter("all")}
-					onKeyDown={(e) => e.key === "Enter" && setFilter("all")}
-					role="button"
-					tabIndex={0}
 				>
-					<div className="lbl">{t`All movements`}</div>
-					<div className="val">{vm.movements.length}</div>
-					<div className="sub">{t`last 7 days`}</div>
-				</div>
+					<div
+						className={cn(
+							"text-xs font-medium",
+							filter === "all" ? "text-white/85" : "text-gray-600",
+						)}
+					>{t`All movements`}</div>
+					<div
+						className={cn(
+							"text-xl font-semibold mt-1",
+							filter === "all" ? "text-white" : "text-gray-900",
+						)}
+					>
+						{vm.movements.length}
+					</div>
+					<div
+						className={cn("text-xs mt-1", filter === "all" ? "text-white/70" : "text-gray-500")}
+					>{t`last 7 days`}</div>
+				</button>
 				{filterTypes.map((type) => {
 					const Icn = TYPE_ICON[type];
 					const subText: Record<InvMovementType, string> = {
@@ -121,53 +145,71 @@ export const MovementsView = observer(function MovementsView() {
 						transfer: t`inter-site`,
 					};
 					return (
-						<div
+						<button
 							key={type}
-							className={`mov-tile ${filter === type ? "on" : ""}`}
+							className={cn(
+								"p-3 rounded-lg border transition-colors cursor-pointer text-left",
+								filter === type
+									? "bg-teal-700 border-teal-700 text-white"
+									: "bg-white border-gray-200 hover:border-teal-500",
+							)}
 							onClick={() => setFilter(type)}
-							onKeyDown={(e) => e.key === "Enter" && setFilter(type)}
-							role="button"
-							tabIndex={0}
 						>
-							<div className="lbl">
+							<div
+								className={cn(
+									"text-xs font-medium flex items-center gap-1",
+									filter === type ? "text-white/85" : "text-gray-600",
+								)}
+							>
 								<Icn size={12} /> {TYPE_LABEL[type]}
 							</div>
-							<div className="val">{counts[type]}</div>
-							<div className="sub">{subText[type]}</div>
-						</div>
+							<div
+								className={cn(
+									"text-xl font-semibold mt-1",
+									filter === type ? "text-white" : "text-gray-900",
+								)}
+							>
+								{counts[type]}
+							</div>
+							<div
+								className={cn("text-xs mt-1", filter === type ? "text-white/70" : "text-gray-500")}
+							>
+								{subText[type]}
+							</div>
+						</button>
 					);
 				})}
 			</div>
 
 			{vm.isLoading ? (
-				<div
-					className="card"
-					style={{ padding: "40px 16px", textAlign: "center", color: "var(--inv-ink-400)" }}
-				>
+				<div className="bg-white border border-gray-200 rounded-lg p-10 text-center text-gray-400 text-sm">
 					{t`Loading movements…`}
 				</div>
 			) : (
-				<div className="card" style={{ overflow: "hidden" }}>
-					<div style={{ overflowX: "auto" }}>
-						<table className="mov-table">
+				<div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+					<div className="overflow-x-auto">
+						<table className="w-full border-collapse text-xs">
 							<thead>
 								<tr>
-									<th style={{ width: 120 }}>{t`Time`}</th>
-									<th style={{ width: 130 }}>{t`Type`}</th>
-									<th>{t`Product`}</th>
-									<th>{t`Lot`}</th>
-									<th>{t`Site`}</th>
-									<th>{t`By`}</th>
-									<th>{t`Reference`}</th>
-									<th style={{ textAlign: "right" }}>{t`Qty`}</th>
+									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200 w-24">{t`Time`}</th>
+									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200 w-28">{t`Type`}</th>
+									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200">{t`Product`}</th>
+									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200 w-28">{t`Lot`}</th>
+									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200">{t`Site`}</th>
+									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200">{t`By`}</th>
+									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200">{t`Reference`}</th>
+									<th className="text-right px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200 w-20">{t`Qty`}</th>
 								</tr>
 							</thead>
 							<tbody>
 								{grouped.map((row, i) => {
 									if ("isHeader" in row && row.isHeader) {
 										return (
-											<tr key={`d-${i}`}>
-												<td colSpan={8} className="mov-day">
+											<tr key={`d-${i}`} className="bg-gray-50">
+												<td
+													colSpan={8}
+													className="px-3 py-2 text-xs font-semibold uppercase tracking-wide text-gray-500 border-b border-t border-gray-200"
+												>
 													{dayLabel(row.day, row.daysAgo)}
 												</td>
 											</tr>
@@ -184,56 +226,42 @@ export const MovementsView = observer(function MovementsView() {
 									const isPos = m.type === "intake" || (m.type === "adjustment" && m.qty > 0);
 									const sign = isNeg ? "-" : isPos ? "+" : "";
 									return (
-										<tr key={m.id}>
-											<td style={{ color: "var(--inv-ink-700)" }}>
-												<div style={{ fontVariantNumeric: "tabular-nums" }}>{fmtTime(m.at)}</div>
-												<div
-													style={{
-														fontSize: 11,
-														color: "var(--inv-ink-400)",
-														fontFamily: "'JetBrains Mono',monospace",
-													}}
-												>
-													{m.id}
-												</div>
+										<tr key={m.id} className="hover:bg-gray-50 border-b border-gray-100">
+											<td className="px-3 py-2.5 text-gray-700 font-mono">
+												<div>{fmtTime(m.at)}</div>
+												<div className="text-xs text-gray-500 mt-0.5">{m.id}</div>
 											</td>
-											<td>
-												<span className={`type-chip type-${m.type}`}>
+											<td className="px-3 py-2.5">
+												<span
+													className={cn(
+														"inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium",
+														typeColorMap[m.type as InvMovementType],
+													)}
+												>
 													<Icn size={11} /> {TYPE_LABEL[m.type as InvMovementType]}
 												</span>
 											</td>
-											<td>
-												<div style={{ fontWeight: 500, color: "var(--inv-ink-900)" }}>{p.name}</div>
-												<div
-													style={{
-														fontSize: 11,
-														color: "var(--inv-ink-400)",
-														fontFamily: "'JetBrains Mono',monospace",
-													}}
+											<td className="px-3 py-2.5">
+												<div className="font-medium text-gray-900">{p.name}</div>
+												<div className="text-xs text-gray-500 font-mono mt-0.5">{p.sku}</div>
+											</td>
+											<td className="px-3 py-2.5 text-gray-700 font-mono">{m.lotId}</td>
+											<td className="px-3 py-2.5 text-gray-700">
+												<div className="text-gray-900 font-medium">{site.name.split(" · ")[0]}</div>
+											</td>
+											<td className="px-3 py-2.5 text-gray-700">{m.by}</td>
+											<td className="px-3 py-2.5 text-gray-600 text-xs">{m.note}</td>
+											<td className="px-3 py-2.5 text-right font-mono">
+												<span
+													className={cn(
+														"font-medium",
+														isNeg ? "text-red-600" : isPos ? "text-green-600" : "text-gray-900",
+													)}
 												>
-													{p.sku}
-												</div>
-											</td>
-											<td style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12 }}>
-												{m.lotId}
-											</td>
-											<td>
-												<div style={{ color: "var(--inv-ink-900)" }}>
-													{site.name.split(" · ")[0]}
-												</div>
-											</td>
-											<td>{m.by}</td>
-											<td style={{ color: "var(--inv-ink-500)", fontSize: 12.5 }}>{m.note}</td>
-											<td className="num">
-												<span className={isNeg ? "qty-neg" : isPos ? "qty-pos" : ""}>
 													{sign}
 													{Math.abs(m.qty).toLocaleString()}
 												</span>
-												<span
-													style={{ color: "var(--inv-ink-400)", fontWeight: 400, marginLeft: 4 }}
-												>
-													{m.unit}
-												</span>
+												<span className="text-gray-500 font-normal ml-1">{m.unit}</span>
 											</td>
 										</tr>
 									);

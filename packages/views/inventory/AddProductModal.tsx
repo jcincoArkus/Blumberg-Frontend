@@ -1,10 +1,8 @@
 import { useState } from "react";
 
 import { t } from "~@/i18n/macro";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "~@/ui";
+import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "~@/ui";
 import { useInventoryViewModel } from "~@/view-model";
-
-import "./inventory.css";
 
 interface AddProductModalProps {
 	open: boolean;
@@ -79,147 +77,125 @@ export function AddProductModal({ open, onClose }: AddProductModalProps) {
 					<DialogTitle>{t`Add Product`}</DialogTitle>
 				</DialogHeader>
 
-				<div className="inventory-module">
-					<div className="field-grid" style={{ gap: 14 }}>
-						<div>
-							<label className="label" htmlFor="ap-name">
-								{t`Name`} <span style={{ color: "var(--inv-rose-fg)" }}>*</span>
-							</label>
-							<input
-								id="ap-name"
-								className="input"
-								placeholder={t`e.g. Mango Ataulfo`}
-								value={name}
-								onChange={(e) => setName(e.target.value)}
-							/>
-						</div>
-						<div>
-							<label className="label" htmlFor="ap-sku">
-								{t`SKU`} <span style={{ color: "var(--inv-rose-fg)" }}>*</span>
-							</label>
-							<input
-								id="ap-sku"
-								className="input"
-								placeholder={t`e.g. MNG-001`}
-								value={sku}
-								onChange={(e) => setSku(e.target.value)}
-							/>
-						</div>
-						<div>
-							<label className="label" htmlFor="ap-category">
-								{t`Category`} <span style={{ color: "var(--inv-rose-fg)" }}>*</span>
-							</label>
-							<select
-								id="ap-category"
-								className="input"
-								value={categoryId}
-								onChange={(e) => setCategoryId(e.target.value)}
-							>
-								<option value="">{t`Select category…`}</option>
-								{vm.categories.map((c) => (
-									<option key={c.id} value={c.id}>
-										{c.name}
-									</option>
-								))}
-							</select>
-						</div>
-						<div>
-							<label className="label" htmlFor="ap-unit">
-								{t`Unit`} <span style={{ color: "var(--inv-rose-fg)" }}>*</span>
-							</label>
-							<select
-								id="ap-unit"
-								className="input"
-								value={unit}
-								onChange={(e) => setUnit(e.target.value as "kg" | "unit" | "box")}
-							>
-								<option value="kg">kg</option>
-								<option value="unit">{t`unit`}</option>
-								<option value="box">{t`box`}</option>
-							</select>
-						</div>
-						{unit === "box" && (
-							<div>
-								<label className="label" htmlFor="ap-kgperbox">
-									{t`kg per box`} <span style={{ color: "var(--inv-rose-fg)" }}>*</span>
-								</label>
-								<input
-									id="ap-kgperbox"
-									className="input"
-									type="number"
-									min="0.01"
-									step="0.01"
-									placeholder="18.00"
-									value={kgPerBox}
-									onChange={(e) => setKgPerBox(e.target.value)}
-								/>
-							</div>
-						)}
-						<div>
-							<label className="label" htmlFor="ap-shelf">
-								{t`Shelf life (days)`} <span style={{ color: "var(--inv-rose-fg)" }}>*</span>
-							</label>
-							<input
-								id="ap-shelf"
-								className="input"
-								type="number"
-								min="1"
-								step="1"
-								placeholder="14"
-								value={shelfLifeDays}
-								onChange={(e) => setShelfLifeDays(e.target.value)}
-							/>
-						</div>
-						<div>
-							<label className="label" htmlFor="ap-price">
-								{t`Price (MXN / unit)`} <span style={{ color: "var(--inv-rose-fg)" }}>*</span>
-							</label>
-							<input
-								id="ap-price"
-								className="input"
-								type="number"
-								min="0"
-								step="0.01"
-								placeholder="0.00"
-								value={price}
-								onChange={(e) => setPrice(e.target.value)}
-							/>
-						</div>
+				<div className="grid grid-cols-2 gap-4">
+					<div>
+						<label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="ap-name">
+							{t`Name`} <span className="text-red-600">*</span>
+						</label>
+						<input
+							id="ap-name"
+							className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+							placeholder={t`e.g. Mango Ataulfo`}
+							value={name}
+							onChange={(e) => setName(e.target.value)}
+						/>
 					</div>
-
-					{error && (
-						<div
-							style={{
-								marginTop: 12,
-								padding: "8px 12px",
-								borderRadius: 7,
-								background: "var(--inv-rose-bg)",
-								color: "var(--inv-rose-fg)",
-								fontSize: 12,
-							}}
+					<div>
+						<label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="ap-sku">
+							{t`SKU`} <span className="text-red-600">*</span>
+						</label>
+						<input
+							id="ap-sku"
+							className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+							placeholder={t`e.g. MNG-001`}
+							value={sku}
+							onChange={(e) => setSku(e.target.value)}
+						/>
+					</div>
+					<div>
+						<label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="ap-category">
+							{t`Category`} <span className="text-red-600">*</span>
+						</label>
+						<select
+							id="ap-category"
+							className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+							value={categoryId}
+							onChange={(e) => setCategoryId(e.target.value)}
 						>
-							{error}
+							<option value="">{t`Select category…`}</option>
+							{vm.categories.map((c) => (
+								<option key={c.id} value={c.id}>
+									{c.name}
+								</option>
+							))}
+						</select>
+					</div>
+					<div>
+						<label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="ap-unit">
+							{t`Unit`} <span className="text-red-600">*</span>
+						</label>
+						<select
+							id="ap-unit"
+							className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+							value={unit}
+							onChange={(e) => setUnit(e.target.value as "kg" | "unit" | "box")}
+						>
+							<option value="kg">kg</option>
+							<option value="unit">{t`unit`}</option>
+							<option value="box">{t`box`}</option>
+						</select>
+					</div>
+					{unit === "box" && (
+						<div>
+							<label
+								className="block text-sm font-medium text-gray-700 mb-1.5"
+								htmlFor="ap-kgperbox"
+							>
+								{t`kg per box`} <span className="text-red-600">*</span>
+							</label>
+							<input
+								id="ap-kgperbox"
+								className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+								type="number"
+								min="0.01"
+								step="0.01"
+								placeholder="18.00"
+								value={kgPerBox}
+								onChange={(e) => setKgPerBox(e.target.value)}
+							/>
 						</div>
 					)}
+					<div>
+						<label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="ap-shelf">
+							{t`Shelf life (days)`} <span className="text-red-600">*</span>
+						</label>
+						<input
+							id="ap-shelf"
+							className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+							type="number"
+							min="1"
+							step="1"
+							placeholder="14"
+							value={shelfLifeDays}
+							onChange={(e) => setShelfLifeDays(e.target.value)}
+						/>
+					</div>
+					<div>
+						<label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="ap-price">
+							{t`Price (MXN / unit)`} <span className="text-red-600">*</span>
+						</label>
+						<input
+							id="ap-price"
+							className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+							type="number"
+							min="0"
+							step="0.01"
+							placeholder="0.00"
+							value={price}
+							onChange={(e) => setPrice(e.target.value)}
+						/>
+					</div>
 				</div>
 
+				{error && <div className="p-3 rounded bg-red-50 text-red-700 text-sm">{error}</div>}
+
 				<DialogFooter>
-					<div
-						className="inventory-module"
-						style={{ display: "flex", gap: 8, justifyContent: "flex-end", width: "100%" }}
-					>
-						<button type="button" className="btn" onClick={handleClose} disabled={saving}>
-							{t`Cancel`}
-						</button>
-						<button
-							type="button"
-							className="btn btn-primary"
-							onClick={() => void handleSubmit()}
-							disabled={saving}
-						>
-							{saving ? t`Saving…` : t`Save product`}
-						</button>
-					</div>
+					<Button type="button" variant="outline" onClick={handleClose} disabled={saving}>
+						{t`Cancel`}
+					</Button>
+					<Button type="button" onClick={() => void handleSubmit()} disabled={saving}>
+						{saving ? t`Saving…` : t`Save product`}
+					</Button>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

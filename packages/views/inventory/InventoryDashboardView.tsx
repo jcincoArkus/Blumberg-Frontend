@@ -4,10 +4,10 @@ import { Link } from "react-router";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
+import { Button, cn } from "~@/ui";
 import { type InvMovementType, useInventoryViewModel } from "~@/view-model";
 
 import { expStatus, fmtMoney, fmtTime } from "./data";
-import "./inventory.css";
 
 const TYPE_ICON = {
 	intake: ArrowDown,
@@ -25,6 +25,14 @@ const TYPE_LABEL: Record<InvMovementType, string> = {
 	transfer: "Transfer",
 };
 
+const TYPE_COLOR_MAP: Record<InvMovementType, string> = {
+	intake: "bg-green-50 text-green-700",
+	output: "bg-blue-50 text-blue-700",
+	waste: "bg-red-50 text-red-700",
+	adjustment: "bg-amber-50 text-amber-700",
+	transfer: "bg-gray-100 text-gray-700",
+};
+
 function StatCard({
 	label,
 	value,
@@ -38,13 +46,23 @@ function StatCard({
 	tone?: "ok" | "up" | "warn" | "down";
 	accent?: number;
 }) {
+	const toneColorMap = {
+		ok: "text-teal-700",
+		up: "text-green-600",
+		warn: "text-amber-600",
+		down: "text-red-600",
+	};
+
 	return (
-		<div className="stat">
-			<div className="lbl">{label}</div>
-			<div className="val">{value}</div>
-			{sub && <div className={`delta ${tone}`}>{sub}</div>}
-			<div className="accent-bar">
-				<span style={{ width: `${Math.round(accent * 100)}%` }} />
+		<div className="bg-white border border-gray-200 rounded-lg p-4">
+			<div className="text-xs font-medium uppercase tracking-wider text-gray-500">{label}</div>
+			<div className="text-2xl font-semibold tracking-tight text-gray-900 mt-1">{value}</div>
+			{sub && <div className={`text-xs mt-1 ${toneColorMap[tone]}`}>{sub}</div>}
+			<div className="h-0.5 bg-gray-100 rounded mt-3 overflow-hidden">
+				<div
+					className="h-full bg-teal-700 rounded"
+					style={{ width: `${Math.round(accent * 100)}%` }}
+				/>
 			</div>
 		</div>
 	);
@@ -60,42 +78,22 @@ function SectionCard({
 	children: React.ReactNode;
 }) {
 	return (
-		<div className="card" style={{ overflow: "hidden" }}>
-			<div
-				style={{
-					padding: "12px 16px",
-					borderBottom: "1px solid var(--inv-line-soft)",
-					display: "flex",
-					alignItems: "center",
-					gap: 8,
-				}}
-			>
-				<div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--inv-ink-900)" }}>{title}</div>
-				{sub && <div style={{ fontSize: 12, color: "var(--inv-ink-500)" }}>· {sub}</div>}
+		<div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+			<div className="px-4 py-3 border-b border-gray-100 flex items-center gap-2">
+				<div className="text-sm font-semibold text-gray-900">{title}</div>
+				{sub && <div className="text-xs text-gray-500">· {sub}</div>}
 			</div>
-			<div style={{ padding: "12px 16px" }}>{children}</div>
+			<div className="px-4 py-3">{children}</div>
 		</div>
 	);
 }
 
 function Bar({ pct, color }: { pct: number; color?: string }) {
 	return (
-		<div
-			style={{
-				width: "100%",
-				height: 6,
-				background: "var(--inv-mint-100)",
-				borderRadius: 3,
-				overflow: "hidden",
-			}}
-		>
+		<div className="w-full h-1.5 bg-gray-100 rounded overflow-hidden">
 			<div
-				style={{
-					width: `${Math.max(2, Math.round(pct * 100))}%`,
-					height: "100%",
-					background: color ?? "var(--inv-teal-700)",
-					borderRadius: 3,
-				}}
+				className={cn("h-full rounded", color ?? "bg-teal-700")}
+				style={{ width: `${Math.max(2, Math.round(pct * 100))}%` }}
 			/>
 		</div>
 	);
@@ -214,25 +212,18 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 		return Array.from(map.values())
 			.sort((a, b) => b.value - a.value)
 			.slice(0, 5);
-	}, [enriched, vm.productById]);
-
-	const expColors: Record<"expired" | "critical" | "soon" | "ok", string> = {
-		expired: "var(--inv-rose-fg)",
-		critical: "var(--inv-rose-fg)",
-		soon: "var(--inv-amber-fg)",
-		ok: "var(--inv-teal-700)",
-	};
+	}, [enriched, vm, vm.productById]);
 
 	if (vm.isLoading) {
 		return (
-			<div className="inventory-module">
-				<div className="page-h">
+			<div className="space-y-6">
+				<div className="flex items-start gap-4">
 					<div>
-						<div className="ttl">{t`Inventory dashboard`}</div>
-						<div className="sub">{t`Snapshot across all sites · last 7 days of activity`}</div>
+						<h1 className="text-xl font-semibold tracking-tight text-gray-900">{t`Inventory dashboard`}</h1>
+						<p className="text-sm text-gray-600 mt-1">{t`Snapshot across all sites · last 7 days of activity`}</p>
 					</div>
 				</div>
-				<div style={{ padding: "40px 16px", textAlign: "center", color: "var(--inv-ink-400)" }}>
+				<div className="bg-white border border-gray-200 rounded-lg p-10 text-center text-gray-400 text-sm">
 					{t`Loading…`}
 				</div>
 			</div>
@@ -240,23 +231,23 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 	}
 
 	return (
-		<div className="inventory-module">
-			<div className="page-h">
+		<div className="space-y-6">
+			<div className="flex items-start gap-4">
 				<div>
-					<div className="ttl">{t`Inventory dashboard`}</div>
-					<div className="sub">{t`Snapshot across all sites · last 7 days of activity`}</div>
+					<h1 className="text-xl font-semibold tracking-tight text-gray-900">{t`Inventory dashboard`}</h1>
+					<p className="text-sm text-gray-600 mt-1">{t`Snapshot across all sites · last 7 days of activity`}</p>
 				</div>
-				<div className="right">
-					<Link to="/inventory" className="btn">
-						{t`View lots`}
-					</Link>
-					<Link to="/inventory/intake" className="btn btn-primary">
-						{t`Receive intake`}
-					</Link>
+				<div className="ml-auto flex items-center gap-2">
+					<Button variant="outline" size="sm" asChild>
+						<Link to="/inventory">{t`View lots`}</Link>
+					</Button>
+					<Button size="sm" asChild>
+						<Link to="/inventory/intake">{t`Receive intake`}</Link>
+					</Button>
 				</div>
 			</div>
 
-			<div className="stat-grid">
+			<div className="grid grid-cols-4 gap-3">
 				<StatCard
 					label={t`Active lots`}
 					value={enriched.length}
@@ -284,33 +275,20 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 				/>
 			</div>
 
-			<div
-				style={{
-					display: "grid",
-					gridTemplateColumns: "1fr 1fr",
-					gap: 14,
-					marginBottom: 14,
-				}}
-			>
+			<div className="grid grid-cols-2 gap-4">
 				<SectionCard title={t`By site`} sub={`${vm.sites.length} ${t`locations`}`}>
-					<div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+					<div className="space-y-3">
 						{bySite.map((row) => (
 							<div key={row.site.id}>
-								<div
-									style={{
-										display: "flex",
-										alignItems: "baseline",
-										justifyContent: "space-between",
-									}}
-								>
-									<div style={{ fontSize: 13, fontWeight: 500, color: "var(--inv-ink-900)" }}>
+								<div className="flex items-baseline justify-between">
+									<div className="text-sm font-medium text-gray-900">
 										{row.site.name.split(" · ")[0]}
 									</div>
-									<div style={{ fontSize: 12, color: "var(--inv-ink-500)" }}>
-										{row.count} {t`lots`} · <span className="mono">{fmtMoney(row.value)}</span>
+									<div className="text-xs text-gray-500">
+										{row.count} {t`lots`} · <span className="font-mono">{fmtMoney(row.value)}</span>
 									</div>
 								</div>
-								<div style={{ marginTop: 6 }}>
+								<div className="mt-1.5">
 									<Bar pct={row.share} />
 								</div>
 							</div>
@@ -319,25 +297,23 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 				</SectionCard>
 
 				<SectionCard title={t`By category`} sub={`${byCategory.length} ${t`active`}`}>
-					<div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+					<div className="space-y-3">
 						{byCategory.map((row) => (
 							<div key={row.cat.id}>
-								<div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+								<div className="flex items-center gap-2">
 									<span
-										className="cat-dot"
+										className="w-3 h-3 rounded-full flex-shrink-0"
 										style={{
 											background: row.cat.color,
 											boxShadow: "inset 0 0 0 1px rgba(0,0,0,.06)",
 										}}
 									/>
-									<div style={{ fontSize: 13, fontWeight: 500, color: "var(--inv-ink-900)" }}>
-										{row.cat.name}
-									</div>
-									<div style={{ marginLeft: "auto", fontSize: 12, color: "var(--inv-ink-500)" }}>
-										{row.count} {t`lots`} · <span className="mono">{fmtMoney(row.value)}</span>
+									<div className="text-sm font-medium text-gray-900">{row.cat.name}</div>
+									<div className="ml-auto text-xs text-gray-500">
+										{row.count} {t`lots`} · <span className="font-mono">{fmtMoney(row.value)}</span>
 									</div>
 								</div>
-								<div style={{ marginTop: 6 }}>
+								<div className="mt-1.5">
 									<Bar pct={row.share} />
 								</div>
 							</div>
@@ -346,62 +322,40 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 				</SectionCard>
 			</div>
 
-			<div
-				style={{
-					display: "grid",
-					gridTemplateColumns: "1fr 1fr",
-					gap: 14,
-					marginBottom: 14,
-				}}
-			>
+			<div className="grid grid-cols-2 gap-4">
 				<SectionCard title={t`Expiration risk`} sub={t`lots by remaining shelf life`}>
-					<div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
-						{expirationBuckets.buckets.map((b) => (
-							<div
-								key={b.key}
-								style={{
-									border: "1px solid var(--inv-line)",
-									borderRadius: 9,
-									padding: "10px 12px",
-								}}
-							>
-								<div style={{ fontSize: 11.5, color: "var(--inv-ink-500)", fontWeight: 500 }}>
-									{b.label}
-								</div>
-								<div
-									style={{
-										fontSize: 22,
-										fontWeight: 600,
-										color: expColors[b.tone],
-										marginTop: 4,
-										fontVariantNumeric: "tabular-nums",
-									}}
-								>
-									{b.count}
-								</div>
-								<div
-									style={{
-										marginTop: 8,
-										width: "100%",
-										height: 4,
-										background: "var(--inv-line-soft)",
-										borderRadius: 2,
-										overflow: "hidden",
-									}}
-								>
+					<div className="grid grid-cols-4 gap-2.5">
+						{expirationBuckets.buckets.map((b) => {
+							const toneColor = {
+								expired: "text-red-600",
+								critical: "text-red-600",
+								soon: "text-amber-600",
+								ok: "text-teal-700",
+							}[b.tone];
+							return (
+								<div key={b.key} className="border border-gray-200 rounded-lg p-3">
+									<div className="text-xs font-medium text-gray-500">{b.label}</div>
 									<div
-										style={{
-											width: `${(b.count / expirationBuckets.max) * 100}%`,
-											height: "100%",
-											background: expColors[b.tone],
-										}}
-									/>
+										className={cn("text-2xl font-semibold mt-1 font-variant-numeric", toneColor)}
+									>
+										{b.count}
+									</div>
+									<div className="mt-2 h-1 bg-gray-100 rounded overflow-hidden">
+										<div
+											className={cn("h-full rounded", {
+												"bg-red-600": b.tone === "expired" || b.tone === "critical",
+												"bg-amber-600": b.tone === "soon",
+												"bg-teal-700": b.tone === "ok",
+											})}
+											style={{
+												width: `${(b.count / expirationBuckets.max) * 100}%`,
+											}}
+										/>
+									</div>
+									<div className="mt-1.5 text-xs text-gray-400">{fmtMoney(b.value)}</div>
 								</div>
-								<div style={{ marginTop: 6, fontSize: 11, color: "var(--inv-ink-400)" }}>
-									{fmtMoney(b.value)}
-								</div>
-							</div>
-						))}
+							);
+						})}
 					</div>
 				</SectionCard>
 
@@ -409,40 +363,16 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 					title={t`Movements · last 7 days`}
 					sub={`${movementsLast7.total} ${t`events`}`}
 				>
-					<div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 }}>
+					<div className="grid grid-cols-5 gap-2">
 						{(["intake", "output", "waste", "adjustment", "transfer"] as InvMovementType[]).map(
 							(type) => {
 								const Icn = TYPE_ICON[type];
 								return (
-									<div
-										key={type}
-										style={{
-											border: "1px solid var(--inv-line)",
-											borderRadius: 9,
-											padding: "10px 12px",
-										}}
-									>
-										<div
-											style={{
-												display: "flex",
-												alignItems: "center",
-												gap: 6,
-												fontSize: 11.5,
-												color: "var(--inv-ink-500)",
-												fontWeight: 500,
-											}}
-										>
+									<div key={type} className="border border-gray-200 rounded-lg p-3">
+										<div className="flex items-center gap-1.5 text-xs font-medium text-gray-500">
 											<Icn size={12} /> {TYPE_LABEL[type]}
 										</div>
-										<div
-											style={{
-												fontSize: 20,
-												fontWeight: 600,
-												color: "var(--inv-ink-900)",
-												marginTop: 4,
-												fontVariantNumeric: "tabular-nums",
-											}}
-										>
+										<div className="text-xl font-semibold text-gray-900 mt-1 font-variant-numeric">
 											{movementsLast7.by[type]}
 										</div>
 									</div>
@@ -450,15 +380,10 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 							},
 						)}
 					</div>
-					<div style={{ marginTop: 14 }}>
+					<div className="mt-3">
 						<Link
 							to="/inventory/movements"
-							style={{
-								fontSize: 12,
-								color: "var(--inv-teal-700)",
-								fontWeight: 500,
-								textDecoration: "none",
-							}}
+							className="text-xs font-medium text-teal-700 hover:text-teal-600 no-underline"
 						>
 							{t`View full movements log →`}
 						</Link>
@@ -466,89 +391,90 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 				</SectionCard>
 			</div>
 
-			<div
-				style={{
-					display: "grid",
-					gridTemplateColumns: "1.4fr 1fr",
-					gap: 14,
-				}}
-			>
-				<SectionCard title={t`Recent activity`} sub={t`latest 6 events`}>
-					<table className="mov-table">
-						<thead>
-							<tr>
-								<th style={{ width: 70 }}>{t`Time`}</th>
-								<th style={{ width: 110 }}>{t`Type`}</th>
-								<th>{t`Product`}</th>
-								<th style={{ textAlign: "right" }}>{t`Qty`}</th>
-							</tr>
-						</thead>
-						<tbody>
-							{movementsLast7.recent.slice(0, 6).map((m) => {
-								const p = vm.productById(m.productId);
-								const Icn = TYPE_ICON[m.type];
-								const isNeg =
-									m.type === "output" ||
-									m.type === "waste" ||
-									(m.type === "adjustment" && m.qty < 0);
-								const isPos = m.type === "intake" || (m.type === "adjustment" && m.qty > 0);
-								const sign = isNeg ? "-" : isPos ? "+" : "";
-								return (
-									<tr key={m.id}>
-										<td style={{ fontVariantNumeric: "tabular-nums" }}>{fmtTime(m.at)}</td>
-										<td>
-											<span className={`type-chip type-${m.type}`}>
-												<Icn size={11} /> {TYPE_LABEL[m.type]}
-											</span>
-										</td>
-										<td>
-											<div style={{ fontWeight: 500, color: "var(--inv-ink-900)" }}>{p.name}</div>
-										</td>
-										<td className="num">
-											<span className={isNeg ? "qty-neg" : isPos ? "qty-pos" : ""}>
-												{sign}
-												{Math.abs(m.qty).toLocaleString()}
-											</span>
-											<span style={{ color: "var(--inv-ink-400)", fontWeight: 400, marginLeft: 4 }}>
-												{m.unit}
-											</span>
-										</td>
+			<div className="grid grid-cols-3 gap-4">
+				<div className="col-span-2">
+					<SectionCard title={t`Recent activity`} sub={t`latest 6 events`}>
+						<div className="overflow-x-auto">
+							<table className="w-full text-xs border-collapse">
+								<thead>
+									<tr>
+										<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200 w-16">{t`Time`}</th>
+										<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200 w-24">{t`Type`}</th>
+										<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200">{t`Product`}</th>
+										<th className="text-right px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200 w-20">{t`Qty`}</th>
 									</tr>
-								);
-							})}
-						</tbody>
-					</table>
-				</SectionCard>
+								</thead>
+								<tbody>
+									{movementsLast7.recent.slice(0, 6).map((m) => {
+										const p = vm.productById(m.productId);
+										const Icn = TYPE_ICON[m.type];
+										const isNeg =
+											m.type === "output" ||
+											m.type === "waste" ||
+											(m.type === "adjustment" && m.qty < 0);
+										const isPos = m.type === "intake" || (m.type === "adjustment" && m.qty > 0);
+										const sign = isNeg ? "-" : isPos ? "+" : "";
+										return (
+											<tr key={m.id} className="hover:bg-gray-50 border-b border-gray-100">
+												<td className="px-3 py-2.5 text-gray-700 font-mono">{fmtTime(m.at)}</td>
+												<td className="px-3 py-2.5">
+													<span
+														className={cn(
+															"inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium",
+															TYPE_COLOR_MAP[m.type],
+														)}
+													>
+														<Icn size={11} /> {TYPE_LABEL[m.type]}
+													</span>
+												</td>
+												<td className="px-3 py-2.5">
+													<div className="font-medium text-gray-900">{p.name}</div>
+												</td>
+												<td className="px-3 py-2.5 text-right font-mono">
+													<span
+														className={cn(
+															"font-medium",
+															isNeg ? "text-red-600" : isPos ? "text-green-600" : "text-gray-900",
+														)}
+													>
+														{sign}
+														{Math.abs(m.qty).toLocaleString()}
+													</span>
+													<span className="text-gray-500 font-normal ml-1">{m.unit}</span>
+												</td>
+											</tr>
+										);
+									})}
+								</tbody>
+							</table>
+						</div>
+					</SectionCard>
+				</div>
 
 				<SectionCard title={t`Top products by value`} sub={t`top 5`}>
-					<div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+					<div className="space-y-3">
 						{topProducts.map((row) => {
 							const cat = vm.categoryById(row.product.cat);
 							const max = topProducts[0]?.value || 1;
 							return (
 								<div key={row.product.id}>
-									<div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+									<div className="flex items-center gap-2">
 										<span
-											className="cat-dot"
+											className="w-3 h-3 rounded-full flex-shrink-0"
 											style={{
 												background: cat.color,
 												boxShadow: "inset 0 0 0 1px rgba(0,0,0,.06)",
 											}}
 										/>
-										<div style={{ fontSize: 13, color: "var(--inv-ink-900)", fontWeight: 500 }}>
-											{row.product.name}
-										</div>
-										<div style={{ marginLeft: "auto", fontSize: 12, color: "var(--inv-ink-500)" }}>
+										<div className="text-sm text-gray-900 font-medium">{row.product.name}</div>
+										<div className="ml-auto text-xs text-gray-500">
 											{row.lots} {t`lots`}
 										</div>
-										<div
-											className="mono"
-											style={{ fontSize: 12, color: "var(--inv-ink-900)", fontWeight: 500 }}
-										>
+										<div className="font-mono text-xs text-gray-900 font-medium">
 											{fmtMoney(row.value)}
 										</div>
 									</div>
-									<div style={{ marginTop: 6 }}>
+									<div className="mt-1.5">
 										<Bar pct={row.value / max} />
 									</div>
 								</div>

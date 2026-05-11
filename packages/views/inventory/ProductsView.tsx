@@ -3,12 +3,12 @@ import { useMemo, useState } from "react";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
+import { Button, cn } from "~@/ui";
 import { useInventoryViewModel } from "~@/view-model";
 
 import { AddCategoryModal } from "./AddCategoryModal";
 import { AddProductModal } from "./AddProductModal";
 import { fmtMoney } from "./data";
-import "./inventory.css";
 
 export const ProductsView = observer(function ProductsView() {
 	const vm = useInventoryViewModel();
@@ -31,37 +31,38 @@ export const ProductsView = observer(function ProductsView() {
 
 	return (
 		<>
-			<div className="inventory-module">
-				<div className="page-h">
+			<div className="space-y-6">
+				<div className="flex items-start gap-4">
 					<div>
-						<div className="ttl">{t`Products`}</div>
-						<div className="sub">
+						<h1 className="text-xl font-semibold tracking-tight text-gray-900">{t`Products`}</h1>
+						<p className="text-sm text-gray-600 mt-1">
 							{vm.products.length} {t`active SKUs · catalog used by intake and lots`}
-						</div>
+						</p>
 					</div>
-					<div className="right">
-						<button type="button" className="btn">
+					<div className="ml-auto flex items-center gap-2">
+						<Button variant="outline" size="sm">
 							<Download size={14} /> {t`Export`}
-						</button>
-						<button type="button" className="btn" onClick={() => setCategoryModalOpen(true)}>
+						</Button>
+						<Button variant="outline" size="sm" onClick={() => setCategoryModalOpen(true)}>
 							<Tag size={14} /> {t`Add category`}
-						</button>
-						<button
-							type="button"
-							className="btn btn-primary"
-							onClick={() => setProductModalOpen(true)}
-						>
+						</Button>
+						<Button size="sm" onClick={() => setProductModalOpen(true)}>
 							<Plus size={14} /> {t`Add product`}
-						</button>
+						</Button>
 					</div>
 				</div>
 
-				<div className="card" style={{ overflow: "hidden" }}>
-					<div className="toolbar">
-						<div className="seg">
+				<div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+					<div className="flex items-center gap-2 p-3 border-b border-gray-100 bg-white flex-wrap">
+						<div className="flex border border-gray-200 rounded-lg p-0.5 bg-white gap-0.5">
 							<button
 								type="button"
-								className={catFilter === "all" ? "on" : ""}
+								className={cn(
+									"px-2.5 py-1.5 rounded text-sm font-medium transition-colors",
+									catFilter === "all"
+										? "bg-teal-700 text-white"
+										: "bg-transparent text-gray-700 hover:bg-gray-50",
+								)}
 								onClick={() => setCatFilter("all")}
 							>
 								{t`All`}
@@ -70,66 +71,79 @@ export const ProductsView = observer(function ProductsView() {
 								<button
 									type="button"
 									key={c.id}
-									className={catFilter === c.id ? "on" : ""}
+									className={cn(
+										"px-2.5 py-1.5 rounded text-sm font-medium transition-colors",
+										catFilter === c.id
+											? "bg-teal-700 text-white"
+											: "bg-transparent text-gray-700 hover:bg-gray-50",
+									)}
 									onClick={() => setCatFilter(c.id)}
 								>
 									{c.name}
 								</button>
 							))}
 						</div>
-						<div className="grow" />
-						<div className="search">
-							<Search size={13} className="icn" />
+						<div className="flex-1" />
+						<div className="relative w-60">
+							<Search
+								size={13}
+								className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+							/>
 							<input
 								placeholder={t`Name, SKU…`}
 								value={search}
 								onChange={(e) => setSearch(e.target.value)}
+								className="h-7 px-3 pl-7 rounded-lg border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
 							/>
 						</div>
 					</div>
 
 					{vm.isLoading ? (
-						<div style={{ padding: "40px 16px", textAlign: "center", color: "var(--inv-ink-400)" }}>
-							{t`Loading products…`}
-						</div>
+						<div className="p-10 text-center text-gray-400 text-sm">{t`Loading products…`}</div>
 					) : (
-						<div style={{ overflowX: "auto" }}>
-							<table className="tbl">
+						<div className="overflow-x-auto">
+							<table className="w-full border-collapse text-sm">
 								<thead>
 									<tr>
-										<th>{t`Product`}</th>
-										<th>{t`Category`}</th>
-										<th>{t`Unit`}</th>
-										<th style={{ textAlign: "right" }}>{t`kg / box`}</th>
-										<th style={{ textAlign: "right" }}>{t`Shelf life`}</th>
-										<th style={{ textAlign: "right" }}>{t`Price`}</th>
+										<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-left px-3.5 py-2.5 bg-white border-b border-gray-200">{t`Product`}</th>
+										<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-left px-3.5 py-2.5 bg-white border-b border-gray-200">{t`Category`}</th>
+										<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-left px-3.5 py-2.5 bg-white border-b border-gray-200">{t`Unit`}</th>
+										<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-right px-3.5 py-2.5 bg-white border-b border-gray-200">{t`kg / box`}</th>
+										<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-right px-3.5 py-2.5 bg-white border-b border-gray-200">{t`Shelf life`}</th>
+										<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-right px-3.5 py-2.5 bg-white border-b border-gray-200">{t`Price`}</th>
 									</tr>
 								</thead>
 								<tbody>
 									{rows.map((p) => {
 										const cat = vm.categoryById(p.cat);
 										return (
-											<tr key={p.id}>
-												<td>
-													<div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+											<tr key={p.id} className="hover:bg-gray-50 border-b border-gray-100">
+												<td className="px-3.5 py-3 text-gray-700">
+													<div className="flex items-center gap-2.5">
 														<span
-															className="cat-dot"
+															className="w-2 h-2 rounded-full flex-shrink-0"
 															style={{
 																background: cat.color,
 																boxShadow: "inset 0 0 0 1px rgba(0,0,0,.06)",
 															}}
 														/>
 														<div>
-															<div className="pname">{p.name}</div>
-															<div className="psku">{p.sku}</div>
+															<div className="font-medium text-gray-900">{p.name}</div>
+															<div className="text-xs text-gray-500 font-mono mt-0.5">{p.sku}</div>
 														</div>
 													</div>
 												</td>
-												<td>{cat.name}</td>
-												<td>{p.unit}</td>
-												<td className="num">{p.kgPerBox != null ? p.kgPerBox.toFixed(1) : "—"}</td>
-												<td className="num">{p.shelfLife}d</td>
-												<td className="num">{fmtMoney(p.price)}</td>
+												<td className="px-3.5 py-3 text-gray-700">{cat.name}</td>
+												<td className="px-3.5 py-3 text-gray-700">{p.unit}</td>
+												<td className="px-3.5 py-3 text-gray-900 font-medium text-right font-mono">
+													{p.kgPerBox != null ? p.kgPerBox.toFixed(1) : "—"}
+												</td>
+												<td className="px-3.5 py-3 text-gray-900 font-medium text-right font-mono">
+													{p.shelfLife}d
+												</td>
+												<td className="px-3.5 py-3 text-gray-900 font-medium text-right font-mono">
+													{fmtMoney(p.price)}
+												</td>
 											</tr>
 										);
 									})}
@@ -138,8 +152,8 @@ export const ProductsView = observer(function ProductsView() {
 						</div>
 					)}
 
-					<div className="legend">
-						<span style={{ marginLeft: "auto" }}>
+					<div className="px-3.5 py-2.5 bg-white border-t border-gray-100 text-sm text-gray-600 flex">
+						<span className="ml-auto">
 							{t`Showing`} {rows.length} {t`of`} {vm.products.length} {t`products`}
 						</span>
 					</div>
