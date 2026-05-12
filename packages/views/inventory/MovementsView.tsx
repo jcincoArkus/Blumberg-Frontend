@@ -13,9 +13,9 @@ import { useMemo, useState } from "react";
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { Button, cn } from "~@/ui";
-import { type InvMovementType, useInventoryViewModel } from "~@/view-model";
+import { daysUntil, type InvMovementType, useInventoryViewModel } from "~@/view-model";
 
-import { daysUntil, fmtDate, fmtTime, type Movement } from "./data";
+import { fmtDate, fmtTime, type Movement } from "./data";
 
 const TYPE_ICON: Record<InvMovementType, LucideIcon> = {
 	intake: ArrowDown,

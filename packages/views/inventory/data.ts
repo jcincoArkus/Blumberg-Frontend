@@ -41,9 +41,6 @@ export type Movement = {
 	note: string;
 };
 
-export type ExpTone = "expired" | "critical" | "soon" | "ok";
-export type ExpStatus = { tone: ExpTone; label: string; days: number };
-
 export function addDays(date: Date, days: number): Date {
 	const d = new Date(date);
 	d.setDate(d.getDate() + days);
@@ -67,20 +64,6 @@ export function fmtTime(d: Date | string): string {
 
 export function fmtMoney(n: number): string {
 	return `$${n.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-}
-
-export function daysUntil(date: Date | string): number {
-	const d = date instanceof Date ? date : new Date(date);
-	const ms = d.getTime() - Date.now();
-	return Math.round(ms / 86_400_000);
-}
-
-export function expStatus(exp: Date | string): ExpStatus {
-	const d = daysUntil(exp);
-	if (d < 0) return { tone: "expired", label: `${Math.abs(d)}d past`, days: d };
-	if (d <= 2) return { tone: "critical", label: `${d}d left`, days: d };
-	if (d <= 5) return { tone: "soon", label: `${d}d left`, days: d };
-	return { tone: "ok", label: `${d}d left`, days: d };
 }
 
 export function generateLotCode(arrivedAt: Date, sequenceIndex: number): string {

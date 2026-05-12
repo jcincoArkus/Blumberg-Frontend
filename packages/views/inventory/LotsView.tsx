@@ -6,33 +6,23 @@ import { observer } from "~@/mobx";
 import { Button, cn } from "~@/ui";
 import { useInventoryViewModel } from "~@/view-model";
 
-import { expStatus, fmtDateShort, fmtMoney } from "./data";
+import { fmtDateShort, fmtMoney } from "./data";
 
 export const LotsView = observer(function LotsView() {
 	const vm = useInventoryViewModel();
 	const [search, setSearch] = useState("");
 
 	const rows = useMemo(() => {
-		const list = vm.lots
-			.map((l) => {
-				const p = vm.productById(l.productId);
-				const site = vm.siteById(l.siteId);
-				const exp = expStatus(l.exp);
-				const expDate = l.exp;
-				const value = l.qty * l.costPerUnit;
-				return { ...l, p, site, exp, expDate, value };
-			})
-			.sort((a, b) => a.id.localeCompare(b.id));
-
+		const list = [...vm.enrichedLots].sort((a, b) => a.id.localeCompare(b.id));
 		if (!search) return list;
 		const q = search.toLowerCase();
 		return list.filter(
 			(r) =>
 				r.id.toLowerCase().includes(q) ||
-				r.p.name.toLowerCase().includes(q) ||
+				r.product.name.toLowerCase().includes(q) ||
 				r.supplier.toLowerCase().includes(q),
 		);
-	}, [vm, search]);
+	}, [vm.enrichedLots, search]);
 
 	const toneColorMap = {
 		expired: "border-l-red-600",
@@ -99,8 +89,8 @@ export const LotsView = observer(function LotsView() {
 									>
 										<td className="px-3.5 py-3 text-gray-700 font-mono">{r.id}</td>
 										<td className="px-3.5 py-3 text-gray-700">
-											<div className="font-medium text-gray-900">{r.p.name}</div>
-											<div className="text-xs text-gray-500 font-mono">{r.p.sku}</div>
+											<div className="font-medium text-gray-900">{r.product.name}</div>
+											<div className="text-xs text-gray-500 font-mono">{r.product.sku}</div>
 										</td>
 										<td className="px-3.5 py-3 text-gray-700">{r.supplier}</td>
 										<td className="px-3.5 py-3 text-gray-700">

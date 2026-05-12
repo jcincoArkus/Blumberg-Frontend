@@ -15,27 +15,11 @@ import { useNavigate } from "react-router";
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { Button, cn } from "~@/ui";
-import {
-	type InvCategory,
-	type InvLot,
-	type InvProduct,
-	type InvSite,
-	useInventoryViewModel,
-} from "~@/view-model";
+import { daysUntil, type InvEnrichedLot, useInventoryViewModel } from "~@/view-model";
 
-import { daysUntil, type ExpStatus, expStatus, fmtDateShort, fmtMoney } from "./data";
+import { fmtDateShort, fmtMoney } from "./data";
 
 type SortKey = "exp" | "name" | "qty";
-
-type EnrichedLot = Omit<InvLot, "exp"> & {
-	p: InvProduct;
-	cat: InvCategory;
-	site: InvSite;
-	exp: ExpStatus;
-	expDate: Date;
-	onhandKg: number | null;
-	value: number;
-};
 
 function StatCard({
 	label,
@@ -80,32 +64,25 @@ export const InventoryView = observer(function InventoryView() {
 	const [search, setSearch] = useState("");
 	const [sortBy] = useState<SortKey>("exp");
 
-	const lots: EnrichedLot[] = useMemo(() => {
-		let rows: EnrichedLot[] = vm.lots.map((l) => {
-			const p = vm.productById(l.productId);
-			const cat = vm.categoryById(p.cat);
-			const site = vm.siteById(l.siteId);
-			const exp = expStatus(l.exp);
-			const onhandKg = p.kgPerBox && l.unit !== "kg" ? l.qty * p.kgPerBox : null;
-			const value = l.qty * l.costPerUnit;
-			return { ...l, p, cat, site, exp, expDate: l.exp, onhandKg, value };
-		});
+	const lots: InvEnrichedLot[] = useMemo(() => {
+		let rows = vm.enrichedLots;
 		if (siteFilter !== "all") rows = rows.filter((r) => r.siteId === siteFilter);
-		if (catFilter !== "all") rows = rows.filter((r) => r.p.cat === catFilter);
+		if (catFilter !== "all") rows = rows.filter((r) => r.product.cat === catFilter);
 		if (search) {
 			const q = search.toLowerCase();
 			rows = rows.filter(
 				(r) =>
-					r.p.name.toLowerCase().includes(q) ||
+					r.product.name.toLowerCase().includes(q) ||
 					r.id.toLowerCase().includes(q) ||
-					r.p.sku.toLowerCase().includes(q),
+					r.product.sku.toLowerCase().includes(q),
 			);
 		}
-		if (sortBy === "exp") rows.sort((a, b) => a.exp.days - b.exp.days);
-		if (sortBy === "name") rows.sort((a, b) => a.p.name.localeCompare(b.p.name));
-		if (sortBy === "qty") rows.sort((a, b) => b.qty - a.qty);
+		if (sortBy === "exp") rows = [...rows].sort((a, b) => a.exp.days - b.exp.days);
+		if (sortBy === "name")
+			rows = [...rows].sort((a, b) => a.product.name.localeCompare(b.product.name));
+		if (sortBy === "qty") rows = [...rows].sort((a, b) => b.qty - a.qty);
 		return rows;
-	}, [vm, siteFilter, catFilter, search, sortBy]);
+	}, [vm.enrichedLots, siteFilter, catFilter, search, sortBy]);
 
 	const totals = useMemo(() => {
 		const totalLots = lots.length;
@@ -269,14 +246,14 @@ export const InventoryView = observer(function InventoryView() {
 													<span
 														className="w-2 h-2 rounded-full flex-shrink-0"
 														style={{
-															background: l.cat.color,
+															background: l.category.color,
 															boxShadow: "inset 0 0 0 1px rgba(0,0,0,.06)",
 														}}
 													/>
 													<div>
-														<div className="font-medium text-gray-900">{l.p.name}</div>
+														<div className="font-medium text-gray-900">{l.product.name}</div>
 														<div className="text-xs text-gray-500">
-															{l.p.sku} · {l.cat.name}
+															{l.product.sku} · {l.category.name}
 														</div>
 													</div>
 												</div>

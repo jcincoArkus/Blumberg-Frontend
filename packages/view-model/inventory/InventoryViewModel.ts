@@ -68,6 +68,34 @@ export type InvMovement = {
 	note: string;
 };
 
+export type ExpTone = "expired" | "critical" | "soon" | "ok";
+export type ExpStatus = { tone: ExpTone; label: string; days: number };
+
+export type InvEnrichedLot = Omit<InvLot, "exp"> & {
+	product: InvProduct;
+	category: InvCategory;
+	site: InvSite;
+	exp: ExpStatus;
+	expDate: Date;
+	onhandKg: number | null;
+	value: number;
+	kg: number;
+};
+
+export function daysUntil(date: Date | string): number {
+	const d = date instanceof Date ? date : new Date(date);
+	const ms = d.getTime() - Date.now();
+	return Math.round(ms / 86_400_000);
+}
+
+export function expStatus(exp: Date | string): ExpStatus {
+	const d = daysUntil(exp);
+	if (d < 0) return { tone: "expired", label: `${Math.abs(d)}d past`, days: d };
+	if (d <= 2) return { tone: "critical", label: `${d}d left`, days: d };
+	if (d <= 5) return { tone: "soon", label: `${d}d left`, days: d };
+	return { tone: "ok", label: `${d}d left`, days: d };
+}
+
 function mapCategory(r: InventoryCategoryResponse): InvCategory {
 	return {
 		id: r.id ?? "",
@@ -233,6 +261,35 @@ class InventoryViewModel implements Disposable {
 
 	get siteMap(): Map<string, InvSite> {
 		return new Map(this.sites.map((s) => [s.id, s]));
+	}
+
+	get enrichedLots(): InvEnrichedLot[] {
+		const productMap = this.productMap;
+		const categoryMap = this.categoryMap;
+		const siteMap = this.siteMap;
+		return this.lots.map((l) => {
+			const product = productMap.get(l.productId) ?? {
+				id: l.productId,
+				sku: "—",
+				name: "—",
+				cat: "",
+				unit: "kg" as const,
+				kgPerBox: null,
+				shelfLife: 7,
+				price: 0,
+			};
+			const category = categoryMap.get(product.cat) ?? {
+				id: product.cat,
+				name: "—",
+				color: "#e8eef3",
+			};
+			const site = siteMap.get(l.siteId) ?? { id: l.siteId, name: "—", zones: [] };
+			const exp = expStatus(l.exp);
+			const onhandKg = product.kgPerBox && l.unit !== "kg" ? l.qty * product.kgPerBox : null;
+			const value = l.qty * l.costPerUnit;
+			const kg = l.unit === "kg" ? l.qty : product.kgPerBox ? l.qty * product.kgPerBox : 0;
+			return { ...l, product, category, site, exp, expDate: l.exp, onhandKg, value, kg };
+		});
 	}
 
 	categoryById = (id: string): InvCategory => {

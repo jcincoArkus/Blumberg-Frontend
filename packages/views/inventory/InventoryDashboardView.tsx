@@ -7,7 +7,7 @@ import { observer } from "~@/mobx";
 import { Button, cn } from "~@/ui";
 import { type InvMovementType, useInventoryViewModel } from "~@/view-model";
 
-import { expStatus, fmtMoney, fmtTime } from "./data";
+import { fmtMoney, fmtTime } from "./data";
 
 const TYPE_ICON = {
 	intake: ArrowDown,
@@ -102,19 +102,7 @@ function Bar({ pct, color }: { pct: number; color?: string }) {
 export const InventoryDashboardView = observer(function InventoryDashboardView() {
 	const vm = useInventoryViewModel();
 
-	const enriched = useMemo(
-		() =>
-			vm.lots.map((l) => {
-				const p = vm.productById(l.productId);
-				const cat = vm.categoryById(p.cat);
-				const site = vm.siteById(l.siteId);
-				const exp = expStatus(l.exp);
-				const value = l.qty * l.costPerUnit;
-				const kg = l.unit === "kg" ? l.qty : p.kgPerBox ? l.qty * p.kgPerBox : 0;
-				return { ...l, p, cat, site, exp, value, kg };
-			}),
-		[vm],
-	);
+	const enriched = vm.enrichedLots;
 
 	const totals = useMemo(() => {
 		const totalValue = enriched.reduce((s, l) => s + l.value, 0);
@@ -141,7 +129,7 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 		const totalValue = totals.totalValue || 1;
 		return vm.categories
 			.map((c) => {
-				const slots = enriched.filter((l) => l.cat.id === c.id);
+				const slots = enriched.filter((l) => l.category.id === c.id);
 				const value = slots.reduce((sum, l) => sum + l.value, 0);
 				return { cat: c, count: slots.length, value, share: value / totalValue };
 			})
@@ -204,15 +192,15 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 			{ product: ReturnType<typeof vm.productById>; value: number; lots: number }
 		>();
 		enriched.forEach((l) => {
-			const cur = map.get(l.p.id) ?? { product: l.p, value: 0, lots: 0 };
+			const cur = map.get(l.product.id) ?? { product: l.product, value: 0, lots: 0 };
 			cur.value += l.value;
 			cur.lots += 1;
-			map.set(l.p.id, cur);
+			map.set(l.product.id, cur);
 		});
 		return Array.from(map.values())
 			.sort((a, b) => b.value - a.value)
 			.slice(0, 5);
-	}, [enriched, vm, vm.productById]);
+	}, [enriched, vm.productById]);
 
 	if (vm.isLoading) {
 		return (
