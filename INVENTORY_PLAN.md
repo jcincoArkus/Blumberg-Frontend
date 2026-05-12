@@ -154,8 +154,8 @@ packages/views/inventory/
 **3-step form:**
 
 **Step 1 — Shipment Details:**
-- PO Number (read-only: `PO-2285`)
-- Supplier (dropdown, 6 options)
+- PO Number (auto-generated `PO-YYYY-XXXX` format, editable)
+- Supplier (dropdown, populated from API)
 - Destination Site + Zone (cascading selects)
 - Arrival Date + Time
 - Vehicle plate + Driver name
@@ -169,7 +169,7 @@ packages/views/inventory/
 - Lot suffix field per line
 
 **Step 3 — Lot Codes (review):**
-- Auto-generated lot codes (`L-26044-XX` format)
+- Lot codes pre-filled as `L-YYMMDD-XX` (auto-generated), editable per line
 - Final review before save
 
 **Right sidebar (sticky):**
@@ -291,13 +291,15 @@ Semantic colors: `--inv-amber`, `--inv-rose`, `--inv-leaf`, `--inv-info`
 - [ ] **Export CSV** in `MovementsView`, `LotsView`, and `ProductsView`
 - [ ] **Adjust action** (pencil icon) in `InventoryView` row — no modal/form yet
 - [ ] **Mark waste action** (trash icon) in `InventoryView` row — no confirmation/form yet
-- [x] **IntakeView save** — wired to `createIntakeShipmentV1` + `createShipmentLineV1` mutations
-- [ ] **IntakeView supplier dropdown** — still uses hardcoded options; should load from `getInventorySuppliersV1`
+- [x] **IntakeView save** — full flow: creates IntakeShipment → ShipmentLines → Lot records → Movement audit entries; error handling with user-facing messages per phase
+- [x] **IntakeView lot codes** — auto-generated `L-YYMMDD-XX` codes pre-filled in Step 3; user-editable before save; used as actual lot code on creation
+- [x] **IntakeView PO number** — auto-generated `PO-YYYY-XXXX` on mount; editable by user; used as `poReference` on shipment creation
+- [x] **IntakeView supplier dropdown** — wired to `getInventorySuppliersV1`; loads suppliers dynamically from API
 - [ ] **IntakeView print receipt** — no implementation
 - [ ] **Date range filter** in `MovementsView` ("Last 7 days" button)
-- [x] **ViewModels** — `packages/view-model/inventory/InventoryViewModel.ts` singleton created (lots, movements, products, categories, sites, zones)
+- [x] **ViewModels** — `packages/view-model/inventory/InventoryViewModel.ts` singleton created (lots, movements, products, categories, sites, zones); includes `createLotMutation` and `createMovementMutation`
 - [x] **Route registration** — views wired into `apps/app/src/routes/_private+/inventory+/`
-- [ ] **i18n strings** — `t` macro is used but `bun i18n:extract` + `bun i18n:compile` need to be run
+- [x] **i18n strings** — corrupted catalog entries removed; build compiles cleanly
 
 ---
 
@@ -327,9 +329,10 @@ The `inputPath` in `packages/api/openapi.config.ts` must point to the local back
 3. ~~Create ViewModels in `packages/view-model/inventory/` (singleton for filters/list, instance for intake form)~~ ✓
 4. ~~Replace mock data with `ObservedQuery` / `ObservedMutation` calls~~ ✓
 5. ~~Add Product and Category creation modals to `ProductsView`~~ ✓
-6. Wire up Edit/Delete actions for products and categories (follow `AddProductModal` pattern)
-7. Wire up remaining `InventoryView` UI actions: category filter, sort dropdown, adjust modal, mark-waste confirmation
-8. Wire `IntakeView` supplier dropdown to `getInventorySuppliersV1` (currently hardcoded)
-9. Implement Export CSV in `MovementsView`, `LotsView`, `ProductsView`
-10. Run `bun i18n:extract && bun i18n:compile`
-11. Add CASL authorization rules via `bun authorization:generate`
+6. ~~Wire `IntakeView` supplier dropdown to `getInventorySuppliersV1`~~ ✓
+7. ~~Wire `IntakeView` save to create Lot + Movement records per line~~ ✓
+8. ~~Auto-generate editable PO number and lot codes in IntakeView~~ ✓
+9. Wire up Edit/Delete actions for products and categories (follow `AddProductModal` pattern)
+10. Wire up remaining `InventoryView` UI actions: category filter, sort dropdown, adjust modal, mark-waste confirmation
+11. Implement Export CSV in `MovementsView`, `LotsView`, `ProductsView`
+12. Add CASL authorization rules via `bun authorization:generate`

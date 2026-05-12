@@ -5,10 +5,13 @@ import type {
 	InventoryProductResponse,
 	InventorySiteResponse,
 	InventorySiteZoneResponse,
+	InventorySupplierResponse,
 } from "~@/api";
 import {
 	createIntakeShipmentV1ObservedMutation,
 	createInventoryCategoryV1ObservedMutation,
+	createInventoryLotV1ObservedMutation,
+	createInventoryMovementV1ObservedMutation,
 	createInventoryProductV1ObservedMutation,
 	createShipmentLineV1ObservedMutation,
 	getInventoryCategoriesV1ObservedQuery,
@@ -17,6 +20,7 @@ import {
 	getInventoryProductsV1ObservedQuery,
 	getInventorySitesV1ObservedQuery,
 	getInventorySiteZonesV1ObservedQuery,
+	getInventorySuppliersV1ObservedQuery,
 } from "~@/api";
 import { makeAutoObservable } from "~@/mobx";
 
@@ -26,6 +30,7 @@ const PAGE_SIZE = 500;
 
 // Domain types that mirror packages/views/inventory/data.ts shapes
 export type InvCategory = { id: string; name: string; color: string };
+export type InvSupplier = { id: string; name: string };
 export type InvProduct = {
 	id: string;
 	sku: string;
@@ -68,6 +73,13 @@ function mapCategory(r: InventoryCategoryResponse): InvCategory {
 		id: r.id ?? "",
 		name: r.name ?? "",
 		color: r.color ?? "#e8eef3",
+	};
+}
+
+function mapSupplier(r: InventorySupplierResponse): InvSupplier {
+	return {
+		id: r.id ?? "",
+		name: r.name ?? "",
 	};
 }
 
@@ -133,6 +145,9 @@ class InventoryViewModel implements Disposable {
 	#categoriesQuery = getInventoryCategoriesV1ObservedQuery({
 		query: { Page: 1, PageSize: PAGE_SIZE },
 	});
+	#suppliersQuery = getInventorySuppliersV1ObservedQuery({
+		query: { Page: 1, PageSize: PAGE_SIZE },
+	});
 	#productsQuery = getInventoryProductsV1ObservedQuery({
 		query: { Page: 1, PageSize: PAGE_SIZE },
 	});
@@ -151,6 +166,8 @@ class InventoryViewModel implements Disposable {
 
 	createShipmentMutation = createIntakeShipmentV1ObservedMutation();
 	createLineMutation = createShipmentLineV1ObservedMutation();
+	createLotMutation = createInventoryLotV1ObservedMutation();
+	createMovementMutation = createInventoryMovementV1ObservedMutation();
 	createProductMutation = createInventoryProductV1ObservedMutation();
 	createCategoryMutation = createInventoryCategoryV1ObservedMutation();
 
@@ -162,6 +179,7 @@ class InventoryViewModel implements Disposable {
 		if (this.#hasLoaded) return;
 		this.#hasLoaded = true;
 		this.#categoriesQuery.load();
+		this.#suppliersQuery.load();
 		this.#productsQuery.load();
 		this.#sitesQuery.load();
 		this.#zonesQuery.load();
@@ -172,6 +190,7 @@ class InventoryViewModel implements Disposable {
 	get isLoading(): boolean {
 		return (
 			this.#categoriesQuery.isLoading ||
+			this.#suppliersQuery.isLoading ||
 			this.#productsQuery.isLoading ||
 			this.#sitesQuery.isLoading ||
 			this.#lotsQuery.isLoading ||
@@ -181,6 +200,10 @@ class InventoryViewModel implements Disposable {
 
 	get categories(): InvCategory[] {
 		return (this.#categoriesQuery.data?.items ?? []).map(mapCategory);
+	}
+
+	get suppliers(): InvSupplier[] {
+		return (this.#suppliersQuery.data?.items ?? []).map(mapSupplier);
 	}
 
 	get products(): InvProduct[] {
@@ -253,6 +276,7 @@ class InventoryViewModel implements Disposable {
 
 	dispose() {
 		this.#categoriesQuery.dispose();
+		this.#suppliersQuery.dispose();
 		this.#productsQuery.dispose();
 		this.#sitesQuery.dispose();
 		this.#zonesQuery.dispose();

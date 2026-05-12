@@ -355,6 +355,10 @@
     "en-US": "Add a sensor to get started.",
     "es-LA": ""
   },
+  "Add at least one line item": {
+    "en-US": "Add at least one line item",
+    "es-LA": ""
+  },
   "Add category": {
     "en-US": "Add category",
     "es-LA": ""
@@ -1591,6 +1595,10 @@
     "en-US": "Failed to create sensor",
     "es-LA": ""
   },
+  "Failed to create shipment: no ID in response": {
+    "en-US": "Failed to create shipment: no ID in response",
+    "es-LA": ""
+  },
   "Failed to create site": {
     "en-US": "Failed to create site",
     "es-LA": ""
@@ -1605,6 +1613,10 @@
   },
   "Failed to save category. Please try again.": {
     "en-US": "Failed to save category. Please try again.",
+    "es-LA": ""
+  },
+  "Failed to save intake: {message}": {
+    "en-US": "Failed to save intake: {message}",
     "es-LA": ""
   },
   "Failed to save product. Please try again.": {
@@ -2115,6 +2127,10 @@
     "en-US": "Lot codes",
     "es-LA": ""
   },
+  "Lot creation failed for line {0} ({1}): {message}. Shipment saved but inventory not updated.": {
+    "en-US": "Lot creation failed for line {0} ({1}): {message}. Shipment saved but inventory not updated.",
+    "es-LA": ""
+  },
   "Lot, product, SKU…": {
     "en-US": "Lot, product, SKU…",
     "es-LA": ""
@@ -2325,6 +2341,10 @@
   },
   "Monitoring": {
     "en-US": "Monitoring",
+    "es-LA": ""
+  },
+  "Movement recording failed: {message}. Shipment & lots created but audit trail incomplete.": {
+    "en-US": "Movement recording failed: {message}. Shipment & lots created but audit trail incomplete.",
     "es-LA": ""
   },
   "Movements": {
@@ -2759,8 +2779,20 @@
     "en-US": "Please enter email and password",
     "es-LA": ""
   },
+  "Please enter who received the goods": {
+    "en-US": "Please enter who received the goods",
+    "es-LA": ""
+  },
   "Please fill in all required fields.": {
     "en-US": "Please fill in all required fields.",
+    "es-LA": ""
+  },
+  "Please select a site": {
+    "en-US": "Please select a site",
+    "es-LA": ""
+  },
+  "Please select a supplier": {
+    "en-US": "Please select a supplier",
     "es-LA": ""
   },
   "Please try again later.": {

@@ -7,7 +7,7 @@ import { observer } from "~@/mobx";
 import { Button } from "~@/ui";
 import { useInventoryViewModel } from "~@/view-model";
 
-import { addDays, fmtDateShort, fmtMoney } from "./data";
+import { addDays, fmtDateShort, fmtMoney, generateLotCode } from "./data";
 
 type IntakeUnit = "kg" | "unit" | "box";
 
@@ -25,7 +25,9 @@ export const IntakeView = observer(function IntakeView() {
 	const navigate = useNavigate();
 	const vm = useInventoryViewModel();
 
-	const [poNumber] = useState("PO-2285");
+	const [poNumber, setPoNumber] = useState(
+		() => `PO-${new Date().getFullYear()}-${String(Math.floor(1000 + Math.random() * 9000))}`,
+	);
 	const [supplier, setSupplier] = useState("");
 	const [site, setSite] = useState("");
 	const [zone, setZone] = useState("");
@@ -35,6 +37,7 @@ export const IntakeView = observer(function IntakeView() {
 	const [tempCheck, setTempCheck] = useState("4");
 	const [receivedBy, setReceivedBy] = useState("");
 	const [saving, setSaving] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 
 	const firstProduct = vm.products[0];
 	const [lines, setLines] = useState<LineItem[]>(() =>
@@ -53,19 +56,32 @@ export const IntakeView = observer(function IntakeView() {
 			: [],
 	);
 
+	const [lotCodes, setLotCodes] = useState<Record<number, string>>(() =>
+		firstProduct ? { 1: generateLotCode(new Date(), 0) } : {},
+	);
+
 	const currentSite = vm.siteById(site);
 	const zones = currentSite.zones;
 
 	const updateLine = <K extends keyof LineItem>(id: number, k: K, v: LineItem[K]) =>
 		setLines((ls) => ls.map((l) => (l.id === id ? { ...l, [k]: v } : l)));
-	const removeLine = (id: number) => setLines((ls) => ls.filter((l) => l.id !== id));
+	const removeLine = (id: number) => {
+		setLines((ls) => ls.filter((l) => l.id !== id));
+		setLotCodes((lc) => {
+			const newLc = { ...lc };
+			delete newLc[id];
+			return newLc;
+		});
+	};
 	const addLine = () => {
 		const p = vm.products[0];
 		if (!p) return;
+		const newId = Date.now();
+		const auto = generateLotCode(new Date(), lines.length);
 		setLines((ls) => [
 			...ls,
 			{
-				id: Date.now(),
+				id: newId,
 				productId: p.id,
 				qty: 1,
 				unit: "kg",
@@ -74,6 +90,7 @@ export const IntakeView = observer(function IntakeView() {
 				shelfDays: p.shelfLife,
 			},
 		]);
+		setLotCodes((lc) => ({ ...lc, [newId]: auto }));
 	};
 
 	const enriched = lines.map((l) => {
@@ -92,7 +109,23 @@ export const IntakeView = observer(function IntakeView() {
 	const totalKg = enriched.reduce((s, l) => s + (l.kgEquiv ?? 0), 0);
 
 	const handleSave = async () => {
-		if (!site || !supplier || !receivedBy || lines.length === 0) return;
+		setError(null);
+		if (!site) {
+			setError(t`Please select a site`);
+			return;
+		}
+		if (!supplier) {
+			setError(t`Please select a supplier`);
+			return;
+		}
+		if (!receivedBy) {
+			setError(t`Please enter who received the goods`);
+			return;
+		}
+		if (lines.length === 0) {
+			setError(t`Add at least one line item`);
+			return;
+		}
 		setSaving(true);
 		try {
 			const arrivedAt = new Date(`${arrivalDate}T${arrivalTime}`);
@@ -110,25 +143,90 @@ export const IntakeView = observer(function IntakeView() {
 				},
 			});
 			const shipmentId = (shipment as { id?: string }).id;
-			if (shipmentId) {
-				await Promise.all(
-					lines.map((l) =>
-						vm.createLineMutation.mutateAsync({
-							body: {
-								shipmentId,
-								productId: l.productId,
-								qty: l.qty,
-								unit: l.unit,
-								costPerUnit: l.cost,
-							},
-						}),
-					),
-				);
+			if (!shipmentId) {
+				setError(t`Failed to create shipment: no ID in response`);
+				return;
 			}
-			vm.refresh();
+			await Promise.all(
+				lines.map((l) =>
+					vm.createLineMutation.mutateAsync({
+						body: {
+							shipmentId,
+							productId: l.productId,
+							qty: l.qty,
+							unit: l.unit,
+							costPerUnit: l.cost,
+						},
+					}),
+				),
+			);
+
+			// Create lot records for each line
+			for (let i = 0; i < lines.length; i++) {
+				const l = lines[i];
+				const product = vm.productById(l.productId);
+				const lotCode = lotCodes[l.id] || generateLotCode(arrivedAt, i);
+				const expiresAt = addDays(arrivedAt, product.shelfLife);
+
+				try {
+					await vm.createLotMutation.mutateAsync({
+						body: {
+							lotCode,
+							productId: l.productId,
+							qty: l.qty,
+							unit: l.unit,
+							entryAt: arrivedAt,
+							expiresAt,
+							siteId: site,
+							zone,
+							supplierId: supplier,
+							costPerUnit: l.cost,
+						},
+					});
+				} catch (err) {
+					const message = err instanceof Error ? err.message : String(err);
+					setError(
+						t`Lot creation failed for line ${i + 1} (${product.name}): ${message}. Shipment saved but inventory not updated.`,
+					);
+					setSaving(false);
+					return;
+				}
+			}
+
+			// Create movement records for each line
+			const tempNote = tempCheck ? ` · Temp: ${tempCheck}°C` : "";
+			for (let i = 0; i < lines.length; i++) {
+				const l = lines[i];
+				const lotCode = lotCodes[l.id] || generateLotCode(arrivedAt, i);
+
+				try {
+					await vm.createMovementMutation.mutateAsync({
+						body: {
+							type: "intake",
+							occurredAt: arrivedAt,
+							productId: l.productId,
+							qty: l.qty,
+							unit: l.unit,
+							lotCode,
+							siteId: site,
+							performedBy: receivedBy,
+							note: `Intake shipment ${poNumber}${tempNote}`,
+						},
+					});
+				} catch (err) {
+					const message = err instanceof Error ? err.message : String(err);
+					setError(
+						t`Movement recording failed: ${message}. Shipment & lots created but audit trail incomplete.`,
+					);
+					// Continue anyway since lots are created
+				}
+			}
+
+			await vm.refresh();
 			navigate("/inventory");
-		} catch {
-			// Error surfaced via vm.createShipmentMutation.error
+		} catch (err) {
+			const message = err instanceof Error ? err.message : String(err);
+			setError(t`Failed to save intake: ${message}`);
 		} finally {
 			setSaving(false);
 		}
@@ -142,6 +240,7 @@ export const IntakeView = observer(function IntakeView() {
 						{t`Receive intake`} · {poNumber}
 					</h1>
 					<p className="text-sm text-gray-600 mt-1">{t`Lots are created on save · stock increases at the selected zone`}</p>
+					{error && <div style={{ color: "#b91c1c", fontSize: 13, marginTop: 8 }}>{error}</div>}
 				</div>
 				<div className="ml-auto flex items-center gap-2">
 					<Button variant="outline" size="sm" onClick={() => navigate("/inventory")}>
@@ -184,12 +283,11 @@ export const IntakeView = observer(function IntakeView() {
 										onChange={(e) => setSupplier(e.target.value)}
 									>
 										<option value="">{t`Select supplier…`}</option>
-										<option value="distrib-michoacan">Distrib. Michoacán</option>
-										<option value="horticola-bajio">Hortícola del Bajío</option>
-										<option value="citricola-veracruz">Citrícola Veracruz</option>
-										<option value="frutas-pacifico">Frutas Pacífico</option>
-										<option value="verduras-norte">Verduras del Norte</option>
-										<option value="mercado-central">Mercado Central</option>
+										{vm.suppliers.map((s) => (
+											<option key={s.id} value={s.id}>
+												{s.name}
+											</option>
+										))}
 									</select>
 								</div>
 								<div>
@@ -199,9 +297,9 @@ export const IntakeView = observer(function IntakeView() {
 									>{t`PO / Reference`}</label>
 									<input
 										id="intake-po"
-										className="h-8 px-3 rounded border border-gray-200 bg-gray-50 text-sm w-full outline-none"
+										className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
 										value={poNumber}
-										readOnly
+										onChange={(e) => setPoNumber(e.target.value)}
 									/>
 								</div>
 								<div>
@@ -439,10 +537,7 @@ export const IntakeView = observer(function IntakeView() {
 								</div>
 							</div>
 							<div className="grid grid-cols-3 gap-4">
-								{enriched.map((l, i) => {
-									const today = new Date();
-									const yymm = `${String(today.getFullYear()).slice(2)}${String(today.getMonth() + 1).padStart(2, "0")}`;
-									const auto = `L-${yymm}${String(today.getDate()).padStart(2, "0")}-${String(20 + i).padStart(2, "0")}`;
+								{enriched.map((l) => {
 									return (
 										<div key={l.id}>
 											<label className="block text-xs font-medium text-gray-700 mb-1.5 flex justify-between">
@@ -453,7 +548,8 @@ export const IntakeView = observer(function IntakeView() {
 											</label>
 											<input
 												className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full font-mono outline-none focus:border-teal-500"
-												defaultValue={auto}
+												value={lotCodes[l.id] || ""}
+												onChange={(e) => setLotCodes((lc) => ({ ...lc, [l.id]: e.target.value }))}
 											/>
 										</div>
 									);

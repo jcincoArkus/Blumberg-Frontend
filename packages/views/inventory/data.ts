@@ -82,3 +82,14 @@ export function expStatus(exp: Date | string): ExpStatus {
 	if (d <= 5) return { tone: "soon", label: `${d}d left`, days: d };
 	return { tone: "ok", label: `${d}d left`, days: d };
 }
+
+export function generateLotCode(arrivedAt: Date, sequenceIndex: number): string {
+	const yy = String(arrivedAt.getFullYear()).slice(2);
+	const mm = String(arrivedAt.getMonth() + 1).padStart(2, "0");
+	const dd = String(arrivedAt.getDate()).padStart(2, "0");
+	const seq = String(sequenceIndex).padStart(2, "0");
+	const rand = Array.from({ length: 3 }, () =>
+		String.fromCharCode(65 + Math.floor(Math.random() * 26)),
+	).join("");
+	return `L-${yy}${mm}${dd}-${seq}${rand}`;
+}
