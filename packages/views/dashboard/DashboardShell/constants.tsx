@@ -70,10 +70,32 @@ export const navSections: NavSection[] = [
 		],
 	},
 	{
+		section: t`ANALYTICS`,
+		items: [
+			{
+				label: t`Historical Reports`,
+				href: "/reports/history",
+				icon: <FileText className="size-5" />,
+			},
+		],
+	},
+	{
+		section: t`PLATFORM`,
+		items: [
+			{ label: t`Data Ingestion`, href: "/ingestion", icon: <Upload className="size-5" /> },
+			{
+				label: t`Configuration`,
+				href: "/config/sensors",
+				icon: <Settings className="size-5" />,
+			},
+			{ label: t`User Management`, href: "/admin/users", icon: <Users className="size-5" /> },
+		],
+	},
+	{
 		section: t`INVENTORY`,
 		items: [
 			{
-				label: t`Dashboard`,
+				label: t`Inventory Summary`,
 				href: "/inventory/dashboard",
 				icon: <Gauge className="size-5" />,
 			},
@@ -107,28 +129,6 @@ export const navSections: NavSection[] = [
 				href: "/inventory/sites",
 				icon: <Warehouse className="size-5" />,
 			},
-		],
-	},
-	{
-		section: t`ANALYTICS`,
-		items: [
-			{
-				label: t`Historical Reports`,
-				href: "/reports/history",
-				icon: <FileText className="size-5" />,
-			},
-		],
-	},
-	{
-		section: t`PLATFORM`,
-		items: [
-			{ label: t`Data Ingestion`, href: "/ingestion", icon: <Upload className="size-5" /> },
-			{
-				label: t`Configuration`,
-				href: "/config/sensors",
-				icon: <Settings className="size-5" />,
-			},
-			{ label: t`User Management`, href: "/admin/users", icon: <Users className="size-5" /> },
 		],
 	},
 ];
