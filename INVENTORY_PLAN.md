@@ -2,7 +2,7 @@
 
 > **Source branch:** `Inventory`  
 > **Module path:** `packages/views/inventory/`  
-> **Status:** In-progress — API integrated; product/category creation modals live.
+> **Status:** In-progress — API integrated; product/category creation modals live; Locations & Suppliers screen with MapBox live.
 
 ---
 
@@ -20,7 +20,12 @@ packages/views/inventory/
 ├── MovementsView.tsx           # Audit trail / movement history
 ├── ProductsView.tsx            # Product catalog with category filter + search
 ├── AddProductModal.tsx         # Dialog: create new product (wired to API)
-└── AddCategoryModal.tsx        # Dialog: create new category with color picker (wired to API)
+├── AddCategoryModal.tsx        # Dialog: create new category with color picker (wired to API)
+├── SitesView.tsx               # Locations & Suppliers screen (sites + zones + suppliers CRUD)
+├── SiteModal.tsx               # Dialog: create/edit site; shows map-picked coords + geocoded name
+├── ZoneModal.tsx               # Dialog: create/edit zone within a site
+├── SupplierModal.tsx           # Dialog: create/edit supplier
+└── SiteMap.tsx                 # MapBox GL map component with reverse-geocoding on click
 ```
 
 ---
@@ -238,6 +243,105 @@ On save: `createCategoryMutation.mutateAsync({ body })` → `refreshCategories()
 
 ---
 
+### 7. `SitesView` — Locations & Suppliers
+
+**Route:** `/inventory/sites`  
+**Nav label:** "Locations & Suppliers" (Warehouse icon)
+
+Two sections stacked vertically, separated by a labeled divider.
+
+#### Section A — Sites & Zones
+
+**Layout:** Two-panel master-detail
+
+- **Left panel (w-72):** Clickable list of sites. Each row shows: MapPin icon · site name · zone count badge · hover-reveal Edit (pencil) / Delete (trash) buttons. Selected site has teal left border + teal bg tint. Inline delete confirmation replaces the row (no separate dialog).
+- **Right panel (flex-1):** Zones for the selected site. Header shows `"{Site name} · Zones"` + "Add zone" button. Each zone row has hover-reveal Edit / Delete. Same inline confirmation pattern. Empty state when no site selected.
+
+**MapBox map (h-64, full width):** Sits between the section header and the two panels.
+- Style: `mapbox://styles/mapbox/light-v11`, default center Mexico (lng -102.5, lat 23.6, zoom 4.5)
+- Crosshair cursor; clicking calls MapBox Geocoding API (`/geocoding/v5/mapbox.places/{lng},{lat}.json?types=place`) to resolve City + State
+- While geocoding: spinner marker + hint "Looking up location…"
+- On result: opens `SiteModal` in add mode with coords + geocoded name (`"State - City"` format) pre-filled
+- Token read from `config.mapboxToken` (`VITE_MAPBOX_TOKEN` env var). Shows a graceful fallback placeholder when token is empty.
+- Supports `markers` prop for future use when API returns lat/lng per site
+
+**Mutations (all in `InventoryViewModel`):**
+- `createSiteMutation` / `updateSiteMutation` / `deleteSiteMutation` → `refreshSites()`
+- `createZoneMutation` / `updateZoneMutation` / `deleteZoneMutation` → `refreshSites()`
+
+#### Section B — Suppliers
+
+**Layout:** Single flat list (no hierarchy)
+
+Each row: Truck icon · supplier name · hover-reveal Edit / Delete. Inline delete confirmation. Footer shows supplier count.
+
+**Mutations:** `createSupplierMutation` / `updateSupplierMutation` / `deleteSupplierMutation` → `refreshSuppliers()`
+
+#### Modals
+
+| Modal | Fields | API call |
+|---|---|---|
+| `SiteModal` | Name (required); shows geocoded location chip when coords provided | `createInventorySiteV1` / `updateInventorySiteV1` |
+| `ZoneModal` | Zone name (required); site shown as read-only label | `createInventorySiteZoneV1` / `updateInventorySiteZoneV1` |
+| `SupplierModal` | Name (required) | `createInventorySupplierV1` / `updateInventorySupplierV1` |
+
+---
+
+## ViewModel — `InventoryViewModel.ts`
+
+Singleton at `packages/view-model/inventory/InventoryViewModel.ts`. Loaded via `useInventoryViewModel()` hook.
+
+### Domain Types exported from `packages/view-model/inventory/index.ts`
+
+| Type | Fields |
+|---|---|
+| `InvCategory` | `id`, `name`, `color` |
+| `InvSupplier` | `id`, `name` |
+| `InvProduct` | `id`, `sku`, `name`, `cat`, `unit`, `kgPerBox`, `shelfLife`, `price` |
+| `InvSite` | `id`, `name`, `zones: string[]` |
+| `InvSiteZone` | `id`, `name`, `siteId` |
+| `InvLot` | `id`, `productId`, `qty`, `unit`, `entry`, `exp`, `siteId`, `zone`, `supplier`, `costPerUnit` |
+| `InvMovement` | `id`, `type`, `at`, `productId`, `qty`, `unit`, `lotId`, `siteId`, `by`, `note` |
+| `InvEnrichedLot` | Lot + joined product, category, site, expStatus, onhandKg, value, kg |
+| `ExpStatus` / `ExpTone` | Expiration severity |
+
+### Computed getters
+`categories` · `suppliers` · `products` · `sites` · `siteZones` · `lots` · `movements` · `enrichedLots`  
+Lookup helpers: `categoryById` · `productById` · `siteById`  
+Maps: `categoryMap` · `productMap` · `siteMap`
+
+### Mutations
+| Mutation | Refresh method |
+|---|---|
+| `createShipmentMutation` / `createLineMutation` | `refresh()` |
+| `createLotMutation` / `createMovementMutation` | `refresh()` |
+| `createProductMutation` | `refreshProducts()` |
+| `createCategoryMutation` | `refreshCategories()` |
+| `createSiteMutation` / `updateSiteMutation` / `deleteSiteMutation` | `refreshSites()` |
+| `createZoneMutation` / `updateZoneMutation` / `deleteZoneMutation` | `refreshSites()` |
+| `createSupplierMutation` / `updateSupplierMutation` / `deleteSupplierMutation` | `refreshSuppliers()` |
+
+---
+
+## MapBox Integration
+
+**Packages:** `react-map-gl@8.1.1`, `mapbox-gl@3.23.1`
+
+**Token:** `VITE_MAPBOX_TOKEN` env var → `config.mapboxToken` (via `packages/config/`)
+- Declared in `packages/config/vite-env.d.ts` (`ImportMetaEnv`)
+- Typed in `packages/config/types.ts` (`AppConfig.mapboxToken: string`)
+- Read in `packages/config/config.ts`
+- Placeholder `VITE_MAPBOX_TOKEN=""` in `packages/config/configs/.env`; set real value in `.env.local`
+
+**`SiteMap` component (`packages/views/inventory/SiteMap.tsx`):**
+- Exports `SiteCoords = { lat: number; lng: number }`
+- Props: `onLocationPick(coords, suggestedName?)`, `markers?`, `pendingMarker?`, `className?`
+- Reverse-geocoding endpoint: `GET /geocoding/v5/mapbox.places/{lng},{lat}.json?types=place&limit=1`
+- Name format: `"State - City"` (region from `context[]`, city from `text`)
+- No-token fallback: dashed-border placeholder with instructions
+
+---
+
 ## Styling (`inventory.css`)
 
 Scoped under `.inventory-module` to avoid collisions with the rest of the app.
@@ -275,7 +379,8 @@ Semantic colors: `--inv-amber`, `--inv-rose`, `--inv-leaf`, `--inv-info`
 | Icons | Lucide React |
 | i18n | Lingui (`t` macro) |
 | Styling | Scoped CSS module (`inventory.css`) + CSS custom properties |
-| Data | 100% mock — `data.ts` constants |
+| Maps | MapBox GL JS via `react-map-gl` — token from `VITE_MAPBOX_TOKEN` |
+| Data | API via `InventoryViewModel` (TanStack Query + MobX) |
 
 ---
 
@@ -284,6 +389,11 @@ Semantic colors: `--inv-amber`, `--inv-rose`, `--inv-leaf`, `--inv-info`
 - [x] **API integration** — inventory endpoints added to openapi.yaml, `bun api:gen` run, all views use real API via InventoryViewModel
 - [x] **Add Product modal** — `AddProductModal.tsx` wired to `createInventoryProductV1`
 - [x] **Add Category modal** — `AddCategoryModal.tsx` wired to `createInventoryCategoryV1`
+- [x] **Sites & Zones CRUD** — `SitesView` + `SiteModal` + `ZoneModal` fully wired (create, update, delete)
+- [x] **Suppliers CRUD** — `SitesView` + `SupplierModal` fully wired (create, update, delete)
+- [x] **MapBox map** — `SiteMap.tsx` with reverse-geocoding; token via `VITE_MAPBOX_TOKEN`
+- [ ] **Site coordinates** — API does not yet have `lat`/`lng` fields on `InventorySiteRequest`; map picks coords but they are not persisted
+- [ ] **Site markers on map** — `SiteMap` has a `markers` prop ready; needs API to return coordinates per site
 - [ ] **Edit / Delete product** — no modal yet; only creation is implemented
 - [ ] **Edit / Delete category** — no modal yet; only creation is implemented
 - [ ] **Category filter** in `InventoryView` (select renders but doesn't filter)
@@ -297,7 +407,7 @@ Semantic colors: `--inv-amber`, `--inv-rose`, `--inv-leaf`, `--inv-info`
 - [x] **IntakeView supplier dropdown** — wired to `getInventorySuppliersV1`; loads suppliers dynamically from API
 - [ ] **IntakeView print receipt** — no implementation
 - [ ] **Date range filter** in `MovementsView` ("Last 7 days" button)
-- [x] **ViewModels** — `packages/view-model/inventory/InventoryViewModel.ts` singleton created (lots, movements, products, categories, sites, zones); includes `createLotMutation` and `createMovementMutation`
+- [x] **ViewModels** — `packages/view-model/inventory/InventoryViewModel.ts` singleton created; all domain queries + full set of mutations for sites, zones, suppliers, products, categories, lots, movements, shipments
 - [x] **Route registration** — views wired into `apps/app/src/routes/_private+/inventory+/`
 - [x] **i18n strings** — corrupted catalog entries removed; build compiles cleanly
 
@@ -315,10 +425,16 @@ The backend generates UUIDs that do not conform to RFC 4122 (e.g., version/varia
 The `Dialog` component from `~@/ui` (Radix UI) renders into a portal outside the normal DOM tree, so the `.inventory-module` CSS scope does not automatically apply. The pattern used in `AddProductModal` and `AddCategoryModal` is to wrap inner content in `<div className="inventory-module">` so the CSS custom properties (`--inv-*`) and utility classes (`.btn`, `.input`, `.label`, `.field-grid`) work correctly inside the dialog.
 
 ### Adding new mutations to InventoryViewModel
-When wiring a new API action (e.g., edit product, delete category), add the `ObservedMutation` instance to `InventoryViewModel` alongside the existing ones. Also add a `refreshX()` method that calls `.invalidate()` + `.refetch()` on the relevant query so the list updates immediately after a mutation succeeds. See `refreshProducts` / `refreshCategories` for the pattern.
+When wiring a new API action (e.g., edit product, delete category), add the `ObservedMutation` instance to `InventoryViewModel` alongside the existing ones. Also add a `refreshX()` method that calls `.invalidate()` + `.refetch()` on the relevant query so the list updates immediately after a mutation succeeds. See `refreshProducts` / `refreshCategories` / `refreshSites` / `refreshSuppliers` for the pattern.
+
+### views/index.ts uses explicit named exports
+`packages/views/index.ts` does **not** use `export *` from sub-barrels — it has explicit named export lists. When adding a new view component, it must be added to both `packages/views/inventory/index.ts` (the inner barrel) **and** the explicit list in `packages/views/index.ts`. Forgetting the outer barrel causes a blank screen on the route (the import resolves to `undefined`).
 
 ### `openapi.config.ts` input path is machine-specific
 The `inputPath` in `packages/api/openapi.config.ts` must point to the local backend repo. It is not committed with a guaranteed value — verify it before running `bun api:gen`. The expected relative path is `./../Blumberg-Backend/Adapters/OpenApi/openapi.yaml` (or `../backend/...` depending on the machine).
+
+### MapBox token
+Set `VITE_MAPBOX_TOKEN` in `.env.local` (not committed). The base `.env` file has `VITE_MAPBOX_TOKEN=""` as a placeholder. When the token is empty, `SiteMap` renders a dashed placeholder instead of crashing.
 
 ---
 
@@ -332,7 +448,10 @@ The `inputPath` in `packages/api/openapi.config.ts` must point to the local back
 6. ~~Wire `IntakeView` supplier dropdown to `getInventorySuppliersV1`~~ ✓
 7. ~~Wire `IntakeView` save to create Lot + Movement records per line~~ ✓
 8. ~~Auto-generate editable PO number and lot codes in IntakeView~~ ✓
-9. Wire up Edit/Delete actions for products and categories (follow `AddProductModal` pattern)
-10. Wire up remaining `InventoryView` UI actions: category filter, sort dropdown, adjust modal, mark-waste confirmation
-11. Implement Export CSV in `MovementsView`, `LotsView`, `ProductsView`
-12. Add CASL authorization rules via `bun authorization:generate`
+9. ~~Full CRUD for Sites, Zones, and Suppliers (`SitesView`)~~ ✓
+10. ~~Add MapBox map to Locations page with reverse-geocoding on click~~ ✓
+11. Add `lat`/`lng` fields to `InventorySiteRequest` in OpenAPI spec → `bun api:gen` → persist coordinates on site create/edit → show site markers on map
+12. Wire up Edit/Delete actions for products and categories (follow `SiteModal` pattern)
+13. Wire up remaining `InventoryView` UI actions: category filter, sort dropdown, adjust modal, mark-waste confirmation
+14. Implement Export CSV in `MovementsView`, `LotsView`, `ProductsView`
+15. Add CASL authorization rules via `bun authorization:generate`

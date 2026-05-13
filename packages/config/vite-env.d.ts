@@ -9,6 +9,7 @@ interface ImportMetaEnv {
 	readonly VITE_DEFAULT_LOCALE?: string;
 	readonly VITE_API_URL?: string;
 	readonly VITE_WSS_URL?: string;
+	readonly VITE_MAPBOX_TOKEN?: string;
 }
 
 interface ImportMeta {

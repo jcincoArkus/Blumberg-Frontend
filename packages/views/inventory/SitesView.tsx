@@ -1,5 +1,5 @@
 import { MapPin, Pencil, Plus, Trash2, Truck } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
@@ -7,11 +7,14 @@ import { Button, cn } from "~@/ui";
 import type { InvSite, InvSiteZone, InvSupplier } from "~@/view-model";
 import { useInventoryViewModel } from "~@/view-model";
 
+import { type SiteCoords, SiteMap } from "./SiteMap";
 import { SiteModal } from "./SiteModal";
 import { SupplierModal } from "./SupplierModal";
 import { ZoneModal } from "./ZoneModal";
 
-type SiteModalState = { mode: "add" } | { mode: "edit"; site: InvSite };
+type SiteModalState =
+	| { mode: "add"; coords?: SiteCoords; suggestedName?: string }
+	| { mode: "edit"; site: InvSite };
 type ZoneModalState = { mode: "add" } | { mode: "edit"; zone: InvSiteZone };
 type SupplierModalState = { mode: "add" } | { mode: "edit"; supplier: InvSupplier };
 
@@ -25,6 +28,12 @@ export const SitesView = observer(function SitesView() {
 	const [deletingSiteId, setDeletingSiteId] = useState<string | null>(null);
 	const [deletingZoneId, setDeletingZoneId] = useState<string | null>(null);
 	const [sitesError, setSitesError] = useState<string | null>(null);
+	const [pendingMapCoords, setPendingMapCoords] = useState<SiteCoords | null>(null);
+
+	const handleLocationPick = useCallback((coords: SiteCoords, suggestedName?: string) => {
+		setPendingMapCoords(coords);
+		setSiteModal({ mode: "add", coords, suggestedName });
+	}, []);
 
 	// Suppliers state
 	const [supplierModal, setSupplierModal] = useState<SupplierModalState | null>(null);
@@ -103,6 +112,12 @@ export const SitesView = observer(function SitesView() {
 							{sitesError}
 						</div>
 					)}
+
+					<SiteMap
+						onLocationPick={handleLocationPick}
+						pendingMarker={siteModal === null ? null : pendingMapCoords}
+						className="h-64 border border-gray-200"
+					/>
 
 					<div className="flex gap-4 items-start">
 						{/* Sites list */}
@@ -396,8 +411,13 @@ export const SitesView = observer(function SitesView() {
 
 			<SiteModal
 				open={siteModal !== null}
-				onClose={() => setSiteModal(null)}
+				onClose={() => {
+					setSiteModal(null);
+					setPendingMapCoords(null);
+				}}
 				site={siteModal?.mode === "edit" ? siteModal.site : undefined}
+				initialCoords={siteModal?.mode === "add" ? siteModal.coords : undefined}
+				suggestedName={siteModal?.mode === "add" ? siteModal.suggestedName : undefined}
 			/>
 
 			<ZoneModal

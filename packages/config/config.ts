@@ -12,6 +12,8 @@ export default {
 		wsUrl: import.meta.env.VITE_WSS_URL,
 	},
 
+	mapboxToken: import.meta.env.VITE_MAPBOX_TOKEN ?? "",
+
 	logger: {
 		console: {
 			enabled: import.meta.env.VITE_LOGGER_CONSOLE_ENABLED !== "false",

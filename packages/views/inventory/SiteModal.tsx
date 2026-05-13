@@ -1,3 +1,4 @@
+import { MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { t } from "~@/i18n/macro";
@@ -5,13 +6,20 @@ import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle 
 import type { InvSite } from "~@/view-model";
 import { useInventoryViewModel } from "~@/view-model";
 
+import type { SiteCoords } from "./SiteMap";
+
 interface SiteModalProps {
 	open: boolean;
 	onClose: () => void;
+	/** Present → edit mode, absent → add mode. */
 	site?: InvSite;
+	/** Pre-filled from a map click when adding a new site. */
+	initialCoords?: SiteCoords;
+	/** City, State resolved via reverse geocoding — pre-fills the name field. */
+	suggestedName?: string;
 }
 
-export function SiteModal({ open, onClose, site }: SiteModalProps) {
+export function SiteModal({ open, onClose, site, initialCoords, suggestedName }: SiteModalProps) {
 	const vm = useInventoryViewModel();
 	const isEdit = site != null;
 
@@ -21,10 +29,10 @@ export function SiteModal({ open, onClose, site }: SiteModalProps) {
 
 	useEffect(() => {
 		if (open) {
-			setName(site?.name ?? "");
+			setName(site?.name ?? suggestedName ?? "");
 			setError(null);
 		}
-	}, [open, site]);
+	}, [open, site, suggestedName]);
 
 	const handleClose = () => {
 		setName("");
@@ -78,8 +86,30 @@ export function SiteModal({ open, onClose, site }: SiteModalProps) {
 							value={name}
 							onChange={(e) => setName(e.target.value)}
 							onKeyDown={(e) => e.key === "Enter" && void handleSubmit()}
+							// biome-ignore lint/a11y/noAutofocus: dialog should focus name immediately
+							autoFocus
 						/>
 					</div>
+
+					{initialCoords && (
+						<div className="flex items-center gap-2 px-2.5 py-2 rounded-md bg-teal-50 border border-teal-100">
+							<MapPin size={13} className="text-teal-600 flex-shrink-0" />
+							<span className="text-xs text-teal-700">
+								{suggestedName ? (
+									<>
+										<span className="font-medium">{suggestedName}</span>
+										<span className="text-teal-500 ml-1 font-mono">
+											({initialCoords.lat.toFixed(4)}, {initialCoords.lng.toFixed(4)})
+										</span>
+									</>
+								) : (
+									<span className="font-mono">
+										{initialCoords.lat.toFixed(5)}, {initialCoords.lng.toFixed(5)}
+									</span>
+								)}
+							</span>
+						</div>
+					)}
 
 					{error && <div className="p-3 rounded bg-red-50 text-red-700 text-sm">{error}</div>}
 				</div>
