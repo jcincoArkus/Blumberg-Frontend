@@ -14,6 +14,7 @@ import {
 	Truck,
 	Upload,
 	Users,
+	Warehouse,
 } from "lucide-react";
 
 import { t } from "~@/i18n/macro";
@@ -100,6 +101,11 @@ export const navSections: NavSection[] = [
 				label: t`Lots`,
 				href: "/inventory/lots",
 				icon: <Layers className="size-5" />,
+			},
+			{
+				label: t`Locations & Suppliers`,
+				href: "/inventory/sites",
+				icon: <Warehouse className="size-5" />,
 			},
 		],
 	},

@@ -13,7 +13,13 @@ import {
 	createInventoryLotV1ObservedMutation,
 	createInventoryMovementV1ObservedMutation,
 	createInventoryProductV1ObservedMutation,
+	createInventorySiteV1ObservedMutation,
+	createInventorySiteZoneV1ObservedMutation,
+	createInventorySupplierV1ObservedMutation,
 	createShipmentLineV1ObservedMutation,
+	deleteInventorySiteV1ObservedMutation,
+	deleteInventorySiteZoneV1ObservedMutation,
+	deleteInventorySupplierV1ObservedMutation,
 	getInventoryCategoriesV1ObservedQuery,
 	getInventoryLotsV1ObservedQuery,
 	getInventoryMovementsV1ObservedQuery,
@@ -21,6 +27,9 @@ import {
 	getInventorySitesV1ObservedQuery,
 	getInventorySiteZonesV1ObservedQuery,
 	getInventorySuppliersV1ObservedQuery,
+	updateInventorySiteV1ObservedMutation,
+	updateInventorySiteZoneV1ObservedMutation,
+	updateInventorySupplierV1ObservedMutation,
 } from "~@/api";
 import { makeAutoObservable } from "~@/mobx";
 
@@ -42,6 +51,7 @@ export type InvProduct = {
 	price: number;
 };
 export type InvSite = { id: string; name: string; zones: string[] };
+export type InvSiteZone = { id: string; name: string; siteId: string };
 export type InvLot = {
 	id: string;
 	productId: string;
@@ -198,6 +208,15 @@ class InventoryViewModel implements Disposable {
 	createMovementMutation = createInventoryMovementV1ObservedMutation();
 	createProductMutation = createInventoryProductV1ObservedMutation();
 	createCategoryMutation = createInventoryCategoryV1ObservedMutation();
+	createSiteMutation = createInventorySiteV1ObservedMutation();
+	updateSiteMutation = updateInventorySiteV1ObservedMutation();
+	deleteSiteMutation = deleteInventorySiteV1ObservedMutation();
+	createZoneMutation = createInventorySiteZoneV1ObservedMutation();
+	updateZoneMutation = updateInventorySiteZoneV1ObservedMutation();
+	deleteZoneMutation = deleteInventorySiteZoneV1ObservedMutation();
+	createSupplierMutation = createInventorySupplierV1ObservedMutation();
+	updateSupplierMutation = updateInventorySupplierV1ObservedMutation();
+	deleteSupplierMutation = deleteInventorySupplierV1ObservedMutation();
 
 	constructor() {
 		makeAutoObservable(this);
@@ -241,6 +260,14 @@ class InventoryViewModel implements Disposable {
 	get sites(): InvSite[] {
 		const zones = this.#zonesQuery.data?.items ?? [];
 		return (this.#sitesQuery.data?.items ?? []).map((s) => mapSite(s, zones));
+	}
+
+	get siteZones(): InvSiteZone[] {
+		return (this.#zonesQuery.data?.items ?? []).map((z) => ({
+			id: z.id ?? "",
+			name: z.name ?? "",
+			siteId: z.siteId ?? "",
+		}));
 	}
 
 	get lots(): InvLot[] {
@@ -329,6 +356,17 @@ class InventoryViewModel implements Disposable {
 	refreshCategories = async () => {
 		this.#categoriesQuery.invalidate();
 		await this.#categoriesQuery.refetch();
+	};
+
+	refreshSites = async () => {
+		this.#sitesQuery.invalidate();
+		this.#zonesQuery.invalidate();
+		await Promise.all([this.#sitesQuery.refetch(), this.#zonesQuery.refetch()]);
+	};
+
+	refreshSuppliers = async () => {
+		this.#suppliersQuery.invalidate();
+		await this.#suppliersQuery.refetch();
 	};
 
 	dispose() {

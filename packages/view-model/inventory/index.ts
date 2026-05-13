@@ -8,6 +8,8 @@ export type {
 	InvMovementType,
 	InvProduct,
 	InvSite,
+	InvSiteZone,
+	InvSupplier,
 } from "./InventoryViewModel";
 export {
 	daysUntil,
