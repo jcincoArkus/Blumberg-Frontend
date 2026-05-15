@@ -96,9 +96,11 @@ async function runStart(args: string[], config: AppScriptConfig): Promise<void> 
 	}
 	const modeArg = mode ? ` --mode ${mode}` : "";
 
+	process.env.VITE_DEFAULT_LOCALE = locale;
+
 	const commands = [
 		{
-			command: `VITE_DEFAULT_LOCALE="${locale}" bunx --bun react-router dev ./${app} --config ./${app}/vite.config.ts --strictPort --port ${port}${modeArg}`,
+			command: `bunx --bun react-router dev ./${app} --config ./${app}/vite.config.ts --strictPort --port ${port}${modeArg}`,
 			name: config.name,
 			prefixColor: "yellow",
 		},

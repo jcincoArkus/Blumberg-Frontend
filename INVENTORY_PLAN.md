@@ -392,8 +392,8 @@ Semantic colors: `--inv-amber`, `--inv-rose`, `--inv-leaf`, `--inv-info`
 - [x] **Sites & Zones CRUD** — `SitesView` + `SiteModal` + `ZoneModal` fully wired (create, update, delete)
 - [x] **Suppliers CRUD** — `SitesView` + `SupplierModal` fully wired (create, update, delete)
 - [x] **MapBox map** — `SiteMap.tsx` with reverse-geocoding; token via `VITE_MAPBOX_TOKEN`
-- [ ] **Site coordinates** — API does not yet have `lat`/`lng` fields on `InventorySiteRequest`; map picks coords but they are not persisted
-- [ ] **Site markers on map** — `SiteMap` has a `markers` prop ready; needs API to return coordinates per site
+- [x] **Supplier coordinates** — `lat`/`lng` added to `InventorySupplierRequest` / `InventorySupplierResponse` in openapi.yaml; `bun api:gen` run; `InvSupplier` type updated; `SupplierModal` accepts `initialCoords`/`suggestedName` and persists coords via create/update mutations
+- [x] **Supplier markers on map** — `SiteMap` now accepts `supplierMarkers` prop (rendered as amber truck-label pins); `SitesView` computes markers from suppliers with coords and passes them; map pick-mode toggle (Site / Supplier) routes clicks to the correct modal
 - [ ] **Edit / Delete product** — no modal yet; only creation is implemented
 - [ ] **Edit / Delete category** — no modal yet; only creation is implemented
 - [ ] **Category filter** in `InventoryView` (select renders but doesn't filter)

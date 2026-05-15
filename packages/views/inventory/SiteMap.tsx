@@ -1,4 +1,4 @@
-import { Loader2, MapPin } from "lucide-react";
+import { Loader2, MapPin, Truck } from "lucide-react";
 import { useCallback, useState } from "react";
 import Map, { type MapMouseEvent, Marker, NavigationControl } from "react-map-gl/mapbox";
 
@@ -20,8 +20,12 @@ interface SiteMapProps {
 	onLocationPick: (coords: SiteCoords, suggestedName?: string) => void;
 	/** Markers for existing sites that already have coordinates. */
 	markers?: Array<{ id: string; name: string; coords: SiteCoords }>;
+	/** Markers for existing suppliers that have coordinates. */
+	supplierMarkers?: Array<{ id: string; name: string; coords: SiteCoords }>;
 	/** Controlled pending marker driven by parent state. */
 	pendingMarker?: SiteCoords | null;
+	/** Hint text shown in the bottom-left overlay. */
+	hint?: string;
 	className?: string;
 }
 
@@ -49,7 +53,14 @@ async function reverseGeocode(
 	return region ? `${region} - ${city}` : city || undefined;
 }
 
-export function SiteMap({ onLocationPick, markers = [], pendingMarker, className }: SiteMapProps) {
+export function SiteMap({
+	onLocationPick,
+	markers = [],
+	supplierMarkers = [],
+	pendingMarker,
+	hint,
+	className,
+}: SiteMapProps) {
 	const token = config.mapboxToken;
 	const [internalMarker, setInternalMarker] = useState<SiteCoords | null>(null);
 	const [geocoding, setGeocoding] = useState(false);
@@ -120,11 +131,24 @@ export function SiteMap({ onLocationPick, markers = [], pendingMarker, className
 						</div>
 					</Marker>
 				))}
+
+				{/* Supplier markers */}
+				{supplierMarkers.map((m) => (
+					<Marker key={m.id} latitude={m.coords.lat} longitude={m.coords.lng} anchor="bottom">
+						<div className="flex flex-col items-center gap-0.5">
+							<div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-600 text-white text-[10px] font-medium shadow whitespace-nowrap max-w-[120px]">
+								<Truck size={9} />
+								<span className="truncate">{m.name}</span>
+							</div>
+							<div className="w-2 h-2 rounded-full bg-amber-600 border border-white shadow" />
+						</div>
+					</Marker>
+				))}
 			</Map>
 
 			{/* Hint overlay */}
 			<div className="absolute bottom-2 left-2 px-2 py-1 rounded bg-white/80 backdrop-blur-sm text-xs text-gray-500 pointer-events-none select-none shadow-sm border border-gray-100">
-				{geocoding ? "Looking up location…" : "Click on the map to place a new site"}
+				{geocoding ? "Looking up location…" : (hint ?? "Click on the map to place a new site")}
 			</div>
 		</div>
 	);

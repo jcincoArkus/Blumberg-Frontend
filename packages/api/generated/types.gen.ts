@@ -625,11 +625,15 @@ export type InventorySiteZoneResponsePagedResponse = {
 
 export type InventorySupplierRequest = {
 	name: string;
+	latitude?: number | null;
+	longitude?: number | null;
 };
 
 export type InventorySupplierResponse = {
 	id?: string;
 	name?: string | null;
+	latitude?: number | null;
+	longitude?: number | null;
 	createdAt?: Date;
 	updatedAt?: Date | null;
 };

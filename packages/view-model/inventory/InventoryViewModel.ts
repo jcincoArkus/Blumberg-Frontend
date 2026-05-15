@@ -39,7 +39,7 @@ const PAGE_SIZE = 500;
 
 // Domain types that mirror packages/views/inventory/data.ts shapes
 export type InvCategory = { id: string; name: string; color: string };
-export type InvSupplier = { id: string; name: string };
+export type InvSupplier = { id: string; name: string; lat: number | null; lng: number | null };
 export type InvProduct = {
 	id: string;
 	sku: string;
@@ -118,6 +118,8 @@ function mapSupplier(r: InventorySupplierResponse): InvSupplier {
 	return {
 		id: r.id ?? "",
 		name: r.name ?? "",
+		lat: r.latitude ?? null,
+		lng: r.longitude ?? null,
 	};
 }
 

@@ -12,11 +12,15 @@ import { SiteModal } from "./SiteModal";
 import { SupplierModal } from "./SupplierModal";
 import { ZoneModal } from "./ZoneModal";
 
+type MapPickMode = "site" | "supplier";
+
 type SiteModalState =
 	| { mode: "add"; coords?: SiteCoords; suggestedName?: string }
 	| { mode: "edit"; site: InvSite };
 type ZoneModalState = { mode: "add" } | { mode: "edit"; zone: InvSiteZone };
-type SupplierModalState = { mode: "add" } | { mode: "edit"; supplier: InvSupplier };
+type SupplierModalState =
+	| { mode: "add"; coords?: SiteCoords; suggestedName?: string }
+	| { mode: "edit"; supplier: InvSupplier };
 
 export const SitesView = observer(function SitesView() {
 	const vm = useInventoryViewModel();
@@ -29,16 +33,28 @@ export const SitesView = observer(function SitesView() {
 	const [deletingZoneId, setDeletingZoneId] = useState<string | null>(null);
 	const [sitesError, setSitesError] = useState<string | null>(null);
 	const [pendingMapCoords, setPendingMapCoords] = useState<SiteCoords | null>(null);
+	const [mapPickMode, setMapPickMode] = useState<MapPickMode>("site");
 
-	const handleLocationPick = useCallback((coords: SiteCoords, suggestedName?: string) => {
-		setPendingMapCoords(coords);
-		setSiteModal({ mode: "add", coords, suggestedName });
-	}, []);
+	const handleLocationPick = useCallback(
+		(coords: SiteCoords, suggestedName?: string) => {
+			setPendingMapCoords(coords);
+			if (mapPickMode === "supplier") {
+				setSupplierModal({ mode: "add", coords, suggestedName });
+			} else {
+				setSiteModal({ mode: "add", coords, suggestedName });
+			}
+		},
+		[mapPickMode],
+	);
 
 	// Suppliers state
 	const [supplierModal, setSupplierModal] = useState<SupplierModalState | null>(null);
 	const [deletingSupplierId, setDeletingSupplierId] = useState<string | null>(null);
 	const [suppliersError, setSuppliersError] = useState<string | null>(null);
+
+	const supplierMarkers = vm.suppliers
+		.filter((s) => s.lat != null && s.lng != null)
+		.map((s) => ({ id: s.id, name: s.name, coords: { lat: s.lat!, lng: s.lng! } }));
 
 	const selectedSite = vm.sites.find((s) => s.id === selectedSiteId) ?? null;
 	const selectedZones = selectedSiteId
@@ -102,6 +118,33 @@ export const SitesView = observer(function SitesView() {
 							{t`Sites & Zones`}
 						</h2>
 						<div className="flex-1 h-px bg-gray-200" />
+						<div className="flex items-center gap-2">
+							<span className="text-xs text-gray-500">{t`Map places:`}</span>
+							<button
+								type="button"
+								onClick={() => setMapPickMode("site")}
+								className={cn(
+									"flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors",
+									mapPickMode === "site"
+										? "bg-teal-600 text-white border-teal-600"
+										: "bg-white text-gray-600 border-gray-200 hover:bg-gray-50",
+								)}
+							>
+								<MapPin size={11} /> {t`Site`}
+							</button>
+							<button
+								type="button"
+								onClick={() => setMapPickMode("supplier")}
+								className={cn(
+									"flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors",
+									mapPickMode === "supplier"
+										? "bg-amber-500 text-white border-amber-500"
+										: "bg-white text-gray-600 border-gray-200 hover:bg-gray-50",
+								)}
+							>
+								<Truck size={11} /> {t`Supplier`}
+							</button>
+						</div>
 						<Button size="sm" variant="outline" onClick={() => setSiteModal({ mode: "add" })}>
 							<Plus size={14} /> {t`Add site`}
 						</Button>
@@ -115,7 +158,13 @@ export const SitesView = observer(function SitesView() {
 
 					<SiteMap
 						onLocationPick={handleLocationPick}
-						pendingMarker={siteModal === null ? null : pendingMapCoords}
+						pendingMarker={siteModal === null && supplierModal === null ? null : pendingMapCoords}
+						supplierMarkers={supplierMarkers}
+						hint={
+							mapPickMode === "supplier"
+								? t`Click on the map to place a supplier`
+								: t`Click on the map to place a new site`
+						}
 						className="h-64 border border-gray-200"
 					/>
 
@@ -430,8 +479,13 @@ export const SitesView = observer(function SitesView() {
 
 			<SupplierModal
 				open={supplierModal !== null}
-				onClose={() => setSupplierModal(null)}
+				onClose={() => {
+					setSupplierModal(null);
+					setPendingMapCoords(null);
+				}}
 				supplier={supplierModal?.mode === "edit" ? supplierModal.supplier : undefined}
+				initialCoords={supplierModal?.mode === "add" ? supplierModal.coords : undefined}
+				suggestedName={supplierModal?.mode === "add" ? supplierModal.suggestedName : undefined}
 			/>
 		</>
 	);

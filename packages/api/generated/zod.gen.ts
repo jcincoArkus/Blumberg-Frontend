@@ -999,11 +999,15 @@ export const zInventorySiteZoneResponsePagedResponse = z.object({
 
 export const zInventorySupplierRequest = z.object({
 	name: z.string().max(200),
+	latitude: z.optional(z.union([z.number().gte(-90).lte(90), z.null()])),
+	longitude: z.optional(z.union([z.number().gte(-180).lte(180), z.null()])),
 });
 
 export const zInventorySupplierResponse = z.object({
 	id: z.optional(z.uuid()),
 	name: z.optional(z.union([z.string(), z.null()])),
+	latitude: z.optional(z.union([z.number(), z.null()])),
+	longitude: z.optional(z.union([z.number(), z.null()])),
 	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
 	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
 });
