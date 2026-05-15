@@ -3,7 +3,6 @@ import { useCallback, useState } from "react";
 import Map, { type MapMouseEvent, Marker, NavigationControl } from "react-map-gl/mapbox";
 
 import { config } from "~@/config";
-import "mapbox-gl/dist/mapbox-gl.css";
 
 export interface SiteCoords {
 	lat: number;
