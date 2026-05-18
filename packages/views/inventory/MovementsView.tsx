@@ -1,4 +1,4 @@
-import type { LucideIcon } from "lucide-react";
+﻿import type { LucideIcon } from "lucide-react";
 import {
 	ArrowDown,
 	ArrowLeftRight,
@@ -60,6 +60,30 @@ export const MovementsView = observer(function MovementsView() {
 		return list;
 	}, [vm.movements, filter]);
 
+	const handleExportCsv = () => {
+		const cell = (v: string) => `"${v.replace(/"/g, '""')}"`;
+		const headers = ["Time", "Type", "Product", "Lot", "Site", "By", "Reference", "Qty"];
+		const data = rows.map((m) => {
+			const p = vm.productById(m.productId);
+			const s = vm.siteById(m.siteId);
+			const isNeg =
+				m.type === "output" || m.type === "waste" || (m.type === "adjustment" && m.qty < 0);
+			const isPos = m.type === "intake" || (m.type === "adjustment" && m.qty > 0);
+			const sign = isNeg ? "-" : isPos ? "+" : "";
+			return [
+				fmtTime(m.at),
+				TYPE_LABEL[m.type as InvMovementType],
+				cell(p.name),
+				m.lotId,
+				cell(s.name.split(" · ")[0]),
+				cell(m.by),
+				cell(m.note),
+				`${sign}${Math.abs(m.qty).toLocaleString()} ${m.unit}`,
+			];
+		});
+		vm.exportMovementsCsv([headers, ...data]);
+	};
+
 	const grouped: Row[] = useMemo(() => {
 		const out: Row[] = [];
 		let lastKey = "";
@@ -101,7 +125,7 @@ export const MovementsView = observer(function MovementsView() {
 					<Button variant="outline" size="sm">
 						<Calendar size={14} /> {t`Last 7 days`}
 					</Button>
-					<Button variant="outline" size="sm">
+					<Button variant="outline" size="sm" onClick={handleExportCsv}>
 						<Download size={14} /> {t`Export CSV`}
 					</Button>
 				</div>

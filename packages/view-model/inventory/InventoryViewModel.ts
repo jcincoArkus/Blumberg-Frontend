@@ -371,6 +371,30 @@ class InventoryViewModel implements Disposable {
 		await this.#suppliersQuery.refetch();
 	};
 
+	exportLotsCsv = (rows: string[][]) => {
+		const csv = rows.map((r) => r.join(",")).join("\n");
+		const a = document.createElement("a");
+		a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+		a.download = "lots.csv";
+		a.click();
+	};
+
+	exportProductsCsv = (rows: string[][]) => {
+		const csv = rows.map((r) => r.join(",")).join("\n");
+		const a = document.createElement("a");
+		a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+		a.download = "products.csv";
+		a.click();
+	};
+
+	exportMovementsCsv = (rows: string[][]) => {
+		const csv = rows.map((r) => r.join(",")).join("\n");
+		const a = document.createElement("a");
+		a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+		a.download = "movements.csv";
+		a.click();
+	};
+
 	dispose() {
 		this.#categoriesQuery.dispose();
 		this.#suppliersQuery.dispose();
