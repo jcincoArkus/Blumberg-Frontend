@@ -29,6 +29,20 @@ export const ProductsView = observer(function ProductsView() {
 		return list;
 	}, [vm.products, catFilter, search]);
 
+	const handleExportCsv = () => {
+		const headers = ["Product", "SKU", "Category", "Unit", "kg / box", "Shelf life", "Price"];
+		const data = rows.map((p) => [
+			p.name,
+			p.sku,
+			vm.categoryById(p.cat).name,
+			p.unit,
+			p.kgPerBox != null ? p.kgPerBox.toFixed(1) : "—",
+			`${p.shelfLife}d`,
+			fmtMoney(p.price),
+		]);
+		vm.exportProductsCsv([headers, ...data]);
+	};
+
 	return (
 		<>
 			<div className="space-y-6">
@@ -40,7 +54,7 @@ export const ProductsView = observer(function ProductsView() {
 						</p>
 					</div>
 					<div className="ml-auto flex items-center gap-2">
-						<Button variant="outline" size="sm">
+						<Button variant="outline" size="sm" onClick={handleExportCsv}>
 							<Download size={14} /> {t`Export`}
 						</Button>
 						<Button variant="outline" size="sm" onClick={() => setCategoryModalOpen(true)}>

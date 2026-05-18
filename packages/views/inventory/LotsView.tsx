@@ -31,6 +31,21 @@ export const LotsView = observer(function LotsView() {
 		ok: "",
 	};
 
+	const handleExportCsv = () => {
+		const headers = ["Lot", "Product", "Supplier", "Site", "Entry", "Expiration", "Qty", "Value"];
+		const data = rows.map((r) => [
+			r.id,
+			r.product.name,
+			r.supplier,
+			r.site.name.split(" · ")[0],
+			fmtDateShort(r.entry),
+			fmtDateShort(r.expDate),
+			`${r.qty.toLocaleString()} ${r.unit}`,
+			fmtMoney(r.value),
+		]);
+		vm.exportLotsCsv([headers, ...data]);
+	};
+
 	return (
 		<div className="space-y-6">
 			<div className="flex items-start gap-4">
@@ -41,7 +56,7 @@ export const LotsView = observer(function LotsView() {
 					</p>
 				</div>
 				<div className="ml-auto flex items-center gap-2">
-					<Button variant="outline" size="sm">
+					<Button variant="outline" size="sm" onClick={handleExportCsv}>
 						<Download size={14} /> {t`Export`}
 					</Button>
 				</div>
