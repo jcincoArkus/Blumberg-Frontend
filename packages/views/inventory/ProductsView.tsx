@@ -30,12 +30,11 @@ export const ProductsView = observer(function ProductsView() {
 	}, [vm.products, catFilter, search]);
 
 	const handleExportCsv = () => {
-		const cell = (v: string) => `"${v.replace(/"/g, '""')}"`;
 		const headers = ["Product", "SKU", "Category", "Unit", "kg / box", "Shelf life", "Price"];
 		const data = rows.map((p) => [
-			cell(p.name),
+			p.name,
 			p.sku,
-			cell(vm.categoryById(p.cat).name),
+			vm.categoryById(p.cat).name,
 			p.unit,
 			p.kgPerBox != null ? p.kgPerBox.toFixed(1) : "—",
 			`${p.shelfLife}d`,

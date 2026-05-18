@@ -61,7 +61,6 @@ export const MovementsView = observer(function MovementsView() {
 	}, [vm.movements, filter]);
 
 	const handleExportCsv = () => {
-		const cell = (v: string) => `"${v.replace(/"/g, '""')}"`;
 		const headers = ["Time", "Type", "Product", "Lot", "Site", "By", "Reference", "Qty"];
 		const data = rows.map((m) => {
 			const p = vm.productById(m.productId);
@@ -73,11 +72,11 @@ export const MovementsView = observer(function MovementsView() {
 			return [
 				fmtTime(m.at),
 				TYPE_LABEL[m.type as InvMovementType],
-				cell(p.name),
+				p.name,
 				m.lotId,
-				cell(s.name.split(" · ")[0]),
-				cell(m.by),
-				cell(m.note),
+				s.name.split(" · ")[0],
+				m.by,
+				m.note,
 				`${sign}${Math.abs(m.qty).toLocaleString()} ${m.unit}`,
 			];
 		});

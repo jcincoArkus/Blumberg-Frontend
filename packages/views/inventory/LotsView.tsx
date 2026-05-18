@@ -32,13 +32,12 @@ export const LotsView = observer(function LotsView() {
 	};
 
 	const handleExportCsv = () => {
-		const cell = (v: string) => `"${v.replace(/"/g, '""')}"`;
 		const headers = ["Lot", "Product", "Supplier", "Site", "Entry", "Expiration", "Qty", "Value"];
 		const data = rows.map((r) => [
 			r.id,
-			cell(r.product.name),
-			cell(r.supplier),
-			cell(r.site.name.split(" · ")[0]),
+			r.product.name,
+			r.supplier,
+			r.site.name.split(" · ")[0],
 			fmtDateShort(r.entry),
 			fmtDateShort(r.expDate),
 			`${r.qty.toLocaleString()} ${r.unit}`,
