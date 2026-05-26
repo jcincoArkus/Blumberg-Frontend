@@ -1113,6 +1113,7 @@ export const zInventoryLotRequest = z.object({
 	siteId: z.uuid(),
 	zone: z.string().max(100),
 	supplierId: z.optional(z.union([z.uuid(), z.null()])),
+	intakeShipmentId: z.optional(z.union([z.uuid(), z.null()])),
 	costPerUnit: z.number().gte(0),
 });
 
@@ -1130,6 +1131,7 @@ export const zInventoryLotResponse = z.object({
 	zone: z.optional(z.union([z.string(), z.null()])),
 	supplierId: z.optional(z.union([z.uuid(), z.null()])),
 	supplierName: z.optional(z.union([z.string(), z.null()])),
+	intakeShipmentId: z.optional(z.union([z.uuid(), z.null()])),
 	costPerUnit: z.optional(z.number()),
 	createdAt: z.optional(z.iso.datetime({ offset: true, local: true })),
 	updatedAt: z.optional(z.union([z.iso.datetime({ offset: true, local: true }), z.null()])),
@@ -2743,6 +2745,7 @@ export const zGetInventoryLotsV1Data = z.object({
 			ExpiringBefore: z.optional(
 				z.union([z.iso.datetime({ offset: true, local: true }), z.null()]),
 			),
+			IntakeShipmentId: z.optional(z.union([z.uuid(), z.null()])),
 			Page: z.optional(
 				z
 					.int()
