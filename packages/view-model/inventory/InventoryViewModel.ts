@@ -27,6 +27,7 @@ import {
 	getInventorySitesV1ObservedQuery,
 	getInventorySiteZonesV1ObservedQuery,
 	getInventorySuppliersV1ObservedQuery,
+	updateIntakeShipmentV1ObservedMutation,
 	updateInventorySiteV1ObservedMutation,
 	updateInventorySiteZoneV1ObservedMutation,
 	updateInventorySupplierV1ObservedMutation,
@@ -205,6 +206,7 @@ class InventoryViewModel implements Disposable {
 	});
 
 	createShipmentMutation = createIntakeShipmentV1ObservedMutation();
+	updateShipmentMutation = updateIntakeShipmentV1ObservedMutation();
 	createLineMutation = createShipmentLineV1ObservedMutation();
 	createLotMutation = createInventoryLotV1ObservedMutation();
 	createMovementMutation = createInventoryMovementV1ObservedMutation();

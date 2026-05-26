@@ -689,6 +689,7 @@ export type InventoryLotRequest = {
 	siteId: string;
 	zone: string;
 	supplierId?: string | null;
+	intakeShipmentId?: string | null;
 	costPerUnit: number;
 };
 
@@ -706,6 +707,7 @@ export type InventoryLotResponse = {
 	zone?: string | null;
 	supplierId?: string | null;
 	supplierName?: string | null;
+	intakeShipmentId?: string | null;
 	costPerUnit?: number;
 	createdAt?: Date;
 	updatedAt?: Date | null;
@@ -3225,6 +3227,7 @@ export type GetInventoryLotsV1Data = {
 		ProductId?: string | null;
 		SiteId?: string | null;
 		ExpiringBefore?: Date | null;
+		IntakeShipmentId?: string | null;
 		Page?: number;
 		PageSize?: number;
 	};

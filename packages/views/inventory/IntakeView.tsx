@@ -1,7 +1,8 @@
-import { Check, Clock, Info, Plus, Printer, Snowflake, X } from "lucide-react";
-import { useState } from "react";
+import { Check, Clock, Info, Plus, Printer, RefreshCw, Snowflake, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
+import { deleteIntakeShipmentV1, deleteInventoryLotV1, getInventoryLotsV1 } from "~@/api";
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { Button } from "~@/ui";
@@ -19,6 +20,7 @@ type LineItem = {
 	cost: number;
 	lotSuffix: string;
 	shelfDays: number;
+	fromReader?: boolean; // lot already exists in DB — skip creation on save
 };
 
 export const IntakeView = observer(function IntakeView() {
@@ -36,6 +38,7 @@ export const IntakeView = observer(function IntakeView() {
 	const [vehicle, setVehicle] = useState("");
 	const [tempCheck, setTempCheck] = useState("4");
 	const [receivedBy, setReceivedBy] = useState("");
+	const [draftIntakeId, setDraftIntakeId] = useState<string | null>(null);
 	const [saving, setSaving] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
@@ -59,6 +62,55 @@ export const IntakeView = observer(function IntakeView() {
 	const [lotCodes, setLotCodes] = useState<Record<number, string>>(() =>
 		firstProduct ? { 1: generateLotCode(new Date(), 0) } : {},
 	);
+
+	// Mutable ref so the unmount closure always reads the latest values without stale state
+	const cleanupRef = useRef({
+		draftIntakeId: null as string | null,
+		linesLength: 0,
+		isCleaning: false,
+	});
+	cleanupRef.current.draftIntakeId = draftIntakeId;
+	cleanupRef.current.linesLength = lines.length;
+
+	const runCleanup = async (): Promise<void> => {
+		const s = cleanupRef.current;
+		if (!s.draftIntakeId || s.linesLength > 0 || s.isCleaning) return;
+		s.isCleaning = true;
+		const id = s.draftIntakeId;
+		try {
+			const result = await getInventoryLotsV1({ query: { IntakeShipmentId: id, PageSize: 500 } });
+			const lots = result.data?.items ?? [];
+			// 404 = already gone, treat as success. Any other error aborts before shipment delete.
+			await Promise.all(
+				lots
+					.filter((l) => !!l.lotCode)
+					.map((l) =>
+						deleteInventoryLotV1({ path: { lotCode: l.lotCode ?? "" } }).catch((err: unknown) => {
+							const status = (err as { response?: { status?: number } }).response?.status;
+							if (status === 404) return;
+							throw err;
+						}),
+					),
+			);
+			// Reached only if all lot deletes succeeded (or were 404)
+			await deleteIntakeShipmentV1({ path: { id } });
+			setDraftIntakeId(null);
+		} catch {
+			// draftIntakeId intentionally preserved on failure for retry
+		} finally {
+			s.isCleaning = false;
+		}
+	};
+
+	// Keep a stable ref so the useEffect unmount closure always calls the latest version
+	const runCleanupRef = useRef(runCleanup);
+	runCleanupRef.current = runCleanup;
+
+	useEffect(() => {
+		return () => {
+			void runCleanupRef.current();
+		};
+	}, []);
 
 	const currentSite = vm.siteById(site);
 	const zones = currentSite.zones;
@@ -108,6 +160,75 @@ export const IntakeView = observer(function IntakeView() {
 	const grand = subtotal + tax;
 	const totalKg = enriched.reduce((s, l) => s + (l.kgEquiv ?? 0), 0);
 
+	const handleRefresh = async () => {
+		if (!draftIntakeId) return;
+		const result = await getInventoryLotsV1({
+			query: { IntakeShipmentId: draftIntakeId, PageSize: 500 },
+		});
+		const lots = result.data?.items ?? [];
+		if (lots.length === 0) return;
+
+		setLotCodes((prevCodes) => {
+			const existingCodes = new Set(Object.values(prevCodes));
+			const newEntries: Record<number, string> = {};
+			const newLines: LineItem[] = [];
+
+			for (const lot of lots) {
+				const lotCode = lot.lotCode ?? "";
+				if (!lotCode || existingCodes.has(lotCode)) continue;
+				const id = Date.now() + newLines.length;
+				const product = vm.productById(lot.productId ?? "");
+				newLines.push({
+					id,
+					productId: lot.productId ?? "",
+					qty: lot.qty ?? 1,
+					unit: (lot.unit ?? "kg") as IntakeUnit,
+					cost: lot.costPerUnit ?? 0,
+					lotSuffix: "",
+					shelfDays: product.shelfLife,
+					fromReader: true,
+				});
+				newEntries[id] = lotCode;
+				existingCodes.add(lotCode);
+			}
+
+			if (newLines.length > 0) setLines((prev) => [...prev, ...newLines]);
+			return { ...prevCodes, ...newEntries };
+		});
+	};
+
+	const handleAddFromReader = async () => {
+		if (draftIntakeId) return;
+		if (!site) {
+			setError(t`Please select a site`);
+			return;
+		}
+		if (!supplier) {
+			setError(t`Please select a supplier`);
+			return;
+		}
+		setError(null);
+		try {
+			const arrivedAt = new Date(`${arrivalDate}T${arrivalTime}`);
+			const result = await vm.createShipmentMutation.mutateAsync({
+				body: {
+					poReference: poNumber,
+					supplierId: supplier,
+					siteId: site,
+					receivingZone: zone,
+					arrivedAt,
+					receivedBy: receivedBy || "—",
+					status: "draft",
+				},
+			});
+			const id = (result as { id?: string }).id;
+			if (id) setDraftIntakeId(id);
+		} catch (err) {
+			const message = err instanceof Error ? err.message : String(err);
+			setError(t`Failed to start reader session: ${message}`);
+		}
+	};
+
 	const handleSave = async () => {
 		setError(null);
 		if (!site) {
@@ -126,26 +247,38 @@ export const IntakeView = observer(function IntakeView() {
 			setError(t`Add at least one line item`);
 			return;
 		}
+		if (lines.some((l) => l.qty <= 0)) {
+			setError(t`All line items must have a quantity greater than 0`);
+			return;
+		}
 		setSaving(true);
 		try {
 			const arrivedAt = new Date(`${arrivalDate}T${arrivalTime}`);
-			const shipment = await vm.createShipmentMutation.mutateAsync({
-				body: {
-					poReference: poNumber,
-					supplierId: supplier,
-					vehicle: vehicle || undefined,
-					siteId: site,
-					receivingZone: zone,
-					coldChainTempC: tempCheck ? Number(tempCheck) : undefined,
-					arrivedAt,
-					receivedBy,
-					status: "received",
-				},
-			});
-			const shipmentId = (shipment as { id?: string }).id;
-			if (!shipmentId) {
-				setError(t`Failed to create shipment: no ID in response`);
-				return;
+			const shipmentBody = {
+				poReference: poNumber,
+				supplierId: supplier,
+				vehicle: vehicle || undefined,
+				siteId: site,
+				receivingZone: zone,
+				coldChainTempC: tempCheck ? Number(tempCheck) : undefined,
+				arrivedAt,
+				receivedBy,
+				status: "received",
+			};
+			let shipmentId: string;
+			if (draftIntakeId) {
+				await vm.updateShipmentMutation.mutateAsync({
+					path: { id: draftIntakeId },
+					body: shipmentBody,
+				});
+				shipmentId = draftIntakeId;
+			} else {
+				const shipment = await vm.createShipmentMutation.mutateAsync({ body: shipmentBody });
+				shipmentId = (shipment as { id?: string }).id ?? "";
+				if (!shipmentId) {
+					setError(t`Failed to create shipment: no ID in response`);
+					return;
+				}
 			}
 			await Promise.all(
 				lines.map((l) =>
@@ -161,9 +294,10 @@ export const IntakeView = observer(function IntakeView() {
 				),
 			);
 
-			// Create lot records for each line
+			// Create lot records for each line — skip reader-sourced lines (already exist in DB)
 			for (let i = 0; i < lines.length; i++) {
 				const l = lines[i];
+				if (l.fromReader) continue;
 				const product = vm.productById(l.productId);
 				const lotCode = lotCodes[l.id] || generateLotCode(arrivedAt, i);
 				const expiresAt = addDays(arrivedAt, product.shelfLife);
@@ -241,9 +375,22 @@ export const IntakeView = observer(function IntakeView() {
 					</h1>
 					<p className="text-sm text-gray-600 mt-1">{t`Lots are created on save · stock increases at the selected zone`}</p>
 					{error && <div style={{ color: "#b91c1c", fontSize: 13, marginTop: 8 }}>{error}</div>}
+					{draftIntakeId && (
+						<div className="flex items-center gap-2 mt-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800">
+							<Info size={13} className="flex-shrink-0" />
+							<span>
+								{t`Reader session active`} · {t`Draft`}{" "}
+								<span className="font-mono font-semibold">{draftIntakeId}</span>
+							</span>
+						</div>
+					)}
 				</div>
 				<div className="ml-auto flex items-center gap-2">
-					<Button variant="outline" size="sm" onClick={() => navigate("/inventory")}>
+					<Button
+						variant="outline"
+						size="sm"
+						onClick={() => void runCleanup().finally(() => navigate("/inventory"))}
+					>
 						{t`Cancel`}
 					</Button>
 					<Button variant="outline" size="sm">
@@ -518,10 +665,29 @@ export const IntakeView = observer(function IntakeView() {
 								</table>
 							</div>
 
-							<div className="pt-4">
+							<div className="pt-4 flex items-center gap-2">
 								<Button type="button" size="sm" variant="outline" onClick={addLine}>
 									<Plus size={12} /> {t`Add line`}
 								</Button>
+								<Button
+									type="button"
+									size="sm"
+									variant="outline"
+									disabled={!!draftIntakeId}
+									onClick={() => void handleAddFromReader()}
+								>
+									<Plus size={12} /> {t`Add From Reader`}
+								</Button>
+								{draftIntakeId && (
+									<Button
+										type="button"
+										size="sm"
+										variant="outline"
+										onClick={() => void handleRefresh()}
+									>
+										<RefreshCw size={12} /> {t`Refresh`}
+									</Button>
+								)}
 							</div>
 						</div>
 
