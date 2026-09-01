@@ -11,16 +11,33 @@ import {
 	createAdminV1Mutation,
 	createEquipmentV1Mutation,
 	createIngestionApiKeyV1Mutation,
+	createIntakeShipmentV1Mutation,
+	createInventoryCategoryV1Mutation,
+	createInventoryLotV1Mutation,
+	createInventoryMovementV1Mutation,
+	createInventoryProductV1Mutation,
+	createInventorySiteV1Mutation,
+	createInventorySiteZoneV1Mutation,
+	createInventorySupplierV1Mutation,
 	createRoleV1Mutation,
 	createSensorTypeV1Mutation,
 	createSensorV1Mutation,
+	createShipmentLineV1Mutation,
 	createSiteV1Mutation,
 	createThresholdV1Mutation,
 	deleteAdminV1Mutation,
 	deleteEquipmentV1Mutation,
+	deleteIntakeShipmentV1Mutation,
+	deleteInventoryCategoryV1Mutation,
+	deleteInventoryLotV1Mutation,
+	deleteInventoryProductV1Mutation,
+	deleteInventorySiteV1Mutation,
+	deleteInventorySiteZoneV1Mutation,
+	deleteInventorySupplierV1Mutation,
 	deleteRoleV1Mutation,
 	deleteSensorTypeV1Mutation,
 	deleteSensorV1Mutation,
+	deleteShipmentLineV1Mutation,
 	deleteSiteV1Mutation,
 	deleteThresholdV1Mutation,
 	ingestReadingsV1Mutation,
@@ -34,9 +51,17 @@ import {
 	revokeIngestionApiKeyV1Mutation,
 	updateAdminV1Mutation,
 	updateEquipmentV1Mutation,
+	updateIntakeShipmentV1Mutation,
+	updateInventoryCategoryV1Mutation,
+	updateInventoryLotV1Mutation,
+	updateInventoryProductV1Mutation,
+	updateInventorySiteV1Mutation,
+	updateInventorySiteZoneV1Mutation,
+	updateInventorySupplierV1Mutation,
 	updateRoleV1Mutation,
 	updateSensorTypeV1Mutation,
 	updateSensorV1Mutation,
+	updateShipmentLineV1Mutation,
 	updateSiteV1Mutation,
 	updateThresholdV1Mutation,
 } from "./@tanstack/react-query.gen";
@@ -49,16 +74,33 @@ import type {
 	CreateAdminV1Data,
 	CreateEquipmentV1Data,
 	CreateIngestionApiKeyV1Data,
+	CreateIntakeShipmentV1Data,
+	CreateInventoryCategoryV1Data,
+	CreateInventoryLotV1Data,
+	CreateInventoryMovementV1Data,
+	CreateInventoryProductV1Data,
+	CreateInventorySiteV1Data,
+	CreateInventorySiteZoneV1Data,
+	CreateInventorySupplierV1Data,
 	CreateRoleV1Data,
 	CreateSensorTypeV1Data,
 	CreateSensorV1Data,
+	CreateShipmentLineV1Data,
 	CreateSiteV1Data,
 	CreateThresholdV1Data,
 	DeleteAdminV1Data,
 	DeleteEquipmentV1Data,
+	DeleteIntakeShipmentV1Data,
+	DeleteInventoryCategoryV1Data,
+	DeleteInventoryLotV1Data,
+	DeleteInventoryProductV1Data,
+	DeleteInventorySiteV1Data,
+	DeleteInventorySiteZoneV1Data,
+	DeleteInventorySupplierV1Data,
 	DeleteRoleV1Data,
 	DeleteSensorTypeV1Data,
 	DeleteSensorV1Data,
+	DeleteShipmentLineV1Data,
 	DeleteSiteV1Data,
 	DeleteThresholdV1Data,
 	IngestReadingsV1Data,
@@ -72,9 +114,17 @@ import type {
 	RevokeIngestionApiKeyV1Data,
 	UpdateAdminV1Data,
 	UpdateEquipmentV1Data,
+	UpdateIntakeShipmentV1Data,
+	UpdateInventoryCategoryV1Data,
+	UpdateInventoryLotV1Data,
+	UpdateInventoryProductV1Data,
+	UpdateInventorySiteV1Data,
+	UpdateInventorySiteZoneV1Data,
+	UpdateInventorySupplierV1Data,
 	UpdateRoleV1Data,
 	UpdateSensorTypeV1Data,
 	UpdateSensorV1Data,
+	UpdateShipmentLineV1Data,
 	UpdateSiteV1Data,
 	UpdateThresholdV1Data,
 } from "./types.gen";
@@ -258,3 +308,128 @@ export const replaceUserRolesV1ObservedMutation = (
 	defaultValues?: Partial<ReplaceUserRolesV1Data>,
 	observerOptions?: MutationOptions<typeof replaceUserRolesV1Mutation>,
 ) => new ObservedMutation(replaceUserRolesV1Mutation, defaultValues, observerOptions);
+
+export const createInventoryCategoryV1ObservedMutation = (
+	defaultValues?: Partial<CreateInventoryCategoryV1Data>,
+	observerOptions?: MutationOptions<typeof createInventoryCategoryV1Mutation>,
+) => new ObservedMutation(createInventoryCategoryV1Mutation, defaultValues, observerOptions);
+
+export const deleteInventoryCategoryV1ObservedMutation = (
+	defaultValues?: Partial<DeleteInventoryCategoryV1Data>,
+	observerOptions?: MutationOptions<typeof deleteInventoryCategoryV1Mutation>,
+) => new ObservedMutation(deleteInventoryCategoryV1Mutation, defaultValues, observerOptions);
+
+export const updateInventoryCategoryV1ObservedMutation = (
+	defaultValues?: Partial<UpdateInventoryCategoryV1Data>,
+	observerOptions?: MutationOptions<typeof updateInventoryCategoryV1Mutation>,
+) => new ObservedMutation(updateInventoryCategoryV1Mutation, defaultValues, observerOptions);
+
+export const createInventorySiteV1ObservedMutation = (
+	defaultValues?: Partial<CreateInventorySiteV1Data>,
+	observerOptions?: MutationOptions<typeof createInventorySiteV1Mutation>,
+) => new ObservedMutation(createInventorySiteV1Mutation, defaultValues, observerOptions);
+
+export const deleteInventorySiteV1ObservedMutation = (
+	defaultValues?: Partial<DeleteInventorySiteV1Data>,
+	observerOptions?: MutationOptions<typeof deleteInventorySiteV1Mutation>,
+) => new ObservedMutation(deleteInventorySiteV1Mutation, defaultValues, observerOptions);
+
+export const updateInventorySiteV1ObservedMutation = (
+	defaultValues?: Partial<UpdateInventorySiteV1Data>,
+	observerOptions?: MutationOptions<typeof updateInventorySiteV1Mutation>,
+) => new ObservedMutation(updateInventorySiteV1Mutation, defaultValues, observerOptions);
+
+export const createInventorySiteZoneV1ObservedMutation = (
+	defaultValues?: Partial<CreateInventorySiteZoneV1Data>,
+	observerOptions?: MutationOptions<typeof createInventorySiteZoneV1Mutation>,
+) => new ObservedMutation(createInventorySiteZoneV1Mutation, defaultValues, observerOptions);
+
+export const deleteInventorySiteZoneV1ObservedMutation = (
+	defaultValues?: Partial<DeleteInventorySiteZoneV1Data>,
+	observerOptions?: MutationOptions<typeof deleteInventorySiteZoneV1Mutation>,
+) => new ObservedMutation(deleteInventorySiteZoneV1Mutation, defaultValues, observerOptions);
+
+export const updateInventorySiteZoneV1ObservedMutation = (
+	defaultValues?: Partial<UpdateInventorySiteZoneV1Data>,
+	observerOptions?: MutationOptions<typeof updateInventorySiteZoneV1Mutation>,
+) => new ObservedMutation(updateInventorySiteZoneV1Mutation, defaultValues, observerOptions);
+
+export const createInventorySupplierV1ObservedMutation = (
+	defaultValues?: Partial<CreateInventorySupplierV1Data>,
+	observerOptions?: MutationOptions<typeof createInventorySupplierV1Mutation>,
+) => new ObservedMutation(createInventorySupplierV1Mutation, defaultValues, observerOptions);
+
+export const deleteInventorySupplierV1ObservedMutation = (
+	defaultValues?: Partial<DeleteInventorySupplierV1Data>,
+	observerOptions?: MutationOptions<typeof deleteInventorySupplierV1Mutation>,
+) => new ObservedMutation(deleteInventorySupplierV1Mutation, defaultValues, observerOptions);
+
+export const updateInventorySupplierV1ObservedMutation = (
+	defaultValues?: Partial<UpdateInventorySupplierV1Data>,
+	observerOptions?: MutationOptions<typeof updateInventorySupplierV1Mutation>,
+) => new ObservedMutation(updateInventorySupplierV1Mutation, defaultValues, observerOptions);
+
+export const createInventoryProductV1ObservedMutation = (
+	defaultValues?: Partial<CreateInventoryProductV1Data>,
+	observerOptions?: MutationOptions<typeof createInventoryProductV1Mutation>,
+) => new ObservedMutation(createInventoryProductV1Mutation, defaultValues, observerOptions);
+
+export const deleteInventoryProductV1ObservedMutation = (
+	defaultValues?: Partial<DeleteInventoryProductV1Data>,
+	observerOptions?: MutationOptions<typeof deleteInventoryProductV1Mutation>,
+) => new ObservedMutation(deleteInventoryProductV1Mutation, defaultValues, observerOptions);
+
+export const updateInventoryProductV1ObservedMutation = (
+	defaultValues?: Partial<UpdateInventoryProductV1Data>,
+	observerOptions?: MutationOptions<typeof updateInventoryProductV1Mutation>,
+) => new ObservedMutation(updateInventoryProductV1Mutation, defaultValues, observerOptions);
+
+export const createInventoryLotV1ObservedMutation = (
+	defaultValues?: Partial<CreateInventoryLotV1Data>,
+	observerOptions?: MutationOptions<typeof createInventoryLotV1Mutation>,
+) => new ObservedMutation(createInventoryLotV1Mutation, defaultValues, observerOptions);
+
+export const deleteInventoryLotV1ObservedMutation = (
+	defaultValues?: Partial<DeleteInventoryLotV1Data>,
+	observerOptions?: MutationOptions<typeof deleteInventoryLotV1Mutation>,
+) => new ObservedMutation(deleteInventoryLotV1Mutation, defaultValues, observerOptions);
+
+export const updateInventoryLotV1ObservedMutation = (
+	defaultValues?: Partial<UpdateInventoryLotV1Data>,
+	observerOptions?: MutationOptions<typeof updateInventoryLotV1Mutation>,
+) => new ObservedMutation(updateInventoryLotV1Mutation, defaultValues, observerOptions);
+
+export const createInventoryMovementV1ObservedMutation = (
+	defaultValues?: Partial<CreateInventoryMovementV1Data>,
+	observerOptions?: MutationOptions<typeof createInventoryMovementV1Mutation>,
+) => new ObservedMutation(createInventoryMovementV1Mutation, defaultValues, observerOptions);
+
+export const createIntakeShipmentV1ObservedMutation = (
+	defaultValues?: Partial<CreateIntakeShipmentV1Data>,
+	observerOptions?: MutationOptions<typeof createIntakeShipmentV1Mutation>,
+) => new ObservedMutation(createIntakeShipmentV1Mutation, defaultValues, observerOptions);
+
+export const deleteIntakeShipmentV1ObservedMutation = (
+	defaultValues?: Partial<DeleteIntakeShipmentV1Data>,
+	observerOptions?: MutationOptions<typeof deleteIntakeShipmentV1Mutation>,
+) => new ObservedMutation(deleteIntakeShipmentV1Mutation, defaultValues, observerOptions);
+
+export const updateIntakeShipmentV1ObservedMutation = (
+	defaultValues?: Partial<UpdateIntakeShipmentV1Data>,
+	observerOptions?: MutationOptions<typeof updateIntakeShipmentV1Mutation>,
+) => new ObservedMutation(updateIntakeShipmentV1Mutation, defaultValues, observerOptions);
+
+export const createShipmentLineV1ObservedMutation = (
+	defaultValues?: Partial<CreateShipmentLineV1Data>,
+	observerOptions?: MutationOptions<typeof createShipmentLineV1Mutation>,
+) => new ObservedMutation(createShipmentLineV1Mutation, defaultValues, observerOptions);
+
+export const deleteShipmentLineV1ObservedMutation = (
+	defaultValues?: Partial<DeleteShipmentLineV1Data>,
+	observerOptions?: MutationOptions<typeof deleteShipmentLineV1Mutation>,
+) => new ObservedMutation(deleteShipmentLineV1Mutation, defaultValues, observerOptions);
+
+export const updateShipmentLineV1ObservedMutation = (
+	defaultValues?: Partial<UpdateShipmentLineV1Data>,
+	observerOptions?: MutationOptions<typeof updateShipmentLineV1Mutation>,
+) => new ObservedMutation(updateShipmentLineV1Mutation, defaultValues, observerOptions);

@@ -20,6 +20,22 @@ import {
 	getIngestionRunByIdV1Options,
 	getIngestionRunsV1Options,
 	getIngestionStatsV1Options,
+	getIntakeShipmentByIdV1Options,
+	getIntakeShipmentsV1Options,
+	getInventoryCategoriesV1Options,
+	getInventoryCategoryByIdV1Options,
+	getInventoryLotByCodeV1Options,
+	getInventoryLotsV1Options,
+	getInventoryMovementByIdV1Options,
+	getInventoryMovementsV1Options,
+	getInventoryProductByIdV1Options,
+	getInventoryProductsV1Options,
+	getInventorySiteByIdV1Options,
+	getInventorySitesV1Options,
+	getInventorySiteZoneByIdV1Options,
+	getInventorySiteZonesV1Options,
+	getInventorySupplierByIdV1Options,
+	getInventorySuppliersV1Options,
 	getPermissionActionsV1Options,
 	getPermissionResourcesV1Options,
 	getRoleByNameV1Options,
@@ -31,6 +47,8 @@ import {
 	getSensorReadingsV1Options,
 	getSensorRejectionCountV1Options,
 	getSensorTypeByIdV1Options,
+	getShipmentLineByIdV1Options,
+	getShipmentLinesV1Options,
 	getSiteByIdV1Options,
 	getThresholdByIdV1Options,
 	getUserRolesV1Options,
@@ -54,6 +72,22 @@ import type {
 	GetIngestionRunByIdV1Data,
 	GetIngestionRunsV1Data,
 	GetIngestionStatsV1Data,
+	GetIntakeShipmentByIdV1Data,
+	GetIntakeShipmentsV1Data,
+	GetInventoryCategoriesV1Data,
+	GetInventoryCategoryByIdV1Data,
+	GetInventoryLotByCodeV1Data,
+	GetInventoryLotsV1Data,
+	GetInventoryMovementByIdV1Data,
+	GetInventoryMovementsV1Data,
+	GetInventoryProductByIdV1Data,
+	GetInventoryProductsV1Data,
+	GetInventorySiteByIdV1Data,
+	GetInventorySitesV1Data,
+	GetInventorySiteZoneByIdV1Data,
+	GetInventorySiteZonesV1Data,
+	GetInventorySupplierByIdV1Data,
+	GetInventorySuppliersV1Data,
 	GetPermissionActionsV1Data,
 	GetPermissionResourcesV1Data,
 	GetRoleByNameV1Data,
@@ -65,6 +99,8 @@ import type {
 	GetSensorReadingsV1Data,
 	GetSensorRejectionCountV1Data,
 	GetSensorTypeByIdV1Data,
+	GetShipmentLineByIdV1Data,
+	GetShipmentLinesV1Data,
 	GetSiteByIdV1Data,
 	GetThresholdByIdV1Data,
 	GetUserRolesV1Data,
@@ -230,3 +266,93 @@ export const getUserRolesV1ObservedQuery = (
 	defaultValues?: Partial<GetUserRolesV1Data>,
 	observerOptions?: QueryOptions<typeof getUserRolesV1Options>,
 ) => new ObservedQuery(getUserRolesV1Options, defaultValues, observerOptions);
+
+export const getInventoryCategoriesV1ObservedQuery = (
+	defaultValues?: Partial<GetInventoryCategoriesV1Data>,
+	observerOptions?: QueryOptions<typeof getInventoryCategoriesV1Options>,
+) => new ObservedQuery(getInventoryCategoriesV1Options, defaultValues, observerOptions);
+
+export const getInventoryCategoryByIdV1ObservedQuery = (
+	defaultValues?: Partial<GetInventoryCategoryByIdV1Data>,
+	observerOptions?: QueryOptions<typeof getInventoryCategoryByIdV1Options>,
+) => new ObservedQuery(getInventoryCategoryByIdV1Options, defaultValues, observerOptions);
+
+export const getInventorySitesV1ObservedQuery = (
+	defaultValues?: Partial<GetInventorySitesV1Data>,
+	observerOptions?: QueryOptions<typeof getInventorySitesV1Options>,
+) => new ObservedQuery(getInventorySitesV1Options, defaultValues, observerOptions);
+
+export const getInventorySiteByIdV1ObservedQuery = (
+	defaultValues?: Partial<GetInventorySiteByIdV1Data>,
+	observerOptions?: QueryOptions<typeof getInventorySiteByIdV1Options>,
+) => new ObservedQuery(getInventorySiteByIdV1Options, defaultValues, observerOptions);
+
+export const getInventorySiteZonesV1ObservedQuery = (
+	defaultValues?: Partial<GetInventorySiteZonesV1Data>,
+	observerOptions?: QueryOptions<typeof getInventorySiteZonesV1Options>,
+) => new ObservedQuery(getInventorySiteZonesV1Options, defaultValues, observerOptions);
+
+export const getInventorySiteZoneByIdV1ObservedQuery = (
+	defaultValues?: Partial<GetInventorySiteZoneByIdV1Data>,
+	observerOptions?: QueryOptions<typeof getInventorySiteZoneByIdV1Options>,
+) => new ObservedQuery(getInventorySiteZoneByIdV1Options, defaultValues, observerOptions);
+
+export const getInventorySuppliersV1ObservedQuery = (
+	defaultValues?: Partial<GetInventorySuppliersV1Data>,
+	observerOptions?: QueryOptions<typeof getInventorySuppliersV1Options>,
+) => new ObservedQuery(getInventorySuppliersV1Options, defaultValues, observerOptions);
+
+export const getInventorySupplierByIdV1ObservedQuery = (
+	defaultValues?: Partial<GetInventorySupplierByIdV1Data>,
+	observerOptions?: QueryOptions<typeof getInventorySupplierByIdV1Options>,
+) => new ObservedQuery(getInventorySupplierByIdV1Options, defaultValues, observerOptions);
+
+export const getInventoryProductsV1ObservedQuery = (
+	defaultValues?: Partial<GetInventoryProductsV1Data>,
+	observerOptions?: QueryOptions<typeof getInventoryProductsV1Options>,
+) => new ObservedQuery(getInventoryProductsV1Options, defaultValues, observerOptions);
+
+export const getInventoryProductByIdV1ObservedQuery = (
+	defaultValues?: Partial<GetInventoryProductByIdV1Data>,
+	observerOptions?: QueryOptions<typeof getInventoryProductByIdV1Options>,
+) => new ObservedQuery(getInventoryProductByIdV1Options, defaultValues, observerOptions);
+
+export const getInventoryLotsV1ObservedQuery = (
+	defaultValues?: Partial<GetInventoryLotsV1Data>,
+	observerOptions?: QueryOptions<typeof getInventoryLotsV1Options>,
+) => new ObservedQuery(getInventoryLotsV1Options, defaultValues, observerOptions);
+
+export const getInventoryLotByCodeV1ObservedQuery = (
+	defaultValues?: Partial<GetInventoryLotByCodeV1Data>,
+	observerOptions?: QueryOptions<typeof getInventoryLotByCodeV1Options>,
+) => new ObservedQuery(getInventoryLotByCodeV1Options, defaultValues, observerOptions);
+
+export const getInventoryMovementsV1ObservedQuery = (
+	defaultValues?: Partial<GetInventoryMovementsV1Data>,
+	observerOptions?: QueryOptions<typeof getInventoryMovementsV1Options>,
+) => new ObservedQuery(getInventoryMovementsV1Options, defaultValues, observerOptions);
+
+export const getInventoryMovementByIdV1ObservedQuery = (
+	defaultValues?: Partial<GetInventoryMovementByIdV1Data>,
+	observerOptions?: QueryOptions<typeof getInventoryMovementByIdV1Options>,
+) => new ObservedQuery(getInventoryMovementByIdV1Options, defaultValues, observerOptions);
+
+export const getIntakeShipmentsV1ObservedQuery = (
+	defaultValues?: Partial<GetIntakeShipmentsV1Data>,
+	observerOptions?: QueryOptions<typeof getIntakeShipmentsV1Options>,
+) => new ObservedQuery(getIntakeShipmentsV1Options, defaultValues, observerOptions);
+
+export const getIntakeShipmentByIdV1ObservedQuery = (
+	defaultValues?: Partial<GetIntakeShipmentByIdV1Data>,
+	observerOptions?: QueryOptions<typeof getIntakeShipmentByIdV1Options>,
+) => new ObservedQuery(getIntakeShipmentByIdV1Options, defaultValues, observerOptions);
+
+export const getShipmentLinesV1ObservedQuery = (
+	defaultValues?: Partial<GetShipmentLinesV1Data>,
+	observerOptions?: QueryOptions<typeof getShipmentLinesV1Options>,
+) => new ObservedQuery(getShipmentLinesV1Options, defaultValues, observerOptions);
+
+export const getShipmentLineByIdV1ObservedQuery = (
+	defaultValues?: Partial<GetShipmentLineByIdV1Data>,
+	observerOptions?: QueryOptions<typeof getShipmentLineByIdV1Options>,
+) => new ObservedQuery(getShipmentLineByIdV1Options, defaultValues, observerOptions);
