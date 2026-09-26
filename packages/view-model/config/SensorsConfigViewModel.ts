@@ -163,6 +163,10 @@ class SensorsConfigViewModel implements Disposable, FilterableViewModel {
 				lastSeen: h.lastSeenAt ? new Date(h.lastSeenAt).toISOString() : undefined,
 				min: threshold?.min,
 				max: threshold?.max,
+				// Sensors that report through ingestion map the payload's `value` field to their type
+				dataMapping: h.lastSeenAt
+					? [{ id: `${h.id}-value`, incomingField: "value", mapsTo: toSensorType(h.sensorType) }]
+					: undefined,
 			} satisfies Sensor;
 		});
 	}

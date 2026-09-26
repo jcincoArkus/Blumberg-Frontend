@@ -59,12 +59,15 @@ export const timeOptions = [
 	{ value: 600, label: "10 minutes" },
 ];
 
+/** Timestamps relative to page load so the demo data always looks current. */
+const hoursAgo = (h: number) => new Date(Date.now() - h * 3_600_000).toISOString();
+
 // Sites data for scope selection
 export const sites = [
 	{ id: "site-1", name: "North Distribution Center", location: "Chicago, IL" },
 	{ id: "site-2", name: "West Coast Warehouse", location: "Los Angeles, CA" },
-	{ id: "site-3", name: "East Regional Hub", location: "Atlanta, GA" },
-	{ id: "site-4", name: "South Central Facility", location: "Dallas, TX" },
+	{ id: "site-3", name: "East Coast Hub", location: "New York, NY" },
+	{ id: "site-4", name: "South Regional DC", location: "Houston, TX" },
 ];
 
 // Equipment data for scope selection
@@ -101,8 +104,8 @@ export const alertRules: AlertRule[] = [
 			},
 		],
 		cooldownMinutes: 15,
-		createdAt: "2024-01-10T08:00:00Z",
-		updatedAt: "2024-01-12T10:30:00Z",
+		createdAt: hoursAgo(147),
+		updatedAt: hoursAgo(97),
 	},
 	{
 		id: "rule-2",
@@ -122,8 +125,8 @@ export const alertRules: AlertRule[] = [
 				reason: "Air quality concern",
 			},
 		],
-		createdAt: "2024-01-08T09:00:00Z",
-		updatedAt: "2024-01-08T09:00:00Z",
+		createdAt: hoursAgo(194),
+		updatedAt: hoursAgo(194),
 	},
 	{
 		id: "rule-3",
@@ -143,8 +146,8 @@ export const alertRules: AlertRule[] = [
 			},
 		],
 		cooldownMinutes: 30,
-		createdAt: "2024-01-05T14:00:00Z",
-		updatedAt: "2024-01-11T16:20:00Z",
+		createdAt: hoursAgo(261),
+		updatedAt: hoursAgo(115),
 	},
 	{
 		id: "rule-4",
@@ -170,8 +173,8 @@ export const alertRules: AlertRule[] = [
 			},
 		],
 		cooldownMinutes: 5,
-		createdAt: "2024-01-02T11:00:00Z",
-		updatedAt: "2024-01-15T09:45:00Z",
+		createdAt: hoursAgo(336),
+		updatedAt: hoursAgo(26),
 	},
 	{
 		id: "rule-5",
@@ -190,8 +193,8 @@ export const alertRules: AlertRule[] = [
 				recipientEmail: "energy@blumberg.com",
 			},
 		],
-		createdAt: "2024-01-01T08:00:00Z",
-		updatedAt: "2024-01-01T08:00:00Z",
+		createdAt: hoursAgo(363),
+		updatedAt: hoursAgo(363),
 	},
 ];
 
