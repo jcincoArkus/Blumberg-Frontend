@@ -297,11 +297,13 @@ export function ApiIngestionTab({
 							<div className="grid grid-cols-2 gap-4">
 								<div>
 									<p className="text-xs text-muted-foreground mb-1">{t`Accepted`}</p>
-									<p className="text-lg font-semibold text-emerald-600">{testResult.accepted}</p>
+									<p className="text-lg font-semibold text-success-foreground">
+										{testResult.accepted}
+									</p>
 								</div>
 								<div>
 									<p className="text-xs text-muted-foreground mb-1">{t`Rejected`}</p>
-									<p className="text-lg font-semibold text-red-600">{testResult.rejected}</p>
+									<p className="text-lg font-semibold text-danger">{testResult.rejected}</p>
 								</div>
 							</div>
 							{testResult.errors.length > 0 && (
@@ -337,10 +339,10 @@ export function ApiIngestionTab({
 				<Card>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 						<CardTitle className="text-sm font-medium">{t`Accepted`}</CardTitle>
-						<CheckCircle2 className="h-4 w-4 text-emerald-600" aria-hidden="true" />
+						<CheckCircle2 className="h-4 w-4 text-success-foreground" aria-hidden="true" />
 					</CardHeader>
 					<CardContent>
-						<div className="text-2xl font-bold text-emerald-600">{kpis.accepted}</div>
+						<div className="text-2xl font-bold text-success-foreground">{kpis.accepted}</div>
 						<p className="text-xs text-muted-foreground mt-1">
 							{t`${kpis.totalRecords > 0 ? Math.round((kpis.accepted / kpis.totalRecords) * 100) : 0}% success rate`}
 						</p>
@@ -349,10 +351,10 @@ export function ApiIngestionTab({
 				<Card>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 						<CardTitle className="text-sm font-medium">{t`Rejected`}</CardTitle>
-						<XCircle className="h-4 w-4 text-red-600" aria-hidden="true" />
+						<XCircle className="h-4 w-4 text-danger" aria-hidden="true" />
 					</CardHeader>
 					<CardContent>
-						<div className="text-2xl font-bold text-red-600">{kpis.rejected}</div>
+						<div className="text-2xl font-bold text-danger">{kpis.rejected}</div>
 						<p className="text-xs text-muted-foreground mt-1">
 							{t`${kpis.totalRecords > 0 ? Math.round((kpis.rejected / kpis.totalRecords) * 100) : 0}% rejection rate`}
 						</p>
@@ -361,10 +363,15 @@ export function ApiIngestionTab({
 				<Card>
 					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 						<CardTitle className="text-sm font-medium">{t`Error Types`}</CardTitle>
-						<AlertCircle className="h-4 w-4 text-orange-600" aria-hidden="true" />
+						<AlertCircle
+							className="h-4 w-4 text-orange-600 dark:text-orange-400"
+							aria-hidden="true"
+						/>
 					</CardHeader>
 					<CardContent>
-						<div className="text-2xl font-bold text-orange-600">{kpis.errors}</div>
+						<div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
+							{kpis.errors}
+						</div>
 						<p className="text-xs text-muted-foreground mt-1">{t`Unique error types`}</p>
 					</CardContent>
 				</Card>
@@ -417,21 +424,20 @@ export function ApiIngestionTab({
 												</Badge>
 											</TableCell>
 											<TableCell>{run.totalRecords}</TableCell>
-											<TableCell className="text-emerald-600 font-medium">
+											<TableCell className="text-success-foreground font-medium">
 												{run.acceptedCount}
 											</TableCell>
-											<TableCell className="text-red-600 font-medium">
-												{run.rejectedCount}
-											</TableCell>
+											<TableCell className="text-danger font-medium">{run.rejectedCount}</TableCell>
 											<TableCell>
 												<Badge
 													variant="outline"
 													className={cn(
 														run.status === "success" &&
-															"bg-emerald-100 text-emerald-700 border-emerald-200",
+															"bg-success/15 text-success-foreground border-success-border",
 														run.status === "partial" &&
-															"bg-amber-100 text-amber-700 border-amber-200",
-														run.status === "fail" && "bg-red-100 text-red-700 border-red-200",
+															"bg-warning/15 text-warning-foreground border-warning-border",
+														run.status === "fail" &&
+															"bg-danger/15 text-danger-foreground border-danger-border",
 													)}
 												>
 													{run.status}

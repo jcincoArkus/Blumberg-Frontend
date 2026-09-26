@@ -77,12 +77,15 @@ export function AddCategoryModal({ open, onClose }: AddCategoryModalProps) {
 
 				<div className="space-y-4">
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="ac-name">
-							{t`Name`} <span className="text-red-600">*</span>
+						<label
+							className="block text-sm font-medium text-foreground/85 mb-1.5"
+							htmlFor="ac-name"
+						>
+							{t`Name`} <span className="text-danger">*</span>
 						</label>
 						<input
 							id="ac-name"
-							className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+							className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 							placeholder={t`e.g. Citrus`}
 							value={name}
 							onChange={(e) => setName(e.target.value)}
@@ -91,7 +94,7 @@ export function AddCategoryModal({ open, onClose }: AddCategoryModalProps) {
 					</div>
 
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-3">{t`Color`}</label>
+						<label className="block text-sm font-medium text-foreground/85 mb-3">{t`Color`}</label>
 						<div className="flex items-center gap-2.5 flex-wrap">
 							{PRESET_COLORS.map((c) => (
 								<button
@@ -101,8 +104,8 @@ export function AddCategoryModal({ open, onClose }: AddCategoryModalProps) {
 									className="w-7 h-7 rounded-full cursor-pointer transition-transform hover:scale-110"
 									style={{
 										background: c,
-										border: color === c ? "3px solid #1a1f2e" : "2px solid transparent",
-										outline: color === c ? "2px solid #fff" : "none",
+										border: color === c ? "3px solid var(--foreground)" : "2px solid transparent",
+										outline: color === c ? "2px solid var(--card)" : "none",
 										outlineOffset: -4,
 										boxShadow: "inset 0 0 0 1px rgba(0,0,0,.1)",
 									}}
@@ -113,11 +116,11 @@ export function AddCategoryModal({ open, onClose }: AddCategoryModalProps) {
 								type="color"
 								value={color}
 								onChange={(e) => setColor(e.target.value)}
-								className="w-7 h-7 rounded-full border border-gray-200 cursor-pointer"
+								className="w-7 h-7 rounded-full border border-border cursor-pointer"
 								title={t`Custom color`}
 							/>
 						</div>
-						<div className="mt-3 flex items-center gap-2 text-xs text-gray-500">
+						<div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
 							<span
 								className="w-3.5 h-3.5 rounded-full flex-shrink-0"
 								style={{
@@ -129,7 +132,11 @@ export function AddCategoryModal({ open, onClose }: AddCategoryModalProps) {
 						</div>
 					</div>
 
-					{error && <div className="p-3 rounded bg-red-50 text-red-700 text-sm">{error}</div>}
+					{error && (
+						<div className="p-3 rounded bg-danger-subtle text-danger-foreground text-sm">
+							{error}
+						</div>
+					)}
 				</div>
 
 				<DialogFooter>

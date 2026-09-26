@@ -85,8 +85,8 @@ export function IngestionRunDetailsDrawer({
 							</CardHeader>
 							<CardContent>
 								<div className="flex items-center gap-2">
-									<CheckCircle2 className="size-5 text-emerald-600" aria-hidden="true" />
-									<p className="text-2xl font-bold text-emerald-600">{run.acceptedCount}</p>
+									<CheckCircle2 className="size-5 text-success-foreground" aria-hidden="true" />
+									<p className="text-2xl font-bold text-success-foreground">{run.acceptedCount}</p>
 								</div>
 							</CardContent>
 						</Card>
@@ -97,8 +97,8 @@ export function IngestionRunDetailsDrawer({
 							</CardHeader>
 							<CardContent>
 								<div className="flex items-center gap-2">
-									<XCircle className="size-5 text-red-600" aria-hidden="true" />
-									<p className="text-2xl font-bold text-red-600">{run.rejectedCount}</p>
+									<XCircle className="size-5 text-danger" aria-hidden="true" />
+									<p className="text-2xl font-bold text-danger">{run.rejectedCount}</p>
 								</div>
 							</CardContent>
 						</Card>
@@ -142,9 +142,12 @@ export function IngestionRunDetailsDrawer({
 							<Badge
 								variant="outline"
 								className={cn(
-									run.status === "success" && "bg-emerald-100 text-emerald-700 border-emerald-200",
-									run.status === "partial" && "bg-amber-100 text-amber-700 border-amber-200",
-									run.status === "fail" && "bg-red-100 text-red-700 border-red-200",
+									run.status === "success" &&
+										"bg-success/15 text-success-foreground border-success-border",
+									run.status === "partial" &&
+										"bg-warning/15 text-warning-foreground border-warning-border",
+									run.status === "fail" &&
+										"bg-danger/15 text-danger-foreground border-danger-border",
 								)}
 							>
 								{run.status}

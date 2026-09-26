@@ -89,11 +89,11 @@ export function SiteMap({
 	if (!token) {
 		return (
 			<div
-				className={`flex flex-col items-center justify-center gap-2 bg-gray-50 border border-dashed border-gray-300 rounded-lg text-gray-400 text-sm ${className ?? ""}`}
+				className={`flex flex-col items-center justify-center gap-2 bg-surface-muted border border-dashed border-input rounded-lg text-muted-foreground text-sm ${className ?? ""}`}
 			>
-				<MapPin size={20} className="text-gray-300" />
+				<MapPin size={20} className="text-muted-foreground/50" />
 				<span>Map unavailable — set</span>
-				<code className="text-xs bg-gray-100 px-1.5 py-0.5 rounded">VITE_MAPBOX_TOKEN</code>
+				<code className="text-xs bg-muted px-1.5 py-0.5 rounded">VITE_MAPBOX_TOKEN</code>
 				<span>to enable</span>
 			</div>
 		);
@@ -117,9 +117,9 @@ export function SiteMap({
 					<Marker latitude={activeMarker.lat} longitude={activeMarker.lng} anchor="bottom">
 						<div className="flex flex-col items-center">
 							{geocoding ? (
-								<Loader2 size={16} className="text-teal-600 animate-spin drop-shadow" />
+								<Loader2 size={16} className="text-primary animate-spin drop-shadow" />
 							) : (
-								<div className="w-3 h-3 rounded-full bg-teal-600 border-2 border-white shadow-md" />
+								<div className="w-3 h-3 rounded-full bg-primary border-2 border-card shadow-md" />
 							)}
 						</div>
 					</Marker>
@@ -129,10 +129,10 @@ export function SiteMap({
 				{markers.map((m) => (
 					<Marker key={m.id} latitude={m.coords.lat} longitude={m.coords.lng} anchor="bottom">
 						<div className="flex flex-col items-center gap-0.5">
-							<div className="px-1.5 py-0.5 rounded bg-teal-700 text-white text-[10px] font-medium shadow whitespace-nowrap max-w-[120px] truncate">
+							<div className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[10px] font-medium shadow whitespace-nowrap max-w-[120px] truncate">
 								{m.name}
 							</div>
-							<div className="w-2 h-2 rounded-full bg-teal-700 border border-white shadow" />
+							<div className="w-2 h-2 rounded-full bg-primary border border-card shadow" />
 						</div>
 					</Marker>
 				))}
@@ -145,14 +145,14 @@ export function SiteMap({
 								<Truck size={9} />
 								<span className="truncate">{m.name}</span>
 							</div>
-							<div className="w-2 h-2 rounded-full bg-amber-600 border border-white shadow" />
+							<div className="w-2 h-2 rounded-full bg-amber-600 border border-card shadow" />
 						</div>
 					</Marker>
 				))}
 			</Map>
 
 			{/* Hint overlay */}
-			<div className="absolute bottom-2 left-2 px-2 py-1 rounded bg-white/80 backdrop-blur-sm text-xs text-gray-500 pointer-events-none select-none shadow-sm border border-gray-100">
+			<div className="absolute bottom-2 left-2 px-2 py-1 rounded bg-card/80 backdrop-blur-sm text-xs text-muted-foreground pointer-events-none select-none shadow-sm border border-border">
 				{geocoding ? "Looking up location…" : (hint ?? "Click on the map to place a new site")}
 			</div>
 		</div>

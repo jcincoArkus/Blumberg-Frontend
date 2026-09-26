@@ -85,18 +85,15 @@ export function UsersGrid({
 		const configs = {
 			active: {
 				label: t`Active`,
-				className:
-					"bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400",
+				className: "bg-success/15 text-success-foreground border-success-border",
 			},
 			pending: {
 				label: t`Invite Pending`,
-				className:
-					"bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400",
+				className: "bg-warning/15 text-warning-foreground border-warning-border",
 			},
 			deactivated: {
 				label: t`Deactivated`,
-				className:
-					"bg-slate-100 text-slate-500 border-slate-200 dark:bg-slate-800 dark:text-slate-400",
+				className: "bg-muted text-muted-foreground border-border",
 			},
 		};
 		return configs[status];

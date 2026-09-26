@@ -180,9 +180,9 @@ export function UserEditorNew({
 				</DialogHeader>
 
 				{isSelfEdit && (
-					<Alert className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950">
-						<AlertTriangle className="h-4 w-4 text-amber-600" aria-hidden="true" />
-						<AlertDescription className="text-amber-800 dark:text-amber-200">
+					<Alert className="border-warning-border bg-warning-subtle">
+						<AlertTriangle className="h-4 w-4 text-warning-foreground" aria-hidden="true" />
+						<AlertDescription className="text-warning-foreground">
 							{t`You are editing your own account. Some options may be restricted.`}
 						</AlertDescription>
 					</Alert>
@@ -362,7 +362,7 @@ export function UserEditorNew({
 																		className={cn(
 																			"text-[10px] shrink-0",
 																			role.type === "managed"
-																				? "bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+																				? "bg-info-subtle text-info-foreground"
 																				: "bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
 																		)}
 																	>

@@ -406,19 +406,19 @@ export function CsvUploadTab({
 					</CardHeader>
 					<CardContent className="space-y-4">
 						<div className="grid grid-cols-2 gap-4">
-							<div className="p-4 rounded-lg border bg-emerald-50 border-emerald-200">
+							<div className="p-4 rounded-lg border bg-success-subtle border-success-border">
 								<div className="flex items-center gap-2 mb-1">
-									<CheckCircle2 className="size-5 text-emerald-600" aria-hidden="true" />
-									<p className="text-sm font-semibold text-emerald-700">{t`Accepted`}</p>
+									<CheckCircle2 className="size-5 text-success-foreground" aria-hidden="true" />
+									<p className="text-sm font-semibold text-success-foreground">{t`Accepted`}</p>
 								</div>
-								<p className="text-2xl font-bold text-emerald-700">{acceptedCount}</p>
+								<p className="text-2xl font-bold text-success-foreground">{acceptedCount}</p>
 							</div>
-							<div className="p-4 rounded-lg border bg-red-50 border-red-200">
+							<div className="p-4 rounded-lg border bg-danger-subtle border-danger-border">
 								<div className="flex items-center gap-2 mb-1">
-									<XCircle className="size-5 text-red-600" aria-hidden="true" />
-									<p className="text-sm font-semibold text-red-700">{t`Rejected`}</p>
+									<XCircle className="size-5 text-danger" aria-hidden="true" />
+									<p className="text-sm font-semibold text-danger-foreground">{t`Rejected`}</p>
 								</div>
-								<p className="text-2xl font-bold text-red-700">{rejectedCount}</p>
+								<p className="text-2xl font-bold text-danger-foreground">{rejectedCount}</p>
 							</div>
 						</div>
 
@@ -474,11 +474,11 @@ export function CsvUploadTab({
 							</div>
 							<div className="flex items-center justify-between">
 								<span className="text-sm text-muted-foreground">{t`Accepted Rows`}</span>
-								<span className="text-sm font-medium text-emerald-600">{acceptedCount}</span>
+								<span className="text-sm font-medium text-success-foreground">{acceptedCount}</span>
 							</div>
 							<div className="flex items-center justify-between">
 								<span className="text-sm text-muted-foreground">{t`Rejected Rows`}</span>
-								<span className="text-sm font-medium text-red-600">{rejectedCount}</span>
+								<span className="text-sm font-medium text-danger">{rejectedCount}</span>
 							</div>
 						</div>
 
@@ -501,15 +501,19 @@ export function CsvUploadTab({
 					</CardHeader>
 					<CardContent className="space-y-4">
 						<div className="grid grid-cols-2 gap-4">
-							<div className="p-4 rounded-lg border bg-emerald-50 border-emerald-200">
-								<p className="text-sm font-semibold text-emerald-700 mb-1">
+							<div className="p-4 rounded-lg border bg-success-subtle border-success-border">
+								<p className="text-sm font-semibold text-success-foreground mb-1">
 									{t`Accepted Rows Imported`}
 								</p>
-								<p className="text-2xl font-bold text-emerald-700">{ingestionRun.acceptedCount}</p>
+								<p className="text-2xl font-bold text-success-foreground">
+									{ingestionRun.acceptedCount}
+								</p>
 							</div>
-							<div className="p-4 rounded-lg border bg-red-50 border-red-200">
-								<p className="text-sm font-semibold text-red-700 mb-1">{t`Rejected Rows`}</p>
-								<p className="text-2xl font-bold text-red-700">{ingestionRun.rejectedCount}</p>
+							<div className="p-4 rounded-lg border bg-danger-subtle border-danger-border">
+								<p className="text-sm font-semibold text-danger-foreground mb-1">{t`Rejected Rows`}</p>
+								<p className="text-2xl font-bold text-danger-foreground">
+									{ingestionRun.rejectedCount}
+								</p>
 							</div>
 						</div>
 

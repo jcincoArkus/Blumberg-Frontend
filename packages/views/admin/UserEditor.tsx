@@ -123,9 +123,9 @@ export function UserEditor({ user, open, onOpenChange, onSave, currentUserId }: 
 				</DialogHeader>
 
 				{isSelfEdit && (
-					<Alert className="border-amber-200 bg-amber-50">
-						<AlertTriangle className="h-4 w-4 text-amber-600" aria-hidden="true" />
-						<AlertDescription className="text-amber-800">
+					<Alert className="border-warning-border bg-warning-subtle">
+						<AlertTriangle className="h-4 w-4 text-warning-foreground" aria-hidden="true" />
+						<AlertDescription className="text-warning-foreground">
 							{t`You are editing your own account. You cannot demote yourself or disable your account.`}
 						</AlertDescription>
 					</Alert>

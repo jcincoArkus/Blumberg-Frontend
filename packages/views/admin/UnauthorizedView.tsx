@@ -10,7 +10,7 @@ export function UnauthorizedView() {
 			<Card className="max-w-md">
 				<CardHeader>
 					<div className="flex items-center gap-3 mb-2">
-						<AlertCircle className="size-8 text-amber-500" aria-hidden="true" />
+						<AlertCircle className="size-8 text-warning" aria-hidden="true" />
 						<CardTitle>{t`Access Denied`}</CardTitle>
 					</div>
 					<CardDescription>{t`You don't have permission to access this page.`}</CardDescription>

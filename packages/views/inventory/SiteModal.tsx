@@ -76,12 +76,15 @@ export function SiteModal({ open, onClose, site, initialCoords, suggestedName }:
 
 				<div className="space-y-4">
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="sm-name">
-							{t`Name`} <span className="text-red-600">*</span>
+						<label
+							className="block text-sm font-medium text-foreground/85 mb-1.5"
+							htmlFor="sm-name"
+						>
+							{t`Name`} <span className="text-danger">*</span>
 						</label>
 						<input
 							id="sm-name"
-							className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+							className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 							placeholder={t`e.g. CDMX Warehouse`}
 							value={name}
 							onChange={(e) => setName(e.target.value)}
@@ -92,13 +95,13 @@ export function SiteModal({ open, onClose, site, initialCoords, suggestedName }:
 					</div>
 
 					{initialCoords && (
-						<div className="flex items-center gap-2 px-2.5 py-2 rounded-md bg-teal-50 border border-teal-100">
-							<MapPin size={13} className="text-teal-600 flex-shrink-0" />
-							<span className="text-xs text-teal-700">
+						<div className="flex items-center gap-2 px-2.5 py-2 rounded-md bg-primary/5 dark:bg-primary/15 border border-primary/20">
+							<MapPin size={13} className="text-primary flex-shrink-0" />
+							<span className="text-xs text-primary">
 								{suggestedName ? (
 									<>
 										<span className="font-medium">{suggestedName}</span>
-										<span className="text-teal-500 ml-1 font-mono">
+										<span className="text-primary ml-1 font-mono">
 											({initialCoords.lat.toFixed(4)}, {initialCoords.lng.toFixed(4)})
 										</span>
 									</>
@@ -111,7 +114,11 @@ export function SiteModal({ open, onClose, site, initialCoords, suggestedName }:
 						</div>
 					)}
 
-					{error && <div className="p-3 rounded bg-red-50 text-red-700 text-sm">{error}</div>}
+					{error && (
+						<div className="p-3 rounded bg-danger-subtle text-danger-foreground text-sm">
+							{error}
+						</div>
+					)}
 				</div>
 
 				<DialogFooter>

@@ -10,6 +10,13 @@ import {
 } from "recharts";
 
 import { t } from "~@/i18n/macro";
+import {
+	chartAxisProps,
+	chartColors,
+	chartGridProps,
+	chartLegendProps,
+	chartTooltipProps,
+} from "~@/ui";
 
 interface AlertsTrendChartProps {
 	data: Array<{
@@ -33,14 +40,14 @@ export function AlertsTrendChart({ data }: AlertsTrendChartProps) {
 	return (
 		<ResponsiveContainer width="100%" height={400}>
 			<BarChart data={data}>
-				<CartesianGrid strokeDasharray="3 3" />
-				<XAxis dataKey="date" tick={{ fontSize: 12 }} angle={-45} textAnchor="end" height={80} />
-				<YAxis tick={{ fontSize: 12 }} />
-				<Tooltip />
-				<Legend />
-				<Bar dataKey="critical" stackId="severity" fill="#ef4444" name={t`Critical`} />
-				<Bar dataKey="warning" stackId="severity" fill="#f97316" name={t`Warning`} />
-				<Bar dataKey="info" stackId="severity" fill="#3b82f6" name={t`Info`} />
+				<CartesianGrid {...chartGridProps} />
+				<XAxis {...chartAxisProps} dataKey="date" angle={-45} textAnchor="end" height={80} />
+				<YAxis {...chartAxisProps} />
+				<Tooltip {...chartTooltipProps} />
+				<Legend {...chartLegendProps} />
+				<Bar dataKey="critical" stackId="severity" fill={chartColors.danger} name={t`Critical`} />
+				<Bar dataKey="warning" stackId="severity" fill={chartColors.warning} name={t`Warning`} />
+				<Bar dataKey="info" stackId="severity" fill={chartColors.info} name={t`Info`} />
 			</BarChart>
 		</ResponsiveContainer>
 	);

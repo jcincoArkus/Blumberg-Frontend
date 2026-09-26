@@ -486,13 +486,17 @@ export const IntakeView = observer(function IntakeView() {
 		<div className="space-y-6">
 			<div className="flex flex-wrap items-start gap-4">
 				<div>
-					<h1 className="text-xl font-semibold tracking-tight text-gray-900">
+					<h1 className="text-xl font-semibold tracking-tight text-foreground">
 						{t`Receive intake`} · {poNumber}
 					</h1>
-					<p className="text-sm text-gray-600 mt-1">{t`Lots are created on save · stock increases at the selected zone`}</p>
-					{error && <div style={{ color: "#b91c1c", fontSize: 13, marginTop: 8 }}>{error}</div>}
+					<p className="text-sm text-muted-foreground mt-1">{t`Lots are created on save · stock increases at the selected zone`}</p>
+					{error && (
+						<div style={{ color: "var(--danger-foreground)", fontSize: 13, marginTop: 8 }}>
+							{error}
+						</div>
+					)}
 					{draftIntakeId && (
-						<div className="flex items-center gap-2 mt-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800">
+						<div className="flex items-center gap-2 mt-2 px-3 py-2 bg-info-subtle border border-info-border rounded text-xs text-info-foreground">
 							<Info size={13} className="flex-shrink-0" />
 							<span>
 								{t`Reader session active`} · {t`Draft`}{" "}
@@ -530,27 +534,27 @@ export const IntakeView = observer(function IntakeView() {
 
 			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 auto-rows-max">
 				<div className="lg:col-span-2 space-y-0 min-w-0">
-					<div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+					<div className="bg-card border border-border rounded-lg overflow-hidden">
 						{/* STEP 1 */}
-						<div className="border-b border-gray-100 p-5">
+						<div className="border-b border-border p-5">
 							<div className="flex items-center gap-3 mb-4">
-								<div className="w-6 h-6 rounded-full bg-teal-700 text-white flex items-center justify-center text-xs font-semibold">
+								<div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-semibold">
 									1
 								</div>
 								<div>
-									<div className="text-sm font-semibold text-gray-900">{t`Shipment details`}</div>
-									<div className="text-xs text-gray-500">{t`Where and when the goods arrived`}</div>
+									<div className="text-sm font-semibold text-foreground">{t`Shipment details`}</div>
+									<div className="text-xs text-muted-foreground">{t`Where and when the goods arrived`}</div>
 								</div>
 							</div>
 							<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 								<div>
 									<label
-										className="block text-xs font-medium text-gray-700 mb-1.5"
+										className="block text-xs font-medium text-foreground/85 mb-1.5"
 										htmlFor="intake-supplier"
 									>{t`Supplier`}</label>
 									<select
 										id="intake-supplier"
-										className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+										className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 										value={supplier}
 										onChange={(e) => setSupplier(e.target.value)}
 									>
@@ -564,36 +568,36 @@ export const IntakeView = observer(function IntakeView() {
 								</div>
 								<div>
 									<label
-										className="block text-xs font-medium text-gray-700 mb-1.5"
+										className="block text-xs font-medium text-foreground/85 mb-1.5"
 										htmlFor="intake-po"
 									>{t`PO / Reference`}</label>
 									<input
 										id="intake-po"
-										className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+										className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 										value={poNumber}
 										onChange={(e) => setPoNumber(e.target.value)}
 									/>
 								</div>
 								<div>
 									<label
-										className="block text-xs font-medium text-gray-700 mb-1.5"
+										className="block text-xs font-medium text-foreground/85 mb-1.5"
 										htmlFor="intake-vehicle"
 									>{t`Vehicle / Driver`}</label>
 									<input
 										id="intake-vehicle"
-										className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+										className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 										value={vehicle}
 										onChange={(e) => setVehicle(e.target.value)}
 									/>
 								</div>
 								<div>
 									<label
-										className="block text-xs font-medium text-gray-700 mb-1.5"
+										className="block text-xs font-medium text-foreground/85 mb-1.5"
 										htmlFor="intake-site"
 									>{t`Site`}</label>
 									<select
 										id="intake-site"
-										className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+										className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 										value={site}
 										onChange={(e) => {
 											setSite(e.target.value);
@@ -611,12 +615,12 @@ export const IntakeView = observer(function IntakeView() {
 								</div>
 								<div>
 									<label
-										className="block text-xs font-medium text-gray-700 mb-1.5"
+										className="block text-xs font-medium text-foreground/85 mb-1.5"
 										htmlFor="intake-zone"
 									>{t`Receiving zone`}</label>
 									<select
 										id="intake-zone"
-										className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+										className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 										value={zone}
 										onChange={(e) => setZone(e.target.value)}
 									>
@@ -628,27 +632,27 @@ export const IntakeView = observer(function IntakeView() {
 								</div>
 								<div>
 									<label
-										className="block text-xs font-medium text-gray-700 mb-1.5"
+										className="block text-xs font-medium text-foreground/85 mb-1.5"
 										htmlFor="intake-temp"
 									>{t`Cold-chain temp °C`}</label>
 									<input
 										id="intake-temp"
-										className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+										className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 										type="number"
 										step="0.1"
 										value={tempCheck}
 										onChange={(e) => setTempCheck(e.target.value)}
 									/>
-									<div className="text-xs text-gray-500 mt-0.5">{t`Target ≤ 6 °C for refrigerated lots`}</div>
+									<div className="text-xs text-muted-foreground mt-0.5">{t`Target ≤ 6 °C for refrigerated lots`}</div>
 								</div>
 								<div>
 									<label
-										className="block text-xs font-medium text-gray-700 mb-1.5"
+										className="block text-xs font-medium text-foreground/85 mb-1.5"
 										htmlFor="intake-date"
 									>{t`Arrival date`}</label>
 									<input
 										id="intake-date"
-										className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+										className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 										type="date"
 										value={arrivalDate}
 										onChange={(e) => setArrivalDate(e.target.value)}
@@ -656,12 +660,12 @@ export const IntakeView = observer(function IntakeView() {
 								</div>
 								<div>
 									<label
-										className="block text-xs font-medium text-gray-700 mb-1.5"
+										className="block text-xs font-medium text-foreground/85 mb-1.5"
 										htmlFor="intake-time"
 									>{t`Arrival time`}</label>
 									<input
 										id="intake-time"
-										className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+										className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 										type="time"
 										value={arrivalTime}
 										onChange={(e) => setArrivalTime(e.target.value)}
@@ -669,12 +673,12 @@ export const IntakeView = observer(function IntakeView() {
 								</div>
 								<div>
 									<label
-										className="block text-xs font-medium text-gray-700 mb-1.5"
+										className="block text-xs font-medium text-foreground/85 mb-1.5"
 										htmlFor="intake-by"
 									>{t`Received by`}</label>
 									<input
 										id="intake-by"
-										className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+										className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 										value={receivedBy}
 										onChange={(e) => setReceivedBy(e.target.value)}
 									/>
@@ -683,14 +687,14 @@ export const IntakeView = observer(function IntakeView() {
 						</div>
 
 						{/* STEP 2 */}
-						<div className="border-b border-gray-100 p-5">
+						<div className="border-b border-border p-5">
 							<div className="flex items-center gap-3 mb-4">
-								<div className="w-6 h-6 rounded-full bg-teal-700 text-white flex items-center justify-center text-xs font-semibold">
+								<div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-semibold">
 									2
 								</div>
 								<div>
-									<div className="text-sm font-semibold text-gray-900">{t`Line items`}</div>
-									<div className="text-xs text-gray-500">
+									<div className="text-sm font-semibold text-foreground">{t`Line items`}</div>
+									<div className="text-xs text-muted-foreground">
 										{plural(lines.length, { one: "# product", other: "# products" })} ·{" "}
 										{totalKg.toFixed(1)} kg {t`total`}
 									</div>
@@ -701,22 +705,22 @@ export const IntakeView = observer(function IntakeView() {
 								<table className="w-full border-collapse text-xs">
 									<thead>
 										<tr>
-											<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-100">{t`Product`}</th>
-											<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-100 w-16">{t`Qty`}</th>
-											<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-100 w-20">{t`Unit`}</th>
-											<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-100 w-28">{t`Cost / unit`}</th>
-											<th className="text-right px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-100 w-24">{t`Line total`}</th>
-											<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-100 w-28">{t`≈ kg equiv.`}</th>
-											<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-100 w-28">{t`Shelf life`}</th>
+											<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border">{t`Product`}</th>
+											<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border w-16">{t`Qty`}</th>
+											<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border w-20">{t`Unit`}</th>
+											<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border w-28">{t`Cost / unit`}</th>
+											<th className="text-right px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border w-24">{t`Line total`}</th>
+											<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border w-28">{t`≈ kg equiv.`}</th>
+											<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border w-28">{t`Shelf life`}</th>
 											<th className="w-8" />
 										</tr>
 									</thead>
 									<tbody>
 										{enriched.map((l) => (
-											<tr key={l.id} className="border-b border-gray-100">
+											<tr key={l.id} className="border-b border-border">
 												<td className="px-3 py-2">
 													<select
-														className="h-6 px-2 rounded border border-gray-200 bg-white text-xs w-full outline-none focus:border-teal-500"
+														className="h-6 px-2 rounded border border-input bg-card text-foreground text-xs w-full outline-none focus:border-ring"
 														value={l.productId}
 														onChange={(e) => {
 															const p = vm.productById(e.target.value);
@@ -733,7 +737,7 @@ export const IntakeView = observer(function IntakeView() {
 												</td>
 												<td className="px-3 py-2">
 													<NumericCellInput
-														className="h-6 px-2 rounded border border-gray-200 bg-white text-xs w-full text-right outline-none focus:border-teal-500 font-mono"
+														className="h-6 px-2 rounded border border-input bg-card text-foreground text-xs w-full text-right outline-none focus:border-ring font-mono"
 														min="0"
 														ariaLabel={t`Qty`}
 														value={l.qty}
@@ -742,7 +746,7 @@ export const IntakeView = observer(function IntakeView() {
 												</td>
 												<td className="px-3 py-2">
 													<select
-														className="h-6 px-2 rounded border border-gray-200 bg-white text-xs w-full outline-none focus:border-teal-500"
+														className="h-6 px-2 rounded border border-input bg-card text-foreground text-xs w-full outline-none focus:border-ring"
 														value={l.unit}
 														onChange={(e) => updateLine(l.id, "unit", e.target.value as IntakeUnit)}
 													>
@@ -753,7 +757,7 @@ export const IntakeView = observer(function IntakeView() {
 												</td>
 												<td className="px-3 py-2">
 													<NumericCellInput
-														className="h-6 px-2 rounded border border-gray-200 bg-white text-xs w-full text-right outline-none focus:border-teal-500 font-mono"
+														className="h-6 px-2 rounded border border-input bg-card text-foreground text-xs w-full text-right outline-none focus:border-ring font-mono"
 														step="0.5"
 														min="0"
 														ariaLabel={t`Cost / unit`}
@@ -761,19 +765,21 @@ export const IntakeView = observer(function IntakeView() {
 														onValueChange={(n) => updateLine(l.id, "cost", n)}
 													/>
 												</td>
-												<td className="px-3 py-2 text-right text-gray-900 font-mono font-medium">
+												<td className="px-3 py-2 text-right text-foreground font-mono font-medium">
 													{fmtMoney(l.total)}
 												</td>
-												<td className="px-3 py-2 text-gray-600 font-mono">
+												<td className="px-3 py-2 text-muted-foreground font-mono">
 													{l.kgEquiv != null ? `${l.kgEquiv.toFixed(1)} kg` : "—"}
 													{l.unit === "box" && l.p.kgPerBox && (
-														<div className="text-xs text-gray-500">{l.p.kgPerBox} kg/box</div>
+														<div className="text-xs text-muted-foreground">
+															{l.p.kgPerBox} kg/box
+														</div>
 													)}
 												</td>
 												<td className="px-3 py-2">
-													<div className="flex items-center gap-1 text-gray-700 font-mono">
+													<div className="flex items-center gap-1 text-foreground/85 font-mono">
 														<Clock size={12} /> {l.p.shelfLife}d
-														<span className="text-gray-500 text-xs">
+														<span className="text-muted-foreground text-xs">
 															· {t`exp`} {fmtDateShort(addDays(new Date(), l.p.shelfLife))}
 														</span>
 													</div>
@@ -781,7 +787,7 @@ export const IntakeView = observer(function IntakeView() {
 												<td className="px-3 py-2">
 													<button
 														type="button"
-														className="p-1 hover:bg-gray-100 rounded"
+														className="p-1 hover:bg-muted rounded"
 														onClick={() => removeLine(l.id)}
 													>
 														<X size={12} />
@@ -820,28 +826,28 @@ export const IntakeView = observer(function IntakeView() {
 						</div>
 
 						{/* STEP 3 */}
-						<div className="border-b border-gray-100 p-5">
+						<div className="border-b border-border p-5">
 							<div className="flex items-center gap-3 mb-4">
-								<div className="w-6 h-6 rounded-full bg-teal-700 text-white flex items-center justify-center text-xs font-semibold">
+								<div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-semibold">
 									3
 								</div>
 								<div>
-									<div className="text-sm font-semibold text-gray-900">{t`Lot codes`}</div>
-									<div className="text-xs text-gray-500">{t`Auto-generated · override if supplier provided codes`}</div>
+									<div className="text-sm font-semibold text-foreground">{t`Lot codes`}</div>
+									<div className="text-xs text-muted-foreground">{t`Auto-generated · override if supplier provided codes`}</div>
 								</div>
 							</div>
 							<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 								{enriched.map((l) => {
 									return (
 										<div key={l.id}>
-											<label className="block text-xs font-medium text-gray-700 mb-1.5 flex justify-between">
+											<label className="block text-xs font-medium text-foreground/85 mb-1.5 flex justify-between">
 												<span>{l.p.name}</span>
-												<span className="text-gray-500 font-normal">
+												<span className="text-muted-foreground font-normal">
 													{l.qty} {l.unit}
 												</span>
 											</label>
 											<input
-												className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full font-mono outline-none focus:border-teal-500"
+												className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full font-mono outline-none focus:border-ring"
 												value={lotCodes[l.id] || ""}
 												onChange={(e) => setLotCodes((lc) => ({ ...lc, [l.id]: e.target.value }))}
 											/>
@@ -855,63 +861,65 @@ export const IntakeView = observer(function IntakeView() {
 
 				{/* SUMMARY */}
 				<div className="sticky top-0">
-					<div className="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
-						<h3 className="text-sm font-semibold text-gray-900">{t`Receipt summary`}</h3>
+					<div className="bg-card border border-border rounded-lg p-5 space-y-4">
+						<h3 className="text-sm font-semibold text-foreground">{t`Receipt summary`}</h3>
 
 						<div className="space-y-2 text-sm">
 							<div className="flex justify-between">
-								<span className="text-gray-600">{t`Lines`}</span>
-								<span className="font-medium text-gray-900">{lines.length}</span>
+								<span className="text-muted-foreground">{t`Lines`}</span>
+								<span className="font-medium text-foreground">{lines.length}</span>
 							</div>
 							<div className="flex justify-between">
-								<span className="text-gray-600">{t`Units total`}</span>
-								<span className="font-medium text-gray-900">
+								<span className="text-muted-foreground">{t`Units total`}</span>
+								<span className="font-medium text-foreground">
 									{lines.reduce((s, l) => s + l.qty, 0).toLocaleString()}
 								</span>
 							</div>
 							<div className="flex justify-between">
-								<span className="text-gray-600">{t`kg equivalent`}</span>
-								<span className="font-medium text-gray-900 font-mono">{totalKg.toFixed(1)} kg</span>
+								<span className="text-muted-foreground">{t`kg equivalent`}</span>
+								<span className="font-medium text-foreground font-mono">
+									{totalKg.toFixed(1)} kg
+								</span>
 							</div>
 						</div>
 
-						<div className="border-t border-gray-100 pt-3 space-y-2 text-sm">
+						<div className="border-t border-border pt-3 space-y-2 text-sm">
 							<div className="flex justify-between">
-								<span className="text-gray-600">{t`Subtotal`}</span>
-								<span className="text-gray-900">{fmtMoney(subtotal)}</span>
+								<span className="text-muted-foreground">{t`Subtotal`}</span>
+								<span className="text-foreground">{fmtMoney(subtotal)}</span>
 							</div>
 							<div className="flex justify-between">
-								<span className="text-gray-600">{t`Tax (16%)`}</span>
-								<span className="text-gray-900">{fmtMoney(tax)}</span>
+								<span className="text-muted-foreground">{t`Tax (16%)`}</span>
+								<span className="text-foreground">{fmtMoney(tax)}</span>
 							</div>
-							<div className="flex justify-between border-t border-gray-100 pt-2">
-								<span className="font-semibold text-gray-900">{t`Total cost`}</span>
-								<span className="font-semibold text-teal-700 text-base">{fmtMoney(grand)}</span>
+							<div className="flex justify-between border-t border-border pt-2">
+								<span className="font-semibold text-foreground">{t`Total cost`}</span>
+								<span className="font-semibold text-primary text-base">{fmtMoney(grand)}</span>
 							</div>
 						</div>
 
-						<div className="bg-green-50 border border-green-200 rounded-lg p-3">
+						<div className="bg-success-subtle border border-success-border rounded-lg p-3">
 							<div className="flex items-start gap-2.5">
-								<Info size={14} className="text-green-700 flex-shrink-0 mt-0.5" />
+								<Info size={14} className="text-success-foreground flex-shrink-0 mt-0.5" />
 								<div className="text-xs">
-									<div className="font-semibold text-green-900 mb-0.5">{t`FIFO will route output`}</div>
-									<div className="text-green-800">{fifoMessage}</div>
+									<div className="font-semibold text-success-foreground mb-0.5">{t`FIFO will route output`}</div>
+									<div className="text-success-foreground">{fifoMessage}</div>
 								</div>
 							</div>
 						</div>
 
-						<div className="bg-gray-50 rounded-lg p-3">
-							<div className="text-xs font-semibold text-gray-900 mb-2">{t`Cold-chain check`}</div>
+						<div className="bg-surface-muted rounded-lg p-3">
+							<div className="text-xs font-semibold text-foreground mb-2">{t`Cold-chain check`}</div>
 							<div className="flex items-center justify-between gap-2">
-								<div className="flex items-center gap-2 text-xs text-gray-700">
+								<div className="flex items-center gap-2 text-xs text-foreground/85">
 									<Snowflake size={13} /> {tempCheck || "—"} °C —{" "}
 									{tempOk ? t`within tolerance` : t`above 6 °C target`}
 								</div>
 								<span
 									className={
 										tempOk
-											? "px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium"
-											: "px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-medium"
+											? "px-2 py-1 bg-success/15 text-success-foreground rounded-full text-xs font-medium"
+											: "px-2 py-1 bg-warning/15 text-warning-foreground rounded-full text-xs font-medium"
 									}
 								>
 									{tempOk ? t`OK` : t`Check`}

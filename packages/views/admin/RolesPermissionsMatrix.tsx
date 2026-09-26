@@ -44,9 +44,16 @@ export function RolesPermissionsMatrix({ rolePermissions }: RolesPermissionsMatr
 
 	const getRoleBadge = (role: UserRole) => {
 		const config = {
-			admin: { label: t`Admin`, className: "bg-purple-100 text-purple-700 border-purple-200" },
-			operator: { label: t`Operator`, className: "bg-blue-100 text-blue-700 border-blue-200" },
-			viewer: { label: t`Viewer`, className: "bg-slate-100 text-slate-700 border-slate-200" },
+			admin: {
+				label: t`Admin`,
+				className:
+					"bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-800",
+			},
+			operator: {
+				label: t`Operator`,
+				className: "bg-info/15 text-info-foreground border-info-border",
+			},
+			viewer: { label: t`Viewer`, className: "bg-muted text-foreground/85 border-border" },
 		};
 		const cfg = config[role];
 		return (
@@ -84,7 +91,7 @@ export function RolesPermissionsMatrix({ rolePermissions }: RolesPermissionsMatr
 														<Badge
 															key={action}
 															variant="outline"
-															className="text-xs bg-emerald-50 text-emerald-700 border-emerald-200"
+															className="text-xs bg-success-subtle text-success-foreground border-success-border"
 														>
 															<Check className="size-3 mr-0.5" aria-hidden="true" />
 															{actionLabels[action]}

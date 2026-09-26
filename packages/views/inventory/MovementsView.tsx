@@ -125,19 +125,19 @@ export const MovementsView = observer(function MovementsView() {
 	const filterTypes: InvMovementType[] = ["intake", "output", "waste", "adjustment", "transfer"];
 
 	const typeColorMap: Record<InvMovementType, string> = {
-		intake: "bg-green-50 text-green-700",
-		output: "bg-blue-50 text-blue-700",
-		waste: "bg-red-50 text-red-700",
-		adjustment: "bg-amber-50 text-amber-700",
-		transfer: "bg-gray-100 text-gray-700",
+		intake: "bg-success-subtle text-success-foreground",
+		output: "bg-info-subtle text-info-foreground",
+		waste: "bg-danger-subtle text-danger-foreground",
+		adjustment: "bg-warning-subtle text-warning-foreground",
+		transfer: "bg-muted text-foreground/85",
 	};
 
 	return (
 		<div className="space-y-6">
 			<div className="flex flex-wrap items-start gap-4">
 				<div>
-					<h1 className="text-xl font-semibold tracking-tight text-gray-900">{t`Movements`}</h1>
-					<p className="text-sm text-gray-600 mt-1">{t`Every intake, sale, waste mark, adjustment and transfer · audit trail`}</p>
+					<h1 className="text-xl font-semibold tracking-tight text-foreground">{t`Movements`}</h1>
+					<p className="text-sm text-muted-foreground mt-1">{t`Every intake, sale, waste mark, adjustment and transfer · audit trail`}</p>
 				</div>
 				<div className="ml-auto flex items-center gap-2">
 					<Button variant="outline" size="sm">
@@ -154,27 +154,30 @@ export const MovementsView = observer(function MovementsView() {
 					className={cn(
 						"p-3 rounded-lg border transition-colors cursor-pointer text-left",
 						filter === "all"
-							? "bg-teal-700 border-teal-700 text-white"
-							: "bg-white border-gray-200 hover:border-teal-500",
+							? "bg-primary border-primary text-primary-foreground"
+							: "bg-card border-border hover:border-primary",
 					)}
 					onClick={() => setFilter("all")}
 				>
 					<div
 						className={cn(
 							"text-xs font-medium",
-							filter === "all" ? "text-white/85" : "text-gray-600",
+							filter === "all" ? "text-primary-foreground/85" : "text-muted-foreground",
 						)}
 					>{t`All movements`}</div>
 					<div
 						className={cn(
 							"text-xl font-semibold mt-1",
-							filter === "all" ? "text-white" : "text-gray-900",
+							filter === "all" ? "text-primary-foreground" : "text-foreground",
 						)}
 					>
 						{vm.movements.length}
 					</div>
 					<div
-						className={cn("text-xs mt-1", filter === "all" ? "text-white/70" : "text-gray-500")}
+						className={cn(
+							"text-xs mt-1",
+							filter === "all" ? "text-primary-foreground/70" : "text-muted-foreground",
+						)}
 					>{t`last 7 days`}</div>
 				</button>
 				{filterTypes.map((type) => {
@@ -192,15 +195,15 @@ export const MovementsView = observer(function MovementsView() {
 							className={cn(
 								"p-3 rounded-lg border transition-colors cursor-pointer text-left",
 								filter === type
-									? "bg-teal-700 border-teal-700 text-white"
-									: "bg-white border-gray-200 hover:border-teal-500",
+									? "bg-primary border-primary text-primary-foreground"
+									: "bg-card border-border hover:border-primary",
 							)}
 							onClick={() => setFilter(type)}
 						>
 							<div
 								className={cn(
 									"text-xs font-medium flex items-center gap-1",
-									filter === type ? "text-white/85" : "text-gray-600",
+									filter === type ? "text-primary-foreground/85" : "text-muted-foreground",
 								)}
 							>
 								<Icn size={12} /> {typeLabel(type)}
@@ -208,13 +211,16 @@ export const MovementsView = observer(function MovementsView() {
 							<div
 								className={cn(
 									"text-xl font-semibold mt-1",
-									filter === type ? "text-white" : "text-gray-900",
+									filter === type ? "text-primary-foreground" : "text-foreground",
 								)}
 							>
 								{counts[type]}
 							</div>
 							<div
-								className={cn("text-xs mt-1", filter === type ? "text-white/70" : "text-gray-500")}
+								className={cn(
+									"text-xs mt-1",
+									filter === type ? "text-primary-foreground/70" : "text-muted-foreground",
+								)}
 							>
 								{subText[type]}
 							</div>
@@ -224,33 +230,33 @@ export const MovementsView = observer(function MovementsView() {
 			</div>
 
 			{vm.isLoading ? (
-				<div className="bg-white border border-gray-200 rounded-lg p-10 text-center text-gray-400 text-sm">
+				<div className="bg-card border border-border rounded-lg p-10 text-center text-muted-foreground text-sm">
 					{t`Loading movements…`}
 				</div>
 			) : (
-				<div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+				<div className="bg-card border border-border rounded-lg overflow-hidden">
 					<div className="overflow-x-auto">
 						<table className="w-full border-collapse text-xs">
 							<thead>
 								<tr>
-									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200 w-24">{t`Time`}</th>
-									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200 w-28">{t`Type`}</th>
-									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200">{t`Product`}</th>
-									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200 w-28">{t`Lot`}</th>
-									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200">{t`Site`}</th>
-									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200">{t`By`}</th>
-									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200">{t`Reference`}</th>
-									<th className="text-right px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200 w-20">{t`Qty`}</th>
+									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border w-24">{t`Time`}</th>
+									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border w-28">{t`Type`}</th>
+									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border">{t`Product`}</th>
+									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border w-28">{t`Lot`}</th>
+									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border">{t`Site`}</th>
+									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border">{t`By`}</th>
+									<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border">{t`Reference`}</th>
+									<th className="text-right px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border w-20">{t`Qty`}</th>
 								</tr>
 							</thead>
 							<tbody>
 								{grouped.map((row, i) => {
 									if ("isHeader" in row && row.isHeader) {
 										return (
-											<tr key={`d-${i}`} className="bg-gray-50">
+											<tr key={`d-${i}`} className="bg-surface-muted">
 												<td
 													colSpan={8}
-													className="px-3 py-2 text-xs font-semibold uppercase tracking-wide text-gray-500 border-b border-t border-gray-200"
+													className="px-3 py-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground border-b border-t border-border"
 												>
 													{dayLabel(row.day, row.daysAgo)}
 												</td>
@@ -268,8 +274,8 @@ export const MovementsView = observer(function MovementsView() {
 									const isPos = m.type === "intake" || (m.type === "adjustment" && m.qty > 0);
 									const sign = isNeg ? "-" : isPos ? "+" : "";
 									return (
-										<tr key={m.id} className="hover:bg-gray-50 border-b border-gray-100">
-											<td className="px-3 py-2.5 text-gray-700 font-mono">
+										<tr key={m.id} className="hover:bg-muted border-b border-border">
+											<td className="px-3 py-2.5 text-foreground/85 font-mono">
 												<div>{fmtTime(m.at)}</div>
 											</td>
 											<td className="px-3 py-2.5">
@@ -283,26 +289,34 @@ export const MovementsView = observer(function MovementsView() {
 												</span>
 											</td>
 											<td className="px-3 py-2.5">
-												<div className="font-medium text-gray-900">{p.name}</div>
-												<div className="text-xs text-gray-500 font-mono mt-0.5">{p.sku}</div>
+												<div className="font-medium text-foreground">{p.name}</div>
+												<div className="text-xs text-muted-foreground font-mono mt-0.5">
+													{p.sku}
+												</div>
 											</td>
-											<td className="px-3 py-2.5 text-gray-700 font-mono">{m.lotId}</td>
-											<td className="px-3 py-2.5 text-gray-700">
-												<div className="text-gray-900 font-medium">{site.name.split(" · ")[0]}</div>
+											<td className="px-3 py-2.5 text-foreground/85 font-mono">{m.lotId}</td>
+											<td className="px-3 py-2.5 text-foreground/85">
+												<div className="text-foreground font-medium">
+													{site.name.split(" · ")[0]}
+												</div>
 											</td>
-											<td className="px-3 py-2.5 text-gray-700">{m.by}</td>
-											<td className="px-3 py-2.5 text-gray-600 text-xs">{m.note}</td>
+											<td className="px-3 py-2.5 text-foreground/85">{m.by}</td>
+											<td className="px-3 py-2.5 text-muted-foreground text-xs">{m.note}</td>
 											<td className="px-3 py-2.5 text-right font-mono">
 												<span
 													className={cn(
 														"font-medium",
-														isNeg ? "text-red-600" : isPos ? "text-green-600" : "text-gray-900",
+														isNeg
+															? "text-danger"
+															: isPos
+																? "text-success-foreground"
+																: "text-foreground",
 													)}
 												>
 													{sign}
 													{Math.abs(m.qty).toLocaleString()}
 												</span>
-												<span className="text-gray-500 font-normal ml-1">{m.unit}</span>
+												<span className="text-muted-foreground font-normal ml-1">{m.unit}</span>
 											</td>
 										</tr>
 									);

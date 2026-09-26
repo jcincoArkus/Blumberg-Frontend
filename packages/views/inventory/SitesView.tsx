@@ -103,10 +103,10 @@ export const SitesView = observer(function SitesView() {
 			<div className="space-y-8">
 				{/* Page header */}
 				<div>
-					<h1 className="text-xl font-semibold tracking-tight text-gray-900">
+					<h1 className="text-xl font-semibold tracking-tight text-foreground">
 						{t`Locations & Suppliers`}
 					</h1>
-					<p className="text-sm text-gray-600 mt-1">
+					<p className="text-sm text-muted-foreground mt-1">
 						{t`Manage warehouse sites, storage zones, and product suppliers`}
 					</p>
 				</div>
@@ -114,20 +114,20 @@ export const SitesView = observer(function SitesView() {
 				{/* ── Sites & Zones ── */}
 				<div className="space-y-3">
 					<div className="flex items-center gap-3">
-						<h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+						<h2 className="text-sm font-semibold text-foreground/85 uppercase tracking-wide">
 							{t`Sites & Zones`}
 						</h2>
-						<div className="flex-1 h-px bg-gray-200" />
+						<div className="flex-1 h-px bg-border" />
 						<div className="flex items-center gap-2">
-							<span className="text-xs text-gray-500">{t`Map places:`}</span>
+							<span className="text-xs text-muted-foreground">{t`Map places:`}</span>
 							<button
 								type="button"
 								onClick={() => setMapPickMode("site")}
 								className={cn(
 									"flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors",
 									mapPickMode === "site"
-										? "bg-teal-600 text-white border-teal-600"
-										: "bg-white text-gray-600 border-gray-200 hover:bg-gray-50",
+										? "bg-primary text-primary-foreground border-primary"
+										: "bg-card text-muted-foreground border-border hover:bg-muted",
 								)}
 							>
 								<MapPin size={11} /> {t`Site`}
@@ -138,8 +138,8 @@ export const SitesView = observer(function SitesView() {
 								className={cn(
 									"flex items-center gap-1 px-2 py-1 rounded text-xs font-medium border transition-colors",
 									mapPickMode === "supplier"
-										? "bg-amber-500 text-white border-amber-500"
-										: "bg-white text-gray-600 border-gray-200 hover:bg-gray-50",
+										? "bg-warning text-white border-warning dark:text-background"
+										: "bg-card text-muted-foreground border-border hover:bg-muted",
 								)}
 							>
 								<Truck size={11} /> {t`Supplier`}
@@ -151,7 +151,7 @@ export const SitesView = observer(function SitesView() {
 					</div>
 
 					{sitesError && (
-						<div className="p-3 rounded bg-red-50 text-red-700 text-sm border border-red-100">
+						<div className="p-3 rounded bg-danger-subtle text-danger-foreground text-sm border border-danger-border">
 							{sitesError}
 						</div>
 					)}
@@ -165,24 +165,24 @@ export const SitesView = observer(function SitesView() {
 								? t`Click on the map to place a supplier`
 								: t`Click on the map to place a new site`
 						}
-						className="h-64 border border-gray-200"
+						className="h-64 border border-border"
 					/>
 
 					<div className="flex gap-4 items-start">
 						{/* Sites list */}
-						<div className="w-72 flex-shrink-0 bg-white border border-gray-200 rounded-lg overflow-hidden">
-							<div className="px-3.5 py-2.5 border-b border-gray-100 bg-gray-50">
-								<span className="text-xs font-semibold tracking-wide uppercase text-gray-500">
+						<div className="w-72 flex-shrink-0 bg-card border border-border rounded-lg overflow-hidden">
+							<div className="px-3.5 py-2.5 border-b border-border bg-surface-muted">
+								<span className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">
 									{t`Sites`}
 								</span>
 							</div>
 
 							{vm.isLoading ? (
-								<div className="p-8 text-center text-gray-400 text-sm">{t`Loading…`}</div>
+								<div className="p-8 text-center text-muted-foreground text-sm">{t`Loading…`}</div>
 							) : vm.sites.length === 0 ? (
-								<div className="p-8 text-center text-gray-400 text-sm">{t`No sites yet.`}</div>
+								<div className="p-8 text-center text-muted-foreground text-sm">{t`No sites yet.`}</div>
 							) : (
-								<ul className="divide-y divide-gray-100">
+								<ul className="divide-y divide-border">
 									{vm.sites.map((site) => {
 										const isSelected = site.id === selectedSiteId;
 										const isConfirmingDelete = deletingSiteId === site.id;
@@ -190,20 +190,20 @@ export const SitesView = observer(function SitesView() {
 										return (
 											<li key={site.id}>
 												{isConfirmingDelete ? (
-													<div className="px-3.5 py-3 flex items-center gap-2 bg-red-50">
-														<span className="text-sm text-red-700 flex-1">
+													<div className="px-3.5 py-3 flex items-center gap-2 bg-danger-subtle">
+														<span className="text-sm text-danger-foreground flex-1">
 															{t`Delete`} <strong>{site.name}</strong>?
 														</span>
 														<button
 															type="button"
-															className="text-xs font-medium text-red-700 hover:text-red-900 underline"
+															className="text-xs font-medium text-danger-foreground hover:text-danger-foreground underline"
 															onClick={() => void handleDeleteSite(site)}
 														>
 															{t`Confirm`}
 														</button>
 														<button
 															type="button"
-															className="text-xs text-gray-500 hover:text-gray-700"
+															className="text-xs text-muted-foreground hover:text-foreground"
 															onClick={() => setDeletingSiteId(null)}
 														>
 															{t`Cancel`}
@@ -216,33 +216,33 @@ export const SitesView = observer(function SitesView() {
 														className={cn(
 															"w-full text-left px-3.5 py-3 flex items-center gap-3 group transition-colors",
 															isSelected
-																? "bg-teal-50 border-l-2 border-teal-600"
-																: "hover:bg-gray-50 border-l-2 border-transparent",
+																? "bg-primary/5 dark:bg-primary/15 border-l-2 border-primary"
+																: "hover:bg-muted border-l-2 border-transparent",
 														)}
 													>
 														<MapPin
 															size={14}
 															className={cn(
 																"flex-shrink-0",
-																isSelected ? "text-teal-600" : "text-gray-400",
+																isSelected ? "text-primary" : "text-muted-foreground",
 															)}
 														/>
 														<span
 															className={cn(
 																"flex-1 text-sm font-medium truncate",
-																isSelected ? "text-teal-900" : "text-gray-800",
+																isSelected ? "text-teal-900 dark:text-primary" : "text-foreground",
 															)}
 														>
 															{site.name}
 														</span>
-														<span className="text-xs text-gray-400 font-mono tabular-nums">
+														<span className="text-xs text-muted-foreground font-mono tabular-nums">
 															{site.zones.length}
 														</span>
 														<span className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
 															<span
 																role="button"
 																tabIndex={0}
-																className="p-1 rounded hover:bg-gray-200 text-gray-500 hover:text-gray-700"
+																className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
 																onClick={(e) => {
 																	e.stopPropagation();
 																	setSiteModal({ mode: "edit", site });
@@ -260,7 +260,7 @@ export const SitesView = observer(function SitesView() {
 															<span
 																role="button"
 																tabIndex={0}
-																className="p-1 rounded hover:bg-red-100 text-gray-500 hover:text-red-600"
+																className="p-1 rounded hover:bg-danger/15 text-muted-foreground hover:text-danger"
 																onClick={(e) => {
 																	e.stopPropagation();
 																	setDeletingSiteId(site.id);
@@ -286,9 +286,9 @@ export const SitesView = observer(function SitesView() {
 						</div>
 
 						{/* Zones panel */}
-						<div className="flex-1 bg-white border border-gray-200 rounded-lg overflow-hidden">
-							<div className="px-3.5 py-2.5 border-b border-gray-100 bg-gray-50 flex items-center gap-2">
-								<span className="text-xs font-semibold tracking-wide uppercase text-gray-500">
+						<div className="flex-1 bg-card border border-border rounded-lg overflow-hidden">
+							<div className="px-3.5 py-2.5 border-b border-border bg-surface-muted flex items-center gap-2">
+								<span className="text-xs font-semibold tracking-wide uppercase text-muted-foreground">
 									{selectedSite ? `${selectedSite.name} · ${t`Zones`}` : t`Zones`}
 								</span>
 								{selectedSite && (
@@ -304,47 +304,47 @@ export const SitesView = observer(function SitesView() {
 							</div>
 
 							{!selectedSite ? (
-								<div className="p-10 text-center text-gray-400 text-sm">
+								<div className="p-10 text-center text-muted-foreground text-sm">
 									{t`Select a site to manage its zones.`}
 								</div>
 							) : selectedZones.length === 0 ? (
-								<div className="p-10 text-center text-gray-400 text-sm">
+								<div className="p-10 text-center text-muted-foreground text-sm">
 									{t`No zones yet for this site.`}
 								</div>
 							) : (
-								<ul className="divide-y divide-gray-100">
+								<ul className="divide-y divide-border">
 									{selectedZones.map((zone) => {
 										const isConfirmingDelete = deletingZoneId === zone.id;
 
 										return (
 											<li key={zone.id}>
 												{isConfirmingDelete ? (
-													<div className="px-3.5 py-3 flex items-center gap-2 bg-red-50">
-														<span className="text-sm text-red-700 flex-1">
+													<div className="px-3.5 py-3 flex items-center gap-2 bg-danger-subtle">
+														<span className="text-sm text-danger-foreground flex-1">
 															{t`Delete`} <strong>{zone.name}</strong>?
 														</span>
 														<button
 															type="button"
-															className="text-xs font-medium text-red-700 hover:text-red-900 underline"
+															className="text-xs font-medium text-danger-foreground hover:text-danger-foreground underline"
 															onClick={() => void handleDeleteZone(zone)}
 														>
 															{t`Confirm`}
 														</button>
 														<button
 															type="button"
-															className="text-xs text-gray-500 hover:text-gray-700"
+															className="text-xs text-muted-foreground hover:text-foreground"
 															onClick={() => setDeletingZoneId(null)}
 														>
 															{t`Cancel`}
 														</button>
 													</div>
 												) : (
-													<div className="px-3.5 py-3 flex items-center gap-3 group hover:bg-gray-50">
-														<span className="flex-1 text-sm text-gray-800">{zone.name}</span>
+													<div className="px-3.5 py-3 flex items-center gap-3 group hover:bg-muted">
+														<span className="flex-1 text-sm text-foreground">{zone.name}</span>
 														<span className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
 															<button
 																type="button"
-																className="p-1 rounded hover:bg-gray-200 text-gray-500 hover:text-gray-700"
+																className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
 																onClick={() => setZoneModal({ mode: "edit", zone })}
 																aria-label={t`Edit zone`}
 															>
@@ -352,7 +352,7 @@ export const SitesView = observer(function SitesView() {
 															</button>
 															<button
 																type="button"
-																className="p-1 rounded hover:bg-red-100 text-gray-500 hover:text-red-600"
+																className="p-1 rounded hover:bg-danger/15 text-muted-foreground hover:text-danger"
 																onClick={() => setDeletingZoneId(zone.id)}
 																aria-label={t`Delete zone`}
 															>
@@ -373,63 +373,63 @@ export const SitesView = observer(function SitesView() {
 				{/* ── Suppliers ── */}
 				<div className="space-y-3">
 					<div className="flex items-center gap-3">
-						<h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+						<h2 className="text-sm font-semibold text-foreground/85 uppercase tracking-wide">
 							{t`Suppliers`}
 						</h2>
-						<div className="flex-1 h-px bg-gray-200" />
+						<div className="flex-1 h-px bg-border" />
 						<Button size="sm" variant="outline" onClick={() => setSupplierModal({ mode: "add" })}>
 							<Plus size={14} /> {t`Add supplier`}
 						</Button>
 					</div>
 
 					{suppliersError && (
-						<div className="p-3 rounded bg-red-50 text-red-700 text-sm border border-red-100">
+						<div className="p-3 rounded bg-danger-subtle text-danger-foreground text-sm border border-danger-border">
 							{suppliersError}
 						</div>
 					)}
 
-					<div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+					<div className="bg-card border border-border rounded-lg overflow-hidden">
 						{vm.isLoading ? (
-							<div className="p-8 text-center text-gray-400 text-sm">{t`Loading…`}</div>
+							<div className="p-8 text-center text-muted-foreground text-sm">{t`Loading…`}</div>
 						) : vm.suppliers.length === 0 ? (
-							<div className="p-8 text-center text-gray-400 text-sm">
+							<div className="p-8 text-center text-muted-foreground text-sm">
 								{t`No suppliers yet. Add one to get started.`}
 							</div>
 						) : (
-							<ul className="divide-y divide-gray-100">
+							<ul className="divide-y divide-border">
 								{vm.suppliers.map((supplier) => {
 									const isConfirmingDelete = deletingSupplierId === supplier.id;
 
 									return (
 										<li key={supplier.id}>
 											{isConfirmingDelete ? (
-												<div className="px-3.5 py-3 flex items-center gap-2 bg-red-50">
-													<span className="text-sm text-red-700 flex-1">
+												<div className="px-3.5 py-3 flex items-center gap-2 bg-danger-subtle">
+													<span className="text-sm text-danger-foreground flex-1">
 														{t`Delete`} <strong>{supplier.name}</strong>?
 													</span>
 													<button
 														type="button"
-														className="text-xs font-medium text-red-700 hover:text-red-900 underline"
+														className="text-xs font-medium text-danger-foreground hover:text-danger-foreground underline"
 														onClick={() => void handleDeleteSupplier(supplier)}
 													>
 														{t`Confirm`}
 													</button>
 													<button
 														type="button"
-														className="text-xs text-gray-500 hover:text-gray-700"
+														className="text-xs text-muted-foreground hover:text-foreground"
 														onClick={() => setDeletingSupplierId(null)}
 													>
 														{t`Cancel`}
 													</button>
 												</div>
 											) : (
-												<div className="px-3.5 py-3 flex items-center gap-3 group hover:bg-gray-50">
-													<Truck size={14} className="text-gray-400 flex-shrink-0" />
-													<span className="flex-1 text-sm text-gray-800">{supplier.name}</span>
+												<div className="px-3.5 py-3 flex items-center gap-3 group hover:bg-muted">
+													<Truck size={14} className="text-muted-foreground flex-shrink-0" />
+													<span className="flex-1 text-sm text-foreground">{supplier.name}</span>
 													<span className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
 														<button
 															type="button"
-															className="p-1 rounded hover:bg-gray-200 text-gray-500 hover:text-gray-700"
+															className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
 															onClick={() => setSupplierModal({ mode: "edit", supplier })}
 															aria-label={t`Edit supplier`}
 														>
@@ -437,7 +437,7 @@ export const SitesView = observer(function SitesView() {
 														</button>
 														<button
 															type="button"
-															className="p-1 rounded hover:bg-red-100 text-gray-500 hover:text-red-600"
+															className="p-1 rounded hover:bg-danger/15 text-muted-foreground hover:text-danger"
 															onClick={() => setDeletingSupplierId(supplier.id)}
 															aria-label={t`Delete supplier`}
 														>
@@ -451,7 +451,7 @@ export const SitesView = observer(function SitesView() {
 								})}
 							</ul>
 						)}
-						<div className="px-3.5 py-2.5 border-t border-gray-100 text-xs text-gray-500 text-right">
+						<div className="px-3.5 py-2.5 border-t border-border text-xs text-muted-foreground text-right">
 							{vm.suppliers.length} {t`suppliers`}
 						</div>
 					</div>

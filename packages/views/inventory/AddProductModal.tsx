@@ -93,36 +93,42 @@ export function AddProductModal({ open, onClose }: AddProductModalProps) {
 
 				<div className="grid grid-cols-2 gap-4">
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="ap-name">
-							{t`Name`} <span className="text-red-600">*</span>
+						<label
+							className="block text-sm font-medium text-foreground/85 mb-1.5"
+							htmlFor="ap-name"
+						>
+							{t`Name`} <span className="text-danger">*</span>
 						</label>
 						<input
 							id="ap-name"
-							className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+							className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 							placeholder={t`e.g. Mango Ataulfo`}
 							value={name}
 							onChange={(e) => setName(e.target.value)}
 						/>
 					</div>
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="ap-sku">
-							{t`SKU`} <span className="text-red-600">*</span>
+						<label className="block text-sm font-medium text-foreground/85 mb-1.5" htmlFor="ap-sku">
+							{t`SKU`} <span className="text-danger">*</span>
 						</label>
 						<input
 							id="ap-sku"
-							className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+							className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 							placeholder={t`e.g. MNG-001`}
 							value={sku}
 							onChange={(e) => setSku(e.target.value)}
 						/>
 					</div>
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="ap-category">
-							{t`Category`} <span className="text-red-600">*</span>
+						<label
+							className="block text-sm font-medium text-foreground/85 mb-1.5"
+							htmlFor="ap-category"
+						>
+							{t`Category`} <span className="text-danger">*</span>
 						</label>
 						<select
 							id="ap-category"
-							className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+							className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 							value={categoryId}
 							onChange={(e) => setCategoryId(e.target.value)}
 						>
@@ -135,12 +141,15 @@ export function AddProductModal({ open, onClose }: AddProductModalProps) {
 						</select>
 					</div>
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="ap-unit">
-							{t`Unit`} <span className="text-red-600">*</span>
+						<label
+							className="block text-sm font-medium text-foreground/85 mb-1.5"
+							htmlFor="ap-unit"
+						>
+							{t`Unit`} <span className="text-danger">*</span>
 						</label>
 						<select
 							id="ap-unit"
-							className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+							className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 							value={unit}
 							onChange={(e) => setUnit(e.target.value as "kg" | "unit" | "box")}
 						>
@@ -152,14 +161,14 @@ export function AddProductModal({ open, onClose }: AddProductModalProps) {
 					{unit === "box" && (
 						<div>
 							<label
-								className="block text-sm font-medium text-gray-700 mb-1.5"
+								className="block text-sm font-medium text-foreground/85 mb-1.5"
 								htmlFor="ap-kgperbox"
 							>
-								{t`kg per box`} <span className="text-red-600">*</span>
+								{t`kg per box`} <span className="text-danger">*</span>
 							</label>
 							<input
 								id="ap-kgperbox"
-								className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+								className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 								type="number"
 								min="0.01"
 								step="0.01"
@@ -170,12 +179,15 @@ export function AddProductModal({ open, onClose }: AddProductModalProps) {
 						</div>
 					)}
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="ap-shelf">
-							{t`Shelf life (days)`} <span className="text-red-600">*</span>
+						<label
+							className="block text-sm font-medium text-foreground/85 mb-1.5"
+							htmlFor="ap-shelf"
+						>
+							{t`Shelf life (days)`} <span className="text-danger">*</span>
 						</label>
 						<input
 							id="ap-shelf"
-							className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+							className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 							type="number"
 							min="1"
 							step="1"
@@ -185,12 +197,15 @@ export function AddProductModal({ open, onClose }: AddProductModalProps) {
 						/>
 					</div>
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="ap-price">
-							{t`Price (MXN / unit)`} <span className="text-red-600">*</span>
+						<label
+							className="block text-sm font-medium text-foreground/85 mb-1.5"
+							htmlFor="ap-price"
+						>
+							{t`Price (MXN / unit)`} <span className="text-danger">*</span>
 						</label>
 						<input
 							id="ap-price"
-							className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+							className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 							type="number"
 							min="0"
 							step="0.01"
@@ -201,7 +216,9 @@ export function AddProductModal({ open, onClose }: AddProductModalProps) {
 					</div>
 				</div>
 
-				{error && <div className="p-3 rounded bg-red-50 text-red-700 text-sm">{error}</div>}
+				{error && (
+					<div className="p-3 rounded bg-danger-subtle text-danger-foreground text-sm">{error}</div>
+				)}
 
 				<DialogFooter>
 					<Button type="button" variant="outline" onClick={handleClose} disabled={saving}>

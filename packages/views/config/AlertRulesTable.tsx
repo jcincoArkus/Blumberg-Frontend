@@ -130,8 +130,8 @@ export function AlertRulesTable({
 									variant="outline"
 									className={
 										rule.severity === "alert"
-											? "border-red-300 bg-red-50 text-red-700"
-											: "border-amber-300 bg-amber-50 text-amber-700"
+											? "border-danger-border bg-danger-subtle text-danger-foreground"
+											: "border-warning-border bg-warning-subtle text-warning-foreground"
 									}
 								>
 									{rule.severity}

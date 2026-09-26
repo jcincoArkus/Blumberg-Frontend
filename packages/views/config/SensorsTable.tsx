@@ -80,12 +80,28 @@ function formatTimestamp(dateString?: string): string {
 
 const getStatusConfig = () =>
 	({
-		active: { label: t`Active`, className: "bg-emerald-50 text-emerald-700 border-emerald-300" },
-		inactive: { label: t`Inactive`, className: "bg-slate-50 text-slate-700 border-slate-300" },
-		warning: { label: t`Warning`, className: "bg-amber-50 text-amber-700 border-amber-300" },
-		stale: { label: t`Stale`, className: "bg-orange-50 text-orange-700 border-orange-300" },
-		offline: { label: t`Offline`, className: "bg-red-50 text-red-700 border-red-300" },
-		error: { label: t`Error`, className: "bg-red-50 text-red-700 border-red-300" },
+		active: {
+			label: t`Active`,
+			className: "bg-success-subtle text-success-foreground border-success-border",
+		},
+		inactive: { label: t`Inactive`, className: "bg-surface-muted text-foreground/85 border-input" },
+		warning: {
+			label: t`Warning`,
+			className: "bg-warning-subtle text-warning-foreground border-warning-border",
+		},
+		stale: {
+			label: t`Stale`,
+			className:
+				"bg-orange-50 text-orange-700 border-orange-300 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-800",
+		},
+		offline: {
+			label: t`Offline`,
+			className: "bg-danger-subtle text-danger-foreground border-danger-border",
+		},
+		error: {
+			label: t`Error`,
+			className: "bg-danger-subtle text-danger-foreground border-danger-border",
+		},
 	}) as Record<string, { label: string; className: string }>;
 
 function _getStatusBadge(status: string): React.ReactNode {
@@ -358,7 +374,7 @@ export function SensorsTable({
 									{isMapped(sensor) ? (
 										<Badge
 											variant="outline"
-											className="bg-emerald-50 text-emerald-700 border-emerald-300"
+											className="bg-success-subtle text-success-foreground border-success-border"
 										>
 											<CheckCircle2 className="size-3 mr-1" />
 											{t`Mapped`}
@@ -366,7 +382,7 @@ export function SensorsTable({
 									) : (
 										<Badge
 											variant="outline"
-											className="bg-amber-50 text-amber-700 border-amber-300"
+											className="bg-warning-subtle text-warning-foreground border-warning-border"
 										>
 											<XCircle className="size-3 mr-1" />
 											{t`Unmapped`}

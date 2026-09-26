@@ -169,9 +169,18 @@ export function UsersTable({ users, roles, currentUserId, onUsersChange }: Users
 
 	const getStatusBadge = (status: UserStatus) => {
 		const config: Record<UserStatus, { label: string; className: string }> = {
-			active: { label: t`Active`, className: "bg-emerald-100 text-emerald-700 border-emerald-200" },
-			pending: { label: t`Pending`, className: "bg-amber-100 text-amber-700 border-amber-200" },
-			deactivated: { label: t`Deactivated`, className: "bg-red-100 text-red-700 border-red-200" },
+			active: {
+				label: t`Active`,
+				className: "bg-success/15 text-success-foreground border-success-border",
+			},
+			pending: {
+				label: t`Pending`,
+				className: "bg-warning/15 text-warning-foreground border-warning-border",
+			},
+			deactivated: {
+				label: t`Deactivated`,
+				className: "bg-danger/15 text-danger-foreground border-danger-border",
+			},
 		};
 		const cfg = config[status];
 		return (
@@ -383,7 +392,7 @@ function UsersTableContent({
 											<DropdownMenuItem
 												onClick={() => onToggleStatus(user)}
 												disabled={user.id === currentUserId}
-												className="text-amber-600 focus:text-amber-600"
+												className="text-warning-foreground focus:text-warning-foreground"
 											>
 												<UserX className="mr-2 h-4 w-4" aria-hidden="true" />
 												{t`Disable`}
@@ -391,7 +400,7 @@ function UsersTableContent({
 										) : (
 											<DropdownMenuItem
 												onClick={() => onToggleStatus(user)}
-												className="text-emerald-600 focus:text-emerald-600"
+												className="text-success-foreground focus:text-success-foreground"
 											>
 												<UserCheck className="mr-2 h-4 w-4" aria-hidden="true" />
 												{t`Enable`}

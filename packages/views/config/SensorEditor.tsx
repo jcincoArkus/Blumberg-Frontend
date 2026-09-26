@@ -531,8 +531,8 @@ export function SensorEditor({
 						)}
 
 						{isActive && dataMappings.length === 0 && (
-							<div className="p-3 rounded-lg border border-amber-200 bg-amber-50">
-								<p className="text-xs text-amber-700">
+							<div className="p-3 rounded-lg border border-warning-border bg-warning-subtle">
+								<p className="text-xs text-warning-foreground">
 									{t`⚠️ Active sensor without data mapping. Add at least one mapping to receive data.`}
 								</p>
 							</div>

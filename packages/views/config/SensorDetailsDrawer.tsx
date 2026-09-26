@@ -60,30 +60,35 @@ const getStatusConfig = () =>
 	({
 		active: {
 			label: t`Active`,
-			className: "bg-emerald-50 text-emerald-700 border-emerald-200",
+			className: "bg-success-subtle text-success-foreground border-success-border",
 			Icon: CheckCircle2,
 		},
 		inactive: {
 			label: t`Inactive`,
-			className: "bg-slate-100 text-slate-700 border-slate-200",
+			className: "bg-muted text-foreground/85 border-border",
 			Icon: XCircle,
 		},
 		warning: {
 			label: t`Warning`,
-			className: "bg-amber-50 text-amber-700 border-amber-200",
+			className: "bg-warning-subtle text-warning-foreground border-warning-border",
 			Icon: Activity,
 		},
 		stale: {
 			label: t`Stale`,
-			className: "bg-orange-50 text-orange-700 border-orange-200",
+			className:
+				"bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-800",
 			Icon: Clock,
 		},
 		offline: {
 			label: t`Offline`,
-			className: "bg-red-50 text-red-700 border-red-200",
+			className: "bg-danger-subtle text-danger-foreground border-danger-border",
 			Icon: XCircle,
 		},
-		error: { label: t`Error`, className: "bg-red-50 text-red-700 border-red-200", Icon: XCircle },
+		error: {
+			label: t`Error`,
+			className: "bg-danger-subtle text-danger-foreground border-danger-border",
+			Icon: XCircle,
+		},
 	}) as Record<string, { label: string; className: string; Icon: typeof CheckCircle2 }>;
 
 function getStatusBadge(status: string): React.ReactNode {
@@ -277,8 +282,8 @@ export function SensorDetailsDrawer({
 										variant="outline"
 										className={
 											sensor.status === "active"
-												? "bg-emerald-50 text-emerald-700 border-emerald-200"
-												: "bg-amber-50 text-amber-700 border-amber-200"
+												? "bg-success-subtle text-success-foreground border-success-border"
+												: "bg-warning-subtle text-warning-foreground border-warning-border"
 										}
 									>
 										{sensor.status === "active" ? t`OK` : t`Warning`}
@@ -297,13 +302,16 @@ export function SensorDetailsDrawer({
 							{isMapped ? (
 								<Badge
 									variant="outline"
-									className="bg-emerald-50 text-emerald-700 border-emerald-200"
+									className="bg-success-subtle text-success-foreground border-success-border"
 								>
 									<CheckCircle2 className="size-3 mr-1" />
 									{t`Mapped`}
 								</Badge>
 							) : (
-								<Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+								<Badge
+									variant="outline"
+									className="bg-warning-subtle text-warning-foreground border-warning-border"
+								>
 									<XCircle className="size-3 mr-1" />
 									{t`Unmapped`}
 								</Badge>

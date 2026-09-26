@@ -10,6 +10,13 @@ import {
 } from "recharts";
 
 import { t } from "~@/i18n/macro";
+import {
+	chartAxisProps,
+	chartColors,
+	chartGridProps,
+	chartLegendProps,
+	chartTooltipProps,
+} from "~@/ui";
 
 interface HistoricalTrendChartProps {
 	data: Array<{ timestamp: string; value: number }>;
@@ -39,21 +46,22 @@ export function HistoricalTrendChart({ data, previousData, unit }: HistoricalTre
 	return (
 		<ResponsiveContainer width="100%" height={400}>
 			<LineChart data={chartData}>
-				<CartesianGrid strokeDasharray="3 3" />
-				<XAxis dataKey="time" tick={{ fontSize: 12 }} angle={-45} textAnchor="end" height={80} />
+				<CartesianGrid {...chartGridProps} />
+				<XAxis {...chartAxisProps} dataKey="time" angle={-45} textAnchor="end" height={80} />
 				<YAxis
-					tick={{ fontSize: 12 }}
-					label={{ value: unit, angle: -90, position: "insideLeft" }}
+					{...chartAxisProps}
+					label={{ value: unit, angle: -90, position: "insideLeft", fill: chartColors.axis }}
 				/>
 				<Tooltip
+					{...chartTooltipProps}
 					formatter={(value: number) => [`${value} ${unit}`, ""]}
 					labelFormatter={(label) => t`Time: ${label}`}
 				/>
-				<Legend />
+				<Legend {...chartLegendProps} />
 				<Line
 					type="monotone"
 					dataKey="current"
-					stroke="#3b82f6"
+					stroke={chartColors.info}
 					strokeWidth={2}
 					name={t`Current Period`}
 					dot={false}
@@ -62,7 +70,7 @@ export function HistoricalTrendChart({ data, previousData, unit }: HistoricalTre
 					<Line
 						type="monotone"
 						dataKey="previous"
-						stroke="#94a3b8"
+						stroke={chartColors.muted}
 						strokeWidth={2}
 						strokeDasharray="5 5"
 						name={t`Previous Period`}

@@ -70,17 +70,20 @@ export function ZoneModal({ open, onClose, siteId, siteName, zone }: ZoneModalPr
 
 				<div className="space-y-4">
 					<div>
-						<p className="text-sm text-gray-500 mb-3">
-							{t`Site`}: <span className="font-medium text-gray-800">{siteName}</span>
+						<p className="text-sm text-muted-foreground mb-3">
+							{t`Site`}: <span className="font-medium text-foreground">{siteName}</span>
 						</p>
 					</div>
 					<div>
-						<label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="zm-name">
-							{t`Zone name`} <span className="text-red-600">*</span>
+						<label
+							className="block text-sm font-medium text-foreground/85 mb-1.5"
+							htmlFor="zm-name"
+						>
+							{t`Zone name`} <span className="text-danger">*</span>
 						</label>
 						<input
 							id="zm-name"
-							className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+							className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 							placeholder={t`e.g. Cold Room A`}
 							value={name}
 							onChange={(e) => setName(e.target.value)}
@@ -88,7 +91,11 @@ export function ZoneModal({ open, onClose, siteId, siteName, zone }: ZoneModalPr
 						/>
 					</div>
 
-					{error && <div className="p-3 rounded bg-red-50 text-red-700 text-sm">{error}</div>}
+					{error && (
+						<div className="p-3 rounded bg-danger-subtle text-danger-foreground text-sm">
+							{error}
+						</div>
+					)}
 				</div>
 
 				<DialogFooter>

@@ -48,8 +48,8 @@ export const ProductsView = observer(function ProductsView() {
 			<div className="space-y-6">
 				<div className="flex flex-wrap items-start gap-4">
 					<div>
-						<h1 className="text-xl font-semibold tracking-tight text-gray-900">{t`Products`}</h1>
-						<p className="text-sm text-gray-600 mt-1">
+						<h1 className="text-xl font-semibold tracking-tight text-foreground">{t`Products`}</h1>
+						<p className="text-sm text-muted-foreground mt-1">
 							{vm.products.length} {t`active SKUs · catalog used by intake and lots`}
 						</p>
 					</div>
@@ -66,16 +66,16 @@ export const ProductsView = observer(function ProductsView() {
 					</div>
 				</div>
 
-				<div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-					<div className="flex items-center gap-2 p-3 border-b border-gray-100 bg-white flex-wrap">
-						<div className="flex border border-gray-200 rounded-lg p-0.5 bg-white gap-0.5">
+				<div className="bg-card border border-border rounded-lg overflow-hidden">
+					<div className="flex items-center gap-2 p-3 border-b border-border bg-card flex-wrap">
+						<div className="flex border border-border rounded-lg p-0.5 bg-card gap-0.5">
 							<button
 								type="button"
 								className={cn(
 									"px-2.5 py-1.5 rounded text-sm font-medium transition-colors",
 									catFilter === "all"
-										? "bg-teal-700 text-white"
-										: "bg-transparent text-gray-700 hover:bg-gray-50",
+										? "bg-primary text-primary-foreground"
+										: "bg-transparent text-foreground/85 hover:bg-muted",
 								)}
 								onClick={() => setCatFilter("all")}
 							>
@@ -88,8 +88,8 @@ export const ProductsView = observer(function ProductsView() {
 									className={cn(
 										"px-2.5 py-1.5 rounded text-sm font-medium transition-colors",
 										catFilter === c.id
-											? "bg-teal-700 text-white"
-											: "bg-transparent text-gray-700 hover:bg-gray-50",
+											? "bg-primary text-primary-foreground"
+											: "bg-transparent text-foreground/85 hover:bg-muted",
 									)}
 									onClick={() => setCatFilter(c.id)}
 								>
@@ -101,38 +101,38 @@ export const ProductsView = observer(function ProductsView() {
 						<div className="relative w-60">
 							<Search
 								size={13}
-								className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+								className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
 							/>
 							<input
 								placeholder={t`Name, SKU…`}
 								value={search}
 								onChange={(e) => setSearch(e.target.value)}
-								className="h-7 px-3 pl-7 rounded-lg border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+								className="h-7 px-3 pl-7 rounded-lg border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 							/>
 						</div>
 					</div>
 
 					{vm.isLoading ? (
-						<div className="p-10 text-center text-gray-400 text-sm">{t`Loading products…`}</div>
+						<div className="p-10 text-center text-muted-foreground text-sm">{t`Loading products…`}</div>
 					) : (
 						<div className="overflow-x-auto">
 							<table className="w-full border-collapse text-sm">
 								<thead>
 									<tr>
-										<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-left px-3.5 py-2.5 bg-white border-b border-gray-200">{t`Product`}</th>
-										<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-left px-3.5 py-2.5 bg-white border-b border-gray-200">{t`Category`}</th>
-										<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-left px-3.5 py-2.5 bg-white border-b border-gray-200">{t`Unit`}</th>
-										<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-right px-3.5 py-2.5 bg-white border-b border-gray-200">{t`kg / box`}</th>
-										<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-right px-3.5 py-2.5 bg-white border-b border-gray-200">{t`Shelf life`}</th>
-										<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-right px-3.5 py-2.5 bg-white border-b border-gray-200">{t`Price`}</th>
+										<th className="text-xs font-semibold tracking-wide uppercase text-muted-foreground text-left px-3.5 py-2.5 bg-card border-b border-border">{t`Product`}</th>
+										<th className="text-xs font-semibold tracking-wide uppercase text-muted-foreground text-left px-3.5 py-2.5 bg-card border-b border-border">{t`Category`}</th>
+										<th className="text-xs font-semibold tracking-wide uppercase text-muted-foreground text-left px-3.5 py-2.5 bg-card border-b border-border">{t`Unit`}</th>
+										<th className="text-xs font-semibold tracking-wide uppercase text-muted-foreground text-right px-3.5 py-2.5 bg-card border-b border-border">{t`kg / box`}</th>
+										<th className="text-xs font-semibold tracking-wide uppercase text-muted-foreground text-right px-3.5 py-2.5 bg-card border-b border-border">{t`Shelf life`}</th>
+										<th className="text-xs font-semibold tracking-wide uppercase text-muted-foreground text-right px-3.5 py-2.5 bg-card border-b border-border">{t`Price`}</th>
 									</tr>
 								</thead>
 								<tbody>
 									{rows.map((p) => {
 										const cat = vm.categoryById(p.cat);
 										return (
-											<tr key={p.id} className="hover:bg-gray-50 border-b border-gray-100">
-												<td className="px-3.5 py-3 text-gray-700">
+											<tr key={p.id} className="hover:bg-muted border-b border-border">
+												<td className="px-3.5 py-3 text-foreground/85">
 													<div className="flex items-center gap-2.5">
 														<span
 															className="w-2 h-2 rounded-full flex-shrink-0"
@@ -142,20 +142,22 @@ export const ProductsView = observer(function ProductsView() {
 															}}
 														/>
 														<div>
-															<div className="font-medium text-gray-900">{p.name}</div>
-															<div className="text-xs text-gray-500 font-mono mt-0.5">{p.sku}</div>
+															<div className="font-medium text-foreground">{p.name}</div>
+															<div className="text-xs text-muted-foreground font-mono mt-0.5">
+																{p.sku}
+															</div>
 														</div>
 													</div>
 												</td>
-												<td className="px-3.5 py-3 text-gray-700">{cat.name}</td>
-												<td className="px-3.5 py-3 text-gray-700">{p.unit}</td>
-												<td className="px-3.5 py-3 text-gray-900 font-medium text-right font-mono">
+												<td className="px-3.5 py-3 text-foreground/85">{cat.name}</td>
+												<td className="px-3.5 py-3 text-foreground/85">{p.unit}</td>
+												<td className="px-3.5 py-3 text-foreground font-medium text-right font-mono">
 													{p.kgPerBox != null ? p.kgPerBox.toFixed(1) : "—"}
 												</td>
-												<td className="px-3.5 py-3 text-gray-900 font-medium text-right font-mono">
+												<td className="px-3.5 py-3 text-foreground font-medium text-right font-mono">
 													{p.shelfLife}d
 												</td>
-												<td className="px-3.5 py-3 text-gray-900 font-medium text-right font-mono">
+												<td className="px-3.5 py-3 text-foreground font-medium text-right font-mono">
 													{fmtMoney(p.price)}
 												</td>
 											</tr>
@@ -166,7 +168,7 @@ export const ProductsView = observer(function ProductsView() {
 						</div>
 					)}
 
-					<div className="px-3.5 py-2.5 bg-white border-t border-gray-100 text-sm text-gray-600 flex">
+					<div className="px-3.5 py-2.5 bg-card border-t border-border text-sm text-muted-foreground flex">
 						<span className="ml-auto">
 							{t`Showing`} {rows.length} {t`of`} {vm.products.length} {t`products`}
 						</span>

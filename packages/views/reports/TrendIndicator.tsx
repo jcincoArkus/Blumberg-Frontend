@@ -16,17 +16,17 @@ export function TrendIndicator({ delta, label, trend }: TrendIndicatorProps) {
 	const config = {
 		improving: {
 			icon: ArrowDown,
-			className: "bg-emerald-100 text-emerald-700 border-emerald-200",
+			className: "bg-success/15 text-success-foreground border-success-border",
 			label: t`Improving`,
 		},
 		worsening: {
 			icon: ArrowUp,
-			className: "bg-red-100 text-red-700 border-red-200",
+			className: "bg-danger/15 text-danger-foreground border-danger-border",
 			label: t`Worsening`,
 		},
 		stable: {
 			icon: Minus,
-			className: "bg-slate-100 text-slate-700 border-slate-200",
+			className: "bg-muted text-foreground/85 border-border",
 			label: t`Stable`,
 		},
 	};

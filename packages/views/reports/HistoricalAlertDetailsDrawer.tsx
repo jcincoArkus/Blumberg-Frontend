@@ -69,17 +69,17 @@ export function HistoricalAlertDetailsDrawer({
 		const config = {
 			active: {
 				label: t`Active`,
-				className: "bg-red-100 text-red-700 border-red-200",
+				className: "bg-danger/15 text-danger-foreground border-danger-border",
 				icon: AlertTriangle,
 			},
 			acknowledged: {
 				label: t`Acknowledged`,
-				className: "bg-amber-100 text-amber-700 border-amber-200",
+				className: "bg-warning/15 text-warning-foreground border-warning-border",
 				icon: Clock,
 			},
 			resolved: {
 				label: t`Resolved`,
-				className: "bg-emerald-100 text-emerald-700 border-emerald-200",
+				className: "bg-success/15 text-success-foreground border-success-border",
 				icon: CheckCircle2,
 			},
 		};

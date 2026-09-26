@@ -26,11 +26,11 @@ const TYPE_LABEL: Record<InvMovementType, string> = {
 };
 
 const TYPE_COLOR_MAP: Record<InvMovementType, string> = {
-	intake: "bg-green-50 text-green-700",
-	output: "bg-blue-50 text-blue-700",
-	waste: "bg-red-50 text-red-700",
-	adjustment: "bg-amber-50 text-amber-700",
-	transfer: "bg-gray-100 text-gray-700",
+	intake: "bg-success-subtle text-success-foreground",
+	output: "bg-info-subtle text-info-foreground",
+	waste: "bg-danger-subtle text-danger-foreground",
+	adjustment: "bg-warning-subtle text-warning-foreground",
+	transfer: "bg-muted text-foreground/85",
 };
 
 function StatCard({
@@ -47,20 +47,22 @@ function StatCard({
 	accent?: number;
 }) {
 	const toneColorMap = {
-		ok: "text-teal-700",
-		up: "text-green-600",
-		warn: "text-amber-600",
-		down: "text-red-600",
+		ok: "text-primary",
+		up: "text-success-foreground",
+		warn: "text-warning-foreground",
+		down: "text-danger",
 	};
 
 	return (
-		<div className="bg-white border border-gray-200 rounded-lg p-4">
-			<div className="text-xs font-medium uppercase tracking-wider text-gray-500">{label}</div>
-			<div className="text-2xl font-semibold tracking-tight text-gray-900 mt-1">{value}</div>
+		<div className="bg-card border border-border rounded-lg p-4">
+			<div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+				{label}
+			</div>
+			<div className="text-2xl font-semibold tracking-tight text-foreground mt-1">{value}</div>
 			{sub && <div className={`text-xs mt-1 ${toneColorMap[tone]}`}>{sub}</div>}
-			<div className="h-0.5 bg-gray-100 rounded mt-3 overflow-hidden">
+			<div className="h-0.5 bg-muted rounded mt-3 overflow-hidden">
 				<div
-					className="h-full bg-teal-700 rounded"
+					className="h-full bg-primary rounded"
 					style={{ width: `${Math.round(accent * 100)}%` }}
 				/>
 			</div>
@@ -78,10 +80,10 @@ function SectionCard({
 	children: React.ReactNode;
 }) {
 	return (
-		<div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-			<div className="px-4 py-3 border-b border-gray-100 flex items-center gap-2">
-				<div className="text-sm font-semibold text-gray-900">{title}</div>
-				{sub && <div className="text-xs text-gray-500">· {sub}</div>}
+		<div className="bg-card border border-border rounded-lg overflow-hidden">
+			<div className="px-4 py-3 border-b border-border flex items-center gap-2">
+				<div className="text-sm font-semibold text-foreground">{title}</div>
+				{sub && <div className="text-xs text-muted-foreground">· {sub}</div>}
 			</div>
 			<div className="px-4 py-3">{children}</div>
 		</div>
@@ -90,9 +92,9 @@ function SectionCard({
 
 function Bar({ pct, color }: { pct: number; color?: string }) {
 	return (
-		<div className="w-full h-1.5 bg-gray-100 rounded overflow-hidden">
+		<div className="w-full h-1.5 bg-muted rounded overflow-hidden">
 			<div
-				className={cn("h-full rounded", color ?? "bg-teal-700")}
+				className={cn("h-full rounded", color ?? "bg-primary")}
 				style={{ width: `${Math.max(2, Math.round(pct * 100))}%` }}
 			/>
 		</div>
@@ -209,11 +211,11 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 			<div className="space-y-6">
 				<div className="flex flex-wrap items-start gap-4">
 					<div>
-						<h1 className="text-xl font-semibold tracking-tight text-gray-900">{t`Inventory dashboard`}</h1>
-						<p className="text-sm text-gray-600 mt-1">{t`Snapshot across all sites · last 7 days of activity`}</p>
+						<h1 className="text-xl font-semibold tracking-tight text-foreground">{t`Inventory dashboard`}</h1>
+						<p className="text-sm text-muted-foreground mt-1">{t`Snapshot across all sites · last 7 days of activity`}</p>
 					</div>
 				</div>
-				<div className="bg-white border border-gray-200 rounded-lg p-10 text-center text-gray-400 text-sm">
+				<div className="bg-card border border-border rounded-lg p-10 text-center text-muted-foreground text-sm">
 					{t`Loading…`}
 				</div>
 			</div>
@@ -224,8 +226,8 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 		<div className="space-y-6">
 			<div className="flex flex-wrap items-start gap-4">
 				<div>
-					<h1 className="text-xl font-semibold tracking-tight text-gray-900">{t`Inventory dashboard`}</h1>
-					<p className="text-sm text-gray-600 mt-1">{t`Snapshot across all sites · last 7 days of activity`}</p>
+					<h1 className="text-xl font-semibold tracking-tight text-foreground">{t`Inventory dashboard`}</h1>
+					<p className="text-sm text-muted-foreground mt-1">{t`Snapshot across all sites · last 7 days of activity`}</p>
 				</div>
 				<div className="ml-auto flex items-center gap-2">
 					<Button variant="outline" size="sm" asChild>
@@ -271,10 +273,10 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 						{bySite.map((row) => (
 							<div key={row.site.id}>
 								<div className="flex items-baseline justify-between">
-									<div className="text-sm font-medium text-gray-900">
+									<div className="text-sm font-medium text-foreground">
 										{row.site.name.split(" · ")[0]}
 									</div>
-									<div className="text-xs text-gray-500">
+									<div className="text-xs text-muted-foreground">
 										{row.count} {t`lots`} · <span className="font-mono">{fmtMoney(row.value)}</span>
 									</div>
 								</div>
@@ -298,8 +300,8 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 											boxShadow: "inset 0 0 0 1px rgba(0,0,0,.06)",
 										}}
 									/>
-									<div className="text-sm font-medium text-gray-900">{row.cat.name}</div>
-									<div className="ml-auto text-xs text-gray-500">
+									<div className="text-sm font-medium text-foreground">{row.cat.name}</div>
+									<div className="ml-auto text-xs text-muted-foreground">
 										{row.count} {t`lots`} · <span className="font-mono">{fmtMoney(row.value)}</span>
 									</div>
 								</div>
@@ -317,32 +319,32 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 					<div className="grid grid-cols-4 gap-2.5">
 						{expirationBuckets.buckets.map((b) => {
 							const toneColor = {
-								expired: "text-red-600",
-								critical: "text-red-600",
-								soon: "text-amber-600",
-								ok: "text-teal-700",
+								expired: "text-danger",
+								critical: "text-danger",
+								soon: "text-warning-foreground",
+								ok: "text-primary",
 							}[b.tone];
 							return (
-								<div key={b.key} className="border border-gray-200 rounded-lg p-3">
-									<div className="text-xs font-medium text-gray-500">{b.label}</div>
+								<div key={b.key} className="border border-border rounded-lg p-3">
+									<div className="text-xs font-medium text-muted-foreground">{b.label}</div>
 									<div
 										className={cn("text-2xl font-semibold mt-1 font-variant-numeric", toneColor)}
 									>
 										{b.count}
 									</div>
-									<div className="mt-2 h-1 bg-gray-100 rounded overflow-hidden">
+									<div className="mt-2 h-1 bg-muted rounded overflow-hidden">
 										<div
 											className={cn("h-full rounded", {
-												"bg-red-600": b.tone === "expired" || b.tone === "critical",
-												"bg-amber-600": b.tone === "soon",
-												"bg-teal-700": b.tone === "ok",
+												"bg-danger": b.tone === "expired" || b.tone === "critical",
+												"bg-amber-600 dark:bg-warning": b.tone === "soon",
+												"bg-primary": b.tone === "ok",
 											})}
 											style={{
 												width: `${(b.count / expirationBuckets.max) * 100}%`,
 											}}
 										/>
 									</div>
-									<div className="mt-1.5 text-xs text-gray-400">{fmtMoney(b.value)}</div>
+									<div className="mt-1.5 text-xs text-muted-foreground">{fmtMoney(b.value)}</div>
 								</div>
 							);
 						})}
@@ -358,11 +360,11 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 							(type) => {
 								const Icn = TYPE_ICON[type];
 								return (
-									<div key={type} className="border border-gray-200 rounded-lg p-3">
-										<div className="flex items-center gap-1.5 text-xs font-medium text-gray-500">
+									<div key={type} className="border border-border rounded-lg p-3">
+										<div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
 											<Icn size={12} /> {TYPE_LABEL[type]}
 										</div>
-										<div className="text-xl font-semibold text-gray-900 mt-1 font-variant-numeric">
+										<div className="text-xl font-semibold text-foreground mt-1 font-variant-numeric">
 											{movementsLast7.by[type]}
 										</div>
 									</div>
@@ -373,7 +375,7 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 					<div className="mt-3">
 						<Link
 							to="/inventory/movements"
-							className="text-xs font-medium text-teal-700 hover:text-teal-600 no-underline"
+							className="text-xs font-medium text-primary hover:text-primary no-underline"
 						>
 							{t`View full movements log →`}
 						</Link>
@@ -388,10 +390,10 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 							<table className="w-full text-xs border-collapse">
 								<thead>
 									<tr>
-										<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200 w-16">{t`Time`}</th>
-										<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200 w-24">{t`Type`}</th>
-										<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200">{t`Product`}</th>
-										<th className="text-right px-3 py-2 font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200 w-20">{t`Qty`}</th>
+										<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border w-16">{t`Time`}</th>
+										<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border w-24">{t`Type`}</th>
+										<th className="text-left px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border">{t`Product`}</th>
+										<th className="text-right px-3 py-2 font-semibold uppercase tracking-wide text-muted-foreground border-b border-border w-20">{t`Qty`}</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -405,8 +407,10 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 										const isPos = m.type === "intake" || (m.type === "adjustment" && m.qty > 0);
 										const sign = isNeg ? "-" : isPos ? "+" : "";
 										return (
-											<tr key={m.id} className="hover:bg-gray-50 border-b border-gray-100">
-												<td className="px-3 py-2.5 text-gray-700 font-mono">{fmtTime(m.at)}</td>
+											<tr key={m.id} className="hover:bg-muted border-b border-border">
+												<td className="px-3 py-2.5 text-foreground/85 font-mono">
+													{fmtTime(m.at)}
+												</td>
 												<td className="px-3 py-2.5">
 													<span
 														className={cn(
@@ -418,19 +422,23 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 													</span>
 												</td>
 												<td className="px-3 py-2.5">
-													<div className="font-medium text-gray-900">{p.name}</div>
+													<div className="font-medium text-foreground">{p.name}</div>
 												</td>
 												<td className="px-3 py-2.5 text-right font-mono">
 													<span
 														className={cn(
 															"font-medium",
-															isNeg ? "text-red-600" : isPos ? "text-green-600" : "text-gray-900",
+															isNeg
+																? "text-danger"
+																: isPos
+																	? "text-success-foreground"
+																	: "text-foreground",
 														)}
 													>
 														{sign}
 														{Math.abs(m.qty).toLocaleString()}
 													</span>
-													<span className="text-gray-500 font-normal ml-1">{m.unit}</span>
+													<span className="text-muted-foreground font-normal ml-1">{m.unit}</span>
 												</td>
 											</tr>
 										);
@@ -456,11 +464,11 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 												boxShadow: "inset 0 0 0 1px rgba(0,0,0,.06)",
 											}}
 										/>
-										<div className="text-sm text-gray-900 font-medium">{row.product.name}</div>
-										<div className="ml-auto text-xs text-gray-500">
+										<div className="text-sm text-foreground font-medium">{row.product.name}</div>
+										<div className="ml-auto text-xs text-muted-foreground">
 											{row.lots} {t`lots`}
 										</div>
-										<div className="font-mono text-xs text-gray-900 font-medium">
+										<div className="font-mono text-xs text-foreground font-medium">
 											{fmtMoney(row.value)}
 										</div>
 									</div>

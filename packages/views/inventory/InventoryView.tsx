@@ -35,20 +35,22 @@ function StatCard({
 	tone?: "ok" | "up" | "warn" | "down";
 }) {
 	const toneColorMap = {
-		ok: "text-teal-700",
-		up: "text-green-600",
-		warn: "text-amber-600",
-		down: "text-red-600",
+		ok: "text-primary",
+		up: "text-success-foreground",
+		warn: "text-warning-foreground",
+		down: "text-danger",
 	};
 
 	return (
-		<div className="bg-white border border-gray-200 rounded-lg p-4">
-			<div className="text-xs font-medium uppercase tracking-wider text-gray-500">{label}</div>
-			<div className="text-2xl font-semibold tracking-tight text-gray-900 mt-1">{value}</div>
+		<div className="bg-card border border-border rounded-lg p-4">
+			<div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+				{label}
+			</div>
+			<div className="text-2xl font-semibold tracking-tight text-foreground mt-1">{value}</div>
 			{sub && <div className={`text-xs mt-1 ${toneColorMap[tone]}`}>{sub}</div>}
-			<div className="h-0.5 bg-gray-100 rounded mt-3 overflow-hidden">
+			<div className="h-0.5 bg-muted rounded mt-3 overflow-hidden">
 				<div
-					className="h-full bg-teal-700 rounded"
+					className="h-full bg-primary rounded"
 					style={{ width: `${Math.round(accent * 100)}%` }}
 				/>
 			</div>
@@ -98,8 +100,8 @@ export const InventoryView = observer(function InventoryView() {
 		<div className="space-y-6">
 			<div className="flex flex-wrap items-start gap-4">
 				<div>
-					<h1 className="text-xl font-semibold tracking-tight text-gray-900">{t`Current inventory`}</h1>
-					<p className="text-sm text-gray-600 mt-1">
+					<h1 className="text-xl font-semibold tracking-tight text-foreground">{t`Current inventory`}</h1>
+					<p className="text-sm text-muted-foreground mt-1">
 						{totals.totalLots} {t`active lots · FIFO suggested for output`}
 					</p>
 				</div>
@@ -145,16 +147,16 @@ export const InventoryView = observer(function InventoryView() {
 				/>
 			</div>
 
-			<div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-				<div className="flex items-center gap-2 p-3 border-b border-gray-100 bg-white flex-wrap">
-					<div className="flex border border-gray-200 rounded-lg p-0.5 bg-white gap-0.5">
+			<div className="bg-card border border-border rounded-lg overflow-hidden">
+				<div className="flex items-center gap-2 p-3 border-b border-border bg-card flex-wrap">
+					<div className="flex border border-border rounded-lg p-0.5 bg-card gap-0.5">
 						<button
 							type="button"
 							className={cn(
 								"px-2.5 py-1.5 rounded text-sm font-medium transition-colors",
 								siteFilter === "all"
-									? "bg-teal-700 text-white"
-									: "bg-transparent text-gray-700 hover:bg-gray-50",
+									? "bg-primary text-primary-foreground"
+									: "bg-transparent text-foreground/85 hover:bg-muted",
 							)}
 							onClick={() => setSiteFilter("all")}
 						>
@@ -167,8 +169,8 @@ export const InventoryView = observer(function InventoryView() {
 								className={cn(
 									"px-2.5 py-1.5 rounded text-sm font-medium transition-colors",
 									siteFilter === s.id
-										? "bg-teal-700 text-white"
-										: "bg-transparent text-gray-700 hover:bg-gray-50",
+										? "bg-primary text-primary-foreground"
+										: "bg-transparent text-foreground/85 hover:bg-muted",
 								)}
 								onClick={() => setSiteFilter(s.id)}
 							>
@@ -181,7 +183,7 @@ export const InventoryView = observer(function InventoryView() {
 
 					<button
 						type="button"
-						className="flex items-center gap-1.5 px-2.5 py-1.5 border border-gray-200 rounded-lg bg-white text-sm text-gray-700 hover:bg-gray-50"
+						className="flex items-center gap-1.5 px-2.5 py-1.5 border border-border rounded-lg bg-card text-sm text-foreground/85 hover:bg-muted"
 					>
 						<Filter size={13} /> {t`Category`}:{" "}
 						<span className="font-medium">
@@ -191,7 +193,7 @@ export const InventoryView = observer(function InventoryView() {
 					</button>
 					<button
 						type="button"
-						className="flex items-center gap-1.5 px-2.5 py-1.5 border border-gray-200 rounded-lg bg-white text-sm text-gray-700 hover:bg-gray-50"
+						className="flex items-center gap-1.5 px-2.5 py-1.5 border border-border rounded-lg bg-card text-sm text-foreground/85 hover:bg-muted"
 					>
 						<SlidersHorizontal size={13} /> {t`Sort`}:{" "}
 						<span className="font-medium">
@@ -200,50 +202,53 @@ export const InventoryView = observer(function InventoryView() {
 						<ChevronDown size={12} />
 					</button>
 					<div className="relative w-60">
-						<Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+						<Search
+							size={13}
+							className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+						/>
 						<input
 							placeholder={t`Lot, product, SKU…`}
 							value={search}
 							onChange={(e) => setSearch(e.target.value)}
-							className="h-7 px-3 pl-7 rounded-lg border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+							className="h-7 px-3 pl-7 rounded-lg border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 						/>
 					</div>
 				</div>
 
 				{vm.isLoading ? (
-					<div className="p-10 text-center text-gray-400 text-sm">{t`Loading inventory…`}</div>
+					<div className="p-10 text-center text-muted-foreground text-sm">{t`Loading inventory…`}</div>
 				) : (
 					<div className="overflow-x-auto">
 						<table className="w-full border-collapse text-sm">
 							<thead>
 								<tr>
-									<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-left px-3.5 py-2.5 bg-white border-b border-gray-200">{t`Product`}</th>
-									<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-left px-3.5 py-2.5 bg-white border-b border-gray-200">{t`Lot`}</th>
-									<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-left px-3.5 py-2.5 bg-white border-b border-gray-200">{t`Site / Zone`}</th>
-									<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-left px-3.5 py-2.5 bg-white border-b border-gray-200">{t`Entry`}</th>
-									<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-right px-3.5 py-2.5 bg-white border-b border-gray-200">{t`On hand`}</th>
-									<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-right px-3.5 py-2.5 bg-white border-b border-gray-200 min-w-28">{t`Expiration`}</th>
-									<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-right px-3.5 py-2.5 bg-white border-b border-gray-200">{t`Value`}</th>
-									<th className="text-xs font-semibold tracking-wide uppercase text-gray-500 text-left px-3.5 py-2.5 bg-white border-b border-gray-200 w-20" />
+									<th className="text-xs font-semibold tracking-wide uppercase text-muted-foreground text-left px-3.5 py-2.5 bg-card border-b border-border">{t`Product`}</th>
+									<th className="text-xs font-semibold tracking-wide uppercase text-muted-foreground text-left px-3.5 py-2.5 bg-card border-b border-border">{t`Lot`}</th>
+									<th className="text-xs font-semibold tracking-wide uppercase text-muted-foreground text-left px-3.5 py-2.5 bg-card border-b border-border">{t`Site / Zone`}</th>
+									<th className="text-xs font-semibold tracking-wide uppercase text-muted-foreground text-left px-3.5 py-2.5 bg-card border-b border-border">{t`Entry`}</th>
+									<th className="text-xs font-semibold tracking-wide uppercase text-muted-foreground text-right px-3.5 py-2.5 bg-card border-b border-border">{t`On hand`}</th>
+									<th className="text-xs font-semibold tracking-wide uppercase text-muted-foreground text-right px-3.5 py-2.5 bg-card border-b border-border min-w-28">{t`Expiration`}</th>
+									<th className="text-xs font-semibold tracking-wide uppercase text-muted-foreground text-right px-3.5 py-2.5 bg-card border-b border-border">{t`Value`}</th>
+									<th className="text-xs font-semibold tracking-wide uppercase text-muted-foreground text-left px-3.5 py-2.5 bg-card border-b border-border w-20" />
 								</tr>
 							</thead>
 							<tbody>
 								{lots.map((l) => {
 									const toneColorMap = {
-										expired: "border-l-red-600",
-										critical: "border-l-red-600",
-										soon: "border-l-amber-600",
+										expired: "border-l-danger",
+										critical: "border-l-danger",
+										soon: "border-l-warning",
 										ok: "",
 									};
 									return (
 										<tr
 											key={l.id}
 											className={cn(
-												"hover:bg-gray-50 border-b border-gray-100 border-l-2",
+												"hover:bg-muted border-b border-border border-l-2",
 												toneColorMap[l.exp.tone],
 											)}
 										>
-											<td className="px-3.5 py-3 text-gray-700">
+											<td className="px-3.5 py-3 text-foreground/85">
 												<div className="flex items-center gap-2.5">
 													<span
 														className="w-2 h-2 rounded-full flex-shrink-0"
@@ -253,34 +258,34 @@ export const InventoryView = observer(function InventoryView() {
 														}}
 													/>
 													<div>
-														<div className="font-medium text-gray-900">{l.product.name}</div>
-														<div className="text-xs text-gray-500">
+														<div className="font-medium text-foreground">{l.product.name}</div>
+														<div className="text-xs text-muted-foreground">
 															{l.product.sku} · {l.category.name}
 														</div>
 													</div>
 												</div>
 											</td>
-											<td className="px-3.5 py-3 text-gray-700">
+											<td className="px-3.5 py-3 text-foreground/85">
 												<div className="font-mono text-sm">{l.id}</div>
-												<div className="text-xs text-gray-500 mt-0.5">{l.supplier}</div>
+												<div className="text-xs text-muted-foreground mt-0.5">{l.supplier}</div>
 											</td>
-											<td className="px-3.5 py-3 text-gray-700">
-												<div className="text-gray-900 font-medium">
+											<td className="px-3.5 py-3 text-foreground/85">
+												<div className="text-foreground font-medium">
 													{l.site.name.split(" · ")[0]}
 												</div>
-												<div className="text-xs text-gray-500 mt-0.5">{l.zone}</div>
+												<div className="text-xs text-muted-foreground mt-0.5">{l.zone}</div>
 											</td>
-											<td className="px-3.5 py-3 text-gray-700">
-												<div className="text-gray-900">{fmtDateShort(l.entry)}</div>
-												<div className="text-xs text-gray-500 mt-0.5">
+											<td className="px-3.5 py-3 text-foreground/85">
+												<div className="text-foreground">{fmtDateShort(l.entry)}</div>
+												<div className="text-xs text-muted-foreground mt-0.5">
 													{Math.abs(daysUntil(l.entry))}d ago
 												</div>
 											</td>
-											<td className="px-3.5 py-3 text-right text-gray-900 font-mono">
+											<td className="px-3.5 py-3 text-right text-foreground font-mono">
 												{l.qty.toLocaleString()}{" "}
-												<span className="text-gray-500 font-normal">{l.unit}</span>
+												<span className="text-muted-foreground font-normal">{l.unit}</span>
 												{l.onhandKg != null && (
-													<div className="text-xs text-gray-500 mt-0.5">
+													<div className="text-xs text-muted-foreground mt-0.5">
 														≈ {l.onhandKg.toFixed(1)} kg
 													</div>
 												)}
@@ -291,32 +296,34 @@ export const InventoryView = observer(function InventoryView() {
 														className={cn(
 															"text-sm font-medium",
 															l.exp.tone === "expired" || l.exp.tone === "critical"
-																? "text-red-600"
+																? "text-danger"
 																: l.exp.tone === "soon"
-																	? "text-amber-600"
-																	: "text-gray-900",
+																	? "text-warning-foreground"
+																	: "text-foreground",
 														)}
 													>
 														{l.exp.label}
 													</div>
-													<div className="text-xs text-gray-500">{fmtDateShort(l.expDate)}</div>
+													<div className="text-xs text-muted-foreground">
+														{fmtDateShort(l.expDate)}
+													</div>
 												</div>
 											</td>
-											<td className="px-3.5 py-3 text-right text-gray-900 font-mono">
+											<td className="px-3.5 py-3 text-right text-foreground font-mono">
 												{fmtMoney(l.value)}
 											</td>
 											<td className="px-3.5 py-3">
 												<div className="flex gap-1.5 justify-end opacity-0 group-hover:opacity-100 transition-opacity">
 													<button
 														type="button"
-														className="p-1.5 rounded border border-gray-200 bg-white hover:bg-gray-50"
+														className="p-1.5 rounded border border-border bg-card hover:bg-muted"
 														title={t`Adjust`}
 													>
 														<Pencil size={13} />
 													</button>
 													<button
 														type="button"
-														className="p-1.5 rounded border border-gray-200 bg-white hover:bg-gray-50"
+														className="p-1.5 rounded border border-border bg-card hover:bg-muted"
 														title={t`Mark waste`}
 													>
 														<Trash2 size={13} />
@@ -331,18 +338,18 @@ export const InventoryView = observer(function InventoryView() {
 					</div>
 				)}
 
-				<div className="px-3.5 py-2.5 bg-white border-t border-gray-100 text-sm text-gray-600 flex items-center gap-3 flex-wrap">
+				<div className="px-3.5 py-2.5 bg-card border-t border-border text-sm text-muted-foreground flex items-center gap-3 flex-wrap">
 					<span>{t`Expiration`}:</span>
 					<div className="flex items-center gap-1">
-						<span className="w-2 h-0.5 rounded bg-red-600" />
+						<span className="w-2 h-0.5 rounded bg-danger" />
 						<span>{t`≤ 2 days · critical`}</span>
 					</div>
 					<div className="flex items-center gap-1">
-						<span className="w-2 h-0.5 rounded bg-amber-600" />
+						<span className="w-2 h-0.5 rounded bg-amber-600 dark:bg-warning" />
 						<span>{t`≤ 5 days · soon`}</span>
 					</div>
 					<div className="flex items-center gap-1">
-						<span className="w-2 h-0.5 rounded bg-gray-300" />
+						<span className="w-2 h-0.5 rounded bg-gray-300 dark:bg-muted-foreground" />
 						<span>{t`> 5 days · ok`}</span>
 					</div>
 					<span className="ml-auto">

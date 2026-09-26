@@ -93,12 +93,15 @@ export function SupplierModal({
 
 					<div className="space-y-4 mt-4">
 						<div>
-							<label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="supm-name">
-								{t`Name`} <span className="text-red-600">*</span>
+							<label
+								className="block text-sm font-medium text-foreground/85 mb-1.5"
+								htmlFor="supm-name"
+							>
+								{t`Name`} <span className="text-danger">*</span>
 							</label>
 							<input
 								id="supm-name"
-								className="h-8 px-3 rounded border border-gray-200 bg-white text-sm w-full outline-none focus:border-teal-500"
+								className="h-8 px-3 rounded border border-input bg-card text-foreground text-sm w-full outline-none focus:border-ring"
 								placeholder={t`e.g. Frutas del Campo S.A.`}
 								value={name}
 								onChange={(e) => setName(e.target.value)}
@@ -109,16 +112,16 @@ export function SupplierModal({
 						</div>
 
 						{coords && (
-							<div className="flex items-center gap-2 px-2.5 py-2 rounded-md bg-amber-50 border border-amber-100">
-								<MapPin size={13} className="text-amber-600 flex-shrink-0" />
-								<span className="text-xs text-amber-700">
+							<div className="flex items-center gap-2 px-2.5 py-2 rounded-md bg-warning-subtle border border-warning-border">
+								<MapPin size={13} className="text-warning-foreground flex-shrink-0" />
+								<span className="text-xs text-warning-foreground">
 									<span className="font-mono">
 										{coords.lat.toFixed(4)}, {coords.lng.toFixed(4)}
 									</span>
 								</span>
 								<button
 									type="button"
-									className="ml-auto text-xs text-gray-400 hover:text-gray-600"
+									className="ml-auto text-xs text-muted-foreground hover:text-foreground"
 									onClick={() => setCoords(null)}
 								>
 									{t`Clear`}
@@ -126,7 +129,11 @@ export function SupplierModal({
 							</div>
 						)}
 
-						{error && <div className="p-3 rounded bg-red-50 text-red-700 text-sm">{error}</div>}
+						{error && (
+							<div className="p-3 rounded bg-danger-subtle text-danger-foreground text-sm">
+								{error}
+							</div>
+						)}
 					</div>
 
 					<DialogFooter className="mt-4">
