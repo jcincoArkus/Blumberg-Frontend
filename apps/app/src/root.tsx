@@ -12,7 +12,7 @@ import {
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { buttonVariants, Toaster } from "~@/ui";
+import { buttonVariants, Spinner, Toaster } from "~@/ui";
 import { THEME_INIT_SCRIPT, themeViewModel } from "~@/view-model/theme";
 
 import "./app.css";
@@ -69,7 +69,13 @@ export default observer(function App() {
 });
 
 export function HydrateFallback() {
-	return null;
+	// Rendered before the app hydrates; the inline theme script has already set the `dark` class, so tokens match the theme.
+	// Also prerendered at build time (SPA mode) before Lingui is activated, so no translated strings here.
+	return (
+		<div className="flex min-h-screen items-center justify-center bg-background">
+			<Spinner className="size-8 text-primary" />
+		</div>
+	);
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

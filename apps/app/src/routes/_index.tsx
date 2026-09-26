@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
-import { t } from "~@/i18n/macro";
+import { LoadingState } from "~@/ui";
 import { authViewModel } from "~@/view-model/auth";
 
 import type { Route } from "./+types/_index";
@@ -22,5 +22,9 @@ export default function Index({ loaderData }: Route.ComponentProps) {
 		}
 	}, [isAuthenticated, navigate]);
 
-	return <div>{t`Loading...`}</div>;
+	return (
+		<div className="flex min-h-screen items-center justify-center bg-background">
+			<LoadingState variant="page" />
+		</div>
+	);
 }

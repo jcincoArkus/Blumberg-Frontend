@@ -1,10 +1,11 @@
 import { makeAutoObservable } from "mobx";
 import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useNavigate, useNavigation } from "react-router";
 
 import { authorizationController } from "~@/authorization";
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
+import { LoadingState, TopProgressBar } from "~@/ui";
 import { authViewModel } from "~@/view-model/auth";
 import { DashboardShell } from "~@/views";
 
@@ -39,6 +40,7 @@ export async function clientLoader() {
  */
 function Private() {
 	const navigate = useNavigate();
+	const navigation = useNavigation();
 	const { isAuthenticated } = authViewModel;
 
 	useEffect(() => {
@@ -54,7 +56,11 @@ function Private() {
 	}, []);
 
 	if (authorizationController.isLoading) {
-		return <div>{t`Loading...`}</div>;
+		return (
+			<div className="flex min-h-screen items-center justify-center bg-background">
+				<LoadingState variant="page" label={t`Loading your workspace…`} />
+			</div>
+		);
 	}
 
 	if (!authViewModel.isAuthenticated) {
@@ -67,6 +73,8 @@ function Private() {
 
 	return (
 		<DashboardShell>
+			{/* Slim top bar while React Router loads the next module (route chunk / loaders) */}
+			<TopProgressBar active={navigation.state === "loading"} />
 			<Outlet />
 		</DashboardShell>
 	);
