@@ -7,8 +7,17 @@ import {
 	createAdminV1ResponseTransformer,
 	createEquipmentV1ResponseTransformer,
 	createIngestionApiKeyV1ResponseTransformer,
+	createIntakeShipmentV1ResponseTransformer,
+	createInventoryCategoryV1ResponseTransformer,
+	createInventoryLotV1ResponseTransformer,
+	createInventoryMovementV1ResponseTransformer,
+	createInventoryProductV1ResponseTransformer,
+	createInventorySiteV1ResponseTransformer,
+	createInventorySiteZoneV1ResponseTransformer,
+	createInventorySupplierV1ResponseTransformer,
 	createSensorTypeV1ResponseTransformer,
 	createSensorV1ResponseTransformer,
+	createShipmentLineV1ResponseTransformer,
 	createSiteV1ResponseTransformer,
 	createThresholdV1ResponseTransformer,
 	getActiveAlertsV1ResponseTransformer,
@@ -24,11 +33,29 @@ import {
 	getEquipmentByIdV1ResponseTransformer,
 	getIngestionRunByIdV1ResponseTransformer,
 	getIngestionRunsV1ResponseTransformer,
+	getIntakeShipmentByIdV1ResponseTransformer,
+	getIntakeShipmentsV1ResponseTransformer,
+	getInventoryCategoriesV1ResponseTransformer,
+	getInventoryCategoryByIdV1ResponseTransformer,
+	getInventoryLotByCodeV1ResponseTransformer,
+	getInventoryLotsV1ResponseTransformer,
+	getInventoryMovementByIdV1ResponseTransformer,
+	getInventoryMovementsV1ResponseTransformer,
+	getInventoryProductByIdV1ResponseTransformer,
+	getInventoryProductsV1ResponseTransformer,
+	getInventorySiteByIdV1ResponseTransformer,
+	getInventorySitesV1ResponseTransformer,
+	getInventorySiteZoneByIdV1ResponseTransformer,
+	getInventorySiteZonesV1ResponseTransformer,
+	getInventorySupplierByIdV1ResponseTransformer,
+	getInventorySuppliersV1ResponseTransformer,
 	getSensorByIdV1ResponseTransformer,
 	getSensorHealthByIdV1ResponseTransformer,
 	getSensorHealthListV1ResponseTransformer,
 	getSensorReadingsV1ResponseTransformer,
 	getSensorTypeByIdV1ResponseTransformer,
+	getShipmentLineByIdV1ResponseTransformer,
+	getShipmentLinesV1ResponseTransformer,
 	getSiteByIdV1ResponseTransformer,
 	getThresholdByIdV1ResponseTransformer,
 	listIngestionApiKeysV1ResponseTransformer,
@@ -63,6 +90,30 @@ import type {
 	CreateIngestionApiKeyV1Data,
 	CreateIngestionApiKeyV1Errors,
 	CreateIngestionApiKeyV1Responses,
+	CreateIntakeShipmentV1Data,
+	CreateIntakeShipmentV1Errors,
+	CreateIntakeShipmentV1Responses,
+	CreateInventoryCategoryV1Data,
+	CreateInventoryCategoryV1Errors,
+	CreateInventoryCategoryV1Responses,
+	CreateInventoryLotV1Data,
+	CreateInventoryLotV1Errors,
+	CreateInventoryLotV1Responses,
+	CreateInventoryMovementV1Data,
+	CreateInventoryMovementV1Errors,
+	CreateInventoryMovementV1Responses,
+	CreateInventoryProductV1Data,
+	CreateInventoryProductV1Errors,
+	CreateInventoryProductV1Responses,
+	CreateInventorySiteV1Data,
+	CreateInventorySiteV1Errors,
+	CreateInventorySiteV1Responses,
+	CreateInventorySiteZoneV1Data,
+	CreateInventorySiteZoneV1Errors,
+	CreateInventorySiteZoneV1Responses,
+	CreateInventorySupplierV1Data,
+	CreateInventorySupplierV1Errors,
+	CreateInventorySupplierV1Responses,
 	CreateRoleV1Data,
 	CreateRoleV1Responses,
 	CreateSensorTypeV1Data,
@@ -71,6 +122,9 @@ import type {
 	CreateSensorV1Data,
 	CreateSensorV1Errors,
 	CreateSensorV1Responses,
+	CreateShipmentLineV1Data,
+	CreateShipmentLineV1Errors,
+	CreateShipmentLineV1Responses,
 	CreateSiteV1Data,
 	CreateSiteV1Errors,
 	CreateSiteV1Responses,
@@ -83,6 +137,27 @@ import type {
 	DeleteEquipmentV1Data,
 	DeleteEquipmentV1Errors,
 	DeleteEquipmentV1Responses,
+	DeleteIntakeShipmentV1Data,
+	DeleteIntakeShipmentV1Errors,
+	DeleteIntakeShipmentV1Responses,
+	DeleteInventoryCategoryV1Data,
+	DeleteInventoryCategoryV1Errors,
+	DeleteInventoryCategoryV1Responses,
+	DeleteInventoryLotV1Data,
+	DeleteInventoryLotV1Errors,
+	DeleteInventoryLotV1Responses,
+	DeleteInventoryProductV1Data,
+	DeleteInventoryProductV1Errors,
+	DeleteInventoryProductV1Responses,
+	DeleteInventorySiteV1Data,
+	DeleteInventorySiteV1Errors,
+	DeleteInventorySiteV1Responses,
+	DeleteInventorySiteZoneV1Data,
+	DeleteInventorySiteZoneV1Errors,
+	DeleteInventorySiteZoneV1Responses,
+	DeleteInventorySupplierV1Data,
+	DeleteInventorySupplierV1Errors,
+	DeleteInventorySupplierV1Responses,
 	DeleteRoleV1Data,
 	DeleteRoleV1Responses,
 	DeleteSensorTypeV1Data,
@@ -91,6 +166,9 @@ import type {
 	DeleteSensorV1Data,
 	DeleteSensorV1Errors,
 	DeleteSensorV1Responses,
+	DeleteShipmentLineV1Data,
+	DeleteShipmentLineV1Errors,
+	DeleteShipmentLineV1Responses,
 	DeleteSiteV1Data,
 	DeleteSiteV1Errors,
 	DeleteSiteV1Responses,
@@ -138,6 +216,54 @@ import type {
 	GetIngestionStatsV1Data,
 	GetIngestionStatsV1Errors,
 	GetIngestionStatsV1Responses,
+	GetIntakeShipmentByIdV1Data,
+	GetIntakeShipmentByIdV1Errors,
+	GetIntakeShipmentByIdV1Responses,
+	GetIntakeShipmentsV1Data,
+	GetIntakeShipmentsV1Errors,
+	GetIntakeShipmentsV1Responses,
+	GetInventoryCategoriesV1Data,
+	GetInventoryCategoriesV1Errors,
+	GetInventoryCategoriesV1Responses,
+	GetInventoryCategoryByIdV1Data,
+	GetInventoryCategoryByIdV1Errors,
+	GetInventoryCategoryByIdV1Responses,
+	GetInventoryLotByCodeV1Data,
+	GetInventoryLotByCodeV1Errors,
+	GetInventoryLotByCodeV1Responses,
+	GetInventoryLotsV1Data,
+	GetInventoryLotsV1Errors,
+	GetInventoryLotsV1Responses,
+	GetInventoryMovementByIdV1Data,
+	GetInventoryMovementByIdV1Errors,
+	GetInventoryMovementByIdV1Responses,
+	GetInventoryMovementsV1Data,
+	GetInventoryMovementsV1Errors,
+	GetInventoryMovementsV1Responses,
+	GetInventoryProductByIdV1Data,
+	GetInventoryProductByIdV1Errors,
+	GetInventoryProductByIdV1Responses,
+	GetInventoryProductsV1Data,
+	GetInventoryProductsV1Errors,
+	GetInventoryProductsV1Responses,
+	GetInventorySiteByIdV1Data,
+	GetInventorySiteByIdV1Errors,
+	GetInventorySiteByIdV1Responses,
+	GetInventorySitesV1Data,
+	GetInventorySitesV1Errors,
+	GetInventorySitesV1Responses,
+	GetInventorySiteZoneByIdV1Data,
+	GetInventorySiteZoneByIdV1Errors,
+	GetInventorySiteZoneByIdV1Responses,
+	GetInventorySiteZonesV1Data,
+	GetInventorySiteZonesV1Errors,
+	GetInventorySiteZonesV1Responses,
+	GetInventorySupplierByIdV1Data,
+	GetInventorySupplierByIdV1Errors,
+	GetInventorySupplierByIdV1Responses,
+	GetInventorySuppliersV1Data,
+	GetInventorySuppliersV1Errors,
+	GetInventorySuppliersV1Responses,
 	GetPermissionActionsV1Data,
 	GetPermissionActionsV1Responses,
 	GetPermissionResourcesV1Data,
@@ -165,6 +291,12 @@ import type {
 	GetSensorTypeByIdV1Data,
 	GetSensorTypeByIdV1Errors,
 	GetSensorTypeByIdV1Responses,
+	GetShipmentLineByIdV1Data,
+	GetShipmentLineByIdV1Errors,
+	GetShipmentLineByIdV1Responses,
+	GetShipmentLinesV1Data,
+	GetShipmentLinesV1Errors,
+	GetShipmentLinesV1Responses,
 	GetSiteByIdV1Data,
 	GetSiteByIdV1Errors,
 	GetSiteByIdV1Responses,
@@ -205,6 +337,27 @@ import type {
 	UpdateEquipmentV1Data,
 	UpdateEquipmentV1Errors,
 	UpdateEquipmentV1Responses,
+	UpdateIntakeShipmentV1Data,
+	UpdateIntakeShipmentV1Errors,
+	UpdateIntakeShipmentV1Responses,
+	UpdateInventoryCategoryV1Data,
+	UpdateInventoryCategoryV1Errors,
+	UpdateInventoryCategoryV1Responses,
+	UpdateInventoryLotV1Data,
+	UpdateInventoryLotV1Errors,
+	UpdateInventoryLotV1Responses,
+	UpdateInventoryProductV1Data,
+	UpdateInventoryProductV1Errors,
+	UpdateInventoryProductV1Responses,
+	UpdateInventorySiteV1Data,
+	UpdateInventorySiteV1Errors,
+	UpdateInventorySiteV1Responses,
+	UpdateInventorySiteZoneV1Data,
+	UpdateInventorySiteZoneV1Errors,
+	UpdateInventorySiteZoneV1Responses,
+	UpdateInventorySupplierV1Data,
+	UpdateInventorySupplierV1Errors,
+	UpdateInventorySupplierV1Responses,
 	UpdateRoleV1Data,
 	UpdateRoleV1Responses,
 	UpdateSensorTypeV1Data,
@@ -213,6 +366,9 @@ import type {
 	UpdateSensorV1Data,
 	UpdateSensorV1Errors,
 	UpdateSensorV1Responses,
+	UpdateShipmentLineV1Data,
+	UpdateShipmentLineV1Errors,
+	UpdateShipmentLineV1Responses,
 	UpdateSiteV1Data,
 	UpdateSiteV1Errors,
 	UpdateSiteV1Responses,
@@ -220,76 +376,6 @@ import type {
 	UpdateThresholdV1Errors,
 	UpdateThresholdV1Responses,
 } from "./types.gen";
-import {
-	zAcknowledgeAlertV1Data,
-	zAssignRolePermissionsV1Data,
-	zAssignUserRolesV1Data,
-	zCheckPermissionCurrentUserV1Data,
-	zCheckPermissionUserV1Data,
-	zCreateAdminV1Data,
-	zCreateEquipmentV1Data,
-	zCreateIngestionApiKeyV1Data,
-	zCreateRoleV1Data,
-	zCreateSensorTypeV1Data,
-	zCreateSensorV1Data,
-	zCreateSiteV1Data,
-	zCreateThresholdV1Data,
-	zDeleteAdminV1Data,
-	zDeleteEquipmentV1Data,
-	zDeleteRoleV1Data,
-	zDeleteSensorTypeV1Data,
-	zDeleteSensorV1Data,
-	zDeleteSiteV1Data,
-	zDeleteThresholdV1Data,
-	zGetActiveAlertsV1Data,
-	zGetAdminByIdV1Data,
-	zGetAlertByIdV1Data,
-	zGetAllAdminsV1Data,
-	zGetAllAlertsV1Data,
-	zGetAllEquipmentV1Data,
-	zGetAllRolesV1Data,
-	zGetAllSensorsV1Data,
-	zGetAllSensorTypesV1Data,
-	zGetAllSitesV1Data,
-	zGetAllThresholdsV1Data,
-	zGetApiHealthData,
-	zGetEquipmentByIdV1Data,
-	zGetHealthData,
-	zGetIngestionRunByIdV1Data,
-	zGetIngestionRunsV1Data,
-	zGetIngestionStatsV1Data,
-	zGetPermissionActionsV1Data,
-	zGetPermissionResourcesV1Data,
-	zGetRoleByNameV1Data,
-	zGetRolePermissionsV1Data,
-	zGetRoleUsersV1Data,
-	zGetSensorByIdV1Data,
-	zGetSensorHealthByIdV1Data,
-	zGetSensorHealthListV1Data,
-	zGetSensorReadingsV1Data,
-	zGetSensorRejectionCountV1Data,
-	zGetSensorTypeByIdV1Data,
-	zGetSiteByIdV1Data,
-	zGetThresholdByIdV1Data,
-	zGetUserRolesV1Data,
-	zIngestReadingsV1Data,
-	zListIngestionApiKeysV1Data,
-	zLoginV1Data,
-	zRefreshV1Data,
-	zRemoveRolePermissionsV1Data,
-	zRemoveUserRolesV1Data,
-	zReplaceRolePermissionsV1Data,
-	zReplaceUserRolesV1Data,
-	zResolveAlertV1Data,
-	zRevokeIngestionApiKeyV1Data,
-	zUpdateAdminV1Data,
-	zUpdateEquipmentV1Data,
-	zUpdateRoleV1Data,
-	zUpdateSensorTypeV1Data,
-	zUpdateSensorV1Data,
-	zUpdateSiteV1Data,
-	zUpdateThresholdV1Data,
-} from "./zod.gen";
 
 export type Options<
 	TData extends TDataShape = TDataShape,
@@ -312,7 +398,6 @@ export const getAllAdminsV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<GetAllAdminsV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).get<GetAllAdminsV1Responses, GetAllAdminsV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zGetAllAdminsV1Data.parseAsync(data),
 		responseTransformer: getAllAdminsV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -324,7 +409,6 @@ export const createAdminV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<CreateAdminV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).post<CreateAdminV1Responses, CreateAdminV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zCreateAdminV1Data.parseAsync(data),
 		responseTransformer: createAdminV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -340,7 +424,6 @@ export const deleteAdminV1 = <ThrowOnError extends boolean = false>(
 	options: Options<DeleteAdminV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).delete<DeleteAdminV1Responses, DeleteAdminV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zDeleteAdminV1Data.parseAsync(data),
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/v1/admins/{id}",
 		...options,
@@ -350,7 +433,6 @@ export const getAdminByIdV1 = <ThrowOnError extends boolean = false>(
 	options: Options<GetAdminByIdV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).get<GetAdminByIdV1Responses, GetAdminByIdV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zGetAdminByIdV1Data.parseAsync(data),
 		responseTransformer: getAdminByIdV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -362,7 +444,6 @@ export const updateAdminV1 = <ThrowOnError extends boolean = false>(
 	options: Options<UpdateAdminV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).put<UpdateAdminV1Responses, UpdateAdminV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zUpdateAdminV1Data.parseAsync(data),
 		responseTransformer: updateAdminV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -378,7 +459,6 @@ export const getAllAlertsV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<GetAllAlertsV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).get<GetAllAlertsV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetAllAlertsV1Data.parseAsync(data),
 		responseTransformer: getAllAlertsV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -390,7 +470,6 @@ export const getActiveAlertsV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<GetActiveAlertsV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).get<GetActiveAlertsV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetActiveAlertsV1Data.parseAsync(data),
 		responseTransformer: getActiveAlertsV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -402,7 +481,6 @@ export const getAlertByIdV1 = <ThrowOnError extends boolean = false>(
 	options: Options<GetAlertByIdV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).get<GetAlertByIdV1Responses, GetAlertByIdV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zGetAlertByIdV1Data.parseAsync(data),
 		responseTransformer: getAlertByIdV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -418,7 +496,6 @@ export const acknowledgeAlertV1 = <ThrowOnError extends boolean = false>(
 		AcknowledgeAlertV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zAcknowledgeAlertV1Data.parseAsync(data),
 		responseTransformer: acknowledgeAlertV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -430,7 +507,6 @@ export const resolveAlertV1 = <ThrowOnError extends boolean = false>(
 	options: Options<ResolveAlertV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).patch<ResolveAlertV1Responses, ResolveAlertV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zResolveAlertV1Data.parseAsync(data),
 		responseTransformer: resolveAlertV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -442,7 +518,6 @@ export const loginV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<LoginV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).post<LoginV1Responses, LoginV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zLoginV1Data.parseAsync(data),
 		responseTransformer: loginV1ResponseTransformer,
 		responseType: "json",
 		url: "/api/v1/auth/login",
@@ -457,7 +532,6 @@ export const refreshV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<RefreshV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).post<RefreshV1Responses, RefreshV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zRefreshV1Data.parseAsync(data),
 		responseTransformer: refreshV1ResponseTransformer,
 		responseType: "json",
 		url: "/api/v1/auth/refresh",
@@ -472,7 +546,6 @@ export const getHealth = <ThrowOnError extends boolean = false>(
 	options?: Options<GetHealthData, ThrowOnError>,
 ) =>
 	(options?.client ?? client).get<GetHealthResponses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetHealthData.parseAsync(data),
 		url: "/health",
 		...options,
 	});
@@ -481,7 +554,6 @@ export const getApiHealth = <ThrowOnError extends boolean = false>(
 	options?: Options<GetApiHealthData, ThrowOnError>,
 ) =>
 	(options?.client ?? client).get<GetApiHealthResponses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetApiHealthData.parseAsync(data),
 		url: "/api/health",
 		...options,
 	});
@@ -490,7 +562,6 @@ export const getAllEquipmentV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<GetAllEquipmentV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).get<GetAllEquipmentV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetAllEquipmentV1Data.parseAsync(data),
 		responseTransformer: getAllEquipmentV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -506,7 +577,6 @@ export const createEquipmentV1 = <ThrowOnError extends boolean = false>(
 		CreateEquipmentV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zCreateEquipmentV1Data.parseAsync(data),
 		responseTransformer: createEquipmentV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -526,7 +596,6 @@ export const deleteEquipmentV1 = <ThrowOnError extends boolean = false>(
 		DeleteEquipmentV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zDeleteEquipmentV1Data.parseAsync(data),
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/v1/equipment/{id}",
 		...options,
@@ -540,7 +609,6 @@ export const getEquipmentByIdV1 = <ThrowOnError extends boolean = false>(
 		GetEquipmentByIdV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zGetEquipmentByIdV1Data.parseAsync(data),
 		responseTransformer: getEquipmentByIdV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -553,7 +621,6 @@ export const updateEquipmentV1 = <ThrowOnError extends boolean = false>(
 ) =>
 	(options.client ?? client).put<UpdateEquipmentV1Responses, UpdateEquipmentV1Errors, ThrowOnError>(
 		{
-			requestValidator: async (data) => await zUpdateEquipmentV1Data.parseAsync(data),
 			responseTransformer: updateEquipmentV1ResponseTransformer,
 			responseType: "json",
 			security: [{ scheme: "bearer", type: "http" }],
@@ -574,7 +641,6 @@ export const listIngestionApiKeysV1 = <ThrowOnError extends boolean = false>(
 		ListIngestionApiKeysV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zListIngestionApiKeysV1Data.parseAsync(data),
 		responseTransformer: listIngestionApiKeysV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -590,7 +656,6 @@ export const createIngestionApiKeyV1 = <ThrowOnError extends boolean = false>(
 		CreateIngestionApiKeyV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zCreateIngestionApiKeyV1Data.parseAsync(data),
 		responseTransformer: createIngestionApiKeyV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -610,7 +675,6 @@ export const revokeIngestionApiKeyV1 = <ThrowOnError extends boolean = false>(
 		RevokeIngestionApiKeyV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zRevokeIngestionApiKeyV1Data.parseAsync(data),
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/v1/ingestion/api-keys/{id}",
 		...options,
@@ -621,7 +685,6 @@ export const ingestReadingsV1 = <ThrowOnError extends boolean = false>(
 ) =>
 	(options?.client ?? client).post<IngestReadingsV1Responses, IngestReadingsV1Errors, ThrowOnError>(
 		{
-			requestValidator: async (data) => await zIngestReadingsV1Data.parseAsync(data),
 			responseType: "json",
 			security: [{ scheme: "bearer", type: "http" }],
 			url: "/api/v1/ingestion/readings",
@@ -641,7 +704,6 @@ export const getIngestionRunsV1 = <ThrowOnError extends boolean = false>(
 		GetIngestionRunsV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zGetIngestionRunsV1Data.parseAsync(data),
 		responseTransformer: getIngestionRunsV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -657,7 +719,6 @@ export const getSensorRejectionCountV1 = <ThrowOnError extends boolean = false>(
 		GetSensorRejectionCountV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zGetSensorRejectionCountV1Data.parseAsync(data),
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/v1/ingestion/sensors/{sensorId}/rejection-count",
@@ -672,7 +733,6 @@ export const getIngestionStatsV1 = <ThrowOnError extends boolean = false>(
 		GetIngestionStatsV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zGetIngestionStatsV1Data.parseAsync(data),
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/v1/ingestion/stats",
@@ -687,7 +747,6 @@ export const getIngestionRunByIdV1 = <ThrowOnError extends boolean = false>(
 		GetIngestionRunByIdV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zGetIngestionRunByIdV1Data.parseAsync(data),
 		responseTransformer: getIngestionRunByIdV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -699,7 +758,6 @@ export const getPermissionResourcesV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<GetPermissionResourcesV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).get<GetPermissionResourcesV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetPermissionResourcesV1Data.parseAsync(data),
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/permissions/resources",
@@ -710,7 +768,6 @@ export const getPermissionActionsV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<GetPermissionActionsV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).get<GetPermissionActionsV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetPermissionActionsV1Data.parseAsync(data),
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/permissions/actions",
@@ -721,7 +778,6 @@ export const checkPermissionCurrentUserV1 = <ThrowOnError extends boolean = fals
 	options?: Options<CheckPermissionCurrentUserV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).post<CheckPermissionCurrentUserV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zCheckPermissionCurrentUserV1Data.parseAsync(data),
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/permissions/check",
@@ -736,7 +792,6 @@ export const checkPermissionUserV1 = <ThrowOnError extends boolean = false>(
 	options: Options<CheckPermissionUserV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).post<CheckPermissionUserV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zCheckPermissionUserV1Data.parseAsync(data),
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/permissions/check/{userId}",
@@ -751,7 +806,6 @@ export const removeRolePermissionsV1 = <ThrowOnError extends boolean = false>(
 	options: Options<RemoveRolePermissionsV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).delete<RemoveRolePermissionsV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zRemoveRolePermissionsV1Data.parseAsync(data),
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/roles/{roleName}/permissions",
 		...options,
@@ -765,7 +819,6 @@ export const getRolePermissionsV1 = <ThrowOnError extends boolean = false>(
 	options: Options<GetRolePermissionsV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).get<GetRolePermissionsV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetRolePermissionsV1Data.parseAsync(data),
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/roles/{roleName}/permissions",
@@ -776,7 +829,6 @@ export const assignRolePermissionsV1 = <ThrowOnError extends boolean = false>(
 	options: Options<AssignRolePermissionsV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).post<AssignRolePermissionsV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zAssignRolePermissionsV1Data.parseAsync(data),
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/roles/{roleName}/permissions",
 		...options,
@@ -790,7 +842,6 @@ export const replaceRolePermissionsV1 = <ThrowOnError extends boolean = false>(
 	options: Options<ReplaceRolePermissionsV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).put<ReplaceRolePermissionsV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zReplaceRolePermissionsV1Data.parseAsync(data),
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/roles/{roleName}/permissions",
 		...options,
@@ -804,7 +855,6 @@ export const getAllRolesV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<GetAllRolesV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).get<GetAllRolesV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetAllRolesV1Data.parseAsync(data),
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/roles",
@@ -815,7 +865,6 @@ export const createRoleV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<CreateRoleV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).post<CreateRoleV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zCreateRoleV1Data.parseAsync(data),
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/roles",
@@ -830,7 +879,6 @@ export const deleteRoleV1 = <ThrowOnError extends boolean = false>(
 	options: Options<DeleteRoleV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).delete<DeleteRoleV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zDeleteRoleV1Data.parseAsync(data),
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/roles/{roleName}",
 		...options,
@@ -840,7 +888,6 @@ export const getRoleByNameV1 = <ThrowOnError extends boolean = false>(
 	options: Options<GetRoleByNameV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).get<GetRoleByNameV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetRoleByNameV1Data.parseAsync(data),
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/roles/{roleName}",
@@ -851,7 +898,6 @@ export const updateRoleV1 = <ThrowOnError extends boolean = false>(
 	options: Options<UpdateRoleV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).put<UpdateRoleV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zUpdateRoleV1Data.parseAsync(data),
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/roles/{roleName}",
@@ -866,7 +912,6 @@ export const getRoleUsersV1 = <ThrowOnError extends boolean = false>(
 	options: Options<GetRoleUsersV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).get<GetRoleUsersV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetRoleUsersV1Data.parseAsync(data),
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/roles/{roleName}/users",
@@ -877,7 +922,6 @@ export const getAllSensorTypesV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<GetAllSensorTypesV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).get<GetAllSensorTypesV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetAllSensorTypesV1Data.parseAsync(data),
 		responseTransformer: getAllSensorTypesV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -893,7 +937,6 @@ export const createSensorTypeV1 = <ThrowOnError extends boolean = false>(
 		CreateSensorTypeV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zCreateSensorTypeV1Data.parseAsync(data),
 		responseTransformer: createSensorTypeV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -913,7 +956,6 @@ export const deleteSensorTypeV1 = <ThrowOnError extends boolean = false>(
 		DeleteSensorTypeV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zDeleteSensorTypeV1Data.parseAsync(data),
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/v1/sensor-types/{id}",
 		...options,
@@ -927,7 +969,6 @@ export const getSensorTypeByIdV1 = <ThrowOnError extends boolean = false>(
 		GetSensorTypeByIdV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zGetSensorTypeByIdV1Data.parseAsync(data),
 		responseTransformer: getSensorTypeByIdV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -943,7 +984,6 @@ export const updateSensorTypeV1 = <ThrowOnError extends boolean = false>(
 		UpdateSensorTypeV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zUpdateSensorTypeV1Data.parseAsync(data),
 		responseTransformer: updateSensorTypeV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -959,7 +999,6 @@ export const getSensorHealthListV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<GetSensorHealthListV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).get<GetSensorHealthListV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetSensorHealthListV1Data.parseAsync(data),
 		responseTransformer: getSensorHealthListV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -975,7 +1014,6 @@ export const getSensorHealthByIdV1 = <ThrowOnError extends boolean = false>(
 		GetSensorHealthByIdV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zGetSensorHealthByIdV1Data.parseAsync(data),
 		responseTransformer: getSensorHealthByIdV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -987,7 +1025,6 @@ export const getAllSensorsV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<GetAllSensorsV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).get<GetAllSensorsV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetAllSensorsV1Data.parseAsync(data),
 		responseTransformer: getAllSensorsV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -999,7 +1036,6 @@ export const createSensorV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<CreateSensorV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).post<CreateSensorV1Responses, CreateSensorV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zCreateSensorV1Data.parseAsync(data),
 		responseTransformer: createSensorV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -1019,7 +1055,6 @@ export const getSensorReadingsV1 = <ThrowOnError extends boolean = false>(
 		GetSensorReadingsV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zGetSensorReadingsV1Data.parseAsync(data),
 		responseTransformer: getSensorReadingsV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -1031,7 +1066,6 @@ export const deleteSensorV1 = <ThrowOnError extends boolean = false>(
 	options: Options<DeleteSensorV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).delete<DeleteSensorV1Responses, DeleteSensorV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zDeleteSensorV1Data.parseAsync(data),
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/v1/sensors/{id}",
 		...options,
@@ -1041,7 +1075,6 @@ export const getSensorByIdV1 = <ThrowOnError extends boolean = false>(
 	options: Options<GetSensorByIdV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).get<GetSensorByIdV1Responses, GetSensorByIdV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zGetSensorByIdV1Data.parseAsync(data),
 		responseTransformer: getSensorByIdV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -1053,7 +1086,6 @@ export const updateSensorV1 = <ThrowOnError extends boolean = false>(
 	options: Options<UpdateSensorV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).put<UpdateSensorV1Responses, UpdateSensorV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zUpdateSensorV1Data.parseAsync(data),
 		responseTransformer: updateSensorV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -1069,7 +1101,6 @@ export const getAllSitesV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<GetAllSitesV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).get<GetAllSitesV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetAllSitesV1Data.parseAsync(data),
 		responseTransformer: getAllSitesV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -1081,7 +1112,6 @@ export const createSiteV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<CreateSiteV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).post<CreateSiteV1Responses, CreateSiteV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zCreateSiteV1Data.parseAsync(data),
 		responseTransformer: createSiteV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -1097,7 +1127,6 @@ export const deleteSiteV1 = <ThrowOnError extends boolean = false>(
 	options: Options<DeleteSiteV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).delete<DeleteSiteV1Responses, DeleteSiteV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zDeleteSiteV1Data.parseAsync(data),
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/v1/sites/{id}",
 		...options,
@@ -1107,7 +1136,6 @@ export const getSiteByIdV1 = <ThrowOnError extends boolean = false>(
 	options: Options<GetSiteByIdV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).get<GetSiteByIdV1Responses, GetSiteByIdV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zGetSiteByIdV1Data.parseAsync(data),
 		responseTransformer: getSiteByIdV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -1119,7 +1147,6 @@ export const updateSiteV1 = <ThrowOnError extends boolean = false>(
 	options: Options<UpdateSiteV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).put<UpdateSiteV1Responses, UpdateSiteV1Errors, ThrowOnError>({
-		requestValidator: async (data) => await zUpdateSiteV1Data.parseAsync(data),
 		responseTransformer: updateSiteV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -1135,7 +1162,6 @@ export const getAllThresholdsV1 = <ThrowOnError extends boolean = false>(
 	options?: Options<GetAllThresholdsV1Data, ThrowOnError>,
 ) =>
 	(options?.client ?? client).get<GetAllThresholdsV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetAllThresholdsV1Data.parseAsync(data),
 		responseTransformer: getAllThresholdsV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -1151,7 +1177,6 @@ export const createThresholdV1 = <ThrowOnError extends boolean = false>(
 		CreateThresholdV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zCreateThresholdV1Data.parseAsync(data),
 		responseTransformer: createThresholdV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -1171,7 +1196,6 @@ export const deleteThresholdV1 = <ThrowOnError extends boolean = false>(
 		DeleteThresholdV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zDeleteThresholdV1Data.parseAsync(data),
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/v1/thresholds/{id}",
 		...options,
@@ -1185,7 +1209,6 @@ export const getThresholdByIdV1 = <ThrowOnError extends boolean = false>(
 		GetThresholdByIdV1Errors,
 		ThrowOnError
 	>({
-		requestValidator: async (data) => await zGetThresholdByIdV1Data.parseAsync(data),
 		responseTransformer: getThresholdByIdV1ResponseTransformer,
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
@@ -1198,7 +1221,6 @@ export const updateThresholdV1 = <ThrowOnError extends boolean = false>(
 ) =>
 	(options.client ?? client).put<UpdateThresholdV1Responses, UpdateThresholdV1Errors, ThrowOnError>(
 		{
-			requestValidator: async (data) => await zUpdateThresholdV1Data.parseAsync(data),
 			responseTransformer: updateThresholdV1ResponseTransformer,
 			responseType: "json",
 			security: [{ scheme: "bearer", type: "http" }],
@@ -1215,7 +1237,6 @@ export const removeUserRolesV1 = <ThrowOnError extends boolean = false>(
 	options: Options<RemoveUserRolesV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).delete<RemoveUserRolesV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zRemoveUserRolesV1Data.parseAsync(data),
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/users/{userId}/roles",
 		...options,
@@ -1229,7 +1250,6 @@ export const getUserRolesV1 = <ThrowOnError extends boolean = false>(
 	options: Options<GetUserRolesV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).get<GetUserRolesV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zGetUserRolesV1Data.parseAsync(data),
 		responseType: "json",
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/users/{userId}/roles",
@@ -1240,7 +1260,6 @@ export const assignUserRolesV1 = <ThrowOnError extends boolean = false>(
 	options: Options<AssignUserRolesV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).post<AssignUserRolesV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zAssignUserRolesV1Data.parseAsync(data),
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/users/{userId}/roles",
 		...options,
@@ -1254,9 +1273,689 @@ export const replaceUserRolesV1 = <ThrowOnError extends boolean = false>(
 	options: Options<ReplaceUserRolesV1Data, ThrowOnError>,
 ) =>
 	(options.client ?? client).put<ReplaceUserRolesV1Responses, unknown, ThrowOnError>({
-		requestValidator: async (data) => await zReplaceUserRolesV1Data.parseAsync(data),
 		security: [{ scheme: "bearer", type: "http" }],
 		url: "/api/users/{userId}/roles",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const getInventoryCategoriesV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetInventoryCategoriesV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<
+		GetInventoryCategoriesV1Responses,
+		GetInventoryCategoriesV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getInventoryCategoriesV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/categories",
+		...options,
+	});
+
+export const createInventoryCategoryV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<CreateInventoryCategoryV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<
+		CreateInventoryCategoryV1Responses,
+		CreateInventoryCategoryV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: createInventoryCategoryV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/categories",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const deleteInventoryCategoryV1 = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteInventoryCategoryV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).delete<
+		DeleteInventoryCategoryV1Responses,
+		DeleteInventoryCategoryV1Errors,
+		ThrowOnError
+	>({
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/categories/{id}",
+		...options,
+	});
+
+export const getInventoryCategoryByIdV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetInventoryCategoryByIdV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<
+		GetInventoryCategoryByIdV1Responses,
+		GetInventoryCategoryByIdV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getInventoryCategoryByIdV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/categories/{id}",
+		...options,
+	});
+
+export const updateInventoryCategoryV1 = <ThrowOnError extends boolean = false>(
+	options: Options<UpdateInventoryCategoryV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).put<
+		UpdateInventoryCategoryV1Responses,
+		UpdateInventoryCategoryV1Errors,
+		ThrowOnError
+	>({
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/categories/{id}",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const getInventorySitesV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetInventorySitesV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<
+		GetInventorySitesV1Responses,
+		GetInventorySitesV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getInventorySitesV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/sites",
+		...options,
+	});
+
+export const createInventorySiteV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<CreateInventorySiteV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<
+		CreateInventorySiteV1Responses,
+		CreateInventorySiteV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: createInventorySiteV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/sites",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const deleteInventorySiteV1 = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteInventorySiteV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).delete<
+		DeleteInventorySiteV1Responses,
+		DeleteInventorySiteV1Errors,
+		ThrowOnError
+	>({
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/sites/{id}",
+		...options,
+	});
+
+export const getInventorySiteByIdV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetInventorySiteByIdV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<
+		GetInventorySiteByIdV1Responses,
+		GetInventorySiteByIdV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getInventorySiteByIdV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/sites/{id}",
+		...options,
+	});
+
+export const updateInventorySiteV1 = <ThrowOnError extends boolean = false>(
+	options: Options<UpdateInventorySiteV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).put<
+		UpdateInventorySiteV1Responses,
+		UpdateInventorySiteV1Errors,
+		ThrowOnError
+	>({
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/sites/{id}",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const getInventorySiteZonesV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetInventorySiteZonesV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<
+		GetInventorySiteZonesV1Responses,
+		GetInventorySiteZonesV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getInventorySiteZonesV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/site-zones",
+		...options,
+	});
+
+export const createInventorySiteZoneV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<CreateInventorySiteZoneV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<
+		CreateInventorySiteZoneV1Responses,
+		CreateInventorySiteZoneV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: createInventorySiteZoneV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/site-zones",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const deleteInventorySiteZoneV1 = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteInventorySiteZoneV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).delete<
+		DeleteInventorySiteZoneV1Responses,
+		DeleteInventorySiteZoneV1Errors,
+		ThrowOnError
+	>({
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/site-zones/{id}",
+		...options,
+	});
+
+export const getInventorySiteZoneByIdV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetInventorySiteZoneByIdV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<
+		GetInventorySiteZoneByIdV1Responses,
+		GetInventorySiteZoneByIdV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getInventorySiteZoneByIdV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/site-zones/{id}",
+		...options,
+	});
+
+export const updateInventorySiteZoneV1 = <ThrowOnError extends boolean = false>(
+	options: Options<UpdateInventorySiteZoneV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).put<
+		UpdateInventorySiteZoneV1Responses,
+		UpdateInventorySiteZoneV1Errors,
+		ThrowOnError
+	>({
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/site-zones/{id}",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const getInventorySuppliersV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetInventorySuppliersV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<
+		GetInventorySuppliersV1Responses,
+		GetInventorySuppliersV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getInventorySuppliersV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/suppliers",
+		...options,
+	});
+
+export const createInventorySupplierV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<CreateInventorySupplierV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<
+		CreateInventorySupplierV1Responses,
+		CreateInventorySupplierV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: createInventorySupplierV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/suppliers",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const deleteInventorySupplierV1 = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteInventorySupplierV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).delete<
+		DeleteInventorySupplierV1Responses,
+		DeleteInventorySupplierV1Errors,
+		ThrowOnError
+	>({
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/suppliers/{id}",
+		...options,
+	});
+
+export const getInventorySupplierByIdV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetInventorySupplierByIdV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<
+		GetInventorySupplierByIdV1Responses,
+		GetInventorySupplierByIdV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getInventorySupplierByIdV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/suppliers/{id}",
+		...options,
+	});
+
+export const updateInventorySupplierV1 = <ThrowOnError extends boolean = false>(
+	options: Options<UpdateInventorySupplierV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).put<
+		UpdateInventorySupplierV1Responses,
+		UpdateInventorySupplierV1Errors,
+		ThrowOnError
+	>({
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/suppliers/{id}",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const getInventoryProductsV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetInventoryProductsV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<
+		GetInventoryProductsV1Responses,
+		GetInventoryProductsV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getInventoryProductsV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/products",
+		...options,
+	});
+
+export const createInventoryProductV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<CreateInventoryProductV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<
+		CreateInventoryProductV1Responses,
+		CreateInventoryProductV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: createInventoryProductV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/products",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const deleteInventoryProductV1 = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteInventoryProductV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).delete<
+		DeleteInventoryProductV1Responses,
+		DeleteInventoryProductV1Errors,
+		ThrowOnError
+	>({
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/products/{id}",
+		...options,
+	});
+
+export const getInventoryProductByIdV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetInventoryProductByIdV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<
+		GetInventoryProductByIdV1Responses,
+		GetInventoryProductByIdV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getInventoryProductByIdV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/products/{id}",
+		...options,
+	});
+
+export const updateInventoryProductV1 = <ThrowOnError extends boolean = false>(
+	options: Options<UpdateInventoryProductV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).put<
+		UpdateInventoryProductV1Responses,
+		UpdateInventoryProductV1Errors,
+		ThrowOnError
+	>({
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/products/{id}",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const getInventoryLotsV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetInventoryLotsV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<
+		GetInventoryLotsV1Responses,
+		GetInventoryLotsV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getInventoryLotsV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/lots",
+		...options,
+	});
+
+export const createInventoryLotV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<CreateInventoryLotV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<
+		CreateInventoryLotV1Responses,
+		CreateInventoryLotV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: createInventoryLotV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/lots",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const deleteInventoryLotV1 = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteInventoryLotV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).delete<
+		DeleteInventoryLotV1Responses,
+		DeleteInventoryLotV1Errors,
+		ThrowOnError
+	>({
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/lots/{lotCode}",
+		...options,
+	});
+
+export const getInventoryLotByCodeV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetInventoryLotByCodeV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<
+		GetInventoryLotByCodeV1Responses,
+		GetInventoryLotByCodeV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getInventoryLotByCodeV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/lots/{lotCode}",
+		...options,
+	});
+
+export const updateInventoryLotV1 = <ThrowOnError extends boolean = false>(
+	options: Options<UpdateInventoryLotV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).put<
+		UpdateInventoryLotV1Responses,
+		UpdateInventoryLotV1Errors,
+		ThrowOnError
+	>({
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/lots/{lotCode}",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const getInventoryMovementsV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetInventoryMovementsV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<
+		GetInventoryMovementsV1Responses,
+		GetInventoryMovementsV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getInventoryMovementsV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/movements",
+		...options,
+	});
+
+export const createInventoryMovementV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<CreateInventoryMovementV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<
+		CreateInventoryMovementV1Responses,
+		CreateInventoryMovementV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: createInventoryMovementV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/movements",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const getInventoryMovementByIdV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetInventoryMovementByIdV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<
+		GetInventoryMovementByIdV1Responses,
+		GetInventoryMovementByIdV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getInventoryMovementByIdV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/movements/{id}",
+		...options,
+	});
+
+export const getIntakeShipmentsV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetIntakeShipmentsV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<
+		GetIntakeShipmentsV1Responses,
+		GetIntakeShipmentsV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getIntakeShipmentsV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/intake-shipments",
+		...options,
+	});
+
+export const createIntakeShipmentV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<CreateIntakeShipmentV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<
+		CreateIntakeShipmentV1Responses,
+		CreateIntakeShipmentV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: createIntakeShipmentV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/intake-shipments",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const deleteIntakeShipmentV1 = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteIntakeShipmentV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).delete<
+		DeleteIntakeShipmentV1Responses,
+		DeleteIntakeShipmentV1Errors,
+		ThrowOnError
+	>({
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/intake-shipments/{id}",
+		...options,
+	});
+
+export const getIntakeShipmentByIdV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetIntakeShipmentByIdV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<
+		GetIntakeShipmentByIdV1Responses,
+		GetIntakeShipmentByIdV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getIntakeShipmentByIdV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/intake-shipments/{id}",
+		...options,
+	});
+
+export const updateIntakeShipmentV1 = <ThrowOnError extends boolean = false>(
+	options: Options<UpdateIntakeShipmentV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).put<
+		UpdateIntakeShipmentV1Responses,
+		UpdateIntakeShipmentV1Errors,
+		ThrowOnError
+	>({
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/intake-shipments/{id}",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options.headers,
+		},
+	});
+
+export const getShipmentLinesV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<GetShipmentLinesV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).get<
+		GetShipmentLinesV1Responses,
+		GetShipmentLinesV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getShipmentLinesV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/shipment-lines",
+		...options,
+	});
+
+export const createShipmentLineV1 = <ThrowOnError extends boolean = false>(
+	options?: Options<CreateShipmentLineV1Data, ThrowOnError>,
+) =>
+	(options?.client ?? client).post<
+		CreateShipmentLineV1Responses,
+		CreateShipmentLineV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: createShipmentLineV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/shipment-lines",
+		...options,
+		headers: {
+			"Content-Type": "application/json",
+			...options?.headers,
+		},
+	});
+
+export const deleteShipmentLineV1 = <ThrowOnError extends boolean = false>(
+	options: Options<DeleteShipmentLineV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).delete<
+		DeleteShipmentLineV1Responses,
+		DeleteShipmentLineV1Errors,
+		ThrowOnError
+	>({
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/shipment-lines/{id}",
+		...options,
+	});
+
+export const getShipmentLineByIdV1 = <ThrowOnError extends boolean = false>(
+	options: Options<GetShipmentLineByIdV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).get<
+		GetShipmentLineByIdV1Responses,
+		GetShipmentLineByIdV1Errors,
+		ThrowOnError
+	>({
+		responseTransformer: getShipmentLineByIdV1ResponseTransformer,
+		responseType: "json",
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/shipment-lines/{id}",
+		...options,
+	});
+
+export const updateShipmentLineV1 = <ThrowOnError extends boolean = false>(
+	options: Options<UpdateShipmentLineV1Data, ThrowOnError>,
+) =>
+	(options.client ?? client).put<
+		UpdateShipmentLineV1Responses,
+		UpdateShipmentLineV1Errors,
+		ThrowOnError
+	>({
+		security: [{ scheme: "bearer", type: "http" }],
+		url: "/api/v1/inventory/shipment-lines/{id}",
 		...options,
 		headers: {
 			"Content-Type": "application/json",

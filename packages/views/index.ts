@@ -132,6 +132,15 @@ export {
 	type RejectedRow,
 	type SensorReading as IngestionSensorReading,
 } from "./ingestion";
+export {
+	IntakeView,
+	InventoryDashboardView,
+	InventoryView,
+	LotsView,
+	MovementsView,
+	ProductsView,
+	SitesView,
+} from "./inventory";
 // Monitoring - Advanced Sensor Health (different from sensor-health above)
 export {
 	type DataQualityInfo,

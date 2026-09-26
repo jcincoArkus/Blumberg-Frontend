@@ -17,6 +17,9 @@ export interface AppConfig {
 		wsUrl: string;
 	};
 
+	/** MapBox GL token */
+	mapboxToken: string;
+
 	/** Logger configuration */
 	logger?: {
 		/** Console adapter configuration */
