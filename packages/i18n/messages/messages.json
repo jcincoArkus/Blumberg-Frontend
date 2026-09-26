@@ -7,6 +7,18 @@
     "en-US": "—",
     "es-LA": ""
   },
+  "{0, plural, one {# active alert} other {# active alerts}}": {
+    "en-US": "{0, plural, one {# active alert} other {# active alerts}}",
+    "es-LA": ""
+  },
+  "{0, plural, one {# product} other {# products}}": {
+    "en-US": "{0, plural, one {# product} other {# products}}",
+    "es-LA": ""
+  },
+  "{0, plural, one {Save · create # lot} other {Save · create # lots}}": {
+    "en-US": "{0, plural, one {Save · create # lot} other {Save · create # lots}}",
+    "es-LA": ""
+  },
   "{0} active alert{1}": {
     "en-US": "{0} active alert{1}",
     "es-LA": ""
@@ -87,6 +99,10 @@
     "en-US": "{ageFormatted} ago",
     "es-LA": ""
   },
+  "{alertsCount, plural, one {# alert} other {# alerts}}": {
+    "en-US": "{alertsCount, plural, one {# alert} other {# alerts}}",
+    "es-LA": ""
+  },
   "{count} rejected readings in the last 24 hours.": {
     "en-US": "{count} rejected readings in the last 24 hours.",
     "es-LA": ""
@@ -115,8 +131,16 @@
     "en-US": "{locationCount} total",
     "es-LA": ""
   },
+  "{lotsCreated, plural, one {# lot created} other {# lots created}}": {
+    "en-US": "{lotsCreated, plural, one {# lot created} other {# lots created}}",
+    "es-LA": ""
+  },
   "{minutes} minutes": {
     "en-US": "{minutes} minutes",
+    "es-LA": ""
+  },
+  "{n}d ago": {
+    "en-US": "{n}d ago",
     "es-LA": ""
   },
   "{sensorsOnline} / {totalSensors} sensors online": {
@@ -223,12 +247,24 @@
     "en-US": "above {0} {1}",
     "es-LA": ""
   },
+  "above 6 °C target": {
+    "en-US": "above 6 °C target",
+    "es-LA": ""
+  },
+  "Above maximum ({0})": {
+    "en-US": "Above maximum ({0})",
+    "es-LA": ""
+  },
   "Above maximum ({0}{1})": {
     "en-US": "Above maximum ({0}{1})",
     "es-LA": ""
   },
   "above target": {
     "en-US": "above target",
+    "es-LA": ""
+  },
+  "Above warning threshold ({0})": {
+    "en-US": "Above warning threshold ({0})",
     "es-LA": ""
   },
   "Above warning threshold ({warningThreshold}{0})": {
@@ -455,12 +491,20 @@
     "en-US": "Adjust",
     "es-LA": ""
   },
+  "Adjustment": {
+    "en-US": "Adjustment",
+    "es-LA": ""
+  },
   "admin": {
     "en-US": "admin",
     "es-LA": ""
   },
   "Admin": {
     "en-US": "Admin",
+    "es-LA": ""
+  },
+  "Administrator": {
+    "en-US": "Administrator",
     "es-LA": ""
   },
   "ago": {
@@ -607,8 +651,16 @@
     "en-US": "All Types",
     "es-LA": ""
   },
+  "Allowed Range:": {
+    "en-US": "Allowed Range:",
+    "es-LA": ""
+  },
   "An unexpected error occurred.": {
     "en-US": "An unexpected error occurred.",
+    "es-LA": ""
+  },
+  "An unexpected error occurred. Please try again, or head back to the dashboard.": {
+    "en-US": "An unexpected error occurred. Please try again, or head back to the dashboard.",
     "es-LA": ""
   },
   "ANALYTICS": {
@@ -727,12 +779,20 @@
     "en-US": "Back to Dashboard",
     "es-LA": ""
   },
+  "Back to dashboard": {
+    "en-US": "Back to dashboard",
+    "es-LA": ""
+  },
   "Back to Equipment": {
     "en-US": "Back to Equipment",
     "es-LA": ""
   },
   "Back to Equipment Details": {
     "en-US": "Back to Equipment Details",
+    "es-LA": ""
+  },
+  "Back to Equipment Overview": {
+    "en-US": "Back to Equipment Overview",
     "es-LA": ""
   },
   "Back to Sensor": {
@@ -761,6 +821,10 @@
   },
   "below {0} {1}": {
     "en-US": "below {0} {1}",
+    "es-LA": ""
+  },
+  "Below minimum ({0})": {
+    "en-US": "Below minimum ({0})",
     "es-LA": ""
   },
   "Below minimum ({0}{1})": {
@@ -825,6 +889,10 @@
   },
   "Category name is required.": {
     "en-US": "Category name is required.",
+    "es-LA": ""
+  },
+  "Check": {
+    "en-US": "Check",
     "es-LA": ""
   },
   "City": {
@@ -1019,6 +1087,18 @@
     "en-US": "Cost / unit",
     "es-LA": ""
   },
+  "Cost per unit cannot be negative": {
+    "en-US": "Cost per unit cannot be negative",
+    "es-LA": ""
+  },
+  "Couldn't load equipment. Please refresh the page to try again.": {
+    "en-US": "Couldn't load equipment. Please refresh the page to try again.",
+    "es-LA": ""
+  },
+  "Couldn't load sensors. Please refresh the page to try again.": {
+    "en-US": "Couldn't load sensors. Please refresh the page to try again.",
+    "es-LA": ""
+  },
   "Count": {
     "en-US": "Count",
     "es-LA": ""
@@ -1099,6 +1179,10 @@
     "en-US": "Critical",
     "es-LA": ""
   },
+  "Critical issues detected": {
+    "en-US": "Critical issues detected",
+    "es-LA": ""
+  },
   "Critical:": {
     "en-US": "Critical:",
     "es-LA": ""
@@ -1153,6 +1237,10 @@
   },
   "Current:": {
     "en-US": "Current:",
+    "es-LA": ""
+  },
+  "Current: {0}": {
+    "en-US": "Current: {0}",
     "es-LA": ""
   },
   "Current: {0} {1}": {
@@ -1407,8 +1495,20 @@
     "en-US": "e.g., temp_value",
     "es-LA": ""
   },
+  "Earliest expiration first. {firstName} ({firstDays}d) will be picked before {lastName} ({lastDays}d).": {
+    "en-US": "Earliest expiration first. {firstName} ({firstDays}d) will be picked before {lastName} ({lastDays}d).",
+    "es-LA": ""
+  },
+  "Earliest expiration first. All products on this receipt share the same shelf life ({0}d).": {
+    "en-US": "Earliest expiration first. All products on this receipt share the same shelf life ({0}d).",
+    "es-LA": ""
+  },
   "Earliest expiration first. Cilantro (4d) will be picked before Avocado (7d).": {
     "en-US": "Earliest expiration first. Cilantro (4d) will be picked before Avocado (7d).",
+    "es-LA": ""
+  },
+  "Earliest expiration first. Lots from this receipt will be picked before newer stock of the same product.": {
+    "en-US": "Earliest expiration first. Lots from this receipt will be picked before newer stock of the same product.",
     "es-LA": ""
   },
   "Edit": {
@@ -1583,6 +1683,10 @@
     "en-US": "Error",
     "es-LA": ""
   },
+  "Error {code}": {
+    "en-US": "Error {code}",
+    "es-LA": ""
+  },
   "Error Breakdown": {
     "en-US": "Error Breakdown",
     "es-LA": ""
@@ -1665,6 +1769,10 @@
   },
   "Expiring ≤ 5d": {
     "en-US": "Expiring ≤ 5d",
+    "es-LA": ""
+  },
+  "Explore the Demo": {
+    "en-US": "Explore the Demo",
     "es-LA": ""
   },
   "Export": {
@@ -1915,6 +2023,10 @@
     "en-US": "Improving",
     "es-LA": ""
   },
+  "in {n}d": {
+    "en-US": "in {n}d",
+    "es-LA": ""
+  },
   "In Progress": {
     "en-US": "In Progress",
     "es-LA": ""
@@ -1985,6 +2097,10 @@
   },
   "Intake": {
     "en-US": "Intake",
+    "es-LA": ""
+  },
+  "Intake {poNumber} saved": {
+    "en-US": "Intake {poNumber} saved",
     "es-LA": ""
   },
   "inter-site": {
@@ -2073,6 +2189,10 @@
   },
   "kg per box is required when unit is box.": {
     "en-US": "kg per box is required when unit is box.",
+    "es-LA": ""
+  },
+  "kg per box must be greater than 0.": {
+    "en-US": "kg per box must be greater than 0.",
     "es-LA": ""
   },
   "Last": {
@@ -2199,8 +2319,16 @@
     "en-US": "Loading products…",
     "es-LA": ""
   },
+  "Loading readings…": {
+    "en-US": "Loading readings…",
+    "es-LA": ""
+  },
   "Loading runs...": {
     "en-US": "Loading runs...",
+    "es-LA": ""
+  },
+  "Loading sensor status…": {
+    "en-US": "Loading sensor status…",
     "es-LA": ""
   },
   "Loading sensors…": {
@@ -2209,6 +2337,10 @@
   },
   "Loading threshold...": {
     "en-US": "Loading threshold...",
+    "es-LA": ""
+  },
+  "Loading users…": {
+    "en-US": "Loading users…",
     "es-LA": ""
   },
   "Loading...": {
@@ -2451,6 +2583,10 @@
     "en-US": "Missing or gaps",
     "es-LA": ""
   },
+  "Mixed units — filter by sensor type": {
+    "en-US": "Mixed units — filter by sensor type",
+    "es-LA": ""
+  },
   "Model": {
     "en-US": "Model",
     "es-LA": ""
@@ -2543,6 +2679,10 @@
     "en-US": "No access",
     "es-LA": ""
   },
+  "No account needed — jump straight into a sample workspace.": {
+    "en-US": "No account needed — jump straight into a sample workspace.",
+    "es-LA": ""
+  },
   "No active alerts": {
     "en-US": "No active alerts",
     "es-LA": ""
@@ -2607,6 +2747,10 @@
     "en-US": "No equipment available",
     "es-LA": ""
   },
+  "No equipment registered yet.": {
+    "en-US": "No equipment registered yet.",
+    "es-LA": ""
+  },
   "No equipment yet": {
     "en-US": "No equipment yet",
     "es-LA": ""
@@ -2627,12 +2771,24 @@
     "en-US": "No insights available",
     "es-LA": ""
   },
+  "No Location Selected": {
+    "en-US": "No Location Selected",
+    "es-LA": ""
+  },
   "No notifications sent": {
     "en-US": "No notifications sent",
     "es-LA": ""
   },
   "No readings found": {
     "en-US": "No readings found",
+    "es-LA": ""
+  },
+  "No readings in this period": {
+    "en-US": "No readings in this period",
+    "es-LA": ""
+  },
+  "No readings yet": {
+    "en-US": "No readings yet",
     "es-LA": ""
   },
   "No recent alerts": {
@@ -2693,6 +2849,10 @@
   },
   "No sensors yet": {
     "en-US": "No sensors yet",
+    "es-LA": ""
+  },
+  "No signal": {
+    "en-US": "No signal",
     "es-LA": ""
   },
   "No sites available": {
@@ -2815,6 +2975,10 @@
     "en-US": "Open menu for {0}",
     "es-LA": ""
   },
+  "Opening demo...": {
+    "en-US": "Opening demo...",
+    "es-LA": ""
+  },
   "Operating within normal parameters": {
     "en-US": "Operating within normal parameters",
     "es-LA": ""
@@ -2851,6 +3015,10 @@
     "en-US": "Optional: Assign sensor to specific equipment",
     "es-LA": ""
   },
+  "or": {
+    "en-US": "or",
+    "es-LA": ""
+  },
   "Origin": {
     "en-US": "Origin",
     "es-LA": ""
@@ -2877,6 +3045,10 @@
   },
   "Page {0} of {totalPages}": {
     "en-US": "Page {0} of {totalPages}",
+    "es-LA": ""
+  },
+  "Page not found": {
+    "en-US": "Page not found",
     "es-LA": ""
   },
   "Parts Catalog": {
@@ -3001,6 +3173,10 @@
   },
   "Price (MXN / unit)": {
     "en-US": "Price (MXN / unit)",
+    "es-LA": ""
+  },
+  "Price must be 0 or greater.": {
+    "en-US": "Price must be 0 or greater.",
     "es-LA": ""
   },
   "Print receipt": {
@@ -3215,6 +3391,10 @@
     "en-US": "Rejections can be due to invalid sensor id, invalid unit, or other validation errors.",
     "es-LA": ""
   },
+  "Reload page": {
+    "en-US": "Reload page",
+    "es-LA": ""
+  },
   "Remove {0}": {
     "en-US": "Remove {0}",
     "es-LA": ""
@@ -3345,6 +3525,10 @@
   },
   "Run ID": {
     "en-US": "Run ID",
+    "es-LA": ""
+  },
+  "Sale": {
+    "en-US": "Sale",
     "es-LA": ""
   },
   "SAML": {
@@ -3691,6 +3875,10 @@
     "en-US": "Shelf life (days)",
     "es-LA": ""
   },
+  "Shelf life must be a whole number of days greater than 0.": {
+    "en-US": "Shelf life must be a whole number of days greater than 0.",
+    "es-LA": ""
+  },
   "Shipment details": {
     "en-US": "Shipment details",
     "es-LA": ""
@@ -3765,6 +3953,10 @@
   },
   "Sign in": {
     "en-US": "Sign in",
+    "es-LA": ""
+  },
+  "Signed in": {
+    "en-US": "Signed in",
     "es-LA": ""
   },
   "Signing in...": {
@@ -3851,8 +4043,16 @@
     "en-US": "Snapshot across all sites · last 7 days of activity",
     "es-LA": ""
   },
+  "Some systems degraded": {
+    "en-US": "Some systems degraded",
+    "es-LA": ""
+  },
   "Something went wrong": {
     "en-US": "Something went wrong",
+    "es-LA": ""
+  },
+  "Something went wrong while signing in. Please try again.": {
+    "en-US": "Something went wrong while signing in. Please try again.",
     "es-LA": ""
   },
   "Sort": {
@@ -4047,8 +4247,16 @@
     "en-US": "the configured range",
     "es-LA": ""
   },
+  "The demo is waking up. Please try again in a few seconds.": {
+    "en-US": "The demo is waking up. Please try again in a few seconds.",
+    "es-LA": ""
+  },
   "The equipment you're looking for doesn't exist.": {
     "en-US": "The equipment you're looking for doesn't exist.",
+    "es-LA": ""
+  },
+  "The page you're looking for doesn't exist or may have been moved.": {
+    "en-US": "The page you're looking for doesn't exist or may have been moved.",
     "es-LA": ""
   },
   "The sensor you're looking for doesn't exist.": {
@@ -4163,6 +4371,10 @@
     "en-US": "Toggle user status",
     "es-LA": ""
   },
+  "Tomorrow": {
+    "en-US": "Tomorrow",
+    "es-LA": ""
+  },
   "top 5": {
     "en-US": "top 5",
     "es-LA": ""
@@ -4211,6 +4423,10 @@
     "en-US": "Total Sites",
     "es-LA": ""
   },
+  "Transfer": {
+    "en-US": "Transfer",
+    "es-LA": ""
+  },
   "Transform": {
     "en-US": "Transform",
     "es-LA": ""
@@ -4253,6 +4469,10 @@
   },
   "Unable to load sensors. Try again later.": {
     "en-US": "Unable to load sensors. Try again later.",
+    "es-LA": ""
+  },
+  "Unable to reach the server. Please check your connection and try again.": {
+    "en-US": "Unable to reach the server. Please check your connection and try again.",
     "es-LA": ""
   },
   "Unassigned": {
@@ -4589,6 +4809,10 @@
   },
   "Warranty Information": {
     "en-US": "Warranty Information",
+    "es-LA": ""
+  },
+  "Waste": {
+    "en-US": "Waste",
     "es-LA": ""
   },
   "Weekly Consumption vs Target": {
