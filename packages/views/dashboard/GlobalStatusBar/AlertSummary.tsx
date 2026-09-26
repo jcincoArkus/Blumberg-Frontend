@@ -26,7 +26,10 @@ export const AlertSummary: FC<AlertSummaryProps> = ({ activeAlerts }) => {
 			)}
 			{activeAlerts.warning > 0 && (
 				<Link to="/alerts?severity=warning" title={t`View warning alerts`}>
-					<Badge variant="outline" className={`${badgeClass} border-amber-500 text-amber-700`}>
+					<Badge
+						variant="outline"
+						className={`${badgeClass} border-warning text-warning-foreground`}
+					>
 						{t`${activeAlerts.warning} Warning`}
 					</Badge>
 				</Link>

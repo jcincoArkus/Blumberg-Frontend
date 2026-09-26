@@ -76,7 +76,7 @@ const statusConfig: Record<StatusType, { label: string; className: string }> = {
 	},
 	maintenance: {
 		label: "Maintenance",
-		className: "bg-info/10 text-info border-info/20",
+		className: "bg-primary/10 text-primary border-primary/20",
 	},
 
 	// Sensor Status
@@ -133,7 +133,7 @@ const getDotColor = (status: StatusType): string => {
 		return "bg-success";
 	}
 	if (status === "maintenance") {
-		return "bg-info";
+		return "bg-primary";
 	}
 	return "bg-muted-foreground";
 };

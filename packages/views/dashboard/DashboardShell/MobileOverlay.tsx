@@ -9,7 +9,7 @@ export function MobileOverlay({ open, onClose }: MobileOverlayProps) {
 	if (!open) return null;
 	return (
 		<div
-			className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+			className="fixed inset-0 z-40 bg-overlay lg:hidden"
 			onClick={onClose}
 			onKeyDown={(e) => e.key === "Escape" && onClose()}
 			role="button"

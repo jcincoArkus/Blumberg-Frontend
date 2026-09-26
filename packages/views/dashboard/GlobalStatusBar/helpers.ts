@@ -10,17 +10,22 @@ export function getStatusConfig(status: "healthy" | "degraded" | "critical") {
 		healthy: {
 			icon: CheckCircle2,
 			label: t`Healthy`,
-			className: "text-emerald-600 bg-emerald-50 border-emerald-200",
+			iconClassName: "text-emerald-600 dark:text-success",
+			className:
+				"text-emerald-600 bg-emerald-50 border-emerald-200 dark:text-success dark:bg-success-subtle dark:border-success-border",
 		},
 		degraded: {
 			icon: AlertCircle,
 			label: t`Degraded`,
-			className: "text-amber-600 bg-amber-50 border-amber-200",
+			iconClassName: "text-amber-600 dark:text-warning",
+			className:
+				"text-amber-600 bg-amber-50 border-amber-200 dark:text-warning dark:bg-warning-subtle dark:border-warning-border",
 		},
 		critical: {
 			icon: AlertCircle,
 			label: t`Critical`,
-			className: "text-red-600 bg-red-50 border-red-200",
+			iconClassName: "text-danger",
+			className: "text-danger bg-danger-subtle border-danger-border",
 		},
 	};
 	return configs[status];

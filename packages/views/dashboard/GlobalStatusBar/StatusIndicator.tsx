@@ -16,7 +16,7 @@ export const StatusIndicator: FC<StatusIndicatorProps> = ({ status }) => {
 
 	return (
 		<div className="flex items-center gap-2">
-			<Icon className={cn("size-4", config.className.split(" ")[0])} />
+			<Icon className={cn("size-4", config.iconClassName)} />
 			<span className="font-medium">
 				{t`System:`} {config.label}
 			</span>

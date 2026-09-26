@@ -207,7 +207,7 @@ export function Sidebar({
 														title={item.label}
 													>
 														{item.icon}
-														<span className="absolute left-full ml-2 px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
+														<span className="absolute left-full ml-2 px-2 py-1 text-xs font-medium text-background bg-foreground rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
 															{item.label}
 														</span>
 													</Link>
@@ -234,9 +234,9 @@ function statusCopy(status: SystemStatus): { label: string; dot: string } {
 		case "critical":
 			return { label: t`Critical issues detected`, dot: "bg-red-500" };
 		case "degraded":
-			return { label: t`Some systems degraded`, dot: "bg-amber-500" };
+			return { label: t`Some systems degraded`, dot: "bg-warning" };
 		default:
-			return { label: t`All systems operational`, dot: "bg-emerald-500" };
+			return { label: t`All systems operational`, dot: "bg-success" };
 	}
 }
 
