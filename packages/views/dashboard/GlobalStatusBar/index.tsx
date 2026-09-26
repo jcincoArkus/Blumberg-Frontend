@@ -24,9 +24,10 @@ export const GlobalStatusBar = observer(function GlobalStatusBar() {
 	}, [isAuthenticated]);
 
 	return (
-		<div className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 -mx-4 lg:-mx-6">
-			<div className="flex items-center justify-between px-4 lg:px-6 py-2.5 text-sm">
-				<div className="flex items-center gap-6">
+		// z-30: stay above page content but below the mobile sidebar overlay (z-40) and drawer (z-50)
+		<div className="sticky top-0 z-30 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 -mx-4 lg:-mx-6">
+			<div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 lg:px-6 py-2.5 text-sm whitespace-nowrap">
+				<div className="flex flex-wrap items-center gap-x-4 gap-y-1 lg:gap-x-6">
 					<StatusIndicator status={vm.systemStatus} />
 					<AlertSummary activeAlerts={vm.activeAlerts} />
 					<CurrentTime />
