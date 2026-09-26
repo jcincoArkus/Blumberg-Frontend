@@ -12,6 +12,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 	ThemeModeMenu,
+	ThemeToggleButton,
 } from "~@/ui";
 import { authViewModel, themeViewModel } from "~@/view-model";
 
@@ -83,38 +84,47 @@ export const DashboardHeader = observer(function DashboardHeader({
 				)}
 			</div>
 
-			<DropdownMenu>
-				<DropdownMenuTrigger asChild>
-					<Button
-						variant="ghost"
-						size="sm"
-						className="gap-2 font-normal text-foreground hover:bg-primary hover:text-primary-foreground"
-						aria-label={t`User menu`}
-					>
-						<User className="size-4 shrink-0" />
-						<span className="hidden sm:inline">{userName}</span>
-					</Button>
-				</DropdownMenuTrigger>
-				<DropdownMenuContent align="end" className="w-56 rounded-lg shadow-md">
-					<div className="px-3 py-3">
-						<p className="text-sm font-bold text-foreground">{userName}</p>
-						{user?.email && <p className="truncate text-sm text-muted-foreground">{user.email}</p>}
-						<p className="text-sm text-muted-foreground">
-							{t`Role`}: {t`Administrator`}
-						</p>
-					</div>
-					<DropdownMenuSeparator />
-					<ThemeModeMenu value={themeViewModel.mode} onValueChange={themeViewModel.setMode} />
-					<DropdownMenuSeparator />
-					<DropdownMenuItem
-						onSelect={handleLogout}
-						className="cursor-pointer focus:bg-primary focus:text-primary-foreground data-[highlighted]:bg-primary data-[highlighted]:text-primary-foreground"
-					>
-						<LogOut className="size-4" />
-						{t`Logout`}
-					</DropdownMenuItem>
-				</DropdownMenuContent>
-			</DropdownMenu>
+			<div className="flex items-center gap-1">
+				<ThemeToggleButton
+					resolvedTheme={themeViewModel.resolvedTheme}
+					onToggle={themeViewModel.toggle}
+				/>
+
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<Button
+							variant="ghost"
+							size="sm"
+							className="gap-2 font-normal text-foreground hover:bg-primary hover:text-primary-foreground"
+							aria-label={t`User menu`}
+						>
+							<User className="size-4 shrink-0" />
+							<span className="hidden sm:inline">{userName}</span>
+						</Button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="end" className="w-56 rounded-lg shadow-md">
+						<div className="px-3 py-3">
+							<p className="text-sm font-bold text-foreground">{userName}</p>
+							{user?.email && (
+								<p className="truncate text-sm text-muted-foreground">{user.email}</p>
+							)}
+							<p className="text-sm text-muted-foreground">
+								{t`Role`}: {t`Administrator`}
+							</p>
+						</div>
+						<DropdownMenuSeparator />
+						<ThemeModeMenu value={themeViewModel.mode} onValueChange={themeViewModel.setMode} />
+						<DropdownMenuSeparator />
+						<DropdownMenuItem
+							onSelect={handleLogout}
+							className="cursor-pointer focus:bg-primary focus:text-primary-foreground data-[highlighted]:bg-primary data-[highlighted]:text-primary-foreground"
+						>
+							<LogOut className="size-4" />
+							{t`Logout`}
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			</div>
 		</header>
 	);
 });
