@@ -1,5 +1,13 @@
 import { Compass, Home, TriangleAlert } from "lucide-react";
-import { isRouteErrorResponse, Link, Links, Meta, Scripts, ScrollRestoration } from "react-router";
+import {
+	isRouteErrorResponse,
+	Link,
+	Links,
+	Meta,
+	Outlet,
+	Scripts,
+	ScrollRestoration,
+} from "react-router";
 
 import { t } from "~@/i18n/macro";
 import { buttonVariants, Toaster } from "~@/ui";
@@ -32,11 +40,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
 			</head>
 			<body>
 				{children}
-				<Toaster richColors closeButton position="top-right" />
 				<ScrollRestoration />
 				<Scripts />
 			</body>
 		</html>
+	);
+}
+
+// Toaster lives in the root route component: in SPA mode the Layout body is not re-rendered on the client,
+// so a Toaster placed there never mounts and toasts are silently dropped.
+export default function App() {
+	return (
+		<>
+			<Outlet />
+			<Toaster richColors closeButton position="top-right" />
+		</>
 	);
 }
 

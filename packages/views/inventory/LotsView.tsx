@@ -52,7 +52,7 @@ export const LotsView = observer(function LotsView() {
 				<div>
 					<h1 className="text-xl font-semibold tracking-tight text-gray-900">{t`Lots`}</h1>
 					<p className="text-sm text-gray-600 mt-1">
-						{vm.lots.length} {t`active lots · sortable by lot ID`}
+						{vm.lots.filter((l) => l.qty > 0).length} {t`active lots · sortable by lot ID`}
 					</p>
 				</div>
 				<div className="ml-auto flex items-center gap-2">
