@@ -22,6 +22,20 @@ import type { Route } from "./+types/login";
 const DEMO_EMAIL = import.meta.env.VITE_DEMO_EMAIL ?? "admin@blumberg.com";
 const DEMO_PASSWORD = import.meta.env.VITE_DEMO_PASSWORD ?? "Admin123.";
 
+/** HTTP status from an axios-style error (or undefined for network errors). */
+function errorStatus(err: unknown): number | undefined {
+	const e = err as { response?: { status?: number }; status?: number } | null;
+	return e?.response?.status ?? e?.status;
+}
+
+function loginErrorMessage(err: unknown): string {
+	const status = errorStatus(err);
+	if (status === 400 || status === 401 || status === 403) return t`Invalid email or password`;
+	if (status === undefined)
+		return t`Unable to reach the server. Please check your connection and try again.`;
+	return t`Something went wrong while signing in. Please try again.`;
+}
+
 export async function clientLoader() {
 	return { isAuthenticated: authViewModel.isAuthenticated };
 }
@@ -33,9 +47,11 @@ function Login({ loaderData }: Route.ComponentProps) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [isDemoPending, setIsDemoPending] = useState(false);
+	const [formError, setFormError] = useState<string | null>(null);
 
 	useEffect(() => {
 		loginViewModel.reset();
+		setFormError(null);
 	}, [email, password]);
 
 	if (isAuthenticated) {
@@ -49,14 +65,15 @@ function Login({ loaderData }: Route.ComponentProps) {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!email.trim() || !password) {
-			toast.error(t`Please enter email and password`);
+			setFormError(t`Please enter email and password`);
 			return;
 		}
 		try {
 			await loginViewModel.login(email, password);
 			navigate("/home", { replace: true });
-		} catch {
-			const message = loginViewModel.error?.message ?? t`Invalid email or password`;
+		} catch (err) {
+			const message = loginErrorMessage(err);
+			setFormError(message);
 			toast.error(message);
 		}
 	};
@@ -114,6 +131,11 @@ function Login({ loaderData }: Route.ComponentProps) {
 									className="border-input bg-transparent"
 								/>
 							</div>
+							{formError && (
+								<p role="alert" className="text-sm font-medium text-destructive">
+									{formError}
+								</p>
+							)}
 							<Button
 								type="submit"
 								className="w-full bg-primary text-primary-foreground hover:bg-primary/90"

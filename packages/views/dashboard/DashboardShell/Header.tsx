@@ -2,6 +2,7 @@ import { LogOut, Menu, User } from "lucide-react";
 import { useNavigate } from "react-router";
 
 import { t } from "~@/i18n/macro";
+import { observer } from "~@/mobx";
 import {
 	Button,
 	cn,
@@ -15,13 +16,6 @@ import { authViewModel } from "~@/view-model";
 
 import type { Domain, DomainKey } from "./types";
 
-/** Placeholder until session includes user (e.g. from auth API) */
-const DISPLAY_USER = {
-	name: t`John Admin`,
-	email: "john.admin@blumberg.com",
-	role: t`admin`,
-};
-
 interface DashboardHeaderProps {
 	showDomainTabs: boolean;
 	activeDomain: Domain;
@@ -32,7 +26,7 @@ interface DashboardHeaderProps {
 	domainLabels: Record<DomainKey, string>;
 }
 
-export function DashboardHeader({
+export const DashboardHeader = observer(function DashboardHeader({
 	showDomainTabs,
 	activeDomain,
 	onDomainChange,
@@ -42,6 +36,9 @@ export function DashboardHeader({
 	domainLabels,
 }: DashboardHeaderProps) {
 	const navigate = useNavigate();
+	// Signed-in user from the access token claims; every account in this app is an organization admin
+	const user = authViewModel.currentUser;
+	const userName = user?.displayName || t`Signed in`;
 
 	const handleLogout = () => {
 		authViewModel.clearSession();
@@ -88,15 +85,15 @@ export function DashboardHeader({
 						aria-label={t`User menu`}
 					>
 						<User className="size-4 shrink-0" />
-						<span className="hidden sm:inline">{DISPLAY_USER.name}</span>
+						<span className="hidden sm:inline">{userName}</span>
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end" className="w-56 rounded-lg shadow-md">
 					<div className="px-3 py-3">
-						<p className="text-sm font-bold text-foreground">{DISPLAY_USER.name}</p>
-						<p className="text-sm text-muted-foreground">{DISPLAY_USER.email}</p>
+						<p className="text-sm font-bold text-foreground">{userName}</p>
+						{user?.email && <p className="truncate text-sm text-muted-foreground">{user.email}</p>}
 						<p className="text-sm text-muted-foreground">
-							{t`Role`}: {DISPLAY_USER.role}
+							{t`Role`}: {t`Administrator`}
 						</p>
 					</div>
 					<DropdownMenuSeparator />
@@ -111,4 +108,4 @@ export function DashboardHeader({
 			</DropdownMenu>
 		</header>
 	);
-}
+});

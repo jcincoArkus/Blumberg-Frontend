@@ -6,6 +6,12 @@ import { config } from "~@/config";
 import { authViewModel } from "./AuthViewModel";
 
 const REFRESH_URL = "/api/v1/auth/refresh";
+const LOGIN_PATH = "/auth/login";
+
+function isAuthEndpoint(url: string | undefined, path: string): boolean {
+	if (!url) return false;
+	return url.includes(path.replace(/^\/api\/v1/, ""));
+}
 
 /** Single in-flight refresh promise so concurrent 401s don't trigger multiple refreshes */
 let refreshPromise: Promise<boolean> | null = null;
@@ -43,8 +49,14 @@ export function setupAuthRefreshInterceptor(axiosInstance: AxiosInstance): void 
 				return Promise.reject(error);
 			}
 
+			// A 401 from the login endpoint means bad credentials, not an expired session:
+			// let the caller (login page) show the error instead of refreshing/redirecting.
+			if (isAuthEndpoint(originalRequest?.url, LOGIN_PATH)) {
+				return Promise.reject(error);
+			}
+
 			// Do not try refresh for the refresh endpoint itself
-			if (originalRequest?.url?.includes("/auth/refresh")) {
+			if (isAuthEndpoint(originalRequest?.url, REFRESH_URL)) {
 				authViewModel.clearSession();
 				redirectToLogin();
 				return Promise.reject(error);
@@ -94,7 +106,7 @@ export function setupAuthRefreshInterceptor(axiosInstance: AxiosInstance): void 
 }
 
 function redirectToLogin(): void {
-	if (typeof window !== "undefined") {
+	if (typeof window !== "undefined" && window.location.pathname !== "/login") {
 		window.location.href = "/login";
 	}
 }
