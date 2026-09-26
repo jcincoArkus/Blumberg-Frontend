@@ -13,7 +13,7 @@ import { useMemo, useState } from "react";
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { Button, cn } from "~@/ui";
-import { daysUntil, type InvMovementType, useInventoryViewModel } from "~@/view-model";
+import { type InvMovementType, useInventoryViewModel } from "~@/view-model";
 
 import { fmtDate, fmtTime, type Movement } from "./data";
 
@@ -25,13 +25,29 @@ const TYPE_ICON: Record<InvMovementType, LucideIcon> = {
 	transfer: ArrowLeftRight,
 };
 
-const TYPE_LABEL: Record<InvMovementType, string> = {
-	intake: "Intake",
-	output: "Sale",
-	waste: "Waste",
-	adjustment: "Adjustment",
-	transfer: "Transfer",
-};
+function typeLabel(type: InvMovementType): string {
+	switch (type) {
+		case "intake":
+			return t`Intake`;
+		case "output":
+			return t`Sale`;
+		case "waste":
+			return t`Waste`;
+		case "adjustment":
+			return t`Adjustment`;
+		case "transfer":
+			return t`Transfer`;
+	}
+}
+
+/** Calendar-day difference between `date` and today in local time (negative = past). */
+function calendarDaysFromToday(date: Date | string): number {
+	const d = date instanceof Date ? new Date(date) : new Date(date);
+	const today = new Date();
+	d.setHours(0, 0, 0, 0);
+	today.setHours(0, 0, 0, 0);
+	return Math.round((d.getTime() - today.getTime()) / 86_400_000);
+}
 
 type DayHeader = { day: string; daysAgo: number; isHeader: true };
 type Row = DayHeader | (Movement & { isHeader?: false });
@@ -71,7 +87,7 @@ export const MovementsView = observer(function MovementsView() {
 			const sign = isNeg ? "-" : isPos ? "+" : "";
 			return [
 				fmtTime(m.at),
-				TYPE_LABEL[m.type as InvMovementType],
+				typeLabel(m.type as InvMovementType),
 				p.name,
 				m.lotId,
 				s.name.split(" · ")[0],
@@ -89,7 +105,7 @@ export const MovementsView = observer(function MovementsView() {
 		rows.forEach((m) => {
 			const k = fmtDate(m.at);
 			if (k !== lastKey) {
-				out.push({ day: k, daysAgo: daysUntil(m.at), isHeader: true });
+				out.push({ day: k, daysAgo: calendarDaysFromToday(m.at), isHeader: true });
 				lastKey = k;
 			}
 			out.push(m);
@@ -98,9 +114,12 @@ export const MovementsView = observer(function MovementsView() {
 	}, [rows]);
 
 	const dayLabel = (key: string, daysAgo: number) => {
+		// daysAgo is a signed calendar-day offset: negative = past, positive = future
 		if (daysAgo === 0) return `${t`Today`} · ${key}`;
 		if (daysAgo === -1) return `${t`Yesterday`} · ${key}`;
-		return `${Math.abs(daysAgo)}d ${t`ago`} · ${key}`;
+		if (daysAgo === 1) return `${t`Tomorrow`} · ${key}`;
+		const n = Math.abs(daysAgo);
+		return daysAgo < 0 ? `${t`${n}d ago`} · ${key}` : `${t`in ${n}d`} · ${key}`;
 	};
 
 	const filterTypes: InvMovementType[] = ["intake", "output", "waste", "adjustment", "transfer"];
@@ -115,7 +134,7 @@ export const MovementsView = observer(function MovementsView() {
 
 	return (
 		<div className="space-y-6">
-			<div className="flex items-start gap-4">
+			<div className="flex flex-wrap items-start gap-4">
 				<div>
 					<h1 className="text-xl font-semibold tracking-tight text-gray-900">{t`Movements`}</h1>
 					<p className="text-sm text-gray-600 mt-1">{t`Every intake, sale, waste mark, adjustment and transfer · audit trail`}</p>
@@ -130,7 +149,7 @@ export const MovementsView = observer(function MovementsView() {
 				</div>
 			</div>
 
-			<div className="grid grid-cols-6 gap-3">
+			<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
 				<button
 					className={cn(
 						"p-3 rounded-lg border transition-colors cursor-pointer text-left",
@@ -184,7 +203,7 @@ export const MovementsView = observer(function MovementsView() {
 									filter === type ? "text-white/85" : "text-gray-600",
 								)}
 							>
-								<Icn size={12} /> {TYPE_LABEL[type]}
+								<Icn size={12} /> {typeLabel(type)}
 							</div>
 							<div
 								className={cn(
@@ -252,7 +271,6 @@ export const MovementsView = observer(function MovementsView() {
 										<tr key={m.id} className="hover:bg-gray-50 border-b border-gray-100">
 											<td className="px-3 py-2.5 text-gray-700 font-mono">
 												<div>{fmtTime(m.at)}</div>
-												<div className="text-xs text-gray-500 mt-0.5">{m.id}</div>
 											</td>
 											<td className="px-3 py-2.5">
 												<span
@@ -261,7 +279,7 @@ export const MovementsView = observer(function MovementsView() {
 														typeColorMap[m.type as InvMovementType],
 													)}
 												>
-													<Icn size={11} /> {TYPE_LABEL[m.type as InvMovementType]}
+													<Icn size={11} /> {typeLabel(m.type as InvMovementType)}
 												</span>
 											</td>
 											<td className="px-3 py-2.5">

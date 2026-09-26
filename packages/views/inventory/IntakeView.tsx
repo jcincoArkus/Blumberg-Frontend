@@ -1,9 +1,10 @@
 import { Check, Clock, Info, Plus, Printer, RefreshCw, Snowflake, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 import { deleteIntakeShipmentV1, deleteInventoryLotV1, getInventoryLotsV1 } from "~@/api";
-import { t } from "~@/i18n/macro";
+import { plural, t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { Button } from "~@/ui";
 import { useInventoryViewModel } from "~@/view-model";
@@ -23,6 +24,62 @@ type LineItem = {
 	fromReader?: boolean; // lot already exists in DB — skip creation on save
 };
 
+function localDateInputValue(d: Date): string {
+	const yyyy = d.getFullYear();
+	const mm = String(d.getMonth() + 1).padStart(2, "0");
+	const dd = String(d.getDate()).padStart(2, "0");
+	return `${yyyy}-${mm}-${dd}`;
+}
+
+function localTimeInputValue(d: Date): string {
+	return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
+
+/**
+ * Numeric cell input that keeps the raw text while the user edits it, so the field
+ * can be cleared (no "050" when typing over a 0). The parsed number is pushed up on
+ * every valid change; an empty/invalid value is reported as 0 and fixed up on blur.
+ */
+function NumericCellInput({
+	value,
+	onValueChange,
+	className,
+	step,
+	min,
+	ariaLabel,
+}: {
+	value: number;
+	onValueChange: (n: number) => void;
+	className?: string;
+	step?: string;
+	min?: string;
+	ariaLabel?: string;
+}) {
+	const [draft, setDraft] = useState<string | null>(null);
+	return (
+		<input
+			className={className}
+			type="number"
+			inputMode="decimal"
+			step={step}
+			min={min}
+			aria-label={ariaLabel}
+			value={draft ?? String(value)}
+			onFocus={(e) => {
+				setDraft(String(value));
+				e.currentTarget.select();
+			}}
+			onChange={(e) => {
+				const raw = e.target.value;
+				setDraft(raw);
+				const n = Number.parseFloat(raw);
+				onValueChange(Number.isFinite(n) ? n : 0);
+			}}
+			onBlur={() => setDraft(null)}
+		/>
+	);
+}
+
 export const IntakeView = observer(function IntakeView() {
 	const navigate = useNavigate();
 	const vm = useInventoryViewModel();
@@ -33,8 +90,9 @@ export const IntakeView = observer(function IntakeView() {
 	const [supplier, setSupplier] = useState("");
 	const [site, setSite] = useState("");
 	const [zone, setZone] = useState("");
-	const [arrivalDate, setArrivalDate] = useState(new Date().toISOString().slice(0, 10));
-	const [arrivalTime, setArrivalTime] = useState("11:30");
+	// Use the user's local date/time (toISOString() would give the UTC date)
+	const [arrivalDate, setArrivalDate] = useState(() => localDateInputValue(new Date()));
+	const [arrivalTime, setArrivalTime] = useState(() => localTimeInputValue(new Date()));
 	const [vehicle, setVehicle] = useState("");
 	const [tempCheck, setTempCheck] = useState("4");
 	const [receivedBy, setReceivedBy] = useState("");
@@ -155,6 +213,29 @@ export const IntakeView = observer(function IntakeView() {
 		return { ...l, p, kgEquiv, total };
 	});
 
+	// FIFO preview: sort distinct products on this receipt by shelf life (earliest expiration first)
+	const fifoOrder = [...new Map(enriched.map((l) => [l.productId, l])).values()].sort(
+		(a, b) => a.p.shelfLife - b.p.shelfLife,
+	);
+	const fifoMessage = (() => {
+		if (fifoOrder.length < 2) {
+			return t`Earliest expiration first. Lots from this receipt will be picked before newer stock of the same product.`;
+		}
+		const first = fifoOrder[0];
+		const last = fifoOrder[fifoOrder.length - 1];
+		if (first.p.shelfLife === last.p.shelfLife) {
+			return t`Earliest expiration first. All products on this receipt share the same shelf life (${first.p.shelfLife}d).`;
+		}
+		const firstName = first.p.name;
+		const firstDays = first.p.shelfLife;
+		const lastName = last.p.name;
+		const lastDays = last.p.shelfLife;
+		return t`Earliest expiration first. ${firstName} (${firstDays}d) will be picked before ${lastName} (${lastDays}d).`;
+	})();
+
+	const tempValue = Number.parseFloat(tempCheck);
+	const tempOk = !Number.isFinite(tempValue) || tempValue <= 6;
+
 	const subtotal = enriched.reduce((s, l) => s + l.total, 0);
 	const tax = subtotal * 0.16;
 	const grand = subtotal + tax;
@@ -247,8 +328,12 @@ export const IntakeView = observer(function IntakeView() {
 			setError(t`Add at least one line item`);
 			return;
 		}
-		if (lines.some((l) => l.qty <= 0)) {
+		if (lines.some((l) => !Number.isFinite(l.qty) || l.qty <= 0)) {
 			setError(t`All line items must have a quantity greater than 0`);
+			return;
+		}
+		if (lines.some((l) => !Number.isFinite(l.cost) || l.cost < 0)) {
+			setError(t`Cost per unit cannot be negative`);
 			return;
 		}
 		setSaving(true);
@@ -357,6 +442,13 @@ export const IntakeView = observer(function IntakeView() {
 			}
 
 			await vm.refresh();
+			const lotsCreated = lines.filter((l) => !l.fromReader).length;
+			toast.success(t`Intake ${poNumber} saved`, {
+				description: plural(lotsCreated, {
+					one: "# lot created",
+					other: "# lots created",
+				}),
+			});
 			navigate("/inventory");
 		} catch (err) {
 			const message = err instanceof Error ? err.message : String(err);
@@ -368,7 +460,7 @@ export const IntakeView = observer(function IntakeView() {
 
 	return (
 		<div className="space-y-6">
-			<div className="flex items-start gap-4">
+			<div className="flex flex-wrap items-start gap-4">
 				<div>
 					<h1 className="text-xl font-semibold tracking-tight text-gray-900">
 						{t`Receive intake`} · {poNumber}
@@ -398,13 +490,18 @@ export const IntakeView = observer(function IntakeView() {
 					</Button>
 					<Button size="sm" disabled={saving} onClick={() => void handleSave()}>
 						<Check size={14} />{" "}
-						{saving ? t`Saving…` : `${t`Save · create`} ${lines.length} ${t`lots`}`}
+						{saving
+							? t`Saving…`
+							: plural(lines.length, {
+									one: "Save · create # lot",
+									other: "Save · create # lots",
+								})}
 					</Button>
 				</div>
 			</div>
 
-			<div className="grid grid-cols-3 gap-6 auto-rows-max">
-				<div className="col-span-2 space-y-0">
+			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 auto-rows-max">
+				<div className="lg:col-span-2 space-y-0 min-w-0">
 					<div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
 						{/* STEP 1 */}
 						<div className="border-b border-gray-100 p-5">
@@ -417,7 +514,7 @@ export const IntakeView = observer(function IntakeView() {
 									<div className="text-xs text-gray-500">{t`Where and when the goods arrived`}</div>
 								</div>
 							</div>
-							<div className="grid grid-cols-3 gap-4">
+							<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 								<div>
 									<label
 										className="block text-xs font-medium text-gray-700 mb-1.5"
@@ -566,7 +663,8 @@ export const IntakeView = observer(function IntakeView() {
 								<div>
 									<div className="text-sm font-semibold text-gray-900">{t`Line items`}</div>
 									<div className="text-xs text-gray-500">
-										{lines.length} {t`products`} · {totalKg.toFixed(1)} kg {t`total`}
+										{plural(lines.length, { one: "# product", other: "# products" })} ·{" "}
+										{totalKg.toFixed(1)} kg {t`total`}
 									</div>
 								</div>
 							</div>
@@ -606,11 +704,12 @@ export const IntakeView = observer(function IntakeView() {
 													</select>
 												</td>
 												<td className="px-3 py-2">
-													<input
+													<NumericCellInput
 														className="h-6 px-2 rounded border border-gray-200 bg-white text-xs w-full text-right outline-none focus:border-teal-500 font-mono"
-														type="number"
+														min="0"
+														ariaLabel={t`Qty`}
 														value={l.qty}
-														onChange={(e) => updateLine(l.id, "qty", +e.target.value)}
+														onValueChange={(n) => updateLine(l.id, "qty", n)}
 													/>
 												</td>
 												<td className="px-3 py-2">
@@ -625,12 +724,13 @@ export const IntakeView = observer(function IntakeView() {
 													</select>
 												</td>
 												<td className="px-3 py-2">
-													<input
+													<NumericCellInput
 														className="h-6 px-2 rounded border border-gray-200 bg-white text-xs w-full text-right outline-none focus:border-teal-500 font-mono"
-														type="number"
 														step="0.5"
+														min="0"
+														ariaLabel={t`Cost / unit`}
 														value={l.cost}
-														onChange={(e) => updateLine(l.id, "cost", +e.target.value)}
+														onValueChange={(n) => updateLine(l.id, "cost", n)}
 													/>
 												</td>
 												<td className="px-3 py-2 text-right text-gray-900 font-mono font-medium">
@@ -702,7 +802,7 @@ export const IntakeView = observer(function IntakeView() {
 									<div className="text-xs text-gray-500">{t`Auto-generated · override if supplier provided codes`}</div>
 								</div>
 							</div>
-							<div className="grid grid-cols-3 gap-4">
+							<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 								{enriched.map((l) => {
 									return (
 										<div key={l.id}>
@@ -767,7 +867,7 @@ export const IntakeView = observer(function IntakeView() {
 								<Info size={14} className="text-green-700 flex-shrink-0 mt-0.5" />
 								<div className="text-xs">
 									<div className="font-semibold text-green-900 mb-0.5">{t`FIFO will route output`}</div>
-									<div className="text-green-800">{t`Earliest expiration first. Cilantro (4d) will be picked before Avocado (7d).`}</div>
+									<div className="text-green-800">{fifoMessage}</div>
 								</div>
 							</div>
 						</div>
@@ -776,10 +876,17 @@ export const IntakeView = observer(function IntakeView() {
 							<div className="text-xs font-semibold text-gray-900 mb-2">{t`Cold-chain check`}</div>
 							<div className="flex items-center justify-between gap-2">
 								<div className="flex items-center gap-2 text-xs text-gray-700">
-									<Snowflake size={13} /> {tempCheck} °C — {t`within tolerance`}
+									<Snowflake size={13} /> {tempCheck || "—"} °C —{" "}
+									{tempOk ? t`within tolerance` : t`above 6 °C target`}
 								</div>
-								<span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
-									OK
+								<span
+									className={
+										tempOk
+											? "px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium"
+											: "px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-medium"
+									}
+								>
+									{tempOk ? t`OK` : t`Check`}
 								</span>
 							</div>
 						</div>

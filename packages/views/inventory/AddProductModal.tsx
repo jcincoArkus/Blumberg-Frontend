@@ -47,6 +47,20 @@ export function AddProductModal({ open, onClose }: AddProductModalProps) {
 			setError(t`kg per box is required when unit is box.`);
 			return;
 		}
+		const shelfLifeNum = Number(shelfLifeDays);
+		const priceNum = Number(price);
+		if (!Number.isInteger(shelfLifeNum) || shelfLifeNum <= 0) {
+			setError(t`Shelf life must be a whole number of days greater than 0.`);
+			return;
+		}
+		if (!Number.isFinite(priceNum) || priceNum < 0) {
+			setError(t`Price must be 0 or greater.`);
+			return;
+		}
+		if (unit === "box" && !(Number(kgPerBox) > 0)) {
+			setError(t`kg per box must be greater than 0.`);
+			return;
+		}
 		setSaving(true);
 		setError(null);
 		try {
