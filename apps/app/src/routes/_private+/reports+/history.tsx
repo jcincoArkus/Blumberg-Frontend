@@ -1,6 +1,5 @@
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { siteEquipment as equipment, siteData as sites } from "~@/mock-data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
 import { useHistoricalReportsViewModel } from "~@/view-model";
 import { AlertsHistoryTab, HistoricalFilters, ReadingsHistoryTab } from "~@/views";
@@ -36,8 +35,8 @@ const HistoricalReportsPage = observer(function HistoricalReportsPage() {
 				onSeverityFilterChange={vm.setSeverityFilter}
 				comparePrevious={vm.comparePrevious}
 				onComparePreviousChange={vm.setComparePrevious}
-				sites={sites}
-				equipment={equipment}
+				sites={vm.sites}
+				equipment={vm.equipment}
 			/>
 
 			{/* Tabs */}
@@ -48,6 +47,9 @@ const HistoricalReportsPage = observer(function HistoricalReportsPage() {
 				</TabsList>
 
 				<TabsContent value="readings" className="space-y-6">
+					{vm.isLoadingReadings && vm.readings.length === 0 && (
+						<p className="text-sm text-muted-foreground">{t`Loading readings…`}</p>
+					)}
 					<ReadingsHistoryTab
 						readings={vm.readings}
 						previousReadings={vm.previousReadings}
@@ -60,7 +62,7 @@ const HistoricalReportsPage = observer(function HistoricalReportsPage() {
 						alerts={vm.alerts}
 						previousAlerts={vm.previousAlerts}
 						comparePrevious={vm.comparePrevious}
-						equipment={equipment}
+						equipment={vm.equipment}
 					/>
 				</TabsContent>
 			</Tabs>

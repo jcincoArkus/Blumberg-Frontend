@@ -58,6 +58,9 @@ export function ReadingsHistoryTab({
 		};
 	}, [readings]);
 
+	// Averages across different units (°C + ppm…) are meaningless
+	const mixedUnits = useMemo(() => new Set(readings.map((r) => r.unit)).size > 1, [readings]);
+
 	// Calculate comparison
 	const comparison = useMemo(() => {
 		if (!comparePrevious || previousReadings.length === 0) return null;
@@ -180,9 +183,12 @@ export function ReadingsHistoryTab({
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold">
-							{formatReading(metrics.avg, readings[0]?.unit)}
+							{mixedUnits ? "—" : formatReading(metrics.avg, readings[0]?.unit)}
 						</div>
-						{comparison && (
+						{mixedUnits && (
+							<p className="mt-1 text-xs text-muted-foreground">{t`Mixed units — filter by sensor type`}</p>
+						)}
+						{!mixedUnits && comparison && (
 							<TrendIndicator
 								delta={comparison.delta}
 								label={t`vs previous period`}
@@ -198,9 +204,11 @@ export function ReadingsHistoryTab({
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold">
-							{formatNumber(metrics.min)} / {formatNumber(metrics.max)}
+							{mixedUnits ? "—" : `${formatNumber(metrics.min)} / ${formatNumber(metrics.max)}`}
 						</div>
-						<p className="mt-1 text-xs text-muted-foreground">{readings[0]?.unit || ""}</p>
+						<p className="mt-1 text-xs text-muted-foreground">
+							{mixedUnits ? t`Mixed units — filter by sensor type` : readings[0]?.unit || ""}
+						</p>
 					</CardContent>
 				</Card>
 
