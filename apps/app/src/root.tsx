@@ -1,4 +1,5 @@
 import { Compass, Home, TriangleAlert } from "lucide-react";
+import { useLayoutEffect } from "react";
 import {
 	isRouteErrorResponse,
 	Link,
@@ -10,7 +11,9 @@ import {
 } from "react-router";
 
 import { t } from "~@/i18n/macro";
+import { observer } from "~@/mobx";
 import { buttonVariants, Toaster } from "~@/ui";
+import { THEME_INIT_SCRIPT, themeViewModel } from "~@/view-model/theme";
 
 import "./app.css";
 
@@ -30,11 +33,18 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+	// React resets <html> attributes when it takes over the document; restore the theme before first paint
+	useLayoutEffect(() => themeViewModel.syncDocument(), []);
+
 	return (
-		<html lang="en">
+		// The inline theme script mutates <html> class/style before React hydrates, hence suppressHydrationWarning
+		<html lang="en" suppressHydrationWarning>
 			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				{/* Render-blocking on purpose: applies the saved theme before first paint (no light flash in dark mode) */}
+				{/* biome-ignore lint/security/noDangerouslySetInnerHtml: static, first-party theme boot script */}
+				<script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
 				<Meta />
 				<Links />
 			</head>
@@ -49,14 +59,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 // Toaster lives in the root route component: in SPA mode the Layout body is not re-rendered on the client,
 // so a Toaster placed there never mounts and toasts are silently dropped.
-export default function App() {
+export default observer(function App() {
 	return (
 		<>
 			<Outlet />
-			<Toaster richColors closeButton position="top-right" />
+			<Toaster richColors closeButton position="top-right" theme={themeViewModel.resolvedTheme} />
 		</>
 	);
-}
+});
 
 export function HydrateFallback() {
 	return null;
@@ -88,7 +98,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 					{isNotFound ? (
 						<Compass className="size-7 text-muted-foreground" aria-hidden />
 					) : (
-						<TriangleAlert className="size-7 text-amber-600" aria-hidden />
+						<TriangleAlert className="size-7 text-amber-600 dark:text-warning" aria-hidden />
 					)}
 				</div>
 				{code && (

@@ -3,6 +3,8 @@ import { X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
 
+import { useResolvedTheme } from "~@/view-model/theme";
+
 import type { MapLocation } from "./types";
 
 import "leaflet/dist/leaflet.css";
@@ -64,6 +66,7 @@ export function RealMap({ locations, selectedLocation, onLocationSelect }: RealM
 	const [selectedPin, setSelectedPin] = useState<string | null>(selectedLocation ?? null);
 	const [mapType, setMapType] = useState<"map" | "satellite">("map");
 	const [zoom, setZoom] = useState(4);
+	const resolvedTheme = useResolvedTheme();
 
 	useEffect(() => {
 		if (selectedLocation !== undefined) {
@@ -105,7 +108,9 @@ export function RealMap({ locations, selectedLocation, onLocationSelect }: RealM
 	const tileUrl =
 		mapType === "satellite"
 			? "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-			: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+			: resolvedTheme === "dark"
+				? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+				: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
 
 	const attribution =
 		mapType === "satellite"
@@ -123,7 +128,8 @@ export function RealMap({ locations, selectedLocation, onLocationSelect }: RealM
 					zoomControl={false}
 				>
 					<MapController center={selectedCenter} zoom={zoom} />
-					<TileLayer url={tileUrl} attribution={attribution} />
+					{/* keyed so the attribution also refreshes when switching base layers */}
+					<TileLayer key={tileUrl} url={tileUrl} attribution={attribution} />
 					{locations.map((location) => (
 						<Marker
 							key={location.id}

@@ -7,6 +7,25 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * THEMING — light is the default; dark is applied by the `dark` class on <html>
+ * (themeViewModel in packages/view-model/theme + the inline boot script in root.tsx).
+ *
+ * Never use raw palette colors (bg-white, text-gray-*, border-gray-*, bg-black, hex) in components.
+ * Surfaces:  bg-background (page) · bg-card (panels, header, sidebar) · bg-popover (menus) ·
+ *            bg-muted / bg-surface-muted (wells, zebra rows, hover) · bg-overlay (modal backdrop)
+ * Text:      text-foreground · text-muted-foreground · text-primary (links / brand accents)
+ * Lines:     border-border · border-input (form controls) · ring-ring
+ *
+ * Semantic status tokens — {success | warning | danger | info}:
+ *   bg-X            strong fill (dots, solid badges, progress, chart strokes)
+ *   text-X          strong/icon color on neutral surfaces
+ *   bg-X-subtle     tinted background for banners, pills, callouts
+ *   text-X-foreground  readable text on bg-X-subtle (and on neutral surfaces)
+ *   border-X-border tinted border to pair with bg-X-subtle (or border-X/30)
+ * e.g. <div class="bg-danger-subtle text-danger-foreground border border-danger-border">
+ */
+
 :root {
 	--background: #f3f5f7;
 	--foreground: #1a1f2e;
@@ -42,46 +61,84 @@
 	--sidebar-border: #e2e8f0;
 	--sidebar-ring: #0d7377;
 
-	/* Custom semantic colors for dashboard */
-	--success: #10b981;
-	--warning: #f59e0b;
-	--danger: #dc2626;
-	--info: #0d7377;
+	/* Status tokens — see the "Semantic status tokens" guide above.
+	   Light values mirror the Tailwind palette the views already used, so light mode is unchanged. */
+	--success: #10b981; /* emerald-500 */
+	--success-subtle: #f0fdf4; /* green-50 */
+	--success-foreground: #15803d; /* green-700 */
+	--success-border: #bbf7d0; /* green-200 */
+	--warning: #f59e0b; /* amber-500 */
+	--warning-subtle: #fffbeb; /* amber-50 */
+	--warning-foreground: #b45309; /* amber-700 */
+	--warning-border: #fde68a; /* amber-200 */
+	--danger: #dc2626; /* red-600 */
+	--danger-subtle: #fef2f2; /* red-50 */
+	--danger-foreground: #b91c1c; /* red-700 */
+	--danger-border: #fecaca; /* red-200 */
+	--info: #2563eb; /* blue-600 */
+	--info-subtle: #eff6ff; /* blue-50 */
+	--info-foreground: #1d4ed8; /* blue-700 */
+	--info-border: #bfdbfe; /* blue-200 */
+
+	/* Neutral surfaces */
+	--surface-muted: #f8fafc; /* slate-50: zebra rows, inset wells, bg-gray-50 replacements */
+	--overlay: rgb(0 0 0 / 0.5); /* modal / drawer backdrop */
 }
 
 .dark {
-	--background: oklch(0.145 0 0);
-	--foreground: oklch(0.985 0 0);
-	--card: oklch(0.145 0 0);
-	--card-foreground: oklch(0.985 0 0);
-	--popover: oklch(0.145 0 0);
-	--popover-foreground: oklch(0.985 0 0);
-	--primary: oklch(0.985 0 0);
-	--primary-foreground: oklch(0.205 0 0);
-	--secondary: oklch(0.269 0 0);
-	--secondary-foreground: oklch(0.985 0 0);
-	--muted: oklch(0.269 0 0);
-	--muted-foreground: oklch(0.708 0 0);
-	--accent: oklch(0.269 0 0);
-	--accent-foreground: oklch(0.985 0 0);
-	--destructive: oklch(0.396 0.141 25.723);
-	--destructive-foreground: oklch(0.637 0.237 25.331);
-	--border: oklch(0.269 0 0);
-	--input: oklch(0.269 0 0);
-	--ring: oklch(0.439 0 0);
-	--chart-1: oklch(0.488 0.243 264.376);
-	--chart-2: oklch(0.696 0.17 162.48);
-	--chart-3: oklch(0.769 0.188 70.08);
-	--chart-4: oklch(0.627 0.265 303.9);
-	--chart-5: oklch(0.645 0.246 16.439);
-	--sidebar: oklch(0.205 0 0);
-	--sidebar-foreground: oklch(0.985 0 0);
-	--sidebar-primary: oklch(0.488 0.243 264.376);
-	--sidebar-primary-foreground: oklch(0.985 0 0);
-	--sidebar-accent: oklch(0.269 0 0);
-	--sidebar-accent-foreground: oklch(0.985 0 0);
-	--sidebar-border: oklch(0.269 0 0);
-	--sidebar-ring: oklch(0.439 0 0);
+	/* Brand-tuned dark palette: slate near-black surfaces, lifted cards, brighter teal for contrast (WCAG AA). */
+	--background: #0e141b;
+	--foreground: #e6edf3;
+	--card: #151d26;
+	--card-foreground: #e6edf3;
+	--popover: #1a232e;
+	--popover-foreground: #e6edf3;
+	--primary: #2ab0b3;
+	--primary-foreground: #04181a;
+	--secondary: #1f2a36;
+	--secondary-foreground: #e6edf3;
+	--muted: #1f2a36;
+	--muted-foreground: #94a3b8;
+	--accent: #1a6d71;
+	--accent-foreground: #f0fdfc;
+	--destructive: #ef4444;
+	--destructive-foreground: #ffffff;
+	--border: #2a3644;
+	--input: #334252;
+	--ring: #2ab0b3;
+	--chart-1: #2ab0b3;
+	--chart-2: #67d5d0;
+	--chart-3: #fbbf24;
+	--chart-4: #34d399;
+	--chart-5: #818cf8;
+	--sidebar: #151d26;
+	--sidebar-foreground: #e6edf3;
+	--sidebar-primary: #2ab0b3;
+	--sidebar-primary-foreground: #04181a;
+	--sidebar-accent: #1f2a36;
+	--sidebar-accent-foreground: #e6edf3;
+	--sidebar-border: #2a3644;
+	--sidebar-ring: #2ab0b3;
+
+	--success: #34d399;
+	--success-subtle: #10291f;
+	--success-foreground: #86efac;
+	--success-border: #1f5136;
+	--warning: #fbbf24;
+	--warning-subtle: #2b2210;
+	--warning-foreground: #fcd34d;
+	--warning-border: #5c4410;
+	--danger: #f87171;
+	--danger-subtle: #321618;
+	--danger-foreground: #fca5a5;
+	--danger-border: #6b2226;
+	--info: #60a5fa;
+	--info-subtle: #132542;
+	--info-foreground: #93c5fd;
+	--info-border: #1e3a6b;
+
+	--surface-muted: #1a232e;
+	--overlay: rgb(0 0 0 / 0.7);
 }
 
 @theme inline {
@@ -125,9 +182,23 @@
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-ring: var(--sidebar-ring);
 	--color-success: var(--success);
+	--color-success-subtle: var(--success-subtle);
+	--color-success-foreground: var(--success-foreground);
+	--color-success-border: var(--success-border);
 	--color-warning: var(--warning);
+	--color-warning-subtle: var(--warning-subtle);
+	--color-warning-foreground: var(--warning-foreground);
+	--color-warning-border: var(--warning-border);
 	--color-danger: var(--danger);
+	--color-danger-subtle: var(--danger-subtle);
+	--color-danger-foreground: var(--danger-foreground);
+	--color-danger-border: var(--danger-border);
 	--color-info: var(--info);
+	--color-info-subtle: var(--info-subtle);
+	--color-info-foreground: var(--info-foreground);
+	--color-info-border: var(--info-border);
+	--color-surface-muted: var(--surface-muted);
+	--color-overlay: var(--overlay);
 }
 
 /* Alert beacon pulse (mockup-style) */

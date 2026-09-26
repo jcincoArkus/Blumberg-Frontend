@@ -3,6 +3,7 @@ import { useCallback, useState } from "react";
 import Map, { type MapMouseEvent, Marker, NavigationControl } from "react-map-gl/mapbox";
 
 import { config } from "~@/config";
+import { useResolvedTheme } from "~@/view-model/theme";
 
 export interface SiteCoords {
 	lat: number;
@@ -34,7 +35,10 @@ const DEFAULT_VIEW = {
 	zoom: 4.5,
 } as const;
 
-const MAP_STYLE = "mapbox://styles/mapbox/light-v11";
+const MAP_STYLE = {
+	light: "mapbox://styles/mapbox/light-v11",
+	dark: "mapbox://styles/mapbox/dark-v11",
+} as const;
 
 async function reverseGeocode(
 	lng: number,
@@ -63,6 +67,7 @@ export function SiteMap({
 	const token = config.mapboxToken;
 	const [internalMarker, setInternalMarker] = useState<SiteCoords | null>(null);
 	const [geocoding, setGeocoding] = useState(false);
+	const resolvedTheme = useResolvedTheme();
 
 	const activeMarker = pendingMarker !== undefined ? pendingMarker : internalMarker;
 
@@ -99,7 +104,8 @@ export function SiteMap({
 			<Map
 				initialViewState={DEFAULT_VIEW}
 				style={{ width: "100%", height: "100%" }}
-				mapStyle={MAP_STYLE}
+				// Style swaps in place (react-map-gl diffs it); markers are React overlays and survive the swap
+				mapStyle={MAP_STYLE[resolvedTheme]}
 				mapboxAccessToken={token}
 				onClick={handleClick}
 				cursor={geocoding ? "wait" : "crosshair"}

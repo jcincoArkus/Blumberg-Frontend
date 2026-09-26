@@ -72,6 +72,13 @@ Schema-driven headless engine in `packages/forms/`. Define a typed `FormSchema`,
 ### Styling
 Tailwind CSS v4 + CSS custom properties (oklch color space) defined in `apps/app/src/app.css`. Use the `cn()` utility (`clsx` + `tailwind-merge`) from `packages/ui/utils.ts` for conditional classNames. Components use `data-slot` attributes for CSS targeting.
 
+**Dark mode** (`dark` class on `<html>`, driven by `themeViewModel` in `packages/view-model/theme`):
+- Use semantic tokens, never raw palette colors (`bg-white`, `text-gray-*`, `border-gray-*`, `bg-black`, hex).
+- Surfaces: `bg-background` / `bg-card` / `bg-popover` / `bg-muted`; text: `text-foreground` / `text-muted-foreground`; lines: `border-border` / `border-input`.
+- For status use `success` / `warning` / `danger` / `info`: `bg-X-subtle text-X-foreground border-X-border` for pills/banners, `bg-X` / `text-X` for dots and icons.
+- Charts: spread `chartGridProps` / `chartAxisProps` / `chartTooltipProps` and use `chartColors` from `~@/ui`; maps: switch tiles/styles on `useResolvedTheme()`.
+- Token reference and intended usage: comment block at the top of `apps/app/src/app.css`.
+
 ### i18n
 All user-facing strings must use Lingui macros (`t` template tag or `<Trans>`). Run `bun i18n:extract` after adding strings, then `bun i18n:compile` before testing translations. Details in `packages/i18n/i18n.md`.
 

@@ -30,6 +30,13 @@ export {
 } from "./Card";
 export { Checkbox } from "./Checkbox";
 export { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./Collapsible";
+export {
+	chartAxisProps,
+	chartColors,
+	chartGridProps,
+	chartLegendProps,
+	chartTooltipProps,
+} from "./chart-theme";
 export { DashboardPanel } from "./DashboardPanel";
 export {
 	Dialog,
@@ -127,5 +134,6 @@ export {
 } from "./Table";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./Tabs";
 export { Textarea } from "./Textarea";
+export { ThemeModeMenu, ThemeToggleButton } from "./ThemeToggle";
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./Tooltip";
 export { cn } from "./utils";

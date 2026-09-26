@@ -13,8 +13,10 @@ import {
 	CardTitle,
 	Input,
 	Label,
+	ThemeToggleButton,
 } from "~@/ui";
 import { authViewModel, useLoginViewModel } from "~@/view-model/auth";
+import { themeViewModel } from "~@/view-model/theme";
 
 import type { Route } from "./+types/login";
 
@@ -91,7 +93,12 @@ function Login({ loaderData }: Route.ComponentProps) {
 	};
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-background p-4">
+		<div className="relative min-h-screen flex items-center justify-center bg-background p-4">
+			<ThemeToggleButton
+				className="absolute top-4 right-4"
+				resolvedTheme={themeViewModel.resolvedTheme}
+				onToggle={themeViewModel.toggle}
+			/>
 			<div className="w-full max-w-md space-y-6">
 				<Card className="border-border">
 					<CardHeader className="space-y-1 text-center">

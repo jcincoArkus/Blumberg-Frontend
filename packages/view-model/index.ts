@@ -14,4 +14,5 @@ export * from "./reports";
 export * from "./sensor-health";
 export * from "./sensors";
 export * from "./sites";
+export * from "./theme";
 export * from "./types";

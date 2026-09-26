@@ -11,8 +11,9 @@ import {
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
+	ThemeModeMenu,
 } from "~@/ui";
-import { authViewModel } from "~@/view-model";
+import { authViewModel, themeViewModel } from "~@/view-model";
 
 import type { Domain, DomainKey } from "./types";
 
@@ -48,7 +49,13 @@ export const DashboardHeader = observer(function DashboardHeader({
 	return (
 		<header className="flex h-14 items-center justify-between border-b border-border bg-card px-4">
 			<div className="flex items-center gap-4">
-				<Button variant="ghost" size="sm" className="lg:hidden" onClick={onOpenMobileMenu}>
+				<Button
+					variant="ghost"
+					size="sm"
+					className="lg:hidden"
+					onClick={onOpenMobileMenu}
+					aria-label={t`Open menu`}
+				>
 					<Menu className="size-5" />
 				</Button>
 
@@ -96,6 +103,8 @@ export const DashboardHeader = observer(function DashboardHeader({
 							{t`Role`}: {t`Administrator`}
 						</p>
 					</div>
+					<DropdownMenuSeparator />
+					<ThemeModeMenu value={themeViewModel.mode} onValueChange={themeViewModel.setMode} />
 					<DropdownMenuSeparator />
 					<DropdownMenuItem
 						onSelect={handleLogout}
