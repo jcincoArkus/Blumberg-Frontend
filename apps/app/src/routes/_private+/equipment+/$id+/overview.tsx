@@ -2,14 +2,9 @@ import { ArrowLeft, XCircle } from "lucide-react";
 import { Link, useParams } from "react-router";
 
 import { t } from "~@/i18n/macro";
-import {
-	getAlertsByEquipment,
-	getSiteEquipmentById as getEquipmentById,
-	getSensorsByEquipment,
-	getSiteDataById as getSiteById,
-	type SiteSensor,
-} from "~@/mock-data";
-import { Button } from "~@/ui";
+import { observer } from "~@/mobx";
+import { Button, Skeleton } from "~@/ui";
+import { useEquipmentOverviewViewModel } from "~@/view-model";
 import {
 	EquipmentAlertsPanel,
 	EquipmentOverviewHeader,
@@ -19,48 +14,32 @@ import {
 	SensorReadingsGrid,
 } from "~@/views";
 
-// Convert SiteSensor to EquipmentSensor with mock values
-function toEquipmentSensor(sensor: SiteSensor): EquipmentSensor {
-	const sensorDefaults: Record<string, { value: number; unit: string; min: number; max: number }> =
-		{
-			temperature: { value: 4.2 + Math.random() * 2, unit: "°C", min: -5, max: 10 },
-			humidity: { value: 45 + Math.random() * 15, unit: "%", min: 0, max: 100 },
-			energy: { value: 120 + Math.random() * 50, unit: "kW", min: 0, max: 200 },
-			pressure: { value: 2.1 + Math.random() * 0.5, unit: "bar", min: 0, max: 4 },
-		};
-	const defaults = sensorDefaults[sensor.type] || {
-		value: 50,
-		unit: "",
-		min: 0,
-		max: 100,
-	};
-
-	return {
-		id: sensor.id,
-		equipmentId: sensor.equipmentId,
-		siteId: sensor.siteId,
-		type: sensor.type,
-		name: sensor.name,
-		value: defaults.value,
-		unit: defaults.unit,
-		status: sensor.status,
-		min: defaults.min,
-		max: defaults.max,
-		lastSeen: new Date().toISOString(),
-		threshold: { warning: defaults.max * 0.8, critical: defaults.max * 0.95 },
-	};
-}
-
 // Map equipment status to Overview status
-function getOverviewStatus(status: string): "OK" | "Warning" | "Alert" {
+function getOverviewStatus(status: string, hasCritical: boolean): "OK" | "Warning" | "Alert" {
+	if (hasCritical) return "Alert";
 	if (status === "online") return "OK";
 	if (status === "warning") return "Warning";
 	return "Alert";
 }
 
-export default function EquipmentOverviewPage() {
+// HistoricalCharts reads async-loaded series through a callback; make it an observer so it
+// re-renders when readings arrive.
+const ObservedHistoricalCharts = observer(HistoricalCharts);
+
+function EquipmentOverviewPage() {
 	const { id } = useParams();
-	const equipment = id ? getEquipmentById(id) : undefined;
+	const vm = useEquipmentOverviewViewModel();
+	const equipment = vm.equipmentById(id);
+
+	if (!equipment && vm.isLoading) {
+		return (
+			<div className="space-y-6">
+				<Skeleton className="h-24 w-full rounded-xl" />
+				<Skeleton className="h-40 w-full rounded-xl" />
+				<Skeleton className="h-72 w-full rounded-xl" />
+			</div>
+		);
+	}
 
 	if (!equipment) {
 		return (
@@ -69,21 +48,17 @@ export default function EquipmentOverviewPage() {
 				<h1 className="text-xl font-semibold">{t`Equipment Not Found`}</h1>
 				<p className="text-muted-foreground">{t`The equipment you're looking for doesn't exist.`}</p>
 				<Button asChild>
-					<Link to="/sites">{t`Back to Sites`}</Link>
+					<Link to="/equipment-overview">{t`Back to Equipment Overview`}</Link>
 				</Button>
 			</div>
 		);
 	}
 
-	const site = getSiteById(equipment.siteId);
-	const sensors = getSensorsByEquipment(equipment.id);
-	const alerts = getAlertsByEquipment(equipment.id);
-
-	// Convert to EquipmentSensor format
-	const equipmentSensors = sensors.map(toEquipmentSensor);
+	const equipmentSensors: EquipmentSensor[] = vm.sensorsFor(equipment.id);
+	const alerts = vm.alertsFor(equipment.id);
 
 	// Split alerts into active and recent
-	const activeAlerts = alerts.filter((a) => a.status === "active");
+	const activeAlerts = alerts.filter((a) => a.status === "active" || a.status === "acknowledged");
 	const recentAlerts = alerts.slice(0, 10);
 
 	return (
@@ -91,9 +66,9 @@ export default function EquipmentOverviewPage() {
 			{/* Header with Back Button */}
 			<div className="flex items-center gap-3">
 				<Button variant="ghost" size="sm" asChild className="h-8 px-2">
-					<Link to={`/equipment/${id}`}>
+					<Link to="/equipment-overview">
 						<ArrowLeft className="size-4 mr-1" aria-hidden="true" />
-						{t`Back to Equipment Details`}
+						{t`Back to Equipment Overview`}
 					</Link>
 				</Button>
 			</div>
@@ -104,9 +79,12 @@ export default function EquipmentOverviewPage() {
 				equipmentId={equipment.id}
 				equipmentType={equipment.type}
 				lastUpdate={equipment.lastUpdate}
-				siteName={site?.name}
-				siteLocation={site?.location}
-				status={getOverviewStatus(equipment.status)}
+				siteName={equipment.siteName}
+				siteLocation={equipment.siteLocation}
+				status={getOverviewStatus(
+					equipment.status,
+					activeAlerts.some((a) => a.severity === "critical"),
+				)}
 			/>
 
 			{/* Current Sensor Readings */}
@@ -116,7 +94,16 @@ export default function EquipmentOverviewPage() {
 			<div className="grid gap-6 lg:grid-cols-3">
 				{/* Historical Charts - Takes 2 columns */}
 				<div className="lg:col-span-2">
-					<HistoricalCharts equipmentId={equipment.id} sensors={equipmentSensors} />
+					<ObservedHistoricalCharts
+						equipmentId={equipment.id}
+						sensors={equipmentSensors}
+						generateTimeSeriesData={(sensorId, hours) =>
+							vm.getSeries(sensorId, hours > 24 ? "7d" : "24h").map((p) => ({
+								timestamp: p.time,
+								value: p.value,
+							}))
+						}
+					/>
 				</div>
 
 				{/* Alerts Panel - Takes 1 column */}
@@ -130,3 +117,5 @@ export default function EquipmentOverviewPage() {
 		</div>
 	);
 }
+
+export default observer(EquipmentOverviewPage);

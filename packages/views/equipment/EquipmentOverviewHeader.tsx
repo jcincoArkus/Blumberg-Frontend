@@ -59,16 +59,18 @@ export function EquipmentOverviewHeader({
 	return (
 		<Card>
 			<CardContent className="p-6">
-				<div className="flex items-start justify-between">
-					<div className="space-y-4 flex-1">
+				<div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+					<div className="space-y-4 flex-1 min-w-0">
 						{/* Equipment Name and Status */}
-						<div className="flex items-center gap-4">
-							<div className="p-3 rounded-lg bg-primary/10">
+						<div className="flex flex-wrap items-center gap-4">
+							<div className="p-3 rounded-lg bg-primary/10 shrink-0">
 								<Server className="size-6 text-primary" aria-hidden="true" />
 							</div>
-							<div className="flex-1">
+							<div className="flex-1 min-w-0">
 								<h1 className="text-2xl font-semibold text-foreground">{equipmentName}</h1>
-								<p className="text-sm text-muted-foreground mt-1">{t`Equipment ID: ${equipmentId}`}</p>
+								<p className="text-xs text-muted-foreground mt-1 break-all font-mono">
+									{t`Equipment ID: ${equipmentId}`}
+								</p>
 							</div>
 							<Badge
 								variant="outline"
@@ -80,7 +82,7 @@ export function EquipmentOverviewHeader({
 						</div>
 
 						{/* Site and Last Updated */}
-						<div className="flex items-center gap-6 text-sm text-muted-foreground">
+						<div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
 							{siteName && (
 								<div className="flex items-center gap-2">
 									<Building2 className="size-4" aria-hidden="true" />
@@ -96,7 +98,7 @@ export function EquipmentOverviewHeader({
 					</div>
 
 					{/* Equipment Type */}
-					<div className="text-right ml-6">
+					<div className="sm:text-right sm:ml-6">
 						<p className="text-sm text-muted-foreground mb-1">{t`Equipment Type`}</p>
 						<p className="font-medium text-foreground">{equipmentType}</p>
 					</div>

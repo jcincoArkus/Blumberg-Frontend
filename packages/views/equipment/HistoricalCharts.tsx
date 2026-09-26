@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { t } from "~@/i18n/macro";
-import { Button, DashboardPanel } from "~@/ui";
+import { Button, DashboardPanel, formatReading } from "~@/ui";
 
 import { SensorChart } from "./SensorChart";
 import type { Sensor } from "./SensorsTable";
@@ -17,7 +17,8 @@ interface HistoricalChartsProps {
 
 type TimeRange = "24h" | "7d";
 
-const KEY_SENSOR_TYPES = ["temperature", "humidity", "co2"] as const;
+// Priority order: one chart per type, first three types present on the equipment
+const KEY_SENSOR_TYPES = ["temperature", "humidity", "co2", "pressure", "energy", "o2"] as const;
 
 // Default mock data generator
 function defaultGenerateTimeSeriesData(
@@ -115,21 +116,25 @@ export function HistoricalCharts({
 									</div>
 									<div className="text-right">
 										<span className="text-sm font-semibold text-foreground">
-											{sensor.value !== undefined
-												? `${sensor.value.toFixed(1)}${sensor.unit}`
-												: "—"}
+											{formatReading(sensor.value, sensor.unit)}
 										</span>
 										<p className="text-xs text-muted-foreground">{t`Current`}</p>
 									</div>
 								</div>
-								<SensorChart
-									data={chartData}
-									unit={sensor.unit}
-									color={color}
-									warningThreshold={sensor.threshold?.warning}
-									criticalThreshold={sensor.threshold?.critical}
-									height={200}
-								/>
+								{chartData.length === 0 ? (
+									<div className="flex h-[200px] items-center justify-center rounded-md border border-dashed text-xs text-muted-foreground">
+										{t`No readings in this period`}
+									</div>
+								) : (
+									<SensorChart
+										data={chartData}
+										unit={sensor.unit}
+										color={color}
+										warningThreshold={sensor.threshold?.warning}
+										criticalThreshold={sensor.threshold?.critical}
+										height={200}
+									/>
+								)}
 							</div>
 						);
 					})

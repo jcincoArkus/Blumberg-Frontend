@@ -10,6 +10,7 @@ import {
 } from "recharts";
 
 import { t } from "~@/i18n/macro";
+import { formatReading } from "~@/ui";
 
 interface SensorChartProps {
 	data: { timestamp: string; value: number }[];
@@ -60,7 +61,7 @@ export function SensorChart({
 					tickLine={false}
 					axisLine={false}
 					domain={[yMin, yMax]}
-					tickFormatter={(value) => `${value}${unit}`}
+					tickFormatter={(value) => formatReading(value, unit, { compact: true })}
 					width={50}
 				/>
 				<Tooltip
@@ -71,7 +72,7 @@ export function SensorChart({
 						fontSize: "12px",
 						boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
 					}}
-					formatter={(value: number) => [`${value}${unit}`, t`Value`]}
+					formatter={(value: number) => [formatReading(value, unit), t`Value`]}
 					labelStyle={{ fontWeight: 500, marginBottom: 4 }}
 				/>
 				{warningThreshold && (

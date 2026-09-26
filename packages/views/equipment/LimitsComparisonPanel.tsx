@@ -1,7 +1,7 @@
 import { AlertTriangle, CheckCircle2, Info } from "lucide-react";
 
 import { t } from "~@/i18n/macro";
-import { Badge, Card, CardContent, DashboardPanel } from "~@/ui";
+import { Badge, Card, CardContent, DashboardPanel, formatNumber, formatReading } from "~@/ui";
 
 import type { Sensor } from "./SensorsTable";
 
@@ -14,7 +14,11 @@ function getStatusInfo(sensor: Sensor): {
 	color: string;
 	label: string;
 } {
-	if (sensor.status === "error") {
+	const outOfRange =
+		sensor.value !== undefined &&
+		((sensor.min !== undefined && sensor.value < sensor.min) ||
+			(sensor.max !== undefined && sensor.value > sensor.max));
+	if (sensor.status === "error" || outOfRange) {
 		return {
 			icon: AlertTriangle,
 			color: "text-red-600 bg-red-50 border-red-200",
@@ -75,16 +79,22 @@ export function LimitsComparisonPanel({ sensors }: LimitsComparisonPanelProps) {
 								const statusInfo = getStatusInfo(sensor);
 								const StatusIcon = statusInfo.icon;
 
-								const warningMin = sensor.threshold?.warning ?? sensor.min;
-								const warningMax = sensor.threshold?.warning ?? sensor.max * 0.8;
-								const criticalMax = sensor.threshold?.critical ?? sensor.max * 0.95;
+								// Allowed range comes from the sensor's threshold (min/max). The "normal" band is
+								// the inner 80% of it; the outer 10% on each side is the warning band.
+								const hasRange = sensor.min !== undefined && sensor.max !== undefined;
+								const lo = sensor.min ?? 0;
+								const hi = sensor.max ?? 0;
+								const margin = (hi - lo) * 0.1;
+								const warningMin = lo + margin;
+								const warningMax = hi - margin;
 
+								const hasValue = sensor.value !== undefined;
 								const value = sensor.value ?? 0;
-								const isInNormalRange = value >= warningMin && value <= warningMax;
+								const isInAlertRange = hasRange && hasValue && (value < lo || value > hi);
+								const isInNormalRange =
+									hasRange && hasValue && value >= warningMin && value <= warningMax;
 								const isInWarningRange =
-									(value < warningMin && value >= sensor.min) ||
-									(value > warningMax && value <= criticalMax);
-								const isInAlertRange = value < sensor.min || value > criticalMax;
+									hasRange && hasValue && !isInAlertRange && !isInNormalRange;
 
 								return (
 									<Card key={sensor.id} className="border">
@@ -108,7 +118,7 @@ export function LimitsComparisonPanel({ sensors }: LimitsComparisonPanelProps) {
 												<div className="space-y-2">
 													<div className="flex items-baseline gap-2">
 														<span className="text-xl font-bold text-foreground">
-															{value.toFixed(1)}
+															{formatNumber(sensor.value)}
 														</span>
 														<span className="text-xs text-muted-foreground">{sensor.unit}</span>
 													</div>
@@ -122,7 +132,9 @@ export function LimitsComparisonPanel({ sensors }: LimitsComparisonPanelProps) {
 															<div className="flex items-center justify-between">
 																<span className="text-muted-foreground">{t`Normal Range:`}</span>
 																<span className="font-medium text-foreground">
-																	{warningMin.toFixed(1)} - {warningMax.toFixed(1)} {sensor.unit}
+																	{hasRange
+																		? `${formatNumber(warningMin)} – ${formatReading(warningMax, sensor.unit)}`
+																		: "—"}
 																</span>
 															</div>
 														</div>
@@ -132,9 +144,11 @@ export function LimitsComparisonPanel({ sensors }: LimitsComparisonPanelProps) {
 															className={`p-2 rounded border ${isInWarningRange && !isInAlertRange ? "bg-amber-50 border-amber-200" : "bg-slate-50 border-slate-200"}`}
 														>
 															<div className="flex items-center justify-between">
-																<span className="text-muted-foreground">{t`Warning Range:`}</span>
+																<span className="text-muted-foreground">{t`Allowed Range:`}</span>
 																<span className="font-medium text-foreground">
-																	{sensor.min.toFixed(1)} - {criticalMax.toFixed(1)} {sensor.unit}
+																	{hasRange
+																		? `${formatNumber(lo)} – ${formatReading(hi, sensor.unit)}`
+																		: "—"}
 																</span>
 															</div>
 														</div>

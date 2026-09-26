@@ -1,7 +1,7 @@
 import { AlertTriangle, CheckCircle2, Clock } from "lucide-react";
 
 import { t } from "~@/i18n/macro";
-import { Badge, Card, CardContent } from "~@/ui";
+import { Badge, Card, CardContent, formatNumber, formatReading } from "~@/ui";
 
 import type { Sensor } from "./SensorsTable";
 
@@ -9,7 +9,8 @@ interface SensorReadingsGridProps {
 	sensors: Sensor[];
 }
 
-function formatTimestamp(dateStr: string): string {
+function formatTimestamp(dateStr?: string): string {
+	if (!dateStr) return t`No readings yet`;
 	const date = new Date(dateStr);
 	return date.toLocaleString("en-US", {
 		hour: "2-digit",
@@ -22,7 +23,11 @@ function getStatusIndicator(sensor: Sensor): {
 	color: string;
 	label: string;
 } {
-	if (sensor.status === "error") {
+	const outOfRange =
+		sensor.value !== undefined &&
+		((sensor.min !== undefined && sensor.value < sensor.min) ||
+			(sensor.max !== undefined && sensor.value > sensor.max));
+	if (sensor.status === "error" || outOfRange) {
 		return {
 			icon: AlertTriangle,
 			color: "text-red-600 bg-red-50 border-red-200",
@@ -39,7 +44,7 @@ function getStatusIndicator(sensor: Sensor): {
 	return {
 		icon: CheckCircle2,
 		color: "text-emerald-600 bg-emerald-50 border-emerald-200",
-		label: t`OK`,
+		label: sensor.status === "offline" || sensor.status === "stale" ? t`No signal` : t`OK`,
 	};
 }
 
@@ -82,10 +87,20 @@ export function SensorReadingsGrid({ sensors }: SensorReadingsGridProps) {
 				{allSensors.map((sensor) => {
 					const statusInfo = getStatusIndicator(sensor);
 					const StatusIcon = statusInfo.icon;
-					const warningThreshold = sensor.threshold?.warning ?? sensor.max * 0.8;
-					const isAboveWarning = sensor.value !== undefined && sensor.value > warningThreshold;
-					const isBelowMin = sensor.value !== undefined && sensor.value < sensor.min;
-					const isAboveMax = sensor.value !== undefined && sensor.value > sensor.max;
+					const hasRange = sensor.min !== undefined && sensor.max !== undefined;
+					const span = hasRange ? (sensor.max as number) - (sensor.min as number) : 0;
+					// Warn in the top 10% of the allowed range (works for negative freezer ranges too)
+					const warningThreshold =
+						sensor.threshold?.warning ??
+						(hasRange ? (sensor.max as number) - span * 0.1 : undefined);
+					const isAboveWarning =
+						sensor.value !== undefined &&
+						warningThreshold !== undefined &&
+						sensor.value > warningThreshold;
+					const isBelowMin =
+						sensor.value !== undefined && sensor.min !== undefined && sensor.value < sensor.min;
+					const isAboveMax =
+						sensor.value !== undefined && sensor.max !== undefined && sensor.value > sensor.max;
 
 					return (
 						<Card key={sensor.id} className="hover:shadow-md transition-shadow">
@@ -114,7 +129,7 @@ export function SensorReadingsGrid({ sensors }: SensorReadingsGridProps) {
 									<div className="space-y-1">
 										<div className="flex items-baseline gap-2">
 											<span className="text-2xl font-bold text-foreground">
-												{sensor.value?.toFixed(1) ?? "—"}
+												{formatNumber(sensor.value)}
 											</span>
 											<span className="text-sm text-muted-foreground">{sensor.unit}</span>
 										</div>
@@ -124,24 +139,24 @@ export function SensorReadingsGrid({ sensors }: SensorReadingsGridProps) {
 											<div className="flex items-center justify-between">
 												<span>{t`Range:`}</span>
 												<span className="font-medium text-foreground">
-													{sensor.min}
-													{sensor.unit} - {sensor.max}
-													{sensor.unit}
+													{hasRange
+														? `${formatReading(sensor.min, sensor.unit, { compact: true })} – ${formatReading(sensor.max, sensor.unit, { compact: true })}`
+														: "—"}
 												</span>
 											</div>
 											{isAboveWarning && !isAboveMax && (
 												<div className="text-amber-600">
-													{t`Above warning threshold (${warningThreshold}${sensor.unit})`}
+													{t`Above warning threshold (${formatReading(warningThreshold, sensor.unit, { compact: true })})`}
 												</div>
 											)}
 											{isBelowMin && (
 												<div className="text-red-600 font-medium">
-													{t`Below minimum (${sensor.min}${sensor.unit})`}
+													{t`Below minimum (${formatReading(sensor.min, sensor.unit, { compact: true })})`}
 												</div>
 											)}
 											{isAboveMax && (
 												<div className="text-red-600 font-medium">
-													{t`Above maximum (${sensor.max}${sensor.unit})`}
+													{t`Above maximum (${formatReading(sensor.max, sensor.unit, { compact: true })})`}
 												</div>
 											)}
 										</div>

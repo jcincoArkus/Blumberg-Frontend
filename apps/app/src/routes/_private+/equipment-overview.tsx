@@ -1,9 +1,10 @@
 import { AlertTriangle, Server } from "lucide-react";
 import { Link } from "react-router";
 
-import { t } from "~@/i18n/macro";
-import { siteEquipment as equipment, getSiteDataById as getSiteById } from "~@/mock-data";
-import { Card, CardContent } from "~@/ui";
+import { plural, t } from "~@/i18n/macro";
+import { observer } from "~@/mobx";
+import { Card, CardContent, Skeleton } from "~@/ui";
+import { useEquipmentOverviewViewModel } from "~@/view-model";
 
 function getStatusConfig(status: string) {
 	switch (status) {
@@ -34,7 +35,10 @@ function getStatusConfig(status: string) {
 	}
 }
 
-export default function EquipmentOverviewPage() {
+function EquipmentOverviewPage() {
+	const vm = useEquipmentOverviewViewModel();
+	const equipment = vm.equipment;
+
 	return (
 		<div className="space-y-6">
 			<div>
@@ -44,9 +48,23 @@ export default function EquipmentOverviewPage() {
 				</p>
 			</div>
 
+			{vm.isLoading && equipment.length === 0 && (
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+					{[0, 1, 2].map((i) => (
+						<Skeleton key={i} className="h-40 w-full rounded-xl" />
+					))}
+				</div>
+			)}
+			{!vm.isLoading && equipment.length === 0 && (
+				<p className="py-12 text-center text-sm text-muted-foreground">
+					{vm.hasError
+						? t`Couldn't load equipment. Please refresh the page to try again.`
+						: t`No equipment registered yet.`}
+				</p>
+			)}
+
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 				{equipment.map((eq) => {
-					const site = getSiteById(eq.siteId);
 					const statusConfig = getStatusConfig(eq.status);
 
 					return (
@@ -76,9 +94,12 @@ export default function EquipmentOverviewPage() {
 										</div>
 
 										<div className="space-y-2 text-sm">
-											{site && (
+											{eq.siteName && (
 												<div className="flex items-center gap-2 text-muted-foreground">
-													<span className="text-xs">{site.name}</span>
+													<span className="text-xs">
+														{eq.siteName}
+														{eq.siteLocation ? ` · ${eq.siteLocation}` : ""}
+													</span>
 												</div>
 											)}
 											<div className="flex items-center justify-between">
@@ -89,7 +110,10 @@ export default function EquipmentOverviewPage() {
 												<div className="flex items-center gap-2 text-amber-600">
 													<AlertTriangle className="size-4" aria-hidden="true" />
 													<span className="text-xs font-medium">
-														{t`${eq.activeAlerts} active alert${eq.activeAlerts !== 1 ? "s" : ""}`}
+														{plural(eq.activeAlerts, {
+															one: "# active alert",
+															other: "# active alerts",
+														})}
 													</span>
 												</div>
 											)}
@@ -104,3 +128,5 @@ export default function EquipmentOverviewPage() {
 		</div>
 	);
 }
+
+export default observer(EquipmentOverviewPage);
