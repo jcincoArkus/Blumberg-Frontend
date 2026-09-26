@@ -379,6 +379,10 @@
     "en-US": "Add equipment to get started.",
     "es-LA": ""
   },
+  "Add From Reader": {
+    "en-US": "Add From Reader",
+    "es-LA": ""
+  },
   "Add line": {
     "en-US": "Add line",
     "es-LA": ""
@@ -417,6 +421,26 @@
   },
   "Add Site": {
     "en-US": "Add Site",
+    "es-LA": ""
+  },
+  "Add site": {
+    "en-US": "Add site",
+    "es-LA": ""
+  },
+  "Add supplier": {
+    "en-US": "Add supplier",
+    "es-LA": ""
+  },
+  "Add Supplier": {
+    "en-US": "Add Supplier",
+    "es-LA": ""
+  },
+  "Add zone": {
+    "en-US": "Add zone",
+    "es-LA": ""
+  },
+  "Add Zone": {
+    "en-US": "Add Zone",
     "es-LA": ""
   },
   "Address": {
@@ -525,6 +549,10 @@
   },
   "All Equipment": {
     "en-US": "All Equipment",
+    "es-LA": ""
+  },
+  "All line items must have a quantity greater than 0": {
+    "en-US": "All line items must have a quantity greater than 0",
     "es-LA": ""
   },
   "All movements": {
@@ -815,6 +843,10 @@
     "en-US": "Classification Logic",
     "es-LA": ""
   },
+  "Clear": {
+    "en-US": "Clear",
+    "es-LA": ""
+  },
   "Clear Filters": {
     "en-US": "Clear Filters",
     "es-LA": ""
@@ -825,6 +857,14 @@
   },
   "Click on any alert to view details, event history, and notification audit": {
     "en-US": "Click on any alert to view details, event history, and notification audit",
+    "es-LA": ""
+  },
+  "Click on the map to place a new site": {
+    "en-US": "Click on the map to place a new site",
+    "es-LA": ""
+  },
+  "Click on the map to place a supplier": {
+    "en-US": "Click on the map to place a supplier",
     "es-LA": ""
   },
   "Climate": {
@@ -937,6 +977,10 @@
   },
   "Configure sensor identification, measurement, installation context, and data mapping.": {
     "en-US": "Configure sensor identification, measurement, installation context, and data mapping.",
+    "es-LA": ""
+  },
+  "Confirm": {
+    "en-US": "Confirm",
     "es-LA": ""
   },
   "Confirm Import": {
@@ -1215,8 +1259,20 @@
     "en-US": "Delete sensor \"{0}\"?",
     "es-LA": ""
   },
+  "Delete site": {
+    "en-US": "Delete site",
+    "es-LA": ""
+  },
   "Delete site \"{0}\"?": {
     "en-US": "Delete site \"{0}\"?",
+    "es-LA": ""
+  },
+  "Delete supplier": {
+    "en-US": "Delete supplier",
+    "es-LA": ""
+  },
+  "Delete zone": {
+    "en-US": "Delete zone",
     "es-LA": ""
   },
   "Describe what this role is for...": {
@@ -1271,6 +1327,10 @@
     "en-US": "Download Template",
     "es-LA": ""
   },
+  "Draft": {
+    "en-US": "Draft",
+    "es-LA": ""
+  },
   "Drop CSV file here or click to browse": {
     "en-US": "Drop CSV file here or click to browse",
     "es-LA": ""
@@ -1291,8 +1351,20 @@
     "en-US": "Duration: {0}",
     "es-LA": ""
   },
+  "e.g. CDMX Warehouse": {
+    "en-US": "e.g. CDMX Warehouse",
+    "es-LA": ""
+  },
   "e.g. Citrus": {
     "en-US": "e.g. Citrus",
+    "es-LA": ""
+  },
+  "e.g. Cold Room A": {
+    "en-US": "e.g. Cold Room A",
+    "es-LA": ""
+  },
+  "e.g. Frutas del Campo S.A.": {
+    "en-US": "e.g. Frutas del Campo S.A.",
     "es-LA": ""
   },
   "e.g. HVAC, Pump": {
@@ -1371,12 +1443,32 @@
     "en-US": "Edit Site",
     "es-LA": ""
   },
+  "Edit site": {
+    "en-US": "Edit site",
+    "es-LA": ""
+  },
+  "Edit supplier": {
+    "en-US": "Edit supplier",
+    "es-LA": ""
+  },
+  "Edit Supplier": {
+    "en-US": "Edit Supplier",
+    "es-LA": ""
+  },
   "Edit the sensor to configure data mapping.": {
     "en-US": "Edit the sensor to configure data mapping.",
     "es-LA": ""
   },
   "Edit User": {
     "en-US": "Edit User",
+    "es-LA": ""
+  },
+  "Edit zone": {
+    "en-US": "Edit zone",
+    "es-LA": ""
+  },
+  "Edit Zone": {
+    "en-US": "Edit Zone",
     "es-LA": ""
   },
   "Efficiency": {
@@ -1607,6 +1699,18 @@
     "en-US": "Failed to create threshold",
     "es-LA": ""
   },
+  "Failed to delete site. It may have active lots.": {
+    "en-US": "Failed to delete site. It may have active lots.",
+    "es-LA": ""
+  },
+  "Failed to delete supplier. It may be linked to active lots.": {
+    "en-US": "Failed to delete supplier. It may be linked to active lots.",
+    "es-LA": ""
+  },
+  "Failed to delete zone. It may be in use.": {
+    "en-US": "Failed to delete zone. It may be in use.",
+    "es-LA": ""
+  },
   "Failed to load sites": {
     "en-US": "Failed to load sites",
     "es-LA": ""
@@ -1621,6 +1725,22 @@
   },
   "Failed to save product. Please try again.": {
     "en-US": "Failed to save product. Please try again.",
+    "es-LA": ""
+  },
+  "Failed to save site. Please try again.": {
+    "en-US": "Failed to save site. Please try again.",
+    "es-LA": ""
+  },
+  "Failed to save supplier. Please try again.": {
+    "en-US": "Failed to save supplier. Please try again.",
+    "es-LA": ""
+  },
+  "Failed to save zone. Please try again.": {
+    "en-US": "Failed to save zone. Please try again.",
+    "es-LA": ""
+  },
+  "Failed to start reader session: {message}": {
+    "en-US": "Failed to start reader session: {message}",
     "es-LA": ""
   },
   "Failed to update equipment": {
@@ -1903,6 +2023,10 @@
     "en-US": "Inventory dashboard",
     "es-LA": ""
   },
+  "Inventory Summary": {
+    "en-US": "Inventory Summary",
+    "es-LA": ""
+  },
   "Inventory value": {
     "en-US": "Inventory value",
     "es-LA": ""
@@ -2107,6 +2231,10 @@
     "en-US": "locations",
     "es-LA": ""
   },
+  "Locations & Suppliers": {
+    "en-US": "Locations & Suppliers",
+    "es-LA": ""
+  },
   "locations across North America": {
     "en-US": "locations across North America",
     "es-LA": ""
@@ -2183,6 +2311,10 @@
     "en-US": "Manage users, roles, and permissions",
     "es-LA": ""
   },
+  "Manage warehouse sites, storage zones, and product suppliers": {
+    "en-US": "Manage warehouse sites, storage zones, and product suppliers",
+    "es-LA": ""
+  },
   "managed": {
     "en-US": "managed",
     "es-LA": ""
@@ -2201,6 +2333,10 @@
   },
   "Map incoming payload fields to sensor types": {
     "en-US": "Map incoming payload fields to sensor types",
+    "es-LA": ""
+  },
+  "Map places:": {
+    "en-US": "Map places:",
     "es-LA": ""
   },
   "Mapped": {
@@ -2567,6 +2703,14 @@
     "en-US": "No sites yet",
     "es-LA": ""
   },
+  "No sites yet.": {
+    "en-US": "No sites yet.",
+    "es-LA": ""
+  },
+  "No suppliers yet. Add one to get started.": {
+    "en-US": "No suppliers yet. Add one to get started.",
+    "es-LA": ""
+  },
   "No thresholds available": {
     "en-US": "No thresholds available",
     "es-LA": ""
@@ -2577,6 +2721,10 @@
   },
   "No users found": {
     "en-US": "No users found",
+    "es-LA": ""
+  },
+  "No zones yet for this site.": {
+    "en-US": "No zones yet for this site.",
     "es-LA": ""
   },
   "None": {
@@ -2915,6 +3063,10 @@
     "en-US": "Read-only access to view module content",
     "es-LA": ""
   },
+  "Reader session active": {
+    "en-US": "Reader session active",
+    "es-LA": ""
+  },
   "Reading counts (last 24h)": {
     "en-US": "Reading counts (last 24h)",
     "es-LA": ""
@@ -3005,6 +3157,10 @@
   },
   "Reference": {
     "en-US": "Reference",
+    "es-LA": ""
+  },
+  "Refresh": {
+    "en-US": "Refresh",
     "es-LA": ""
   },
   "Refrigerant": {
@@ -3211,6 +3367,10 @@
     "en-US": "Save Changes",
     "es-LA": ""
   },
+  "Save changes": {
+    "en-US": "Save changes",
+    "es-LA": ""
+  },
   "Save Equipment": {
     "en-US": "Save Equipment",
     "es-LA": ""
@@ -3289,6 +3449,10 @@
   },
   "Select a site": {
     "en-US": "Select a site",
+    "es-LA": ""
+  },
+  "Select a site to manage its zones.": {
+    "en-US": "Select a site to manage its zones.",
     "es-LA": ""
   },
   "Select All": {
@@ -3647,6 +3811,10 @@
     "en-US": "Site name",
     "es-LA": ""
   },
+  "Site name is required.": {
+    "en-US": "Site name is required.",
+    "es-LA": ""
+  },
   "Site not found": {
     "en-US": "Site not found",
     "es-LA": ""
@@ -3669,6 +3837,10 @@
   },
   "sites": {
     "en-US": "sites",
+    "es-LA": ""
+  },
+  "Sites & Zones": {
+    "en-US": "Sites & Zones",
     "es-LA": ""
   },
   "SKU": {
@@ -3761,6 +3933,18 @@
   },
   "Supplier": {
     "en-US": "Supplier",
+    "es-LA": ""
+  },
+  "Supplier name is required.": {
+    "en-US": "Supplier name is required.",
+    "es-LA": ""
+  },
+  "suppliers": {
+    "en-US": "suppliers",
+    "es-LA": ""
+  },
+  "Suppliers": {
+    "en-US": "Suppliers",
     "es-LA": ""
   },
   "Supply Chain": {
@@ -4477,6 +4661,18 @@
   },
   "You don't have permission to access this page.": {
     "en-US": "You don't have permission to access this page.",
+    "es-LA": ""
+  },
+  "Zone name": {
+    "en-US": "Zone name",
+    "es-LA": ""
+  },
+  "Zone name is required.": {
+    "en-US": "Zone name is required.",
+    "es-LA": ""
+  },
+  "Zones": {
+    "en-US": "Zones",
     "es-LA": ""
   }
 }

@@ -18,6 +18,10 @@ import { authViewModel, useLoginViewModel } from "~@/view-model/auth";
 
 import type { Route } from "./+types/login";
 
+// Seeded demo admin (AdminSeeder.cs). Overridable per environment.
+const DEMO_EMAIL = import.meta.env.VITE_DEMO_EMAIL ?? "admin@blumberg.com";
+const DEMO_PASSWORD = import.meta.env.VITE_DEMO_PASSWORD ?? "Admin123.";
+
 export async function clientLoader() {
 	return { isAuthenticated: authViewModel.isAuthenticated };
 }
@@ -28,6 +32,7 @@ function Login({ loaderData }: Route.ComponentProps) {
 	const { isAuthenticated } = loaderData;
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [isDemoPending, setIsDemoPending] = useState(false);
 
 	useEffect(() => {
 		loginViewModel.reset();
@@ -53,6 +58,18 @@ function Login({ loaderData }: Route.ComponentProps) {
 		} catch {
 			const message = loginViewModel.error?.message ?? t`Invalid email or password`;
 			toast.error(message);
+		}
+	};
+
+	const handleDemoLogin = async () => {
+		setIsDemoPending(true);
+		try {
+			await loginViewModel.login(DEMO_EMAIL, DEMO_PASSWORD);
+			navigate("/home", { replace: true });
+		} catch {
+			toast.error(t`The demo is waking up. Please try again in a few seconds.`);
+		} finally {
+			setIsDemoPending(false);
 		}
 	};
 
@@ -102,9 +119,28 @@ function Login({ loaderData }: Route.ComponentProps) {
 								className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
 								disabled={loginViewModel.isPending}
 							>
-								{loginViewModel.isPending ? t`Signing in...` : t`Sign in`}
+								{loginViewModel.isPending && !isDemoPending ? t`Signing in...` : t`Sign in`}
 							</Button>
 						</form>
+						<div className="flex items-center gap-3">
+							<div className="h-px flex-1 bg-border" />
+							<span className="text-xs uppercase text-muted-foreground">
+								<Trans>or</Trans>
+							</span>
+							<div className="h-px flex-1 bg-border" />
+						</div>
+						<Button
+							type="button"
+							variant="outline"
+							className="w-full"
+							onClick={handleDemoLogin}
+							disabled={loginViewModel.isPending}
+						>
+							{isDemoPending ? t`Opening demo...` : t`Explore the Demo`}
+						</Button>
+						<p className="text-center text-xs text-muted-foreground">
+							<Trans>No account needed — jump straight into a sample workspace.</Trans>
+						</p>
 					</CardContent>
 				</Card>
 			</div>

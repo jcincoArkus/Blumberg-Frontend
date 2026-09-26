@@ -10,6 +10,8 @@ interface ImportMetaEnv {
 	readonly VITE_API_URL?: string;
 	readonly VITE_WSS_URL?: string;
 	readonly VITE_MAPBOX_TOKEN?: string;
+	readonly VITE_DEMO_EMAIL?: string;
+	readonly VITE_DEMO_PASSWORD?: string;
 }
 
 interface ImportMeta {
