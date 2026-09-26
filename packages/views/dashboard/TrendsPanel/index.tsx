@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
@@ -11,7 +11,12 @@ export type { TrendPoint } from "./types";
 
 export const TrendsPanel = observer(function TrendsPanel() {
 	const vm = useTrendsPanelViewModel();
-	const [timeRange, setTimeRange] = useState<"24h" | "7d">("24h");
+	const timeRange = vm.range;
+	const setTimeRange = vm.setRange;
+
+	useEffect(() => {
+		vm.load();
+	}, [vm]);
 
 	return (
 		<Card>
@@ -49,12 +54,25 @@ export const TrendsPanel = observer(function TrendsPanel() {
 			<CardContent className="pt-0">
 				<div className="space-y-3">
 					<SparklineRow
-						label={t`AQI`}
-						color="#ef4444"
-						data={vm.data.aqi}
-						idealMin={0}
-						idealMax={50}
+						label={t`Temperature`}
+						color="#3b82f6"
+						data={vm.data.temperature}
+						unit="°C"
+						idealMin={18}
+						idealMax={26}
+						sources={vm.sources.temperature}
+						isLoading={vm.isLoading}
 						showDots
+					/>
+					<SparklineRow
+						label={t`Humidity`}
+						color="#8b5cf6"
+						data={vm.data.humidity}
+						unit="%"
+						idealMin={30}
+						idealMax={60}
+						sources={vm.sources.humidity}
+						isLoading={vm.isLoading}
 					/>
 					<SparklineRow
 						label={t`CO₂`}
@@ -63,14 +81,8 @@ export const TrendsPanel = observer(function TrendsPanel() {
 						unit="ppm"
 						idealMin={350}
 						idealMax={1000}
-					/>
-					<SparklineRow
-						label={t`Temperature`}
-						color="#3b82f6"
-						data={vm.data.temperature}
-						unit="°C"
-						idealMin={18}
-						idealMax={26}
+						sources={vm.sources.co2}
+						isLoading={vm.isLoading}
 					/>
 				</div>
 			</CardContent>

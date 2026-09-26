@@ -89,6 +89,7 @@ export {
 	FormMessage,
 	useFormField,
 } from "./Form";
+export { type FormatNumberOptions, formatNumber, formatReading, unitSymbol } from "./format";
 export { AppFormProvider } from "./forms/AppFormProvider";
 export { Input } from "./Input";
 export { Label } from "./Label";

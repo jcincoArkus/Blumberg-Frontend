@@ -5,8 +5,8 @@ export interface TrendPoint {
 
 export interface TrendsPanelProps {
 	data: {
-		aqi: TrendPoint[];
-		co2: TrendPoint[];
 		temperature: TrendPoint[];
+		humidity: TrendPoint[];
+		co2: TrendPoint[];
 	};
 }

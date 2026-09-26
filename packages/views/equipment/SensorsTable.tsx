@@ -1,7 +1,16 @@
 import { Clock, Droplets, Gauge, Thermometer, Wind, Zap } from "lucide-react";
 
 import { t } from "~@/i18n/macro";
-import { Badge, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~@/ui";
+import {
+	Badge,
+	formatReading,
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "~@/ui";
 
 export type SensorType = "temperature" | "humidity" | "co2" | "pressure" | "energy" | "o2";
 export type SensorStatus = "active" | "warning" | "stale" | "offline" | "error" | "inactive";
@@ -106,7 +115,7 @@ export function SensorsTable({ sensors }: SensorsTableProps) {
 												: "text-foreground"
 									}`}
 								>
-									{sensor.value !== undefined ? `${sensor.value}${sensor.unit}` : "—"}
+									{formatReading(sensor.value, sensor.unit, { compact: true })}
 								</span>
 							</TableCell>
 							<TableCell className="text-center">

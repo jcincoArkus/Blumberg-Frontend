@@ -13,7 +13,7 @@ import { Link } from "react-router";
 
 import type { DataTableProps } from "~@/data-table";
 import { t } from "~@/i18n/macro";
-import { Badge, Button } from "~@/ui";
+import { Badge, Button, formatReading } from "~@/ui";
 
 import type { EnrichedSensor } from "./SensorHealthTable";
 
@@ -120,11 +120,7 @@ export const getSensorHealthColumns = (): DataTableProps<EnrichedSensor>["column
 				if (sensor.value === 0 && !sensor.unit) {
 					return <span className="text-muted-foreground">-</span>;
 				}
-				return (
-					<span className="font-mono">
-						{sensor.value} {sensor.unit}
-					</span>
-				);
+				return <span className="font-mono">{formatReading(sensor.value, sensor.unit)}</span>;
 			},
 		},
 		{

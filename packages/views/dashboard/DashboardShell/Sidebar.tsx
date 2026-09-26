@@ -1,8 +1,16 @@
 import { ChevronDown, ChevronLeft, ChevronRight, Gauge, X } from "lucide-react";
+import { useEffect } from "react";
 import { Link } from "react-router";
 
 import { t } from "~@/i18n/macro";
+import { observer } from "~@/mobx";
 import { Button, Collapsible, CollapsibleContent, CollapsibleTrigger, cn } from "~@/ui";
+import {
+	alertsViewModel,
+	authViewModel,
+	dashboardSensorsViewModel,
+	useGlobalStatusBarViewModel,
+} from "~@/view-model";
 
 import type { NavItem, NavSection } from "./types";
 
@@ -214,33 +222,72 @@ export function Sidebar({
 				</ul>
 			</nav>
 
-			{!sidebarCollapsed ? (
-				<SidebarStatus />
-			) : (
-				<div className="border-t border-border p-2">
-					<div className="flex items-center justify-center">
-						<span
-							className="size-2 rounded-full bg-emerald-500"
-							title={t`All systems operational`}
-						/>
-					</div>
-				</div>
-			)}
+			<SidebarStatus collapsed={sidebarCollapsed} />
 		</aside>
 	);
 }
 
-function SidebarStatus() {
-	return (
-		<div className="border-t border-border p-3">
-			<div className="rounded-md bg-muted p-3">
-				<p className="text-xs font-medium text-foreground">{t`System Status`}</p>
-				<p className="mt-1 text-xs text-muted-foreground">{t`All systems operational`}</p>
-				<div className="mt-2 flex items-center gap-1.5">
-					<span className="size-2 rounded-full bg-emerald-500" />
-					<span className="text-xs text-muted-foreground">{t`34 sensors active`}</span>
+type SystemStatus = "healthy" | "degraded" | "critical";
+
+function statusCopy(status: SystemStatus): { label: string; dot: string } {
+	switch (status) {
+		case "critical":
+			return { label: t`Critical issues detected`, dot: "bg-red-500" };
+		case "degraded":
+			return { label: t`Some systems degraded`, dot: "bg-amber-500" };
+		default:
+			return { label: t`All systems operational`, dot: "bg-emerald-500" };
+	}
+}
+
+/**
+ * Sidebar status block. Driven by the same view-model as the top GlobalStatusBar
+ * (alerts + sensor health) so both always agree.
+ */
+const SidebarStatus = observer(function SidebarStatus({ collapsed }: { collapsed: boolean }) {
+	const vm = useGlobalStatusBarViewModel();
+	const isAuthenticated = authViewModel.isAuthenticated;
+
+	useEffect(() => {
+		if (!isAuthenticated) return;
+		alertsViewModel.load();
+		dashboardSensorsViewModel.load();
+	}, [isAuthenticated]);
+
+	const hasData = vm.totalSensors > 0;
+	const { label, dot } = statusCopy(vm.systemStatus);
+	const sensorsOnline = vm.sensorsOnline;
+	const totalSensors = vm.totalSensors;
+	const sensorsText = hasData
+		? t`${sensorsOnline} / ${totalSensors} sensors online`
+		: t`Loading sensor status…`;
+
+	if (collapsed) {
+		return (
+			<div className="border-t border-border p-2">
+				<div className="flex items-center justify-center">
+					<span
+						className={cn("size-2 rounded-full", hasData ? dot : "bg-muted-foreground/40")}
+						title={label}
+					/>
 				</div>
 			</div>
+		);
+	}
+
+	return (
+		<div className="border-t border-border p-3">
+			<Link
+				to="/monitoring/sensor-health"
+				className="block rounded-md bg-muted p-3 transition-colors hover:bg-muted/70"
+			>
+				<p className="text-xs font-medium text-foreground">{t`System Status`}</p>
+				<p className="mt-1 text-xs text-muted-foreground">{label}</p>
+				<div className="mt-2 flex items-center gap-1.5">
+					<span className={cn("size-2 rounded-full", hasData ? dot : "bg-muted-foreground/40")} />
+					<span className="text-xs text-muted-foreground">{sensorsText}</span>
+				</div>
+			</Link>
 		</div>
 	);
-}
+});

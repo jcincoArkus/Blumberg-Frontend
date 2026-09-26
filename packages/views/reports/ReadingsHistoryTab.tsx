@@ -9,6 +9,8 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
+	formatNumber,
+	formatReading,
 	Table,
 	TableBody,
 	TableCell,
@@ -178,7 +180,7 @@ export function ReadingsHistoryTab({
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold">
-							{metrics.avg} {readings[0]?.unit || ""}
+							{formatReading(metrics.avg, readings[0]?.unit)}
 						</div>
 						{comparison && (
 							<TrendIndicator
@@ -196,7 +198,7 @@ export function ReadingsHistoryTab({
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold">
-							{metrics.min} / {metrics.max}
+							{formatNumber(metrics.min)} / {formatNumber(metrics.max)}
 						</div>
 						<p className="mt-1 text-xs text-muted-foreground">{readings[0]?.unit || ""}</p>
 					</CardContent>
@@ -271,7 +273,7 @@ export function ReadingsHistoryTab({
 											</Badge>
 										</TableCell>
 										<TableCell className="font-medium">
-											{reading.value} {reading.unit}
+											{formatReading(reading.value, reading.unit)}
 										</TableCell>
 										<TableCell className="text-sm text-muted-foreground">
 											{reading.siteName || t`Unknown`}

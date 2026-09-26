@@ -19,7 +19,15 @@ import {
 } from "recharts";
 
 import { t } from "~@/i18n/macro";
-import { Badge, Card, CardContent, CardHeader, CardTitle } from "~@/ui";
+import {
+	Badge,
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+	formatNumber,
+	formatReading,
+} from "~@/ui";
 
 import type { Sensor } from "./SensorsTable";
 
@@ -240,7 +248,7 @@ function SensorCard({ sensor, colorClass }: { sensor: Sensor; colorClass: string
 				</Badge>
 			</div>
 			<div className="mb-3 flex items-baseline gap-1">
-				<span className="text-3xl font-semibold">{value}</span>
+				<span className="text-3xl font-semibold">{formatNumber(value)}</span>
 				<span className="text-sm text-muted-foreground">{sensor.unit}</span>
 			</div>
 			<div className="mb-2 h-2 overflow-hidden rounded-full bg-muted">
@@ -443,7 +451,7 @@ function RefrigerationAlerts({ sensors }: { sensors: Sensor[] }) {
 							<div className="flex-1">
 								<p className="text-sm font-medium">{sensor.name}</p>
 								<p className="text-xs text-muted-foreground">
-									{t`Current:`} {sensor.value} {sensor.unit}
+									{t`Current:`} {formatReading(sensor.value, sensor.unit)}
 									{sensor.threshold && t` | Threshold: ${sensor.threshold.warning} ${sensor.unit}`}
 								</p>
 							</div>

@@ -4,6 +4,7 @@ import {
 	SensorHealthStatus,
 } from "~@/api";
 import { makeAutoObservable, reaction, runInAction } from "~@/mobx";
+import { unitSymbol } from "~@/ui";
 import { authViewModel } from "~@/view-model/auth";
 import type { Domain, Sensor } from "~@/views";
 
@@ -51,7 +52,7 @@ function mapHealthItemToSensor(item: SensorHealthListItemResponse): DashboardSen
 		type,
 		status,
 		value: item.lastValue ?? undefined,
-		unit: item.unit ?? "",
+		unit: unitSymbol(item.unit),
 		lastSeen: item.lastSeenAt?.toISOString(),
 		min: undefined,
 		max: undefined,

@@ -28,6 +28,7 @@ import {
 	DrawerDescription,
 	DrawerHeader,
 	DrawerTitle,
+	formatReading,
 	Separator,
 	Switch,
 } from "~@/ui";
@@ -197,7 +198,7 @@ export function SensorDetailsDrawer({
 								<div>
 									<p className="text-xs text-muted-foreground mb-1">{t`Current Value`}</p>
 									<p className="text-sm font-medium text-foreground">
-										{sensor.value} {sensor.unit}
+										{formatReading(sensor.value, sensor.unit)}
 									</p>
 								</div>
 							)}

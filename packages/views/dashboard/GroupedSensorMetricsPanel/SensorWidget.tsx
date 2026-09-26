@@ -1,7 +1,8 @@
 import { AlertCircle, Clock } from "lucide-react";
 import type { FC } from "react";
 
-import { Badge, Card, CardContent, cn } from "~@/ui";
+import { plural } from "~@/i18n/macro";
+import { Badge, Card, CardContent, cn, formatNumber, formatReading } from "~@/ui";
 
 import { getSensorTypeConfig } from "./constants";
 import { formatTime, getSensorStatusForCard } from "./helpers";
@@ -51,30 +52,26 @@ export const SensorWidget: FC<SensorWidgetProps> = ({ sensor, alertsCount = 0 })
 					</div>
 
 					<div className="flex items-baseline gap-1">
-						<span className="text-xl font-bold text-foreground">
-							{sensor.value != null ? sensor.value.toFixed(1) : "N/A"}
-						</span>
+						<span className="text-xl font-bold text-foreground">{formatNumber(sensor.value)}</span>
 						<span className="text-xs text-muted-foreground">{sensor.unit}</span>
 					</div>
 
 					<div className="flex items-center justify-between text-[10px] text-muted-foreground pt-1 border-t">
 						<span>
 							{sensor.min != null && sensor.max != null
-								? `${sensor.min}${sensor.unit} - ${sensor.max}${sensor.unit}`
+								? `${formatReading(sensor.min, sensor.unit, { compact: true })} – ${formatReading(sensor.max, sensor.unit, { compact: true })}`
 								: "—"}
 						</span>
 						<div className="flex items-center gap-1">
 							<Clock className="size-2.5" />
-							<span>{formatTime(sensor.lastSeen ?? new Date().toISOString())}</span>
+							<span>{sensor.lastSeen ? formatTime(sensor.lastSeen) : "—"}</span>
 						</div>
 					</div>
 
 					{alertsCount > 0 && (
 						<div className="flex items-center gap-1 text-[10px] text-red-600 pt-0.5">
 							<AlertCircle className="size-2.5" />
-							<span>
-								{alertsCount} alert{alertsCount > 1 ? "s" : ""}
-							</span>
+							<span>{plural(alertsCount, { one: "# alert", other: "# alerts" })}</span>
 						</div>
 					)}
 				</div>

@@ -12,7 +12,15 @@ import {
 } from "recharts";
 
 import { t } from "~@/i18n/macro";
-import { Badge, Card, CardContent, CardHeader, CardTitle } from "~@/ui";
+import {
+	Badge,
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+	formatNumber,
+	formatReading,
+} from "~@/ui";
 
 import type { Sensor } from "./SensorsTable";
 
@@ -290,7 +298,7 @@ function ClimateSensorsList({ sensors }: { sensors: Sensor[] }) {
 										) : (
 											<AlertTriangle className="size-4 text-amber-500" aria-hidden="true" />
 										)}
-										<span className="text-xl font-semibold">{value}</span>
+										<span className="text-xl font-semibold">{formatNumber(value)}</span>
 										<span className="text-sm text-muted-foreground">{sensor.unit}</span>
 									</div>
 									{sensor.threshold && (
@@ -446,7 +454,7 @@ function ClimateAlerts({ sensors }: { sensors: Sensor[] }) {
 								<div className="flex-1">
 									<p className="text-sm font-medium">{sensor.name}</p>
 									<p className="text-xs text-muted-foreground">
-										{t`Current: ${sensor.value} ${sensor.unit}`}
+										{t`Current: ${formatReading(sensor.value, sensor.unit)}`}
 										{sensor.threshold &&
 											t` | Threshold: ${sensor.threshold.warning} ${sensor.unit}`}
 									</p>

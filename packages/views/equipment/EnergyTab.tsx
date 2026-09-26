@@ -12,7 +12,7 @@ import {
 } from "recharts";
 
 import { t } from "~@/i18n/macro";
-import { Badge, Card, CardContent, CardHeader, CardTitle } from "~@/ui";
+import { Badge, Card, CardContent, CardHeader, CardTitle, formatReading } from "~@/ui";
 
 import type { Sensor } from "./SensorsTable";
 
@@ -88,7 +88,7 @@ export function EnergyTab({ sensors }: EnergyTabProps) {
 				<div className="flex-1">
 					<h2 className="text-lg font-semibold text-amber-900">{t`Energy Monitoring`}</h2>
 					<p className="text-sm text-amber-700">
-						{t`Showing ${energySensors.length} energy sensor${energySensors.length !== 1 ? "s" : ""}: ${energySensors.map((s) => `${s.name} (${s.value}${s.unit})`).join(", ")}`}
+						{t`Showing ${energySensors.length} energy sensor${energySensors.length !== 1 ? "s" : ""}: ${energySensors.map((s) => `${s.name} (${formatReading(s.value, s.unit)})`).join(", ")}`}
 					</p>
 				</div>
 			</div>

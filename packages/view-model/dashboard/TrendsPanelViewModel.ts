@@ -1,20 +1,39 @@
 import { makeAutoObservable } from "~@/mobx";
 
-import { dashboardTrendsViewModel } from "./DashboardTrendsViewModel";
+import { dashboardTrendsViewModel, type TrendRange } from "./DashboardTrendsViewModel";
 
 /**
  * Singleton ViewModel for the TrendsPanel component.
- * Provides trend data for AQI, CO2, and Temperature.
+ * Provides real sensor-reading trends for Temperature, Humidity and CO₂.
  */
 class TrendsPanelViewModel {
 	constructor() {
 		makeAutoObservable(this);
 	}
 
-	// Get trend data from DashboardTrendsViewModel
 	get data() {
 		return dashboardTrendsViewModel.trendData;
 	}
+
+	get sources() {
+		return dashboardTrendsViewModel.sources;
+	}
+
+	get range(): TrendRange {
+		return dashboardTrendsViewModel.range;
+	}
+
+	get isLoading() {
+		return dashboardTrendsViewModel.isLoading && !dashboardTrendsViewModel.hasLoaded;
+	}
+
+	setRange = (range: TrendRange) => {
+		dashboardTrendsViewModel.setRange(range);
+	};
+
+	load = () => {
+		dashboardTrendsViewModel.load();
+	};
 }
 
 // Export singleton instance

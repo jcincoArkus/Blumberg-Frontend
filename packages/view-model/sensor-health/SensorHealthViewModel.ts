@@ -5,6 +5,7 @@ import {
 	SensorHealthStatus,
 } from "~@/api";
 import { makeAutoObservable, reaction } from "~@/mobx";
+import { unitSymbol } from "~@/ui";
 
 /** Map numeric enum to display-friendly status strings. */
 export const healthStatusLabel: Record<SensorHealthStatus, string> = {
@@ -95,7 +96,7 @@ class SensorHealthViewModel {
 			siteId: item.siteId ?? "",
 			siteName: item.siteName ?? "Unknown",
 			value: item.lastValue ?? 0,
-			unit: item.unit ?? "",
+			unit: unitSymbol(item.unit),
 			lastSeen: item.lastSeenAt ? item.lastSeenAt.toISOString() : new Date().toISOString(),
 			reliabilityScore: item.reliabilityScore ?? 0,
 		}));
