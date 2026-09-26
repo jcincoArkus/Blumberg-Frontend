@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Button, cn } from "~@/ui";
+import { Button, cn, LoadingState } from "~@/ui";
 import type { InvSite, InvSiteZone, InvSupplier } from "~@/view-model";
 import { useInventoryViewModel } from "~@/view-model";
 
@@ -178,7 +178,7 @@ export const SitesView = observer(function SitesView() {
 							</div>
 
 							{vm.isLoading ? (
-								<div className="p-8 text-center text-muted-foreground text-sm">{t`Loading…`}</div>
+								<LoadingState variant="inline" />
 							) : vm.sites.length === 0 ? (
 								<div className="p-8 text-center text-muted-foreground text-sm">{t`No sites yet.`}</div>
 							) : (
@@ -307,6 +307,8 @@ export const SitesView = observer(function SitesView() {
 								<div className="p-10 text-center text-muted-foreground text-sm">
 									{t`Select a site to manage its zones.`}
 								</div>
+							) : selectedZones.length === 0 && vm.isZonesLoading ? (
+								<LoadingState variant="inline" />
 							) : selectedZones.length === 0 ? (
 								<div className="p-10 text-center text-muted-foreground text-sm">
 									{t`No zones yet for this site.`}
@@ -390,7 +392,7 @@ export const SitesView = observer(function SitesView() {
 
 					<div className="bg-card border border-border rounded-lg overflow-hidden">
 						{vm.isLoading ? (
-							<div className="p-8 text-center text-muted-foreground text-sm">{t`Loading…`}</div>
+							<LoadingState variant="section" />
 						) : vm.suppliers.length === 0 ? (
 							<div className="p-8 text-center text-muted-foreground text-sm">
 								{t`No suppliers yet. Add one to get started.`}

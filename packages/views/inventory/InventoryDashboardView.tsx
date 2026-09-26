@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Button, cn } from "~@/ui";
+import { Button, cn, LoadingState } from "~@/ui";
 import { type InvMovementType, useInventoryViewModel } from "~@/view-model";
 
 import { fmtMoney, fmtTime } from "./data";
@@ -215,9 +215,7 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 						<p className="text-sm text-muted-foreground mt-1">{t`Snapshot across all sites · last 7 days of activity`}</p>
 					</div>
 				</div>
-				<div className="bg-card border border-border rounded-lg p-10 text-center text-muted-foreground text-sm">
-					{t`Loading…`}
-				</div>
+				<LoadingState variant="page" />
 			</div>
 		);
 	}

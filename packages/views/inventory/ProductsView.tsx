@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Button, cn } from "~@/ui";
+import { Button, cn, LoadingState } from "~@/ui";
 import { useInventoryViewModel } from "~@/view-model";
 
 import { AddCategoryModal } from "./AddCategoryModal";
@@ -49,7 +49,7 @@ export const ProductsView = observer(function ProductsView() {
 				<div className="flex flex-wrap items-start gap-4">
 					<div>
 						<h1 className="text-xl font-semibold tracking-tight text-foreground">{t`Products`}</h1>
-						<p className="text-sm text-muted-foreground mt-1">
+						<p className={cn("text-sm text-muted-foreground mt-1", vm.isLoading && "invisible")}>
 							{vm.products.length} {t`active SKUs · catalog used by intake and lots`}
 						</p>
 					</div>
@@ -113,7 +113,7 @@ export const ProductsView = observer(function ProductsView() {
 					</div>
 
 					{vm.isLoading ? (
-						<div className="p-10 text-center text-muted-foreground text-sm">{t`Loading products…`}</div>
+						<LoadingState variant="section" label={t`Loading products…`} />
 					) : (
 						<div className="overflow-x-auto">
 							<table className="w-full border-collapse text-sm">
@@ -169,7 +169,7 @@ export const ProductsView = observer(function ProductsView() {
 					)}
 
 					<div className="px-3.5 py-2.5 bg-card border-t border-border text-sm text-muted-foreground flex">
-						<span className="ml-auto">
+						<span className={cn("ml-auto", vm.isLoading && "invisible")}>
 							{t`Showing`} {rows.length} {t`of`} {vm.products.length} {t`products`}
 						</span>
 					</div>

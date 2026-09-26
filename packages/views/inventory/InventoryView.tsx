@@ -14,7 +14,7 @@ import { useNavigate } from "react-router";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Button, cn } from "~@/ui";
+import { Button, cn, LoadingState } from "~@/ui";
 import { daysUntil, type InvEnrichedLot, useInventoryViewModel } from "~@/view-model";
 
 import { fmtDateShort, fmtMoney } from "./data";
@@ -101,7 +101,7 @@ export const InventoryView = observer(function InventoryView() {
 			<div className="flex flex-wrap items-start gap-4">
 				<div>
 					<h1 className="text-xl font-semibold tracking-tight text-foreground">{t`Current inventory`}</h1>
-					<p className="text-sm text-muted-foreground mt-1">
+					<p className={cn("text-sm text-muted-foreground mt-1", vm.isLoading && "invisible")}>
 						{totals.totalLots} {t`active lots · FIFO suggested for output`}
 					</p>
 				</div>
@@ -118,7 +118,8 @@ export const InventoryView = observer(function InventoryView() {
 				</div>
 			</div>
 
-			<div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+			{/* Hidden until the first load finishes so the KPIs don't flash 0 */}
+			<div className={cn("grid grid-cols-2 lg:grid-cols-4 gap-4", vm.isLoading && "hidden")}>
 				<StatCard
 					label={t`Active lots`}
 					value={totals.totalLots}
@@ -216,7 +217,7 @@ export const InventoryView = observer(function InventoryView() {
 				</div>
 
 				{vm.isLoading ? (
-					<div className="p-10 text-center text-muted-foreground text-sm">{t`Loading inventory…`}</div>
+					<LoadingState variant="section" label={t`Loading inventory…`} />
 				) : (
 					<div className="overflow-x-auto">
 						<table className="w-full border-collapse text-sm">
@@ -352,7 +353,7 @@ export const InventoryView = observer(function InventoryView() {
 						<span className="w-2 h-0.5 rounded bg-gray-300 dark:bg-muted-foreground" />
 						<span>{t`> 5 days · ok`}</span>
 					</div>
-					<span className="ml-auto">
+					<span className={cn("ml-auto", vm.isLoading && "invisible")}>
 						{t`Showing`} {lots.length} {t`of`} {vm.lots.length} {t`lots`}
 					</span>
 				</div>

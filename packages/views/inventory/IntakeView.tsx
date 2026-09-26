@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { deleteIntakeShipmentV1, deleteInventoryLotV1, getInventoryLotsV1 } from "~@/api";
 import { plural, t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Button } from "~@/ui";
+import { Button, LoadingState } from "~@/ui";
 import { useInventoryViewModel } from "~@/view-model";
 
 import { addDays, fmtDateShort, fmtMoney, generateLotCode } from "./data";
@@ -481,6 +481,21 @@ export const IntakeView = observer(function IntakeView() {
 			setSaving(false);
 		}
 	};
+
+	// Suppliers/sites/products feed every select and the first line item; wait for them
+	if (vm.isLoading) {
+		return (
+			<div className="space-y-6">
+				<div>
+					<h1 className="text-xl font-semibold tracking-tight text-foreground">
+						{t`Receive intake`} · {poNumber}
+					</h1>
+					<p className="text-sm text-muted-foreground mt-1">{t`Lots are created on save · stock increases at the selected zone`}</p>
+				</div>
+				<LoadingState variant="page" />
+			</div>
+		);
+	}
 
 	return (
 		<div className="space-y-6">

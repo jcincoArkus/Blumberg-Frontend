@@ -249,6 +249,11 @@ class InventoryViewModel implements Disposable {
 		);
 	}
 
+	/** First fetch of site zones (not part of `isLoading`). */
+	get isZonesLoading(): boolean {
+		return this.#zonesQuery.isLoading;
+	}
+
 	get categories(): InvCategory[] {
 		return (this.#categoriesQuery.data?.items ?? []).map(mapCategory);
 	}

@@ -12,7 +12,7 @@ import { useMemo, useState } from "react";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Button, cn } from "~@/ui";
+import { Button, cn, LoadingState } from "~@/ui";
 import { type InvMovementType, useInventoryViewModel } from "~@/view-model";
 
 import { fmtDate, fmtTime, type Movement } from "./data";
@@ -171,7 +171,7 @@ export const MovementsView = observer(function MovementsView() {
 							filter === "all" ? "text-primary-foreground" : "text-foreground",
 						)}
 					>
-						{vm.movements.length}
+						{vm.isLoading ? "—" : vm.movements.length}
 					</div>
 					<div
 						className={cn(
@@ -214,7 +214,7 @@ export const MovementsView = observer(function MovementsView() {
 									filter === type ? "text-primary-foreground" : "text-foreground",
 								)}
 							>
-								{counts[type]}
+								{vm.isLoading ? "—" : counts[type]}
 							</div>
 							<div
 								className={cn(
@@ -230,8 +230,8 @@ export const MovementsView = observer(function MovementsView() {
 			</div>
 
 			{vm.isLoading ? (
-				<div className="bg-card border border-border rounded-lg p-10 text-center text-muted-foreground text-sm">
-					{t`Loading movements…`}
+				<div className="bg-card border border-border rounded-lg">
+					<LoadingState variant="section" label={t`Loading movements…`} />
 				</div>
 			) : (
 				<div className="bg-card border border-border rounded-lg overflow-hidden">
