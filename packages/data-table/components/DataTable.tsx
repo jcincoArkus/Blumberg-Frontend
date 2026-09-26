@@ -285,9 +285,10 @@ const DataTableCore = observer(function DataTableCore<TData extends DataItem = D
 						onPageSizeChange: setPageSize,
 					})
 				) : (
+					// The pagination component works with 0-based page indexes; the hook exposes 1-based pages.
 					<PaginationComponent
-						pagination={pagination}
-						onPageChange={goToPage}
+						pagination={{ ...pagination, currentPage: pagination.currentPage - 1 }}
+						onPageChange={(pageIndex: number) => goToPage(pageIndex + 1)}
 						onPageSizeChange={setPageSize}
 						pageSizeOptions={[10, 20, 50, 100]}
 						showPageSizeSelector={true}

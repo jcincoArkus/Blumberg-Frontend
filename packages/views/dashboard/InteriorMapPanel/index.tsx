@@ -98,7 +98,7 @@ export const InteriorMapPanel = observer(function InteriorMapPanel({
 												fill={colors.textFill}
 												textAnchor="start"
 												fontWeight="400"
-												opacity="0.5"
+												opacity={isDark ? "0.9" : "0.5"}
 												style={{ fontFamily: "system-ui, sans-serif" }}
 											>
 												{zone.name}

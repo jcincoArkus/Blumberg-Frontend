@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
 
+import { config } from "~@/config";
 import { useResolvedTheme } from "~@/view-model/theme";
 
 import type { MapLocation } from "./types";
@@ -114,17 +115,23 @@ export function RealMap({ locations, selectedLocation, onLocationSelect }: RealM
 		onLocationSelect?.("");
 	};
 
+	// CARTO basemaps now need an API key (tiles render an "API KEY REQUIRED" watermark), so use the app's
+	// Mapbox token when configured and fall back to key-less Esri canvas tiles otherwise.
+	const isDark = resolvedTheme === "dark";
+	const mapboxStyle = isDark ? "dark-v11" : "light-v11";
 	const tileUrl =
 		mapType === "satellite"
 			? "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-			: resolvedTheme === "dark"
-				? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-				: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+			: config.mapboxToken
+				? `https://api.mapbox.com/styles/v1/mapbox/${mapboxStyle}/tiles/256/{z}/{x}/{y}@2x?access_token=${config.mapboxToken}`
+				: `https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/${isDark ? "World_Dark_Gray_Base" : "World_Light_Gray_Base"}/MapServer/tile/{z}/{y}/{x}`;
 
 	const attribution =
 		mapType === "satellite"
 			? "&copy; Esri"
-			: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+			: config.mapboxToken
+				? '&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+				: "&copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors";
 
 	return (
 		<div className="relative w-full h-full min-h-0 flex flex-col">

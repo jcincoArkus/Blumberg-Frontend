@@ -1267,6 +1267,10 @@
     "en-US": "Daily Estimate",
     "es-LA": ""
   },
+  "Dark": {
+    "en-US": "Dark",
+    "es-LA": ""
+  },
   "Dashboard": {
     "en-US": "Dashboard",
     "es-LA": ""
@@ -2273,6 +2277,10 @@
   },
   "Lifecycle": {
     "en-US": "Lifecycle",
+    "es-LA": ""
+  },
+  "Light": {
+    "en-US": "Light",
     "es-LA": ""
   },
   "Line items": {
@@ -4155,6 +4163,14 @@
     "en-US": "Supported columns: sensor_id, timestamp, value, unit, reading_type",
     "es-LA": ""
   },
+  "Switch to dark theme": {
+    "en-US": "Switch to dark theme",
+    "es-LA": ""
+  },
+  "Switch to light theme": {
+    "en-US": "Switch to light theme",
+    "es-LA": ""
+  },
   "Sync": {
     "en-US": "Sync",
     "es-LA": ""
@@ -4265,6 +4281,10 @@
   },
   "The site you're looking for doesn't exist.": {
     "en-US": "The site you're looking for doesn't exist.",
+    "es-LA": ""
+  },
+  "Theme": {
+    "en-US": "Theme",
     "es-LA": ""
   },
   "This equipment does not have climate monitoring sensors installed.": {
