@@ -109,9 +109,11 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 		const totalKg = enriched.reduce((s, l) => s + l.kg, 0);
 		const totalUnits = enriched.reduce((s, l) => s + l.qty, 0);
 		const expSoon = enriched.filter(
-			(l) => l.exp.tone === "soon" || l.exp.tone === "critical",
+			(l) => l.qty > 0 && (l.exp.tone === "soon" || l.exp.tone === "critical"),
 		).length;
-		return { totalValue, totalKg, totalUnits, expSoon };
+		// Depleted lots (qty 0) are kept for traceability but are not "active"
+		const activeLots = enriched.filter((l) => l.qty > 0).length;
+		return { totalValue, totalKg, totalUnits, expSoon, activeLots };
 	}, [enriched]);
 
 	const bySite = useMemo(() => {
@@ -205,7 +207,7 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 	if (vm.isLoading) {
 		return (
 			<div className="space-y-6">
-				<div className="flex items-start gap-4">
+				<div className="flex flex-wrap items-start gap-4">
 					<div>
 						<h1 className="text-xl font-semibold tracking-tight text-gray-900">{t`Inventory dashboard`}</h1>
 						<p className="text-sm text-gray-600 mt-1">{t`Snapshot across all sites · last 7 days of activity`}</p>
@@ -220,7 +222,7 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 
 	return (
 		<div className="space-y-6">
-			<div className="flex items-start gap-4">
+			<div className="flex flex-wrap items-start gap-4">
 				<div>
 					<h1 className="text-xl font-semibold tracking-tight text-gray-900">{t`Inventory dashboard`}</h1>
 					<p className="text-sm text-gray-600 mt-1">{t`Snapshot across all sites · last 7 days of activity`}</p>
@@ -235,10 +237,10 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 				</div>
 			</div>
 
-			<div className="grid grid-cols-4 gap-3">
+			<div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
 				<StatCard
 					label={t`Active lots`}
-					value={enriched.length}
+					value={totals.activeLots}
 					sub={`${vm.sites.length} ${t`sites`}`}
 					accent={0.85}
 				/>
@@ -263,7 +265,7 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 				/>
 			</div>
 
-			<div className="grid grid-cols-2 gap-4">
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 				<SectionCard title={t`By site`} sub={`${vm.sites.length} ${t`locations`}`}>
 					<div className="space-y-3">
 						{bySite.map((row) => (
@@ -310,7 +312,7 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 				</SectionCard>
 			</div>
 
-			<div className="grid grid-cols-2 gap-4">
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 				<SectionCard title={t`Expiration risk`} sub={t`lots by remaining shelf life`}>
 					<div className="grid grid-cols-4 gap-2.5">
 						{expirationBuckets.buckets.map((b) => {
@@ -379,8 +381,8 @@ export const InventoryDashboardView = observer(function InventoryDashboardView()
 				</SectionCard>
 			</div>
 
-			<div className="grid grid-cols-3 gap-4">
-				<div className="col-span-2">
+			<div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+				<div className="lg:col-span-2 min-w-0">
 					<SectionCard title={t`Recent activity`} sub={t`latest 6 events`}>
 						<div className="overflow-x-auto">
 							<table className="w-full text-xs border-collapse">

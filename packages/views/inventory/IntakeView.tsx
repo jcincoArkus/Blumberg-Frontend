@@ -121,6 +121,30 @@ export const IntakeView = observer(function IntakeView() {
 		firstProduct ? { 1: generateLotCode(new Date(), 0) } : {},
 	);
 
+	// When the page is opened directly, products may arrive after the first render:
+	// seed the first line once they are available.
+	const seededFirstLine = useRef(lines.length > 0);
+	useEffect(() => {
+		if (seededFirstLine.current || !firstProduct) return;
+		seededFirstLine.current = true;
+		setLines((ls) =>
+			ls.length > 0
+				? ls
+				: [
+						{
+							id: 1,
+							productId: firstProduct.id,
+							qty: 1,
+							unit: "kg",
+							cost: 0,
+							lotSuffix: "",
+							shelfDays: firstProduct.shelfLife,
+						},
+					],
+		);
+		setLotCodes((lc) => (lc[1] ? lc : { ...lc, 1: generateLotCode(new Date(), 0) }));
+	}, [firstProduct]);
+
 	// Mutable ref so the unmount closure always reads the latest values without stale state
 	const cleanupRef = useRef({
 		draftIntakeId: null as string | null,
@@ -488,7 +512,11 @@ export const IntakeView = observer(function IntakeView() {
 					<Button variant="outline" size="sm">
 						<Printer size={14} /> {t`Print receipt`}
 					</Button>
-					<Button size="sm" disabled={saving} onClick={() => void handleSave()}>
+					<Button
+						size="sm"
+						disabled={saving || lines.length === 0}
+						onClick={() => void handleSave()}
+					>
 						<Check size={14} />{" "}
 						{saving
 							? t`Saving…`

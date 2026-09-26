@@ -85,20 +85,22 @@ export const InventoryView = observer(function InventoryView() {
 	}, [vm.enrichedLots, siteFilter, catFilter, search, sortBy]);
 
 	const totals = useMemo(() => {
-		const totalLots = lots.length;
-		const totalValue = lots.reduce((s, l) => s + l.value, 0);
-		const expSoon = lots.filter((l) => l.exp.tone === "soon" || l.exp.tone === "critical").length;
-		const expired = lots.filter((l) => l.exp.tone === "expired").length;
+		// Depleted lots (qty 0) stay in the list for traceability but are not "active"
+		const active = lots.filter((l) => l.qty > 0);
+		const totalLots = active.length;
+		const totalValue = active.reduce((s, l) => s + l.value, 0);
+		const expSoon = active.filter((l) => l.exp.tone === "soon" || l.exp.tone === "critical").length;
+		const expired = active.filter((l) => l.exp.tone === "expired").length;
 		return { totalLots, totalValue, expSoon, expired };
 	}, [lots]);
 
 	return (
 		<div className="space-y-6">
-			<div className="flex items-start gap-4">
+			<div className="flex flex-wrap items-start gap-4">
 				<div>
 					<h1 className="text-xl font-semibold tracking-tight text-gray-900">{t`Current inventory`}</h1>
 					<p className="text-sm text-gray-600 mt-1">
-						{lots.length} {t`active lots · FIFO suggested for output`}
+						{totals.totalLots} {t`active lots · FIFO suggested for output`}
 					</p>
 				</div>
 				<div className="ml-auto flex items-center gap-2">
@@ -114,7 +116,7 @@ export const InventoryView = observer(function InventoryView() {
 				</div>
 			</div>
 
-			<div className="grid grid-cols-4 gap-4">
+			<div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
 				<StatCard
 					label={t`Active lots`}
 					value={totals.totalLots}
