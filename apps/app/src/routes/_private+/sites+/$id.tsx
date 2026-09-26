@@ -184,20 +184,20 @@ export default observer(function SiteDetailPage() {
 				{(
 					[
 						{
-							key: "high",
-							label: t`High`,
+							key: "critical",
+							label: t`Critical`,
 							color: "text-danger",
 							bg: "bg-danger-subtle border-danger-border",
 						},
 						{
-							key: "medium",
-							label: t`Medium`,
+							key: "warning",
+							label: t`Warning`,
 							color: "text-amber-600 dark:text-warning",
 							bg: "bg-warning-subtle border-warning-border",
 						},
 						{
-							key: "low",
-							label: t`Low`,
+							key: "info",
+							label: t`Info`,
 							color: "text-muted-foreground",
 							bg: "bg-surface-muted border-border",
 						},
