@@ -10,7 +10,7 @@ import {
 } from "recharts";
 
 import { t } from "~@/i18n/macro";
-import { formatReading } from "~@/ui";
+import { chartColors, chartGridProps, chartTooltipProps, formatReading } from "~@/ui";
 
 interface SensorChartProps {
 	data: { timestamp: string; value: number }[];
@@ -24,7 +24,7 @@ interface SensorChartProps {
 export function SensorChart({
 	data,
 	unit,
-	color = "#0d7377",
+	color = chartColors.primary,
 	warningThreshold,
 	criticalThreshold,
 	height = 200,
@@ -48,16 +48,16 @@ export function SensorChart({
 	return (
 		<ResponsiveContainer width="100%" height={height}>
 			<LineChart data={formattedData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-				<CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+				<CartesianGrid {...chartGridProps} />
 				<XAxis
 					dataKey="time"
-					tick={{ fontSize: 10, fill: "#64748b" }}
+					tick={{ fontSize: 10, fill: chartColors.axis }}
 					tickLine={false}
-					axisLine={{ stroke: "#e2e8f0" }}
+					axisLine={{ stroke: chartColors.axisLine }}
 					interval="preserveStartEnd"
 				/>
 				<YAxis
-					tick={{ fontSize: 10, fill: "#64748b" }}
+					tick={{ fontSize: 10, fill: chartColors.axis }}
 					tickLine={false}
 					axisLine={false}
 					domain={[yMin, yMax]}
@@ -65,30 +65,33 @@ export function SensorChart({
 					width={50}
 				/>
 				<Tooltip
-					contentStyle={{
-						backgroundColor: "#fff",
-						border: "1px solid #e2e8f0",
-						borderRadius: "8px",
-						fontSize: "12px",
-						boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-					}}
+					{...chartTooltipProps}
 					formatter={(value: number) => [formatReading(value, unit), t`Value`]}
-					labelStyle={{ fontWeight: 500, marginBottom: 4 }}
 				/>
 				{warningThreshold && (
 					<ReferenceLine
 						y={warningThreshold}
-						stroke="#f59e0b"
+						stroke={chartColors.warning}
 						strokeDasharray="3 3"
-						label={{ value: t`Warning`, position: "right", fontSize: 10, fill: "#f59e0b" }}
+						label={{
+							value: t`Warning`,
+							position: "right",
+							fontSize: 10,
+							fill: chartColors.warning,
+						}}
 					/>
 				)}
 				{criticalThreshold && (
 					<ReferenceLine
 						y={criticalThreshold}
-						stroke="#dc2626"
+						stroke={chartColors.danger}
 						strokeDasharray="3 3"
-						label={{ value: t`Critical`, position: "right", fontSize: 10, fill: "#dc2626" }}
+						label={{
+							value: t`Critical`,
+							position: "right",
+							fontSize: 10,
+							fill: chartColors.danger,
+						}}
 					/>
 				)}
 				<Line

@@ -19,15 +19,15 @@ export const IssueList: FC<IssueListProps> = ({ offlineSensors, staleSensors }) 
 			{offlineSensors.length > 0 && (
 				<div>
 					<div className="flex items-center gap-1.5 mb-1">
-						<AlertTriangle className="size-3 text-red-600" />
-						<p className="text-xs font-medium text-red-700">{t`Offline`}</p>
+						<AlertTriangle className="size-3 text-danger" />
+						<p className="text-xs font-medium text-danger-foreground">{t`Offline`}</p>
 					</div>
 					<div className="space-y-0.5">
 						{offlineSensors.slice(0, 2).map((sensor) => (
 							<Link
 								key={sensor.id}
 								to={`/config/sensors?sensor=${sensor.id}`}
-								className="block p-1 rounded text-xs border border-red-200 bg-red-50/30 hover:bg-red-100/50 transition-colors"
+								className="block p-1 rounded text-xs border border-danger-border bg-danger-subtle/30 hover:bg-red-100/50 dark:hover:bg-danger-subtle/50 transition-colors"
 							>
 								<p className="font-medium truncate">{sensor.name}</p>
 							</Link>
@@ -44,15 +44,15 @@ export const IssueList: FC<IssueListProps> = ({ offlineSensors, staleSensors }) 
 			{staleSensors.length > 0 && (
 				<div>
 					<div className="flex items-center gap-1.5 mb-1">
-						<Clock className="size-3 text-amber-600" />
-						<p className="text-xs font-medium text-amber-700">{t`Stale`}</p>
+						<Clock className="size-3 text-amber-600 dark:text-warning" />
+						<p className="text-xs font-medium text-warning-foreground">{t`Stale`}</p>
 					</div>
 					<div className="space-y-0.5">
 						{staleSensors.slice(0, 2).map((sensor) => (
 							<Link
 								key={sensor.id}
 								to={`/config/sensors?sensor=${sensor.id}`}
-								className="block p-1 rounded text-xs border border-amber-200 bg-amber-50/30 hover:bg-amber-100/50 transition-colors"
+								className="block p-1 rounded text-xs border border-warning-border bg-warning-subtle/30 hover:bg-amber-100/50 dark:hover:bg-warning-subtle/50 transition-colors"
 							>
 								<p className="font-medium truncate">{sensor.name}</p>
 							</Link>

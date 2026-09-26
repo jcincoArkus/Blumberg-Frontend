@@ -69,7 +69,7 @@ export const SensorWidget: FC<SensorWidgetProps> = ({ sensor, alertsCount = 0 })
 					</div>
 
 					{alertsCount > 0 && (
-						<div className="flex items-center gap-1 text-[10px] text-red-600 pt-0.5">
+						<div className="flex items-center gap-1 text-[10px] text-danger pt-0.5">
 							<AlertCircle className="size-2.5" />
 							<span>{plural(alertsCount, { one: "# alert", other: "# alerts" })}</span>
 						</div>

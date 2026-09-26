@@ -22,11 +22,11 @@ export function getInsightIconStyle(severity: string): { bg: string; text: strin
 		case "critical":
 		case "high":
 			return {
-				bg: "bg-amber-100 dark:bg-amber-950/50",
-				text: "text-amber-600 dark:text-amber-400",
+				bg: "bg-amber-100 dark:bg-warning-subtle",
+				text: "text-amber-600 dark:text-warning",
 			};
 		case "medium":
-			return { bg: "bg-blue-100 dark:bg-blue-950/50", text: "text-blue-600 dark:text-blue-400" };
+			return { bg: "bg-blue-100 dark:bg-info-subtle", text: "text-info" };
 		default:
 			return { bg: "bg-primary/10", text: "text-primary" };
 	}

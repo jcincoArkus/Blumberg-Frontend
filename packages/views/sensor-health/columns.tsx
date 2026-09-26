@@ -18,11 +18,20 @@ import { Badge, Button, formatReading } from "~@/ui";
 import type { EnrichedSensor } from "./SensorHealthTable";
 
 const statusConfig: Record<string, { icon: typeof Wifi; className: string }> = {
-	healthy: { icon: Wifi, className: "bg-green-100 text-green-700" },
-	offline: { icon: WifiOff, className: "bg-red-100 text-red-700" },
-	stale: { icon: WifiOff, className: "bg-amber-100 text-amber-700" },
-	warning: { icon: AlertTriangle, className: "bg-amber-100 text-amber-700" },
-	critical: { icon: AlertTriangle, className: "bg-red-100 text-red-700" },
+	healthy: { icon: Wifi, className: "bg-green-100 dark:bg-success-subtle text-success-foreground" },
+	offline: { icon: WifiOff, className: "bg-red-100 dark:bg-danger-subtle text-danger-foreground" },
+	stale: {
+		icon: WifiOff,
+		className: "bg-amber-100 dark:bg-warning-subtle text-warning-foreground",
+	},
+	warning: {
+		icon: AlertTriangle,
+		className: "bg-amber-100 dark:bg-warning-subtle text-warning-foreground",
+	},
+	critical: {
+		icon: AlertTriangle,
+		className: "bg-red-100 dark:bg-danger-subtle text-danger-foreground",
+	},
 };
 
 const typeIcons: Record<string, typeof Activity> = {

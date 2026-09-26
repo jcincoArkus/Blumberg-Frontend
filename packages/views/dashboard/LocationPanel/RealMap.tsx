@@ -33,9 +33,18 @@ function MapController({ center, zoom }: { center: [number, number]; zoom: numbe
 	return null;
 }
 
+/** Status colors resolve from theme tokens (CSS vars) so pins follow light/dark without re-creating icons. */
+function statusColor(status: MapLocation["status"]): string {
+	return status === "alert"
+		? "var(--danger)"
+		: status === "warning"
+			? "var(--warning)"
+			: "var(--success)";
+}
+
 function createCustomIcon(status: MapLocation["status"], isSelected: boolean): L.DivIcon {
 	const size = isSelected ? 32 : 24;
-	const color = status === "alert" ? "#dc2626" : status === "warning" ? "#f59e0b" : "#10b981";
+	const color = statusColor(status);
 	return L.divIcon({
 		className: "custom-marker",
 		html: `
@@ -168,12 +177,7 @@ export function RealMap({ locations, selectedLocation, onLocationSelect }: RealM
 							<div
 								className="w-2.5 h-2.5 rounded-full flex-shrink-0"
 								style={{
-									backgroundColor:
-										selectedLocationData.status === "alert"
-											? "#dc2626"
-											: selectedLocationData.status === "warning"
-												? "#f59e0b"
-												: "#10b981",
+									backgroundColor: statusColor(selectedLocationData.status),
 								}}
 							/>
 							<span className="text-xs font-medium text-foreground capitalize">

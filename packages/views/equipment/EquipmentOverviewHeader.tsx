@@ -19,18 +19,20 @@ const getStatusConfig = () =>
 	({
 		OK: {
 			label: t`OK`,
-			className: "bg-emerald-100 text-emerald-700 border-emerald-200",
-			dot: "bg-emerald-500",
+			className:
+				"bg-emerald-100 dark:bg-success-subtle text-emerald-700 dark:text-success-foreground border-emerald-200 dark:border-success-border",
+			dot: "bg-success",
 		},
 		Warning: {
 			label: t`Warning`,
-			className: "bg-amber-100 text-amber-700 border-amber-200",
-			dot: "bg-amber-500",
+			className:
+				"bg-amber-100 dark:bg-warning-subtle text-warning-foreground border-warning-border",
+			dot: "bg-warning",
 		},
 		Alert: {
 			label: t`Alert`,
-			className: "bg-red-100 text-red-700 border-red-200",
-			dot: "bg-red-500",
+			className: "bg-red-100 dark:bg-danger-subtle text-danger-foreground border-danger-border",
+			dot: "bg-red-500 dark:bg-danger",
 		},
 	}) as Record<OverviewStatus, { label: string; className: string; dot: string }>;
 

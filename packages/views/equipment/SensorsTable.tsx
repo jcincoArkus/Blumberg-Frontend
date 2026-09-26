@@ -62,19 +62,43 @@ function getValueStatus(sensor: Sensor): "danger" | "warning" | "success" {
 function getStatusBadgeConfig(status: SensorStatus) {
 	switch (status) {
 		case "active":
-			return { label: t`Active`, className: "bg-emerald-100 text-emerald-700 border-emerald-200" };
+			return {
+				label: t`Active`,
+				className:
+					"bg-emerald-100 dark:bg-success-subtle text-emerald-700 dark:text-success-foreground border-emerald-200 dark:border-success-border",
+			};
 		case "warning":
-			return { label: t`Warning`, className: "bg-amber-100 text-amber-700 border-amber-200" };
+			return {
+				label: t`Warning`,
+				className:
+					"bg-amber-100 dark:bg-warning-subtle text-warning-foreground border-warning-border",
+			};
 		case "stale":
-			return { label: t`Stale`, className: "bg-orange-100 text-orange-700 border-orange-200" };
+			return {
+				label: t`Stale`,
+				className:
+					"bg-orange-100 dark:bg-orange-500/15 text-orange-700 dark:text-orange-300 border-orange-200 dark:border-orange-500/30",
+			};
 		case "offline":
-			return { label: t`Offline`, className: "bg-red-100 text-red-700 border-red-200" };
+			return {
+				label: t`Offline`,
+				className: "bg-red-100 dark:bg-danger-subtle text-danger-foreground border-danger-border",
+			};
 		case "error":
-			return { label: t`Error`, className: "bg-red-100 text-red-700 border-red-200" };
+			return {
+				label: t`Error`,
+				className: "bg-red-100 dark:bg-danger-subtle text-danger-foreground border-danger-border",
+			};
 		case "inactive":
-			return { label: t`Inactive`, className: "bg-slate-100 text-slate-700 border-slate-200" };
+			return {
+				label: t`Inactive`,
+				className: "bg-muted text-slate-700 dark:text-foreground border-border",
+			};
 		default:
-			return { label: status, className: "bg-slate-100 text-slate-700 border-slate-200" };
+			return {
+				label: status,
+				className: "bg-muted text-slate-700 dark:text-foreground border-border",
+			};
 	}
 }
 
@@ -109,9 +133,9 @@ export function SensorsTable({ sensors }: SensorsTableProps) {
 								<span
 									className={`font-mono font-medium ${
 										valueStatus === "danger"
-											? "text-red-600"
+											? "text-danger"
 											: valueStatus === "warning"
-												? "text-amber-600"
+												? "text-amber-600 dark:text-warning"
 												: "text-foreground"
 									}`}
 								>
@@ -126,11 +150,11 @@ export function SensorsTable({ sensors }: SensorsTableProps) {
 							<TableCell>
 								{sensor.threshold ? (
 									<div className="flex items-center gap-2 text-xs text-muted-foreground">
-										<span className="px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">
+										<span className="px-1.5 py-0.5 rounded bg-amber-100 dark:bg-warning-subtle text-warning-foreground">
 											{t`W:`} {sensor.threshold.warning}
 											{sensor.unit}
 										</span>
-										<span className="px-1.5 py-0.5 rounded bg-red-100 text-red-700">
+										<span className="px-1.5 py-0.5 rounded bg-red-100 dark:bg-danger-subtle text-danger-foreground">
 											{t`C:`} {sensor.threshold.critical}
 											{sensor.unit}
 										</span>

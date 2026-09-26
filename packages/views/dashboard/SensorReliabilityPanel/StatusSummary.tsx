@@ -14,7 +14,7 @@ export const StatusSummary: FC<StatusSummaryProps> = ({ healthyPercentage }) => 
 			<h3 className="text-base font-semibold leading-tight">{t`Sensor Status`}</h3>
 			<Badge
 				variant="outline"
-				className="text-xs font-medium rounded-full px-2.5 py-0.5 bg-white dark:bg-card border border-amber-300 dark:border-amber-500 text-amber-800 dark:text-amber-200"
+				className="text-xs font-medium rounded-full px-2.5 py-0.5 bg-card border border-amber-300 dark:border-warning-border text-amber-800 dark:text-warning-foreground"
 			>
 				{healthyPercentage}%
 			</Badge>

@@ -71,10 +71,7 @@ export const ActiveAlertsPanel = observer(function ActiveAlertsPanel() {
 					/>
 				</div>
 				<div className="flex-shrink-0 px-4 pb-3 pt-2 border-t border-border text-center">
-					<Link
-						to="/alerts"
-						className="text-xs font-medium text-teal-600 dark:text-teal-400 hover:underline"
-					>
+					<Link to="/alerts" className="text-xs font-medium text-primary hover:underline">
 						{t`View All →`}
 					</Link>
 				</div>

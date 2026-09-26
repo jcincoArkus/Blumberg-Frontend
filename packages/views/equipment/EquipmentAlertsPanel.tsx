@@ -36,12 +36,14 @@ function getSeverityBadge(severity: string) {
 
 function getStatusIcon(status: string) {
 	if (status === "resolved") {
-		return <CheckCircle2 className="size-4 text-emerald-600" aria-hidden="true" />;
+		return (
+			<CheckCircle2 className="size-4 text-emerald-600 dark:text-success" aria-hidden="true" />
+		);
 	}
 	if (status === "acknowledged") {
-		return <AlertCircle className="size-4 text-amber-600" aria-hidden="true" />;
+		return <AlertCircle className="size-4 text-amber-600 dark:text-warning" aria-hidden="true" />;
 	}
-	return <AlertTriangle className="size-4 text-red-600" aria-hidden="true" />;
+	return <AlertTriangle className="size-4 text-danger" aria-hidden="true" />;
 }
 
 export function EquipmentAlertsPanel({ activeAlerts, recentAlerts }: EquipmentAlertsPanelProps) {
@@ -129,14 +131,14 @@ export function EquipmentAlertsPanel({ activeAlerts, recentAlerts }: EquipmentAl
 								<AlertGroup
 									title={t`Acknowledged (${acknowledgedAlerts.length})`}
 									alerts={acknowledgedAlerts}
-									borderClass="border-amber-200 bg-amber-50"
+									borderClass="border-warning-border bg-warning-subtle"
 								/>
 							)}
 							{resolvedAlerts.length > 0 && (
 								<AlertGroup
 									title={t`Resolved (${resolvedAlerts.length})`}
 									alerts={resolvedAlerts}
-									borderClass="border-slate-200 bg-slate-50"
+									borderClass="border-border bg-surface-muted"
 								/>
 							)}
 						</div>
@@ -204,8 +206,8 @@ function AlertsList({ alerts, showDuration }: { alerts: Alert[]; showDuration?: 
 					alert={alert}
 					borderClass={
 						alert.severity === "critical" || alert.severity === "warning"
-							? "border-red-200 bg-red-50"
-							: "border-amber-200 bg-amber-50"
+							? "border-danger-border bg-danger-subtle"
+							: "border-warning-border bg-warning-subtle"
 					}
 					showDuration={showDuration}
 				/>

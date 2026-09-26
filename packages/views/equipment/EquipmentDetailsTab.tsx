@@ -61,7 +61,7 @@ function getSensorIcon(type: string) {
 function getSensorColor(type: string) {
 	switch (type) {
 		case "temperature":
-			return "text-blue-500";
+			return "text-blue-500 dark:text-info";
 		case "humidity":
 			return "text-cyan-500";
 		case "co2":
@@ -69,25 +69,25 @@ function getSensorColor(type: string) {
 		case "pressure":
 			return "text-indigo-500";
 		case "energy":
-			return "text-amber-500";
+			return "text-warning";
 		default:
-			return "text-gray-500";
+			return "text-muted-foreground";
 	}
 }
 
 function getSensorStatusColor(status: string) {
 	switch (status) {
 		case "active":
-			return "bg-green-100 text-green-700";
+			return "bg-green-100 dark:bg-success-subtle text-success-foreground";
 		case "warning":
-			return "bg-amber-100 text-amber-700";
+			return "bg-amber-100 dark:bg-warning-subtle text-warning-foreground";
 		case "error":
-			return "bg-red-100 text-red-700";
+			return "bg-red-100 dark:bg-danger-subtle text-danger-foreground";
 		case "offline":
 		case "stale":
-			return "bg-gray-100 text-gray-700";
+			return "bg-muted text-gray-700 dark:text-foreground";
 		default:
-			return "bg-gray-100 text-gray-700";
+			return "bg-muted text-gray-700 dark:text-foreground";
 	}
 }
 
@@ -118,13 +118,13 @@ export function EquipmentDetailsTab({
 	return (
 		<div className="space-y-6">
 			{/* Section Header */}
-			<div className="flex items-center gap-3 rounded-lg border border-slate-200 bg-slate-100 p-4">
+			<div className="flex items-center gap-3 rounded-lg border border-border bg-muted p-4">
 				<div className="rounded-lg bg-slate-600 p-2">
 					<Settings className="size-6 text-white" aria-hidden="true" />
 				</div>
 				<div>
-					<h2 className="text-lg font-semibold text-slate-900">{t`Equipment Details`}</h2>
-					<p className="text-sm text-slate-700">
+					<h2 className="text-lg font-semibold text-foreground">{t`Equipment Details`}</h2>
+					<p className="text-sm text-slate-700 dark:text-foreground">
 						{t`${equipmentName} - ${equipmentType} | ${sensors.length} sensor${sensors.length !== 1 ? "s" : ""} installed`}
 					</p>
 				</div>
@@ -183,17 +183,19 @@ function SensorsOverview({
 			<CardContent>
 				{/* Sensor Summary */}
 				<div className="mb-4 grid grid-cols-3 gap-4">
-					<div className="rounded-lg border border-green-100 bg-green-50 p-3 text-center">
-						<p className="text-2xl font-semibold text-green-700">{activeSensors}</p>
-						<p className="text-xs text-green-600">{t`Active`}</p>
+					<div className="rounded-lg border border-green-100 dark:border-success-border bg-success-subtle p-3 text-center">
+						<p className="text-2xl font-semibold text-success-foreground">{activeSensors}</p>
+						<p className="text-xs text-green-600 dark:text-success">{t`Active`}</p>
 					</div>
-					<div className="rounded-lg border border-amber-100 bg-amber-50 p-3 text-center">
-						<p className="text-2xl font-semibold text-amber-700">{warningSensors}</p>
-						<p className="text-xs text-amber-600">{t`Warning`}</p>
+					<div className="rounded-lg border border-amber-100 dark:border-warning-border bg-warning-subtle p-3 text-center">
+						<p className="text-2xl font-semibold text-warning-foreground">{warningSensors}</p>
+						<p className="text-xs text-amber-600 dark:text-warning">{t`Warning`}</p>
 					</div>
-					<div className="rounded-lg border border-gray-200 bg-gray-50 p-3 text-center">
-						<p className="text-2xl font-semibold text-gray-700">{offlineSensors}</p>
-						<p className="text-xs text-gray-600">{t`Offline`}</p>
+					<div className="rounded-lg border border-border bg-surface-muted p-3 text-center">
+						<p className="text-2xl font-semibold text-gray-700 dark:text-foreground">
+							{offlineSensors}
+						</p>
+						<p className="text-xs text-muted-foreground">{t`Offline`}</p>
 					</div>
 				</div>
 
@@ -307,19 +309,25 @@ function getStatusBadge(status: string) {
 	switch (status) {
 		case "completed":
 			return (
-				<Badge variant="secondary" className="bg-green-100 text-green-700">
+				<Badge
+					variant="secondary"
+					className="bg-green-100 dark:bg-success-subtle text-success-foreground"
+				>
 					<CheckCircle2 className="mr-1 size-3" aria-hidden="true" /> {t`Completed`}
 				</Badge>
 			);
 		case "scheduled":
 			return (
-				<Badge variant="secondary" className="bg-blue-100 text-blue-700">
+				<Badge variant="secondary" className="bg-blue-100 dark:bg-info-subtle text-info-foreground">
 					<Clock className="mr-1 size-3" aria-hidden="true" /> {t`Scheduled`}
 				</Badge>
 			);
 		case "overdue":
 			return (
-				<Badge variant="secondary" className="bg-red-100 text-red-700">
+				<Badge
+					variant="secondary"
+					className="bg-red-100 dark:bg-danger-subtle text-danger-foreground"
+				>
 					<XCircle className="mr-1 size-3" aria-hidden="true" /> {t`Overdue`}
 				</Badge>
 			);
@@ -397,10 +405,10 @@ function MaintenanceHistory() {
 										variant="outline"
 										className={
 											item.type === "Corrective"
-												? "border-red-200 text-red-700"
+												? "border-danger-border text-danger-foreground"
 												: item.type === "Preventive"
-													? "border-green-200 text-green-700"
-													: "border-blue-200 text-blue-700"
+													? "border-success-border text-success-foreground"
+													: "border-info-border text-info-foreground"
 										}
 									>
 										{item.type}
@@ -452,7 +460,7 @@ function DocumentsAndParts() {
 								className="flex cursor-pointer items-center justify-between rounded-lg bg-muted/50 p-3 transition-colors hover:bg-muted"
 							>
 								<div className="flex items-center gap-3">
-									<FileText className="size-5 text-red-500" aria-hidden="true" />
+									<FileText className="size-5 text-red-500 dark:text-danger" aria-hidden="true" />
 									<div>
 										<p className="text-sm font-medium">{doc.name}</p>
 										<p className="text-xs text-muted-foreground">{doc.size}</p>
@@ -480,14 +488,14 @@ function DocumentsAndParts() {
 								<div className="flex items-center justify-between">
 									<span className="text-sm font-medium">{part.name}</span>
 									<span
-										className={`text-sm font-semibold ${part.stock <= part.minStock ? "text-amber-600" : "text-green-600"}`}
+										className={`text-sm font-semibold ${part.stock <= part.minStock ? "text-amber-600 dark:text-warning" : "text-green-600 dark:text-success"}`}
 									>
 										{t`${part.stock} in stock`}
 									</span>
 								</div>
 								<div className="h-1.5 overflow-hidden rounded-full bg-muted">
 									<div
-										className={`h-full transition-all ${part.stock <= part.minStock ? "bg-amber-500" : "bg-green-500"}`}
+										className={`h-full transition-all ${part.stock <= part.minStock ? "bg-warning" : "bg-green-500 dark:bg-success"}`}
 										style={{ width: `${Math.min(100, (part.stock / (part.minStock * 3)) * 100)}%` }}
 									/>
 								</div>
@@ -515,12 +523,15 @@ function WarrantyInfo() {
 			</CardHeader>
 			<CardContent>
 				<div className="grid gap-4 md:grid-cols-3">
-					<div className="rounded-lg border border-green-100 bg-green-50 p-4">
+					<div className="rounded-lg border border-green-100 dark:border-success-border bg-success-subtle p-4">
 						<div className="mb-2 flex items-center gap-2">
-							<CheckCircle2 className="size-5 text-green-600" aria-hidden="true" />
-							<span className="font-medium text-green-700">{t`Active Warranty`}</span>
+							<CheckCircle2
+								className="size-5 text-green-600 dark:text-success"
+								aria-hidden="true"
+							/>
+							<span className="font-medium text-success-foreground">{t`Active Warranty`}</span>
 						</div>
-						<p className="text-sm text-green-600">{t`Full parts and labor coverage`}</p>
+						<p className="text-sm text-green-600 dark:text-success">{t`Full parts and labor coverage`}</p>
 					</div>
 					<div className="rounded-lg border bg-muted/50 p-4">
 						<div className="mb-2 flex items-center gap-2">

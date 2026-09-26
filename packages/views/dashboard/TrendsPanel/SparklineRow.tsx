@@ -10,12 +10,12 @@ import {
 } from "recharts";
 
 import { t } from "~@/i18n/macro";
-import { formatReading, Skeleton } from "~@/ui";
+import { chartColors, formatReading, Skeleton } from "~@/ui";
 
 import { formatSparklineData, getLastValue, getSparklineDomain } from "./helpers";
 import type { TrendPoint } from "./types";
 
-const IDEAL_FILL = "#10b981";
+const IDEAL_FILL = chartColors.success;
 const IDEAL_FILL_OPACITY = 0.15;
 const IDEAL_LINE_OPACITY = 0.6;
 

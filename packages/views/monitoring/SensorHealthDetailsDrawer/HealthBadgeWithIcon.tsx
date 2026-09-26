@@ -11,32 +11,33 @@ const CONFIG: Record<
 > = {
 	healthy: {
 		label: t`Healthy`,
-		className: "bg-emerald-100 text-emerald-700 border-emerald-200",
+		className:
+			"bg-emerald-100 dark:bg-success-subtle text-emerald-700 dark:text-success-foreground border-emerald-200 dark:border-success-border",
 		icon: CheckCircle2,
 	},
 	stale: {
 		label: t`Stale`,
-		className: "bg-amber-100 text-amber-700 border-amber-200",
+		className: "bg-amber-100 dark:bg-warning-subtle text-warning-foreground border-warning-border",
 		icon: Clock,
 	},
 	silent: {
 		label: t`Silent`,
-		className: "bg-red-100 text-red-700 border-red-200",
+		className: "bg-red-100 dark:bg-danger-subtle text-danger-foreground border-danger-border",
 		icon: XCircle,
 	},
 	offline: {
 		label: t`Offline`,
-		className: "bg-red-100 text-red-700 border-red-200",
+		className: "bg-red-100 dark:bg-danger-subtle text-danger-foreground border-danger-border",
 		icon: XCircle,
 	},
 	warning: {
 		label: t`Warning`,
-		className: "bg-amber-100 text-amber-700 border-amber-200",
+		className: "bg-amber-100 dark:bg-warning-subtle text-warning-foreground border-warning-border",
 		icon: AlertTriangle,
 	},
 	critical: {
 		label: t`Critical`,
-		className: "bg-red-100 text-red-700 border-red-200",
+		className: "bg-red-100 dark:bg-danger-subtle text-danger-foreground border-danger-border",
 		icon: XCircle,
 	},
 };
@@ -48,7 +49,10 @@ interface HealthBadgeWithIconProps {
 export function HealthBadgeWithIcon({ status }: HealthBadgeWithIconProps) {
 	if (!status) {
 		return (
-			<Badge variant="outline" className="bg-slate-100 text-slate-700 border-slate-200">
+			<Badge
+				variant="outline"
+				className="bg-muted text-slate-700 dark:text-foreground border-border"
+			>
 				{t`Unknown`}
 			</Badge>
 		);

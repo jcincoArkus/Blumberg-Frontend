@@ -1,11 +1,11 @@
 export function getStatusColor(status: string) {
 	switch (status) {
 		case "operational":
-			return "bg-emerald-500";
+			return "bg-success";
 		case "warning":
-			return "bg-amber-500";
+			return "bg-warning";
 		case "critical":
-			return "bg-red-500";
+			return "bg-red-500 dark:bg-danger";
 		default:
 			return "bg-slate-400";
 	}

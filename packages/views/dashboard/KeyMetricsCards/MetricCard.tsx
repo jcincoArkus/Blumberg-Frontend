@@ -12,15 +12,15 @@ interface MetricCardProps {
 
 export function MetricCard({ label, metric, statusLabel }: MetricCardProps) {
 	const trendConfig = {
-		up: { icon: TrendingUp, color: "text-red-600" },
-		down: { icon: TrendingDown, color: "text-emerald-600" },
-		stable: { icon: Minus, color: "text-slate-500" },
+		up: { icon: TrendingUp, color: "text-danger" },
+		down: { icon: TrendingDown, color: "text-emerald-600 dark:text-success" },
+		stable: { icon: Minus, color: "text-muted-foreground" },
 	};
 
 	const statusConfig = {
-		stable: "text-slate-600",
-		rising: "text-amber-600",
-		improving: "text-emerald-600",
+		stable: "text-muted-foreground",
+		rising: "text-amber-600 dark:text-warning",
+		improving: "text-emerald-600 dark:text-success",
 	};
 
 	const { icon: TrendIcon, color: trendColor } = trendConfig[metric.trend];

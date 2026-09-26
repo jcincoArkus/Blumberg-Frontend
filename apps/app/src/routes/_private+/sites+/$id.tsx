@@ -180,20 +180,20 @@ export default observer(function SiteDetailPage() {
 						{
 							key: "high",
 							label: t`High`,
-							color: "text-red-600",
-							bg: "bg-red-50 border-red-200",
+							color: "text-danger",
+							bg: "bg-danger-subtle border-danger-border",
 						},
 						{
 							key: "medium",
 							label: t`Medium`,
-							color: "text-amber-600",
-							bg: "bg-amber-50 border-amber-200",
+							color: "text-amber-600 dark:text-warning",
+							bg: "bg-warning-subtle border-warning-border",
 						},
 						{
 							key: "low",
 							label: t`Low`,
-							color: "text-slate-600",
-							bg: "bg-slate-50 border-slate-200",
+							color: "text-muted-foreground",
+							bg: "bg-surface-muted border-border",
 						},
 					] as const
 				).map(({ key, label, color, bg }) => (

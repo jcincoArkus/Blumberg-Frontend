@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 import { t } from "~@/i18n/macro";
-import { Card, CardContent, CardHeader, CardTitle } from "~@/ui";
+import { Card, CardContent, CardHeader, CardTitle, chartColors, chartTooltipProps } from "~@/ui";
 
 // Generate mock trend data for the last 24 hours
 function generateAlertsTrendData() {
@@ -51,18 +51,18 @@ export function SiteTrendCharts() {
 						<CardTitle className="text-sm font-medium">{t`Alerts Volume (24h)`}</CardTitle>
 						<div className="flex items-center gap-1">
 							{alertsTrend > 0 ? (
-								<TrendingUp className="size-4 text-red-500" />
+								<TrendingUp className="size-4 text-red-500 dark:text-danger" />
 							) : alertsTrend < 0 ? (
-								<TrendingDown className="size-4 text-emerald-500" />
+								<TrendingDown className="size-4 text-success" />
 							) : (
 								<Minus className="size-4 text-muted-foreground" />
 							)}
 							<span
 								className={`text-xs font-medium ${
 									alertsTrend > 0
-										? "text-red-500"
+										? "text-red-500 dark:text-danger"
 										: alertsTrend < 0
-											? "text-emerald-500"
+											? "text-success"
 											: "text-muted-foreground"
 								}`}
 							>
@@ -83,19 +83,15 @@ export function SiteTrendCharts() {
 								</defs>
 								<XAxis
 									dataKey="time"
-									tick={{ fontSize: 10 }}
+									tick={{ fontSize: 10, fill: chartColors.axis }}
 									interval={5}
 									axisLine={false}
 									tickLine={false}
 								/>
 								<YAxis hide />
 								<Tooltip
-									contentStyle={{
-										backgroundColor: "hsl(var(--card))",
-										border: "1px solid hsl(var(--border))",
-										borderRadius: "6px",
-										fontSize: "12px",
-									}}
+									{...chartTooltipProps}
+									contentStyle={{ ...chartTooltipProps.contentStyle, borderRadius: "6px" }}
 								/>
 								<Area
 									type="monotone"
@@ -117,18 +113,18 @@ export function SiteTrendCharts() {
 						<CardTitle className="text-sm font-medium">{t`Site Health (24h)`}</CardTitle>
 						<div className="flex items-center gap-1">
 							{healthTrend > 0 ? (
-								<TrendingUp className="size-4 text-emerald-500" />
+								<TrendingUp className="size-4 text-success" />
 							) : healthTrend < 0 ? (
-								<TrendingDown className="size-4 text-red-500" />
+								<TrendingDown className="size-4 text-red-500 dark:text-danger" />
 							) : (
 								<Minus className="size-4 text-muted-foreground" />
 							)}
 							<span
 								className={`text-xs font-medium ${
 									healthTrend > 0
-										? "text-emerald-500"
+										? "text-success"
 										: healthTrend < 0
-											? "text-red-500"
+											? "text-red-500 dark:text-danger"
 											: "text-muted-foreground"
 								}`}
 							>
@@ -143,31 +139,27 @@ export function SiteTrendCharts() {
 							<AreaChart data={healthTrendData}>
 								<defs>
 									<linearGradient id="healthGradient" x1="0" y1="0" x2="0" y2="1">
-										<stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-										<stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+										<stop offset="5%" stopColor={chartColors.success} stopOpacity={0.3} />
+										<stop offset="95%" stopColor={chartColors.success} stopOpacity={0} />
 									</linearGradient>
 								</defs>
 								<XAxis
 									dataKey="time"
-									tick={{ fontSize: 10 }}
+									tick={{ fontSize: 10, fill: chartColors.axis }}
 									interval={5}
 									axisLine={false}
 									tickLine={false}
 								/>
 								<YAxis hide domain={[70, 100]} />
 								<Tooltip
-									contentStyle={{
-										backgroundColor: "hsl(var(--card))",
-										border: "1px solid hsl(var(--border))",
-										borderRadius: "6px",
-										fontSize: "12px",
-									}}
+									{...chartTooltipProps}
+									contentStyle={{ ...chartTooltipProps.contentStyle, borderRadius: "6px" }}
 									formatter={(value) => [`${value}%`, t`Health`]}
 								/>
 								<Area
 									type="monotone"
 									dataKey="health"
-									stroke="#10b981"
+									stroke={chartColors.success}
 									strokeWidth={2}
 									fill="url(#healthGradient)"
 								/>

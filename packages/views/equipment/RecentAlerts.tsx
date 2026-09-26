@@ -14,16 +14,27 @@ interface RecentAlertsProps {
 function getStatusBadgeConfig(status: string) {
 	switch (status) {
 		case "active":
-			return { label: t`Active`, className: "bg-red-100 text-red-700 border-red-200" };
+			return {
+				label: t`Active`,
+				className: "bg-red-100 dark:bg-danger-subtle text-danger-foreground border-danger-border",
+			};
 		case "acknowledged":
-			return { label: t`Acknowledged`, className: "bg-amber-100 text-amber-700 border-amber-200" };
+			return {
+				label: t`Acknowledged`,
+				className:
+					"bg-amber-100 dark:bg-warning-subtle text-warning-foreground border-warning-border",
+			};
 		case "resolved":
 			return {
 				label: t`Resolved`,
-				className: "bg-emerald-100 text-emerald-700 border-emerald-200",
+				className:
+					"bg-emerald-100 dark:bg-success-subtle text-emerald-700 dark:text-success-foreground border-emerald-200 dark:border-success-border",
 			};
 		default:
-			return { label: status, className: "bg-slate-100 text-slate-700 border-slate-200" };
+			return {
+				label: status,
+				className: "bg-muted text-slate-700 dark:text-foreground border-border",
+			};
 	}
 }
 
@@ -53,9 +64,9 @@ export function RecentAlerts({ alerts }: RecentAlertsProps) {
 						<div
 							className={`mt-0.5 size-2 shrink-0 rounded-full ${
 								alert.severity === "critical"
-									? "bg-red-500"
+									? "bg-red-500 dark:bg-danger"
 									: alert.severity === "warning"
-										? "bg-amber-500"
+										? "bg-warning"
 										: "bg-muted-foreground"
 							}`}
 							aria-hidden="true"

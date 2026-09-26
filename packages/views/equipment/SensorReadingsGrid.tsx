@@ -30,20 +30,21 @@ function getStatusIndicator(sensor: Sensor): {
 	if (sensor.status === "error" || outOfRange) {
 		return {
 			icon: AlertTriangle,
-			color: "text-red-600 bg-red-50 border-red-200",
+			color: "text-danger bg-danger-subtle border-danger-border",
 			label: t`Alert`,
 		};
 	}
 	if (sensor.status === "warning") {
 		return {
 			icon: AlertTriangle,
-			color: "text-amber-600 bg-amber-50 border-amber-200",
+			color: "text-amber-600 dark:text-warning bg-warning-subtle border-warning-border",
 			label: t`Warning`,
 		};
 	}
 	return {
 		icon: CheckCircle2,
-		color: "text-emerald-600 bg-emerald-50 border-emerald-200",
+		color:
+			"text-emerald-600 dark:text-success bg-emerald-50 dark:bg-success-subtle border-emerald-200 dark:border-success-border",
 		label: sensor.status === "offline" || sensor.status === "stale" ? t`No signal` : t`OK`,
 	};
 }
@@ -145,17 +146,17 @@ export function SensorReadingsGrid({ sensors }: SensorReadingsGridProps) {
 												</span>
 											</div>
 											{isAboveWarning && !isAboveMax && (
-												<div className="text-amber-600">
+												<div className="text-amber-600 dark:text-warning">
 													{t`Above warning threshold (${formatReading(warningThreshold, sensor.unit, { compact: true })})`}
 												</div>
 											)}
 											{isBelowMin && (
-												<div className="text-red-600 font-medium">
+												<div className="text-danger font-medium">
 													{t`Below minimum (${formatReading(sensor.min, sensor.unit, { compact: true })})`}
 												</div>
 											)}
 											{isAboveMax && (
-												<div className="text-red-600 font-medium">
+												<div className="text-danger font-medium">
 													{t`Above maximum (${formatReading(sensor.max, sensor.unit, { compact: true })})`}
 												</div>
 											)}

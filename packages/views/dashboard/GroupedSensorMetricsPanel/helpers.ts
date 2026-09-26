@@ -54,26 +54,26 @@ function statusToInfo(status: SensorValueStatus): SensorStatusInfo {
 	if (status === "Alert") {
 		return {
 			icon: AlertCircle,
-			color: "text-red-600",
-			bgColor: "bg-red-50",
-			borderColor: "border-red-200",
+			color: "text-danger",
+			bgColor: "bg-danger-subtle",
+			borderColor: "border-danger-border",
 			label: "Alert",
 		};
 	}
 	if (status === "Warning") {
 		return {
 			icon: AlertCircle,
-			color: "text-amber-600",
-			bgColor: "bg-amber-50",
-			borderColor: "border-amber-200",
+			color: "text-amber-600 dark:text-warning",
+			bgColor: "bg-warning-subtle",
+			borderColor: "border-warning-border",
 			label: "Warning",
 		};
 	}
 	return {
 		icon: CheckCircle2,
-		color: "text-emerald-600",
-		bgColor: "bg-emerald-50",
-		borderColor: "border-emerald-200",
+		color: "text-emerald-600 dark:text-success",
+		bgColor: "bg-emerald-50 dark:bg-success-subtle",
+		borderColor: "border-emerald-200 dark:border-success-border",
 		label: "OK",
 	};
 }

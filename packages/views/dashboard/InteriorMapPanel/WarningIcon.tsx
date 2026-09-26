@@ -15,7 +15,7 @@ export const WarningIcon: FC<WarningIconProps> = ({
 	fillContainer = false,
 }) => (
 	<div
-		className={`flex items-center justify-center rounded-full bg-amber-50 border-2 border-amber-300 ${className}`}
+		className={`flex items-center justify-center rounded-full bg-warning-subtle border-2 border-amber-300 dark:border-warning-border ${className}`}
 		style={
 			fillContainer
 				? { width: "100%", height: "100%", minWidth: 0, minHeight: 0 }
@@ -24,7 +24,7 @@ export const WarningIcon: FC<WarningIconProps> = ({
 		aria-hidden
 	>
 		<RefreshCw
-			className="text-amber-600 shrink-0"
+			className="text-amber-600 dark:text-warning shrink-0"
 			style={{
 				width: fillContainer ? "50%" : Math.round(size * 0.5),
 				height: fillContainer ? "50%" : Math.round(size * 0.5),

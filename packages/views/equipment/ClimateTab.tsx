@@ -18,6 +18,9 @@ import {
 	CardContent,
 	CardHeader,
 	CardTitle,
+	chartColors,
+	chartGridProps,
+	chartTooltipProps,
 	formatNumber,
 	formatReading,
 } from "~@/ui";
@@ -58,27 +61,30 @@ function getSensorIcon(type: string) {
 function getSensorColor(type: string) {
 	switch (type) {
 		case "temperature":
-			return { bg: "bg-blue-100", text: "text-blue-600" };
+			return { bg: "bg-blue-100 dark:bg-info-subtle", text: "text-info" };
 		case "humidity":
-			return { bg: "bg-cyan-100", text: "text-cyan-600" };
+			return { bg: "bg-cyan-100 dark:bg-cyan-500/15", text: "text-cyan-600 dark:text-cyan-400" };
 		case "co2":
-			return { bg: "bg-purple-100", text: "text-purple-600" };
+			return {
+				bg: "bg-purple-100 dark:bg-purple-500/15",
+				text: "text-purple-600 dark:text-purple-400",
+			};
 		default:
-			return { bg: "bg-gray-100", text: "text-gray-600" };
+			return { bg: "bg-muted", text: "text-muted-foreground" };
 	}
 }
 
 function getSensorStatusColor(status: string) {
 	switch (status) {
 		case "active":
-			return "bg-green-100 text-green-700";
+			return "bg-green-100 dark:bg-success-subtle text-success-foreground";
 		case "warning":
-			return "bg-amber-100 text-amber-700";
+			return "bg-amber-100 dark:bg-warning-subtle text-warning-foreground";
 		case "error":
 		case "offline":
-			return "bg-red-100 text-red-700";
+			return "bg-red-100 dark:bg-danger-subtle text-danger-foreground";
 		default:
-			return "bg-gray-100 text-gray-700";
+			return "bg-muted text-gray-700 dark:text-foreground";
 	}
 }
 
@@ -111,13 +117,13 @@ export function ClimateTab({ sensors }: ClimateTabProps) {
 	return (
 		<div className="space-y-6">
 			{/* Section Header */}
-			<div className="flex items-center gap-3 rounded-lg border border-teal-200 bg-teal-50 p-4">
+			<div className="flex items-center gap-3 rounded-lg border border-teal-200 dark:border-primary/30 bg-teal-50 dark:bg-primary/10 p-4">
 				<div className="rounded-lg bg-teal-500 p-2">
 					<Thermometer className="size-6 text-white" aria-hidden="true" />
 				</div>
 				<div>
-					<h2 className="text-lg font-semibold text-teal-900">{t`Climate Control`}</h2>
-					<p className="text-sm text-teal-700">
+					<h2 className="text-lg font-semibold text-teal-900 dark:text-foreground">{t`Climate Control`}</h2>
+					<p className="text-sm text-primary">
 						{t`Showing ${climateSensors.length} climate sensor${climateSensors.length !== 1 ? "s" : ""} - Temperature (${temperatureSensors.length}), Humidity (${humiditySensors.length}), CO2 (${co2Sensors.length})`}
 					</p>
 				</div>
@@ -165,8 +171,8 @@ function ClimateSummaryCards({
 			<Card>
 				<CardContent className="pt-4">
 					<div className="flex items-center gap-3">
-						<div className="rounded-lg bg-blue-100 p-2">
-							<Thermometer className="size-5 text-blue-600" aria-hidden="true" />
+						<div className="rounded-lg bg-blue-100 dark:bg-info-subtle p-2">
+							<Thermometer className="size-5 text-info" aria-hidden="true" />
 						</div>
 						<div className="flex-1">
 							<p className="text-sm text-muted-foreground">{t`Temperature Sensors`}</p>
@@ -188,8 +194,8 @@ function ClimateSummaryCards({
 			<Card>
 				<CardContent className="pt-4">
 					<div className="flex items-center gap-3">
-						<div className="rounded-lg bg-cyan-100 p-2">
-							<Droplets className="size-5 text-cyan-600" aria-hidden="true" />
+						<div className="rounded-lg bg-cyan-100 dark:bg-cyan-500/15 p-2">
+							<Droplets className="size-5 text-cyan-600 dark:text-cyan-400" aria-hidden="true" />
 						</div>
 						<div className="flex-1">
 							<p className="text-sm text-muted-foreground">{t`Humidity Sensors`}</p>
@@ -211,8 +217,8 @@ function ClimateSummaryCards({
 			<Card>
 				<CardContent className="pt-4">
 					<div className="flex items-center gap-3">
-						<div className="rounded-lg bg-purple-100 p-2">
-							<Wind className="size-5 text-purple-600" aria-hidden="true" />
+						<div className="rounded-lg bg-purple-100 dark:bg-purple-500/15 p-2">
+							<Wind className="size-5 text-purple-600 dark:text-purple-400" aria-hidden="true" />
 						</div>
 						<div className="flex-1">
 							<p className="text-sm text-muted-foreground">{t`CO2 Sensors`}</p>
@@ -278,10 +284,10 @@ function ClimateSensorsList({ sensors }: { sensors: Sensor[] }) {
 											<div
 												className={`h-full transition-all ${
 													sensor.threshold && value >= sensor.threshold.critical
-														? "bg-red-500"
+														? "bg-red-500 dark:bg-danger"
 														: sensor.threshold && value >= sensor.threshold.warning
-															? "bg-amber-500"
-															: "bg-green-500"
+															? "bg-warning"
+															: "bg-green-500 dark:bg-success"
 												}`}
 												style={{ width: `${Math.min(100, Math.max(0, percentage))}%` }}
 											/>
@@ -294,9 +300,12 @@ function ClimateSensorsList({ sensors }: { sensors: Sensor[] }) {
 								<div className="text-right">
 									<div className="flex items-center gap-2">
 										{isInRange ? (
-											<CheckCircle2 className="size-4 text-green-500" aria-hidden="true" />
+											<CheckCircle2
+												className="size-4 text-green-500 dark:text-success"
+												aria-hidden="true"
+											/>
 										) : (
-											<AlertTriangle className="size-4 text-amber-500" aria-hidden="true" />
+											<AlertTriangle className="size-4 text-warning" aria-hidden="true" />
 										)}
 										<span className="text-xl font-semibold">{formatNumber(value)}</span>
 										<span className="text-sm text-muted-foreground">{sensor.unit}</span>
@@ -317,12 +326,12 @@ function ClimateSensorsList({ sensors }: { sensors: Sensor[] }) {
 }
 
 function TemperatureChart({ sensors }: { sensors: Sensor[] }) {
-	const colors = ["#0d7377", "#14919b", "#06b6d4", "#22d3ee"];
+	const colors = [chartColors.primary, "#14919b", "#06b6d4", "#22d3ee"];
 	return (
 		<Card>
 			<CardHeader className="pb-2">
 				<CardTitle className="flex items-center gap-2 text-base font-medium">
-					<Thermometer className="size-5 text-blue-500" aria-hidden="true" />
+					<Thermometer className="size-5 text-blue-500 dark:text-info" aria-hidden="true" />
 					{t`Temperature Trends (24h)`}
 				</CardTitle>
 			</CardHeader>
@@ -330,22 +339,21 @@ function TemperatureChart({ sensors }: { sensors: Sensor[] }) {
 				<div className="h-62.5">
 					<ResponsiveContainer width="100%" height="100%">
 						<LineChart>
-							<CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+							<CartesianGrid {...chartGridProps} vertical />
 							<XAxis
 								dataKey="time"
-								tick={{ fontSize: 11 }}
+								tick={{ fontSize: 11, fill: chartColors.axis }}
 								tickLine={false}
 								axisLine={false}
 								allowDuplicatedCategory={false}
 							/>
-							<YAxis tick={{ fontSize: 11 }} tickLine={false} axisLine={false} unit="°C" />
-							<Tooltip
-								contentStyle={{
-									backgroundColor: "#fff",
-									border: "1px solid #e2e8f0",
-									borderRadius: "8px",
-								}}
+							<YAxis
+								tick={{ fontSize: 11, fill: chartColors.axis }}
+								tickLine={false}
+								axisLine={false}
+								unit="°C"
 							/>
+							<Tooltip {...chartTooltipProps} />
 							{sensors.map((sensor, idx) => {
 								const history = generateSensorHistory(sensor);
 								return (
@@ -397,21 +405,22 @@ function HumidityChart({ sensor }: { sensor: Sensor }) {
 									<stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
 								</linearGradient>
 							</defs>
-							<CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-							<XAxis dataKey="time" tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
+							<CartesianGrid {...chartGridProps} vertical />
+							<XAxis
+								dataKey="time"
+								tick={{ fontSize: 11, fill: chartColors.axis }}
+								tickLine={false}
+								axisLine={false}
+							/>
 							<YAxis
-								tick={{ fontSize: 11 }}
+								tick={{ fontSize: 11, fill: chartColors.axis }}
 								tickLine={false}
 								axisLine={false}
 								unit="%"
 								domain={[0, 100]}
 							/>
 							<Tooltip
-								contentStyle={{
-									backgroundColor: "#fff",
-									border: "1px solid #e2e8f0",
-									borderRadius: "8px",
-								}}
+								{...chartTooltipProps}
 								formatter={(value: number) => [`${value}%`, t`Humidity`]}
 							/>
 							<Area
@@ -434,9 +443,9 @@ function ClimateAlerts({ sensors }: { sensors: Sensor[] }) {
 	if (alertSensors.length === 0) return null;
 
 	return (
-		<Card className="border-amber-200 bg-amber-50/50">
+		<Card className="border-warning-border bg-warning-subtle/50">
 			<CardHeader className="pb-2">
-				<CardTitle className="flex items-center gap-2 text-base font-medium text-amber-700">
+				<CardTitle className="flex items-center gap-2 text-base font-medium text-warning-foreground">
 					<AlertTriangle className="size-5" aria-hidden="true" />
 					{t`Climate Alerts`}
 				</CardTitle>
@@ -448,9 +457,9 @@ function ClimateAlerts({ sensors }: { sensors: Sensor[] }) {
 						return (
 							<div
 								key={sensor.id}
-								className="flex items-center gap-3 rounded-lg border border-amber-100 bg-white p-3"
+								className="flex items-center gap-3 rounded-lg border border-amber-100 dark:border-warning-border bg-card p-3"
 							>
-								<Icon className="size-5 text-amber-600" aria-hidden="true" />
+								<Icon className="size-5 text-amber-600 dark:text-warning" aria-hidden="true" />
 								<div className="flex-1">
 									<p className="text-sm font-medium">{sensor.name}</p>
 									<p className="text-xs text-muted-foreground">
@@ -463,8 +472,8 @@ function ClimateAlerts({ sensors }: { sensors: Sensor[] }) {
 									variant="secondary"
 									className={
 										sensor.status === "error"
-											? "bg-red-100 text-red-700"
-											: "bg-amber-100 text-amber-700"
+											? "bg-red-100 dark:bg-danger-subtle text-danger-foreground"
+											: "bg-amber-100 dark:bg-warning-subtle text-warning-foreground"
 									}
 								>
 									{sensor.status === "error" ? t`Critical` : t`Warning`}

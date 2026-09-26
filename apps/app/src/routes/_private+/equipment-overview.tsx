@@ -11,26 +11,28 @@ function getStatusConfig(status: string) {
 		case "warning":
 			return {
 				label: t`Warning`,
-				dotColor: "bg-amber-500",
-				badgeClass: "bg-amber-50 text-amber-700 border-amber-300",
+				dotColor: "bg-warning",
+				badgeClass:
+					"bg-warning-subtle text-warning-foreground border-amber-300 dark:border-warning-border",
 			};
 		case "offline":
 			return {
 				label: t`Offline`,
 				dotColor: "bg-slate-400",
-				badgeClass: "bg-slate-100 text-slate-600 border-slate-300",
+				badgeClass: "bg-muted text-muted-foreground border-input",
 			};
 		case "maintenance":
 			return {
 				label: t`Maintenance`,
-				dotColor: "bg-blue-500",
-				badgeClass: "bg-blue-50 text-blue-700 border-blue-300",
+				dotColor: "bg-blue-500 dark:bg-info",
+				badgeClass: "bg-info-subtle text-info-foreground border-blue-300 dark:border-info-border",
 			};
 		default:
 			return {
 				label: t`Online`,
-				dotColor: "bg-emerald-500",
-				badgeClass: "bg-emerald-50 text-emerald-700 border-emerald-300",
+				dotColor: "bg-success",
+				badgeClass:
+					"bg-emerald-50 dark:bg-success-subtle text-emerald-700 dark:text-success-foreground border-emerald-300 dark:border-success-border",
 			};
 	}
 }
@@ -107,7 +109,7 @@ function EquipmentOverviewPage() {
 												<span className="font-medium">{eq.sensorCount}</span>
 											</div>
 											{eq.activeAlerts > 0 && (
-												<div className="flex items-center gap-2 text-amber-600">
+												<div className="flex items-center gap-2 text-amber-600 dark:text-warning">
 													<AlertTriangle className="size-4" aria-hidden="true" />
 													<span className="text-xs font-medium">
 														{plural(eq.activeAlerts, {

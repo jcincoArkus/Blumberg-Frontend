@@ -12,7 +12,10 @@ interface QualityBadgeProps {
 export function QualityBadge({ status }: QualityBadgeProps) {
 	if (!status) {
 		return (
-			<Badge variant="outline" className="bg-slate-100 text-slate-700 border-slate-200">
+			<Badge
+				variant="outline"
+				className="bg-muted text-slate-700 dark:text-foreground border-border"
+			>
 				{t`Unknown`}
 			</Badge>
 		);

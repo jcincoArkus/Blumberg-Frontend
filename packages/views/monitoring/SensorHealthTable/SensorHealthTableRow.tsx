@@ -25,8 +25,8 @@ export function SensorHealthTableRow({ item, onViewDetails }: SensorHealthTableR
 		<TableRow
 			className={cn(
 				"cursor-pointer hover:bg-muted/50",
-				isCritical && "bg-red-50/30",
-				isWarning && "bg-amber-50/30",
+				isCritical && "bg-danger-subtle/30",
+				isWarning && "bg-warning-subtle/30",
 			)}
 			onClick={() => onViewDetails(item)}
 		>

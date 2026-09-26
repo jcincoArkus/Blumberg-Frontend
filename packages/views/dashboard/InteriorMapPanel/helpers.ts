@@ -4,13 +4,13 @@ export function getZoneStatusStyle(status: ZoneStatus): ZoneStatusStyle {
 	switch (status) {
 		case "alert":
 			return {
-				borderColor: "#dc2626",
+				borderColor: "var(--danger)",
 				borderWidth: "2px",
 				strokeWidth: 0.6,
 			};
 		case "warning":
 			return {
-				borderColor: "#f59e0b",
+				borderColor: "var(--warning)",
 				borderWidth: "2px",
 				strokeWidth: 0.4,
 			};

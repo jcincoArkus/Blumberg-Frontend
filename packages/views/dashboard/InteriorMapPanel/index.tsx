@@ -2,9 +2,16 @@ import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { Card, CardContent, CardHeader, CardTitle } from "~@/ui";
 import { useInteriorMapPanelViewModel } from "~@/view-model";
+import { themeViewModel } from "~@/view-model/theme";
 
 import { AlertBeacon } from "./AlertBeacon";
-import { WAREHOUSE_ZONES, ZONE_COLORS } from "./constants";
+import {
+	DEFAULT_ZONE_COLORS,
+	DEFAULT_ZONE_COLORS_DARK,
+	WAREHOUSE_ZONES,
+	ZONE_COLORS,
+	ZONE_COLORS_DARK,
+} from "./constants";
 import { getZoneStatusStyle } from "./helpers";
 import { WarningIcon } from "./WarningIcon";
 
@@ -17,6 +24,9 @@ export const InteriorMapPanel = observer(function InteriorMapPanel({
 }: InteriorMapPanelProps) {
 	const vm = useInteriorMapPanelViewModel();
 	const locationName = vm.getLocationName(selectedLocation);
+	const isDark = themeViewModel.resolvedTheme === "dark";
+	const zoneColors = isDark ? ZONE_COLORS_DARK : ZONE_COLORS;
+	const defaultZoneColors = isDark ? DEFAULT_ZONE_COLORS_DARK : DEFAULT_ZONE_COLORS;
 
 	return (
 		<Card className="w-full flex flex-col h-full">
@@ -35,7 +45,13 @@ export const InteriorMapPanel = observer(function InteriorMapPanel({
 						>
 							<defs>
 								<pattern id="interior-map-grid" width="5" height="5" patternUnits="userSpaceOnUse">
-									<path d="M 5 0 L 0 0 0 5" fill="none" stroke="#e5e7eb" strokeWidth="0.5" />
+									<path
+										d="M 5 0 L 0 0 0 5"
+										fill="none"
+										stroke="#e5e7eb"
+										strokeWidth="0.5"
+										className="dark:stroke-border"
+									/>
 								</pattern>
 							</defs>
 							{/* Scale zone content from center so warehouse rectangles appear larger (mockup-style) */}
@@ -48,11 +64,7 @@ export const InteriorMapPanel = observer(function InteriorMapPanel({
 								/>
 								{WAREHOUSE_ZONES.map((zone) => {
 									const status = vm.getZoneStatus(zone.id, selectedLocation);
-									const colors = ZONE_COLORS[zone.id] ?? {
-										fill: "#f3f4f6",
-										stroke: "#9ca3af",
-										textFill: "#6b7280",
-									};
+									const colors = zoneColors[zone.id] ?? defaultZoneColors;
 									const statusStyle = getZoneStatusStyle(status);
 									const strokeColor = status !== "ok" ? statusStyle.borderColor : colors.stroke;
 									const strokeWidth = status !== "ok" ? statusStyle.strokeWidth : 0.3;

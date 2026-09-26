@@ -42,10 +42,10 @@ export function AlertSummarySection({
 						variant="outline"
 						className={
 							alert.status === "active"
-								? "bg-red-100 text-red-700 border-red-200"
+								? "bg-red-100 dark:bg-danger-subtle text-danger-foreground border-danger-border"
 								: alert.status === "acknowledged"
-									? "bg-amber-100 text-amber-700 border-amber-200"
-									: "bg-emerald-100 text-emerald-700 border-emerald-200"
+									? "bg-amber-100 dark:bg-warning-subtle text-warning-foreground border-warning-border"
+									: "bg-emerald-100 dark:bg-success-subtle text-emerald-700 dark:text-success-foreground border-emerald-200 dark:border-success-border"
 						}
 					>
 						{alert.status}

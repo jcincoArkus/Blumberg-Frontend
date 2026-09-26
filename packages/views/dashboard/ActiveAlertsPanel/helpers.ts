@@ -69,29 +69,29 @@ export function getSeverityStyle(severity: string) {
 	switch (severity) {
 		case "critical":
 			return {
-				bg: "bg-red-50",
-				border: "border-l-4 border-red-600",
-				iconBg: "bg-red-100",
-				iconColor: "text-red-600",
+				bg: "bg-danger-subtle",
+				border: "border-l-4 border-danger",
+				iconBg: "bg-red-100 dark:bg-danger-subtle",
+				iconColor: "text-danger",
 				badgeBg: "bg-red-600",
 				badgeText: "text-white",
 			};
 		case "warning":
 			return {
-				bg: "bg-orange-50",
+				bg: "bg-orange-50 dark:bg-orange-500/10",
 				border: "border-l-4 border-orange-500",
-				iconBg: "bg-orange-100",
-				iconColor: "text-orange-600",
+				iconBg: "bg-orange-100 dark:bg-orange-500/15",
+				iconColor: "text-orange-600 dark:text-orange-400",
 				badgeBg: "bg-orange-500",
 				badgeText: "text-white",
 			};
 		default:
 			// info
 			return {
-				bg: "bg-slate-50",
+				bg: "bg-surface-muted",
 				border: "border-l-4 border-slate-400",
-				iconBg: "bg-slate-100",
-				iconColor: "text-slate-600",
+				iconBg: "bg-muted",
+				iconColor: "text-muted-foreground",
 				badgeBg: "bg-blue-500",
 				badgeText: "text-white",
 			};
@@ -101,11 +101,11 @@ export function getSeverityStyle(severity: string) {
 export function getSeverityColor(severity: string) {
 	switch (severity) {
 		case "critical":
-			return "text-red-700 bg-red-50 border-red-200";
+			return "text-danger-foreground bg-danger-subtle border-danger-border";
 		case "warning":
-			return "text-orange-700 bg-orange-50 border-orange-200";
+			return "text-orange-700 dark:text-orange-300 bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/30";
 		default:
-			return "text-slate-700 bg-slate-50 border-slate-200";
+			return "text-slate-700 dark:text-foreground bg-surface-muted border-border";
 	}
 }
 
@@ -123,10 +123,10 @@ export function getBadgeClassName(severity: string) {
 export function getTextColor(severity: string) {
 	switch (severity) {
 		case "critical":
-			return "text-red-700";
+			return "text-danger-foreground";
 		case "warning":
-			return "text-orange-700";
+			return "text-orange-700 dark:text-orange-300";
 		default:
-			return "text-slate-700";
+			return "text-slate-700 dark:text-foreground";
 	}
 }

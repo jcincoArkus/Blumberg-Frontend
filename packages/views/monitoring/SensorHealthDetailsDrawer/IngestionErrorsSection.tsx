@@ -50,7 +50,7 @@ export function IngestionErrorsSection({
 			) : (
 				<Card>
 					<CardContent className="py-6 text-center">
-						<CheckCircle2 className="size-8 mx-auto mb-2 text-emerald-500" />
+						<CheckCircle2 className="size-8 mx-auto mb-2 text-success" />
 						<p className="text-sm text-muted-foreground">
 							{t`No ingestion errors in the last 24 hours.`}
 						</p>

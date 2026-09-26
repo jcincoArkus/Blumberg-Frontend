@@ -46,10 +46,10 @@ export function NotificationsAuditSection({ notifications }: NotificationsAuditS
 										className={
 											notification.deliveryStatus === "sent" ||
 											notification.deliveryStatus === "delivered"
-												? "bg-emerald-50 text-emerald-700 border-emerald-200"
+												? "bg-emerald-50 dark:bg-success-subtle text-emerald-700 dark:text-success-foreground border-emerald-200 dark:border-success-border"
 												: notification.deliveryStatus === "failed"
-													? "bg-red-50 text-red-700 border-red-200"
-													: "bg-amber-50 text-amber-700 border-amber-200"
+													? "bg-danger-subtle text-danger-foreground border-danger-border"
+													: "bg-warning-subtle text-warning-foreground border-warning-border"
 										}
 									>
 										{notification.deliveryStatus || "sent"}

@@ -31,7 +31,7 @@ export function AlertsStatusTabs({ activeTab, onTabChange, counts }: AlertsStatu
 					{counts.active > 0 && (
 						<Badge
 							variant="secondary"
-							className="ml-2 h-5 min-w-5 px-1.5 text-xs bg-red-100 text-red-700"
+							className="ml-2 h-5 min-w-5 px-1.5 text-xs bg-red-100 dark:bg-danger-subtle text-danger-foreground"
 						>
 							{counts.active}
 						</Badge>
@@ -45,7 +45,7 @@ export function AlertsStatusTabs({ activeTab, onTabChange, counts }: AlertsStatu
 					{counts.acknowledged > 0 && (
 						<Badge
 							variant="secondary"
-							className="ml-2 h-5 min-w-5 px-1.5 text-xs bg-amber-100 text-amber-700"
+							className="ml-2 h-5 min-w-5 px-1.5 text-xs bg-amber-100 dark:bg-warning-subtle text-warning-foreground"
 						>
 							{counts.acknowledged}
 						</Badge>
@@ -59,7 +59,7 @@ export function AlertsStatusTabs({ activeTab, onTabChange, counts }: AlertsStatu
 					{counts.resolved > 0 && (
 						<Badge
 							variant="secondary"
-							className="ml-2 h-5 min-w-5 px-1.5 text-xs bg-emerald-100 text-emerald-700"
+							className="ml-2 h-5 min-w-5 px-1.5 text-xs bg-emerald-100 dark:bg-success-subtle text-emerald-700 dark:text-success-foreground"
 						>
 							{counts.resolved}
 						</Badge>

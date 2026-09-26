@@ -35,7 +35,7 @@ export function EventsHistorySection({ events, isLoading }: EventsHistorySection
 							<div key={event.id} className="relative flex gap-4">
 								{!isLast && <div className="absolute left-3 top-8 bottom-0 w-0.5 bg-border" />}
 								<div
-									className={`relative z-10 flex size-6 shrink-0 items-center justify-center rounded-full bg-muted ${eventConfig?.color ?? "text-slate-600"}`}
+									className={`relative z-10 flex size-6 shrink-0 items-center justify-center rounded-full bg-muted ${eventConfig?.color ?? "text-muted-foreground"}`}
 								>
 									<EventIcon className="size-3.5" />
 								</div>

@@ -30,7 +30,7 @@ export const SensorStatusFooter: FC<SensorStatusFooterProps> = ({
 		<div className="pt-2 border-t border-border text-center">
 			<Link
 				to="/monitoring/sensor-health"
-				className="text-xs font-medium text-teal-600 dark:text-teal-400 hover:underline"
+				className="text-xs font-medium text-primary hover:underline"
 			>
 				{t`View all →`}
 			</Link>

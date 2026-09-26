@@ -21,20 +21,21 @@ function getStatusInfo(sensor: Sensor): {
 	if (sensor.status === "error" || outOfRange) {
 		return {
 			icon: AlertTriangle,
-			color: "text-red-600 bg-red-50 border-red-200",
+			color: "text-danger bg-danger-subtle border-danger-border",
 			label: t`Alert`,
 		};
 	}
 	if (sensor.status === "warning") {
 		return {
 			icon: AlertTriangle,
-			color: "text-amber-600 bg-amber-50 border-amber-200",
+			color: "text-amber-600 dark:text-warning bg-warning-subtle border-warning-border",
 			label: t`Warning`,
 		};
 	}
 	return {
 		icon: CheckCircle2,
-		color: "text-emerald-600 bg-emerald-50 border-emerald-200",
+		color:
+			"text-emerald-600 dark:text-success bg-emerald-50 dark:bg-success-subtle border-emerald-200 dark:border-success-border",
 		label: t`OK`,
 	};
 }
@@ -127,7 +128,7 @@ export function LimitsComparisonPanel({ sensors }: LimitsComparisonPanelProps) {
 													<div className="space-y-1.5 text-xs">
 														{/* Normal Range */}
 														<div
-															className={`p-2 rounded border ${isInNormalRange ? "bg-emerald-50 border-emerald-200" : "bg-slate-50 border-slate-200"}`}
+															className={`p-2 rounded border ${isInNormalRange ? "bg-emerald-50 dark:bg-success-subtle border-emerald-200 dark:border-success-border" : "bg-surface-muted border-border"}`}
 														>
 															<div className="flex items-center justify-between">
 																<span className="text-muted-foreground">{t`Normal Range:`}</span>
@@ -141,7 +142,7 @@ export function LimitsComparisonPanel({ sensors }: LimitsComparisonPanelProps) {
 
 														{/* Warning Thresholds */}
 														<div
-															className={`p-2 rounded border ${isInWarningRange && !isInAlertRange ? "bg-amber-50 border-amber-200" : "bg-slate-50 border-slate-200"}`}
+															className={`p-2 rounded border ${isInWarningRange && !isInAlertRange ? "bg-warning-subtle border-warning-border" : "bg-surface-muted border-border"}`}
 														>
 															<div className="flex items-center justify-between">
 																<span className="text-muted-foreground">{t`Allowed Range:`}</span>
@@ -156,32 +157,32 @@ export function LimitsComparisonPanel({ sensors }: LimitsComparisonPanelProps) {
 
 													{/* Status Message */}
 													{isInAlertRange && (
-														<div className="flex items-start gap-2 p-2 rounded bg-red-50 border border-red-200">
+														<div className="flex items-start gap-2 p-2 rounded bg-danger-subtle border border-danger-border">
 															<AlertTriangle
-																className="size-4 text-red-600 shrink-0 mt-0.5"
+																className="size-4 text-danger shrink-0 mt-0.5"
 																aria-hidden="true"
 															/>
-															<p className="text-xs text-red-700">
+															<p className="text-xs text-danger-foreground">
 																{t`Current value is outside acceptable range`}
 															</p>
 														</div>
 													)}
 													{isInWarningRange && !isInAlertRange && (
-														<div className="flex items-start gap-2 p-2 rounded bg-amber-50 border border-amber-200">
+														<div className="flex items-start gap-2 p-2 rounded bg-warning-subtle border border-warning-border">
 															<Info
-																className="size-4 text-amber-600 shrink-0 mt-0.5"
+																className="size-4 text-amber-600 dark:text-warning shrink-0 mt-0.5"
 																aria-hidden="true"
 															/>
-															<p className="text-xs text-amber-700">{t`Approaching threshold limits`}</p>
+															<p className="text-xs text-warning-foreground">{t`Approaching threshold limits`}</p>
 														</div>
 													)}
 													{isInNormalRange && (
-														<div className="flex items-start gap-2 p-2 rounded bg-emerald-50 border border-emerald-200">
+														<div className="flex items-start gap-2 p-2 rounded bg-emerald-50 dark:bg-success-subtle border border-emerald-200 dark:border-success-border">
 															<CheckCircle2
-																className="size-4 text-emerald-600 shrink-0 mt-0.5"
+																className="size-4 text-emerald-600 dark:text-success shrink-0 mt-0.5"
 																aria-hidden="true"
 															/>
-															<p className="text-xs text-emerald-700">
+															<p className="text-xs text-emerald-700 dark:text-success-foreground">
 																{t`Operating within normal parameters`}
 															</p>
 														</div>
