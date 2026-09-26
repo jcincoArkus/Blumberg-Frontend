@@ -895,6 +895,10 @@
     "en-US": "Check",
     "es-LA": ""
   },
+  "Checking…": {
+    "en-US": "Checking…",
+    "es-LA": ""
+  },
   "City": {
     "en-US": "City",
     "es-LA": ""
@@ -2307,6 +2311,10 @@
     "en-US": "Loading ingestion runs...",
     "es-LA": ""
   },
+  "Loading ingestion runs…": {
+    "en-US": "Loading ingestion runs…",
+    "es-LA": ""
+  },
   "Loading inventory…": {
     "en-US": "Loading inventory…",
     "es-LA": ""
@@ -2323,6 +2331,10 @@
     "en-US": "Loading movements…",
     "es-LA": ""
   },
+  "Loading page": {
+    "en-US": "Loading page",
+    "es-LA": ""
+  },
   "Loading products…": {
     "en-US": "Loading products…",
     "es-LA": ""
@@ -2335,6 +2347,10 @@
     "en-US": "Loading runs...",
     "es-LA": ""
   },
+  "Loading sensor reliability…": {
+    "en-US": "Loading sensor reliability…",
+    "es-LA": ""
+  },
   "Loading sensor status…": {
     "en-US": "Loading sensor status…",
     "es-LA": ""
@@ -2343,12 +2359,24 @@
     "en-US": "Loading sensors…",
     "es-LA": ""
   },
+  "Loading sites…": {
+    "en-US": "Loading sites…",
+    "es-LA": ""
+  },
   "Loading threshold...": {
     "en-US": "Loading threshold...",
     "es-LA": ""
   },
+  "Loading trends…": {
+    "en-US": "Loading trends…",
+    "es-LA": ""
+  },
   "Loading users…": {
     "en-US": "Loading users…",
+    "es-LA": ""
+  },
+  "Loading your workspace…": {
+    "en-US": "Loading your workspace…",
     "es-LA": ""
   },
   "Loading...": {
