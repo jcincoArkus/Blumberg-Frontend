@@ -1,7 +1,11 @@
 import {
+	getAllSensorsV1ObservedQuery,
+	getAllThresholdsV1ObservedQuery,
 	getSensorHealthListV1ObservedQuery,
 	type SensorHealthListItemResponse,
 	SensorHealthStatus,
+	type SensorResponse,
+	type ThresholdResponse,
 } from "~@/api";
 import { makeAutoObservable, reaction, runInAction } from "~@/mobx";
 import { unitSymbol } from "~@/ui";
@@ -110,7 +114,34 @@ class DashboardSensorsViewModel {
 		return this.#healthQuery;
 	}
 
+	/** Threshold limits (min/max) per sensor; static reference data, loaded once. */
+	#sensorsQuery = getAllSensorsV1ObservedQuery();
+	#thresholdsQuery = getAllThresholdsV1ObservedQuery();
+	#limitsLoaded = false;
+
+	get #limitsBySensor(): Map<string, { min?: number; max?: number }> {
+		const sensors =
+			(this.#sensorsQuery.data as { items?: SensorResponse[] | null } | undefined)?.items ?? [];
+		const thresholds = new Map(
+			(
+				(this.#thresholdsQuery.data as { items?: ThresholdResponse[] | null } | undefined)?.items ??
+				[]
+			).map((t) => [t.id ?? "", t]),
+		);
+		const out = new Map<string, { min?: number; max?: number }>();
+		for (const s of sensors) {
+			const th = s.thresholdId ? thresholds.get(s.thresholdId) : undefined;
+			if (s.id && th) out.set(s.id, { min: th.min, max: th.max });
+		}
+		return out;
+	}
+
 	#load() {
+		if (!this.#limitsLoaded) {
+			this.#limitsLoaded = true;
+			this.#sensorsQuery.load({ query: { Page: 1, PageSize: 100 } });
+			this.#thresholdsQuery.load({ query: { Page: 1, PageSize: 100 } });
+		}
 		this.#ensureQuery().load({
 			query: {
 				Page: 1,
@@ -131,7 +162,12 @@ class DashboardSensorsViewModel {
 
 	/** All sensors from API (unfiltered). */
 	get allSensors(): DashboardSensor[] {
-		return this.sensorsData;
+		const limits = this.#limitsBySensor;
+		if (limits.size === 0) return this.sensorsData;
+		return this.sensorsData.map((s) => {
+			const l = limits.get(s.id);
+			return l ? { ...s, min: l.min, max: l.max } : s;
+		});
 	}
 
 	/** Sensors filtered by active domain. */

@@ -5,6 +5,7 @@ import {
 	alertsViewModel,
 	dashboardAlertsViewModel,
 	dashboardSensorsViewModel,
+	locationPanelViewModel,
 } from "~@/view-model";
 import {
 	ActiveAlertsPanel,
@@ -22,7 +23,9 @@ import {
  * Layout (sidebar + header) is provided by the parent _private layout.
  */
 const Home = observer(function Home() {
-	const [selectedLocation, setSelectedLocation] = useState<string | null>("1");
+	const [pickedLocation, setSelectedLocation] = useState<string | null>(null);
+	// Default to the first real site until the user picks one on the map
+	const selectedLocation = pickedLocation ?? locationPanelViewModel.locations[0]?.id ?? null;
 
 	// Trigger alerts + sensors load when dashboard home mounts. Stop sensor health polling on unmount so /alerts (and other pages) don't keep firing health requests.
 	useEffect(() => {
@@ -30,6 +33,7 @@ const Home = observer(function Home() {
 		alertsViewModel.load();
 		dashboardAlertsViewModel.load();
 		dashboardSensorsViewModel.load();
+		locationPanelViewModel.load();
 		return () => {
 			dashboardSensorsViewModel.dispose();
 		};

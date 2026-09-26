@@ -338,32 +338,46 @@ export const sensors: MockSensor[] = [
 	},
 ];
 
-// Mock AI Insights
+// Mock AI Insights — no insights endpoint exists yet. They reference the real seeded
+// sites/equipment/sensors and are timestamped relative to page load so they always look current.
+const minutesAgo = (m: number) => new Date(Date.now() - m * 60_000).toISOString();
+
 export const agentInsights: AgentInsight[] = [
 	{
 		id: "insight-1",
-		description: "Freezer Bank 1 shows indicators of compressor degradation.",
+		description:
+			"Freezer Bank 1 (West Coast Warehouse): Freezer Temp 1 and 2 recover more slowly after each door-open cycle — early sign of compressor wear.",
 		severity: "critical",
 		timeHorizon: "24-48 hours",
-		createdAt: "2024-01-15T06:00:00Z",
+		createdAt: minutesAgo(18),
 	},
 	{
 		id: "insight-2",
-		description: "Energy consumption at North DC trending 15% above baseline.",
+		description:
+			"HVAC System B at North Distribution Center is drawing ~12% more energy than its 7-day baseline for the same load.",
 		severity: "high",
 		timeHorizon: "7 days",
-		createdAt: "2024-01-15T05:30:00Z",
+		createdAt: minutesAgo(52),
 	},
 	{
 		id: "insight-3",
-		description: "Humidity sensors in Zone B showing calibration drift.",
+		description:
+			"Humidity Sensor 1 and Humidity Sensor 2 (North Distribution Center) are drifting apart by ~4% RH — schedule a calibration check.",
 		severity: "medium",
-		createdAt: "2024-01-14T22:00:00Z",
+		createdAt: minutesAgo(3 * 60 + 10),
 	},
 	{
 		id: "insight-4",
-		description: "All refrigeration units operating within optimal parameters.",
+		description:
+			"CO2 Monitor 1 at East Coast Hub peaks during shift changes; Air Handler E ventilation keeps levels within range.",
 		severity: "low",
-		createdAt: "2024-01-14T18:00:00Z",
+		createdAt: minutesAgo(7 * 60 + 25),
+	},
+	{
+		id: "insight-5",
+		description:
+			"Chiller Unit D and Main Freezer are operating within their configured thresholds across the last 24 hours.",
+		severity: "low",
+		createdAt: minutesAgo(11 * 60),
 	},
 ];
