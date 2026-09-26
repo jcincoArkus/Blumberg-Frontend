@@ -5,7 +5,7 @@ import { Link, Outlet, useLocation, useParams } from "react-router";
 import { SensorStatus } from "~@/api";
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Button, Card, CardContent } from "~@/ui";
+import { Button, Card, CardContent, LoadingState } from "~@/ui";
 import { useSensorViewModel } from "~@/view-model";
 
 function statusLabel(status: SensorStatus | undefined): string {
@@ -33,12 +33,9 @@ export default observer(function SensorDetailPage() {
 		return () => vm.dispose();
 	}, [id, vm]);
 
-	if (vm.isLoading && !vm.sensor) {
-		return (
-			<div className="flex items-center justify-center min-h-[200px]">
-				<p className="text-muted-foreground">{t`Loading...`}</p>
-			</div>
-		);
+	// No entity yet and no error means the first fetch is pending (or not started yet).
+	if (!vm.sensor && !vm.hasError) {
+		return <LoadingState variant="page" />;
 	}
 
 	if (vm.hasError || !vm.sensor) {

@@ -123,6 +123,16 @@ class EquipmentOverviewViewModel {
 		return this.#equipmentQuery.hasError;
 	}
 
+	/** First fetch of the alerts that drive equipment status / alert counts. */
+	get isAlertsLoading(): boolean {
+		return alertsViewModel.isLoading;
+	}
+
+	/** True until readings for this sensor/range have been fetched (see `getSeries`). */
+	isSeriesLoading = (sensorId: string, range: SeriesRange): boolean => {
+		return !(`${sensorId}:${range}` in this.series);
+	};
+
 	get #sitesById(): Map<string, SiteResponse> {
 		return new Map(itemsOf<SiteResponse>(this.#sitesQuery.data).map((s) => [s.id ?? "", s]));
 	}

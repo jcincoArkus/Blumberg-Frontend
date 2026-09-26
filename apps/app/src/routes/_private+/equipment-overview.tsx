@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 import { plural, t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Card, CardContent, Skeleton } from "~@/ui";
+import { Card, CardContent, LoadingState } from "~@/ui";
 import { useEquipmentOverviewViewModel } from "~@/view-model";
 
 function getStatusConfig(status: string) {
@@ -39,7 +39,9 @@ function getStatusConfig(status: string) {
 
 function EquipmentOverviewPage() {
 	const vm = useEquipmentOverviewViewModel();
-	const equipment = vm.equipment;
+	// Wait for alerts too: card status and alert counts depend on them (avoids "Online" → "Warning" flips).
+	const isInitialLoading = vm.isLoading || vm.isAlertsLoading;
+	const equipment = isInitialLoading ? [] : vm.equipment;
 
 	return (
 		<div className="space-y-6">
@@ -50,14 +52,8 @@ function EquipmentOverviewPage() {
 				</p>
 			</div>
 
-			{vm.isLoading && equipment.length === 0 && (
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-					{[0, 1, 2].map((i) => (
-						<Skeleton key={i} className="h-40 w-full rounded-xl" />
-					))}
-				</div>
-			)}
-			{!vm.isLoading && equipment.length === 0 && (
+			{isInitialLoading && <LoadingState variant="page" />}
+			{!isInitialLoading && equipment.length === 0 && (
 				<p className="py-12 text-center text-sm text-muted-foreground">
 					{vm.hasError
 						? t`Couldn't load equipment. Please refresh the page to try again.`

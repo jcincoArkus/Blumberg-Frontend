@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { t } from "~@/i18n/macro";
-import { Button, DashboardPanel, formatReading } from "~@/ui";
+import { Button, DashboardPanel, formatReading, LoadingState } from "~@/ui";
 
 import { SensorChart } from "./SensorChart";
 import type { Sensor } from "./SensorsTable";
@@ -13,6 +13,8 @@ interface HistoricalChartsProps {
 		sensorId: string,
 		hours: number,
 	) => { timestamp: string; value: number }[];
+	/** Whether readings for this sensor/range are still being fetched (first load). */
+	isSeriesLoading?: (sensorId: string, hours: number) => boolean;
 }
 
 type TimeRange = "24h" | "7d";
@@ -45,6 +47,7 @@ export function HistoricalCharts({
 	equipmentId: _equipmentId,
 	sensors,
 	generateTimeSeriesData = defaultGenerateTimeSeriesData,
+	isSeriesLoading,
 }: HistoricalChartsProps) {
 	const [timeRange, setTimeRange] = useState<TimeRange>("24h");
 
@@ -105,6 +108,7 @@ export function HistoricalCharts({
 				) : (
 					primarySensors.map((sensor) => {
 						const chartData = generateTimeSeriesData(sensor.id, hours);
+						const isChartLoading = chartData.length === 0 && !!isSeriesLoading?.(sensor.id, hours);
 						const color = getColorForType(sensor.type);
 
 						return (
@@ -121,7 +125,9 @@ export function HistoricalCharts({
 										<p className="text-xs text-muted-foreground">{t`Current`}</p>
 									</div>
 								</div>
-								{chartData.length === 0 ? (
+								{isChartLoading ? (
+									<LoadingState variant="section" className="h-[200px] min-h-0" />
+								) : chartData.length === 0 ? (
 									<div className="flex h-[200px] items-center justify-center rounded-md border border-dashed text-xs text-muted-foreground">
 										{t`No readings in this period`}
 									</div>

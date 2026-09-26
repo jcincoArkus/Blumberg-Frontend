@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Button, Skeleton } from "~@/ui";
+import { Button, LoadingState } from "~@/ui";
 import { useEquipmentOverviewViewModel } from "~@/view-model";
 import {
 	EquipmentAlertsPanel,
@@ -31,14 +31,10 @@ function EquipmentOverviewPage() {
 	const vm = useEquipmentOverviewViewModel();
 	const equipment = vm.equipmentById(id);
 
-	if (!equipment && vm.isLoading) {
-		return (
-			<div className="space-y-6">
-				<Skeleton className="h-24 w-full rounded-xl" />
-				<Skeleton className="h-40 w-full rounded-xl" />
-				<Skeleton className="h-72 w-full rounded-xl" />
-			</div>
-		);
+	// Sensors (health) and alerts feed the readings, limits and status, so wait for their first
+	// fetch as well — otherwise the page flashes "no sensors" / "OK" before data arrives.
+	if (vm.isLoading || vm.isAlertsLoading) {
+		return <LoadingState variant="page" />;
 	}
 
 	if (!equipment) {
@@ -102,6 +98,9 @@ function EquipmentOverviewPage() {
 								timestamp: p.time,
 								value: p.value,
 							}))
+						}
+						isSeriesLoading={(sensorId, hours) =>
+							vm.isSeriesLoading(sensorId, hours > 24 ? "7d" : "24h")
 						}
 					/>
 				</div>

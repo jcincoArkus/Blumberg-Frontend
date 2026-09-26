@@ -6,13 +6,15 @@ import { toast } from "sonner";
 import { createThresholdV1, getAllEquipmentV1, getAllSensorTypesV1 } from "~@/api";
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Button, Card, CardContent, CardHeader, CardTitle } from "~@/ui";
+import { Button, Card, CardContent, CardHeader, CardTitle, LoadingState } from "~@/ui";
 import { useSensorViewModel } from "~@/view-model";
 import { getSensorTypeKindDisplayName, SensorForm } from "~@/views";
 
 export default observer(function NewSensorPage() {
 	const navigate = useNavigate();
 	const vm = useSensorViewModel();
+	// Dropdown options come from the API; show the form only once they have arrived.
+	const [optionsLoading, setOptionsLoading] = useState(true);
 	const [equipmentOptions, setEquipmentOptions] = useState<Array<{ label: string; value: string }>>(
 		[],
 	);
@@ -41,7 +43,8 @@ export default observer(function NewSensorPage() {
 						.filter((o) => o.value),
 				);
 			})
-			.catch(() => {});
+			.catch(() => {})
+			.finally(() => setOptionsLoading(false));
 	}, []);
 
 	const handleSubmit = async (
@@ -99,15 +102,19 @@ export default observer(function NewSensorPage() {
 					<CardTitle>{t`New Sensor`}</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<SensorForm
-						equipmentOptions={equipmentOptions}
-						sensorTypeOptions={sensorTypeOptions}
-						thresholdOptions={[]}
-						createNewThreshold
-						onSubmit={handleSubmit}
-						submitLabel={t`Create Sensor`}
-						isSubmitting={vm.isSaving}
-					/>
+					{optionsLoading ? (
+						<LoadingState variant="section" />
+					) : (
+						<SensorForm
+							equipmentOptions={equipmentOptions}
+							sensorTypeOptions={sensorTypeOptions}
+							thresholdOptions={[]}
+							createNewThreshold
+							onSubmit={handleSubmit}
+							submitLabel={t`Create Sensor`}
+							isSubmitting={vm.isSaving}
+						/>
+					)}
 				</CardContent>
 			</Card>
 		</div>

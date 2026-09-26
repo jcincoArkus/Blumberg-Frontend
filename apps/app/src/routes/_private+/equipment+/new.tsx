@@ -6,13 +6,15 @@ import { toast } from "sonner";
 import { getAllSitesV1 } from "~@/api";
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Button, Card, CardContent, CardHeader, CardTitle } from "~@/ui";
+import { Button, Card, CardContent, CardHeader, CardTitle, LoadingState } from "~@/ui";
 import { useEquipmentViewModel } from "~@/view-model";
 import { EquipmentForm } from "~@/views";
 
 export default observer(function NewEquipmentPage() {
 	const navigate = useNavigate();
 	const vm = useEquipmentViewModel();
+	// Dropdown options come from the API; show the form only once they have arrived.
+	const [optionsLoading, setOptionsLoading] = useState(true);
 	const [siteOptions, setSiteOptions] = useState<Array<{ label: string; value: string }>>([]);
 
 	useEffect(() => {
@@ -25,7 +27,8 @@ export default observer(function NewEquipmentPage() {
 						.filter((o) => o.value),
 				);
 			})
-			.catch(() => setSiteOptions([]));
+			.catch(() => setSiteOptions([]))
+			.finally(() => setOptionsLoading(false));
 	}, []);
 
 	const handleSubmit = async (data: Parameters<typeof vm.createEquipment>[0]) => {
@@ -57,12 +60,16 @@ export default observer(function NewEquipmentPage() {
 					<CardTitle>{t`New Equipment`}</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<EquipmentForm
-						siteOptions={siteOptions}
-						onSubmit={handleSubmit}
-						submitLabel={t`Create Equipment`}
-						isSubmitting={vm.isSaving}
-					/>
+					{optionsLoading ? (
+						<LoadingState variant="section" />
+					) : (
+						<EquipmentForm
+							siteOptions={siteOptions}
+							onSubmit={handleSubmit}
+							submitLabel={t`Create Equipment`}
+							isSubmitting={vm.isSaving}
+						/>
+					)}
 				</CardContent>
 			</Card>
 		</div>

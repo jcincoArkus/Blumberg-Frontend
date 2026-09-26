@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate, useParams } from "react-router";
 import { DataTable } from "~@/data-table";
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Button, Card, CardContent, CardHeader, EmptyState } from "~@/ui";
+import { Button, Card, CardContent, CardHeader, EmptyState, LoadingState } from "~@/ui";
 import { useEquipmentViewModel } from "~@/view-model";
 import { getSensorColumns, SensorsDataTableController } from "~@/views";
 
@@ -26,8 +26,8 @@ export default observer(function EquipmentDetailPage() {
 				equipmentId: equipmentId ?? null,
 				onDelete: async (sensor) => {
 					if (!sensor.id) return;
+					// eslint-disable-next-line no-alert
 					if (window.confirm(t`Delete sensor "${sensor.serial ?? ""}"?`)) {
-						// eslint-disable-line no-alert
 						await sensorsController.deleteSensor(sensor.id);
 					}
 				},
@@ -54,12 +54,15 @@ export default observer(function EquipmentDetailPage() {
 		}
 	}, [equipmentId, location.pathname, sensorsController]);
 
-	if (vm.isLoading && !vm.equipment) {
-		return (
-			<div className="flex items-center justify-center min-h-[200px]">
-				<p className="text-muted-foreground">{t`Loading...`}</p>
-			</div>
-		);
+	// The view-model is shared across pages: ignore equipment left over from a previous id.
+	const isStale = !!(
+		vm.equipment?.id &&
+		equipmentId &&
+		vm.equipment.id.toLowerCase() !== equipmentId.toLowerCase()
+	);
+	// No (current) entity yet and no error means the first fetch is pending (or not started yet).
+	if ((!vm.equipment || isStale) && !vm.hasError) {
+		return <LoadingState variant="page" />;
 	}
 
 	if (vm.hasError || !vm.equipment) {

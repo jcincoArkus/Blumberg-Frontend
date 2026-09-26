@@ -57,6 +57,11 @@ export class SiteDetailAlertsViewModel implements Disposable {
 		return this.#alertsQuery.isLoading;
 	}
 
+	/** True until the first alerts response arrives (including before `loadForSite` runs). */
+	get isInitialLoading(): boolean {
+		return !this.#alertsQuery.isReady || this.#alertsQuery.isLoading;
+	}
+
 	get isFetching(): boolean {
 		return this.#alertsQuery.isFetching;
 	}

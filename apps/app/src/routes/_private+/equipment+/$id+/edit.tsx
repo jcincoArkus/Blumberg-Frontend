@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { getAllSitesV1 } from "~@/api";
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Button, Card, CardContent, CardHeader, CardTitle } from "~@/ui";
+import { Button, Card, CardContent, CardHeader, CardTitle, LoadingState } from "~@/ui";
 import { useEquipmentViewModel } from "~@/view-model";
 import { EquipmentForm, equipmentFormValuesFromResponse } from "~@/views";
 
@@ -14,6 +14,8 @@ export default observer(function EditEquipmentPage() {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const vm = useEquipmentViewModel();
+	// Dropdown options come from the API; show the form only once they have arrived.
+	const [optionsLoading, setOptionsLoading] = useState(true);
 	const [siteOptions, setSiteOptions] = useState<Array<{ label: string; value: string }>>([]);
 
 	useEffect(() => {
@@ -30,7 +32,8 @@ export default observer(function EditEquipmentPage() {
 						.filter((o) => o.value),
 				);
 			})
-			.catch(() => setSiteOptions([]));
+			.catch(() => setSiteOptions([]))
+			.finally(() => setOptionsLoading(false));
 	}, []);
 
 	const handleSubmit = async (data: Parameters<typeof vm.updateEquipment>[1]) => {
@@ -48,12 +51,11 @@ export default observer(function EditEquipmentPage() {
 		}
 	};
 
-	if (vm.isLoading && !vm.equipment) {
-		return (
-			<div className="flex items-center justify-center min-h-[200px]">
-				<p className="text-muted-foreground">{t`Loading...`}</p>
-			</div>
-		);
+	// The view-model is shared across pages: ignore equipment left over from a previous id.
+	const isStale = !!(vm.equipment?.id && id && vm.equipment.id.toLowerCase() !== id.toLowerCase());
+	// No (current) entity yet and no error means the first fetch is pending (or not started yet).
+	if ((!vm.equipment || isStale) && !vm.hasError) {
+		return <LoadingState variant="page" />;
 	}
 
 	if (vm.hasError || !vm.equipment) {
@@ -85,13 +87,17 @@ export default observer(function EditEquipmentPage() {
 					<CardTitle>{t`Edit Equipment`}</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<EquipmentForm
-						siteOptions={siteOptions}
-						defaultValues={equipmentFormValuesFromResponse(vm.equipment)}
-						onSubmit={handleSubmit}
-						submitLabel={t`Update Equipment`}
-						isSubmitting={vm.isSaving}
-					/>
+					{optionsLoading ? (
+						<LoadingState variant="section" />
+					) : (
+						<EquipmentForm
+							siteOptions={siteOptions}
+							defaultValues={equipmentFormValuesFromResponse(vm.equipment)}
+							onSubmit={handleSubmit}
+							submitLabel={t`Update Equipment`}
+							isSubmitting={vm.isSaving}
+						/>
+					)}
 				</CardContent>
 			</Card>
 		</div>

@@ -5,7 +5,15 @@ import { Link, Outlet, useLocation, useNavigate, useParams } from "react-router"
 import { DataTable } from "~@/data-table";
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Button, Card, CardContent, CardHeader, EmptyState, StatusBadge } from "~@/ui";
+import {
+	Button,
+	Card,
+	CardContent,
+	CardHeader,
+	EmptyState,
+	LoadingState,
+	StatusBadge,
+} from "~@/ui";
 import { SiteDetailAlertsViewModel, useSitesViewModel } from "~@/view-model";
 import { EquipmentAlertsPanel, EquipmentDataTableController, getEquipmentColumns } from "~@/views";
 
@@ -61,12 +69,10 @@ export default observer(function SiteDetailPage() {
 		}
 	}, [siteId, location.pathname, equipmentController]);
 
-	if (vm.isLoading && !vm.site) {
-		return (
-			<div className="flex items-center justify-center min-h-[200px]">
-				<p className="text-muted-foreground">{t`Loading...`}</p>
-			</div>
-		);
+	// Before the first load (query not created yet) `isLoading` is false, so also treat
+	// "no site and no error" as loading to avoid flashing the not-found state.
+	if (!vm.site && !vm.hasError) {
+		return <LoadingState variant="page" />;
 	}
 
 	if (vm.hasError || !vm.site) {
@@ -122,7 +128,7 @@ export default observer(function SiteDetailPage() {
 					<div>
 						<div className="flex items-center gap-3">
 							<h1 className="text-2xl font-bold text-foreground">{site.name ?? t`Unnamed Site`}</h1>
-							{!alertsVm.isLoading && (
+							{!alertsVm.isInitialLoading && (
 								<StatusBadge
 									status={
 										alertsVm.siteHealth === "healthy"
@@ -202,9 +208,13 @@ export default observer(function SiteDetailPage() {
 							<ShieldAlert className={`size-5 ${color}`} />
 							<div>
 								<p className="text-sm text-muted-foreground">{label}</p>
-								<p className={`text-2xl font-bold ${color}`}>
-									{alertsVm.alertCountBySeverity[key]}
-								</p>
+								{alertsVm.isInitialLoading ? (
+									<LoadingState variant="inline" label={null} className="justify-start py-2" />
+								) : (
+									<p className={`text-2xl font-bold ${color}`}>
+										{alertsVm.alertCountBySeverity[key]}
+									</p>
+								)}
 							</div>
 						</CardContent>
 					</Card>

@@ -12,7 +12,7 @@ import {
 } from "~@/api";
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from "~@/ui";
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, LoadingState } from "~@/ui";
 import { useSensorViewModel } from "~@/view-model";
 import type { CreateSensorWithNewThresholdRequest } from "~@/views";
 import { getSensorTypeKindDisplayName, SensorForm, sensorFormValuesFromResponse } from "~@/views";
@@ -28,6 +28,10 @@ export default observer(function EditSensorPage() {
 		Array<{ label: string; value: string }>
 	>([]);
 	const [currentThreshold, setCurrentThreshold] = useState<ThresholdResponse | null>(null);
+	// Id of the threshold whose fetch has settled (success or failure).
+	const [thresholdSettledFor, setThresholdSettledFor] = useState<string | null>(null);
+	// Dropdown options come from the API; show the form only once they have arrived.
+	const [optionsLoading, setOptionsLoading] = useState(true);
 
 	useEffect(() => {
 		if (id) vm.loadSensor(id);
@@ -39,7 +43,8 @@ export default observer(function EditSensorPage() {
 		if (thresholdId) {
 			getThresholdByIdV1({ path: { id: thresholdId } })
 				.then((res) => setCurrentThreshold(res.data ?? null))
-				.catch(() => setCurrentThreshold(null));
+				.catch(() => setCurrentThreshold(null))
+				.finally(() => setThresholdSettledFor(thresholdId));
 		}
 	}, [vm.sensor?.thresholdId]);
 
@@ -65,7 +70,8 @@ export default observer(function EditSensorPage() {
 						.filter((o) => o.value),
 				);
 			})
-			.catch(() => {});
+			.catch(() => {})
+			.finally(() => setOptionsLoading(false));
 	}, []);
 
 	const handleSubmit = async (data: SensorRequest | CreateSensorWithNewThresholdRequest) => {
@@ -113,12 +119,9 @@ export default observer(function EditSensorPage() {
 		}
 	};
 
-	if (vm.isLoading && !vm.sensor) {
-		return (
-			<div className="flex items-center justify-center min-h-[200px]">
-				<p className="text-muted-foreground">{t`Loading...`}</p>
-			</div>
-		);
+	// No entity yet and no error means the first fetch is pending (or not started yet).
+	if (!vm.sensor && !vm.hasError) {
+		return <LoadingState variant="page" />;
 	}
 
 	if (vm.hasError || !vm.sensor) {
@@ -177,27 +180,26 @@ export default observer(function EditSensorPage() {
 					<CardTitle>{t`Edit Sensor`}</CardTitle>
 				</CardHeader>
 				<CardContent>
-					{!vm.sensor?.thresholdId ? (
-						<p className="text-sm text-muted-foreground">{t`Loading threshold...`}</p>
-					) : currentThreshold ? (
+					{optionsLoading ||
+					(vm.sensor.thresholdId && thresholdSettledFor !== vm.sensor.thresholdId) ? (
+						<LoadingState variant="section" />
+					) : (
 						<SensorForm
-							key={currentThreshold.id}
+							key={currentThreshold?.id ?? "no-threshold"}
 							equipmentOptions={equipmentOptions}
 							sensorTypeOptions={sensorTypeOptions}
 							thresholdOptions={[]}
 							createNewThreshold
 							defaultValues={{
 								...sensorFormValuesFromResponse(vm.sensor),
-								thresholdMin: currentThreshold.min ?? 0,
-								thresholdMax: currentThreshold.max ?? 100,
-								thresholdDurationSeconds: currentThreshold.durationSeconds ?? 60,
+								thresholdMin: currentThreshold?.min ?? 0,
+								thresholdMax: currentThreshold?.max ?? 100,
+								thresholdDurationSeconds: currentThreshold?.durationSeconds ?? 60,
 							}}
 							onSubmit={handleSubmit}
 							submitLabel={t`Update Sensor`}
 							isSubmitting={vm.isSaving}
 						/>
-					) : (
-						<p className="text-sm text-muted-foreground">{t`Loading threshold...`}</p>
 					)}
 				</CardContent>
 			</Card>

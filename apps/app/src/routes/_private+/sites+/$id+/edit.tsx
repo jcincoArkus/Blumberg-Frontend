@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Button, Card, CardContent, CardHeader, CardTitle } from "~@/ui";
+import { Button, Card, CardContent, CardHeader, CardTitle, LoadingState } from "~@/ui";
 import { useSitesViewModel } from "~@/view-model";
 import { SiteForm, siteFormValuesFromResponse } from "~@/views";
 
@@ -33,12 +33,10 @@ export default observer(function EditSitePage() {
 		}
 	};
 
-	if (vm.isLoading && !vm.site) {
-		return (
-			<div className="flex items-center justify-center min-h-[200px]">
-				<p className="text-muted-foreground">{t`Loading...`}</p>
-			</div>
-		);
+	// Treat "no site yet and no error" as loading (the query doesn't exist before the effect runs),
+	// so the form never renders with empty defaults and "not found" never flashes.
+	if (!vm.site && !vm.hasError) {
+		return <LoadingState variant="page" />;
 	}
 
 	if (vm.hasError || !vm.site) {
