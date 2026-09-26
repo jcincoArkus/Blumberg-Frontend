@@ -1,7 +1,7 @@
 import { Activity, AlertTriangle, Wifi, WifiOff } from "lucide-react";
 
 import { t } from "~@/i18n/macro";
-import { Card, CardContent } from "~@/ui";
+import { Card, CardContent, Spinner } from "~@/ui";
 
 interface SensorHealthStatsProps {
 	stats: {
@@ -12,9 +12,11 @@ interface SensorHealthStatsProps {
 		error: number;
 		activePercent: number;
 	};
+	/** First load in flight: show spinners instead of 0 counts. */
+	isLoading?: boolean;
 }
 
-export function SensorHealthStats({ stats }: SensorHealthStatsProps) {
+export function SensorHealthStats({ stats, isLoading = false }: SensorHealthStatsProps) {
 	const getStatCards = () => [
 		{
 			label: t`Total Sensors`,
@@ -70,9 +72,17 @@ export function SensorHealthStats({ stats }: SensorHealthStatsProps) {
 								<stat.icon className={`h-5 w-5 ${stat.color}`} />
 							</div>
 							<div>
-								<p className="text-2xl font-bold">{stat.value}</p>
+								{isLoading ? (
+									<div className="flex h-8 items-center">
+										<Spinner aria-label={t`Loading…`} className="size-5 text-primary" />
+									</div>
+								) : (
+									<p className="text-2xl font-bold">{stat.value}</p>
+								)}
 								<p className="text-xs text-muted-foreground">{stat.label}</p>
-								{stat.subtitle && <p className="text-xs text-muted-foreground">{stat.subtitle}</p>}
+								{!isLoading && stat.subtitle && (
+									<p className="text-xs text-muted-foreground">{stat.subtitle}</p>
+								)}
 							</div>
 						</div>
 					</CardContent>

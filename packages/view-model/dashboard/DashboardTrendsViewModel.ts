@@ -41,6 +41,8 @@ class DashboardTrendsViewModel {
 	sources: Record<TrendMetric, string[]> = { temperature: [], humidity: [], co2: [] };
 	isLoading = false;
 	hasLoaded = false;
+	/** Range of the data currently in `trendData` (differs from `range` while a range switch is loading). */
+	loadedRange: TrendRange | null = null;
 
 	#requestId = 0;
 	#sensorsDisposer: (() => void) | null = null;
@@ -112,6 +114,7 @@ class DashboardTrendsViewModel {
 				this.sources[r.metric] = r.sensors.map((s) => s.name);
 			}
 			this.trendData = data;
+			this.loadedRange = range;
 			this.isLoading = false;
 			this.hasLoaded = true;
 		});

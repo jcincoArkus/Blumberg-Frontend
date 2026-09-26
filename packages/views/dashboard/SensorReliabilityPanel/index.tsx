@@ -1,6 +1,8 @@
 import { useState } from "react";
 
+import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
+import { LoadingState } from "~@/ui";
 import { useSensorReliabilityPanelViewModel } from "~@/view-model";
 
 import { FlappingList } from "./FlappingList";
@@ -14,6 +16,14 @@ export type { Sensor } from "./types";
 export const SensorReliabilityPanel = observer(function SensorReliabilityPanel() {
 	const vm = useSensorReliabilityPanelViewModel();
 	const [isUnstableOpen, setIsUnstableOpen] = useState(false);
+
+	if (vm.isLoading) {
+		return (
+			<div className="bg-card text-card-foreground rounded-xl border shadow-sm">
+				<LoadingState variant="section" label={t`Loading sensor reliability…`} />
+			</div>
+		);
+	}
 
 	return (
 		<div className="bg-card text-card-foreground rounded-xl border shadow-sm">

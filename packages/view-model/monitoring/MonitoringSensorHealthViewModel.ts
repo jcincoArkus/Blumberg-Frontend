@@ -134,6 +134,11 @@ class MonitoringSensorHealthViewModel {
 		return this.#healthQuery.isLoading;
 	}
 
+	/** First health-list fetch in flight with nothing on screen yet (KPIs would read 0). */
+	get isInitialLoading(): boolean {
+		return this.#healthQuery.isLoading && !this.#healthQuery.data;
+	}
+
 	get hasError(): boolean {
 		return this.#healthQuery.hasError;
 	}

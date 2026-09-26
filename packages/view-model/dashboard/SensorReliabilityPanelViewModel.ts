@@ -16,6 +16,11 @@ class SensorReliabilityPanelViewModel {
 		return dashboardSensorsViewModel.sensorReliability;
 	}
 
+	/** First sensor health fetch still in flight (avoid showing "100% healthy" before data). */
+	get isLoading() {
+		return dashboardSensorsViewModel.isSensorsInitialLoading;
+	}
+
 	// Individual metric getters for convenience
 	get offlineCount() {
 		return this.reliability.offline;

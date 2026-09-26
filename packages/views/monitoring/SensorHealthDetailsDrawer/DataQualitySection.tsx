@@ -6,6 +6,7 @@ import {
 	CardContent,
 	CardHeader,
 	CardTitle,
+	LoadingState,
 	Progress,
 	Select,
 	SelectContent,
@@ -50,8 +51,8 @@ export function DataQualitySection({
 
 			{detailLoading ? (
 				<Card>
-					<CardContent className="py-6">
-						<p className="text-sm text-muted-foreground">{t`Loading diagnostics…`}</p>
+					<CardContent className="p-0">
+						<LoadingState variant="section" label={t`Loading diagnostics…`} />
 					</CardContent>
 				</Card>
 			) : hasDetailFromApi && detail ? (

@@ -36,6 +36,21 @@ class GlobalStatusBarViewModel {
 		return alertsStatus;
 	}
 
+	/** First alerts fetch still in flight (no data yet). */
+	get isAlertsLoading() {
+		return alertsViewModel.isLoading && alertsViewModel.alerts.length === 0;
+	}
+
+	/** First sensor health fetch still in flight (no data yet). */
+	get isSensorsLoading() {
+		return dashboardSensorsViewModel.isSensorsInitialLoading;
+	}
+
+	/** System status can't be derived until both sources have answered. */
+	get isStatusLoading() {
+		return this.isAlertsLoading || this.isSensorsLoading;
+	}
+
 	get activeAlerts() {
 		return alertsViewModel.alertsBySeverity;
 	}

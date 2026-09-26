@@ -3,7 +3,17 @@ import { Link } from "react-router";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Badge, Card, CardContent, cn, Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
+import {
+	Badge,
+	Card,
+	CardContent,
+	cn,
+	LoadingState,
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "~@/ui";
 import { useDashboardSensorsViewModel, useGroupedSensorMetricsPanelViewModel } from "~@/view-model";
 import { authViewModel } from "~@/view-model/auth";
 
@@ -32,15 +42,21 @@ export const GroupedSensorMetricsPanel = observer(function GroupedSensorMetricsP
 	const hasError = vm.hasSensorsError;
 	const hasNoData = orderedTypes.length === 0;
 
+	if (hasNoData && isLoading && !hasError) {
+		return (
+			<Card>
+				<CardContent className="p-0">
+					<LoadingState variant="section" label={t`Loading sensors…`} />
+				</CardContent>
+			</Card>
+		);
+	}
+
 	if (hasNoData) {
 		return (
 			<Card>
 				<CardContent className="p-6 text-center text-muted-foreground">
-					{isLoading && !hasError
-						? t`Loading sensors…`
-						: hasError
-							? t`Unable to load sensors. Try again later.`
-							: t`No sensors available`}
+					{hasError ? t`Unable to load sensors. Try again later.` : t`No sensors available`}
 				</CardContent>
 			</Card>
 		);

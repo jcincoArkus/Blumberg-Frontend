@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { t } from "~@/i18n/macro";
-import { Table, TableBody, TableHead, TableHeader, TableRow } from "~@/ui";
+import { LoadingState, Table, TableBody, TableHead, TableHeader, TableRow } from "~@/ui";
 
 import { EmptyState } from "./EmptyState";
 import { FilterPanel } from "./FilterPanel";
@@ -30,6 +30,7 @@ export function SensorHealthTable({
 	sites,
 	equipment,
 	onViewDetails,
+	isLoading = false,
 }: SensorHealthTableProps) {
 	const [showFilters, setShowFilters] = useState(false);
 
@@ -42,7 +43,7 @@ export function SensorHealthTable({
 		equipmentFilter !== "all",
 	].filter(Boolean).length;
 
-	if (data.length === 0) {
+	if (data.length === 0 && !isLoading) {
 		return <EmptyState hasSearchOrFilters={searchQuery.length > 0 || activeFiltersCount > 0} />;
 	}
 
@@ -85,37 +86,43 @@ export function SensorHealthTable({
 				/>
 			)}
 
-			<div className="rounded-lg border bg-card overflow-x-auto">
-				<Table>
-					<TableHeader>
-						<TableRow>
-							<TableHead className="w-50">{t`Sensor`}</TableHead>
-							<TableHead className="w-25">{t`Type`}</TableHead>
-							<TableHead className="w-30">{t`Site`}</TableHead>
-							<TableHead className="w-35">{t`Equipment`}</TableHead>
-							<TableHead className="w-35">{t`Last Reported`}</TableHead>
-							<TableHead className="w-25">{t`Health`}</TableHead>
-							{/* <TableHead className="w-30">{t`Quality`}</TableHead> */}
-							<TableHead className="w-30">{t`Ingestion`}</TableHead>
-							<TableHead>{t`Issues`}</TableHead>
-							<TableHead className="w-20 text-right">{t`Actions`}</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{data.map((item) => (
-							<SensorHealthTableRow
-								key={item.sensor.id}
-								item={item}
-								onViewDetails={onViewDetails}
-							/>
-						))}
-					</TableBody>
-				</Table>
-			</div>
+			{data.length === 0 ? (
+				<LoadingState variant="section" label={t`Loading sensors…`} />
+			) : (
+				<div className="rounded-lg border bg-card overflow-x-auto">
+					<Table>
+						<TableHeader>
+							<TableRow>
+								<TableHead className="w-50">{t`Sensor`}</TableHead>
+								<TableHead className="w-25">{t`Type`}</TableHead>
+								<TableHead className="w-30">{t`Site`}</TableHead>
+								<TableHead className="w-35">{t`Equipment`}</TableHead>
+								<TableHead className="w-35">{t`Last Reported`}</TableHead>
+								<TableHead className="w-25">{t`Health`}</TableHead>
+								{/* <TableHead className="w-30">{t`Quality`}</TableHead> */}
+								<TableHead className="w-30">{t`Ingestion`}</TableHead>
+								<TableHead>{t`Issues`}</TableHead>
+								<TableHead className="w-20 text-right">{t`Actions`}</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody>
+							{data.map((item) => (
+								<SensorHealthTableRow
+									key={item.sensor.id}
+									item={item}
+									onViewDetails={onViewDetails}
+								/>
+							))}
+						</TableBody>
+					</Table>
+				</div>
+			)}
 
-			<div className="text-sm text-muted-foreground">
-				{data.length === 1 ? t`Showing 1 sensor` : t`Showing ${data.length} sensors`}
-			</div>
+			{data.length > 0 && (
+				<div className="text-sm text-muted-foreground">
+					{data.length === 1 ? t`Showing 1 sensor` : t`Showing ${data.length} sensors`}
+				</div>
+			)}
 		</div>
 	);
 }

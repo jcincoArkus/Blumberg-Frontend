@@ -1,7 +1,7 @@
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 
 import { t } from "~@/i18n/macro";
-import { Button, Card, CardContent } from "~@/ui";
+import { Button, Card, CardContent, LoadingState } from "~@/ui";
 
 import type { IngestionErrorsSectionProps } from "./types";
 
@@ -22,8 +22,8 @@ export function IngestionErrorsSection({
 
 			{isLoading ? (
 				<Card>
-					<CardContent className="py-6 text-center">
-						<p className="text-sm text-muted-foreground">{t`Loading…`}</p>
+					<CardContent className="p-0">
+						<LoadingState variant="inline" />
 					</CardContent>
 				</Card>
 			) : hasErrors ? (

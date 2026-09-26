@@ -18,7 +18,7 @@ const SensorHealthPage = observer(function SensorHealthPage() {
 			</div>
 
 			{/* Health Stats */}
-			<SensorHealthStats stats={vm.stats} />
+			<SensorHealthStats stats={vm.stats} isLoading={vm.isInitialLoading} />
 
 			{/* Filters */}
 			<DashboardPanel title={t`Filters`}>
@@ -37,7 +37,11 @@ const SensorHealthPage = observer(function SensorHealthPage() {
 			{/* Sensors Table */}
 			<DashboardPanel
 				title={t`All Sensors`}
-				description={t`Showing ${vm.filteredSensors.length} of ${vm.enrichedSensors.length} sensors`}
+				description={
+					vm.isInitialLoading
+						? undefined
+						: t`Showing ${vm.filteredSensors.length} of ${vm.enrichedSensors.length} sensors`
+				}
 			>
 				<SensorHealthTable sensors={vm.filteredSensors} isLoading={vm.isLoading} />
 			</DashboardPanel>

@@ -36,8 +36,9 @@ class GroupedSensorMetricsPanelViewModel {
 		return dashboardSensorsViewModel.sensors as unknown as SensorWithReading[];
 	}
 
+	/** First sensor health fetch still in flight (no data yet). */
 	get isSensorsLoading(): boolean {
-		return dashboardSensorsViewModel.isSensorsLoading;
+		return dashboardSensorsViewModel.isSensorsInitialLoading;
 	}
 
 	get hasSensorsError(): boolean {

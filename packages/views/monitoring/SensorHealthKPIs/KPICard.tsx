@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 
-import { Card, CardContent, CardHeader, CardTitle, cn } from "~@/ui";
+import { t } from "~@/i18n/macro";
+import { Card, CardContent, CardHeader, CardTitle, cn, Spinner } from "~@/ui";
 
 interface KPICardProps {
 	title: string;
@@ -9,6 +10,8 @@ interface KPICardProps {
 	icon: LucideIcon;
 	className: string;
 	iconClassName: string;
+	/** First load in flight: show a spinner instead of a misleading 0. */
+	isLoading?: boolean;
 }
 
 export function KPICard({
@@ -18,6 +21,7 @@ export function KPICard({
 	icon: Icon,
 	className,
 	iconClassName,
+	isLoading = false,
 }: KPICardProps) {
 	return (
 		<Card className={cn("border", className)}>
@@ -26,8 +30,14 @@ export function KPICard({
 				<Icon className={cn("h-4 w-4", iconClassName)} />
 			</CardHeader>
 			<CardContent>
-				<div className="text-2xl font-bold text-foreground">{value}</div>
-				{subtitle != null && subtitle !== "" && (
+				{isLoading ? (
+					<div className="flex h-8 items-center">
+						<Spinner aria-label={t`Loading…`} className="size-5 text-primary" />
+					</div>
+				) : (
+					<div className="text-2xl font-bold text-foreground">{value}</div>
+				)}
+				{!isLoading && subtitle != null && subtitle !== "" && (
 					<p className="text-xs text-muted-foreground mt-1">{subtitle}</p>
 				)}
 			</CardContent>

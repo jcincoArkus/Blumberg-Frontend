@@ -1,5 +1,6 @@
 import { makeAutoObservable } from "~@/mobx";
 
+import { dashboardSensorsViewModel } from "./DashboardSensorsViewModel";
 import { dashboardTrendsViewModel, type TrendRange } from "./DashboardTrendsViewModel";
 
 /**
@@ -23,8 +24,16 @@ class TrendsPanelViewModel {
 		return dashboardTrendsViewModel.range;
 	}
 
+	/** Initial load: waiting for the sensor list and then for the first batch of readings. */
 	get isLoading() {
-		return dashboardTrendsViewModel.isLoading && !dashboardTrendsViewModel.hasLoaded;
+		if (dashboardTrendsViewModel.hasLoaded) return false;
+		return dashboardTrendsViewModel.isLoading || dashboardSensorsViewModel.isSensorsInitialLoading;
+	}
+
+	/** Re-fetching after the user switched range (data for the previous range still on screen). */
+	get isRefreshing() {
+		const trends = dashboardTrendsViewModel;
+		return trends.isLoading && trends.hasLoaded && trends.loadedRange !== trends.range;
 	}
 
 	setRange = (range: TrendRange) => {

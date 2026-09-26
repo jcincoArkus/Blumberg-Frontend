@@ -76,6 +76,11 @@ class SensorHealthViewModel {
 		return this.#healthQuery.isLoading;
 	}
 
+	/** First fetch in flight with no data yet (stats would read 0). */
+	get isInitialLoading(): boolean {
+		return this.#healthQuery.isLoading && !this.#healthQuery.data;
+	}
+
 	get hasError(): boolean {
 		return this.#healthQuery.hasError;
 	}

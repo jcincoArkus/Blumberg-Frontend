@@ -73,8 +73,11 @@ type HealthQuery = ReturnType<typeof getSensorHealthListV1ObservedQuery>;
 class DashboardSensorsViewModel {
 	#healthQuery: HealthQuery | null = null;
 	#syncDisposer: (() => void) | null = null;
+	#settledDisposer: (() => void) | null = null;
 	/** Cached list from API so observer() reliably re-renders when data arrives. */
 	sensorsData: DashboardSensor[] = [];
+	/** True once the first health list response (or error) has arrived. Stays true across refetches/dispose. */
+	sensorsSettled = false;
 
 	activeDomain: Domain = "All";
 
@@ -107,9 +110,16 @@ class DashboardSensorsViewModel {
 			(items) => {
 				runInAction(() => {
 					this.sensorsData = (items ?? []).map(mapHealthItemToSensor);
+					if (items !== null) this.sensorsSettled = true;
 				});
 			},
 			{ fireImmediately: true },
+		);
+		this.#settledDisposer = reaction(
+			() => this.#healthQuery?.hasError ?? false,
+			(hasError) => {
+				if (hasError) runInAction(() => (this.sensorsSettled = true));
+			},
 		);
 		return this.#healthQuery;
 	}
@@ -153,6 +163,14 @@ class DashboardSensorsViewModel {
 	/** True while the sensor health list is fetching (initial or refetch). */
 	get isSensorsLoading(): boolean {
 		return this.#healthQuery?.isLoading ?? false;
+	}
+
+	/**
+	 * True until the first sensor health response arrives (no data yet). Unlike `isSensorsLoading`
+	 * this is observable before `load()` runs, so panels show a spinner instead of 0 / "no sensors".
+	 */
+	get isSensorsInitialLoading(): boolean {
+		return !this.sensorsSettled && this.sensorsData.length === 0;
 	}
 
 	/** True if the last sensor health list request failed. */
@@ -223,6 +241,8 @@ class DashboardSensorsViewModel {
 		this.#authDisposer = null;
 		this.#syncDisposer?.();
 		this.#syncDisposer = null;
+		this.#settledDisposer?.();
+		this.#settledDisposer = null;
 		this.#healthQuery?.dispose();
 		this.#healthQuery = null;
 	};

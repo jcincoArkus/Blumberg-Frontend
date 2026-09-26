@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Card, CardContent, CardHeader, CardTitle, cn } from "~@/ui";
+import { Card, CardContent, CardHeader, CardTitle, cn, LoadingState, SpinnerOverlay } from "~@/ui";
 import { useTrendsPanelViewModel } from "~@/view-model";
 
 import { SparklineRow } from "./SparklineRow";
@@ -51,40 +51,45 @@ export const TrendsPanel = observer(function TrendsPanel() {
 					</div>
 				</div>
 			</CardHeader>
-			<CardContent className="pt-0">
-				<div className="space-y-3">
-					<SparklineRow
-						label={t`Temperature`}
-						color="#3b82f6"
-						data={vm.data.temperature}
-						unit="°C"
-						idealMin={18}
-						idealMax={26}
-						sources={vm.sources.temperature}
-						isLoading={vm.isLoading}
-						showDots
-					/>
-					<SparklineRow
-						label={t`Humidity`}
-						color="#8b5cf6"
-						data={vm.data.humidity}
-						unit="%"
-						idealMin={30}
-						idealMax={60}
-						sources={vm.sources.humidity}
-						isLoading={vm.isLoading}
-					/>
-					<SparklineRow
-						label={t`CO₂`}
-						color="#f97316"
-						data={vm.data.co2}
-						unit="ppm"
-						idealMin={350}
-						idealMax={1000}
-						sources={vm.sources.co2}
-						isLoading={vm.isLoading}
-					/>
-				</div>
+			<CardContent className="relative pt-0">
+				{vm.isLoading ? (
+					<LoadingState variant="section" label={t`Loading trends…`} />
+				) : (
+					<div className="space-y-3">
+						<SparklineRow
+							label={t`Temperature`}
+							color="#3b82f6"
+							data={vm.data.temperature}
+							unit="°C"
+							idealMin={18}
+							idealMax={26}
+							sources={vm.sources.temperature}
+							isLoading={vm.isLoading}
+							showDots
+						/>
+						<SparklineRow
+							label={t`Humidity`}
+							color="#8b5cf6"
+							data={vm.data.humidity}
+							unit="%"
+							idealMin={30}
+							idealMax={60}
+							sources={vm.sources.humidity}
+							isLoading={vm.isLoading}
+						/>
+						<SparklineRow
+							label={t`CO₂`}
+							color="#f97316"
+							data={vm.data.co2}
+							unit="ppm"
+							idealMin={350}
+							idealMax={1000}
+							sources={vm.sources.co2}
+							isLoading={vm.isLoading}
+						/>
+					</div>
+				)}
+				{vm.isRefreshing && <SpinnerOverlay size="md" />}
 			</CardContent>
 		</Card>
 	);

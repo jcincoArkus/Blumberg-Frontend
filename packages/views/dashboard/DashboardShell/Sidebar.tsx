@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Button, Collapsible, CollapsibleContent, CollapsibleTrigger, cn } from "~@/ui";
+import { Button, Collapsible, CollapsibleContent, CollapsibleTrigger, cn, Spinner } from "~@/ui";
 import {
 	alertsViewModel,
 	authViewModel,
@@ -254,8 +254,9 @@ const SidebarStatus = observer(function SidebarStatus({ collapsed }: { collapsed
 		dashboardSensorsViewModel.load();
 	}, [isAuthenticated]);
 
-	const hasData = vm.totalSensors > 0;
-	const { label, dot } = statusCopy(vm.systemStatus);
+	const hasData = !vm.isSensorsLoading;
+	const { label: statusLabel, dot } = statusCopy(vm.systemStatus);
+	const label = vm.isStatusLoading ? t`Checking…` : statusLabel;
 	const sensorsOnline = vm.sensorsOnline;
 	const totalSensors = vm.totalSensors;
 	const sensorsText = hasData
@@ -284,7 +285,11 @@ const SidebarStatus = observer(function SidebarStatus({ collapsed }: { collapsed
 				<p className="text-xs font-medium text-foreground">{t`System Status`}</p>
 				<p className="mt-1 text-xs text-muted-foreground">{label}</p>
 				<div className="mt-2 flex items-center gap-1.5">
-					<span className={cn("size-2 rounded-full", hasData ? dot : "bg-muted-foreground/40")} />
+					{hasData ? (
+						<span className={cn("size-2 rounded-full", dot)} />
+					) : (
+						<Spinner aria-hidden="true" className="size-3 text-primary" />
+					)}
 					<span className="text-xs text-muted-foreground">{sensorsText}</span>
 				</div>
 			</Link>

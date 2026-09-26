@@ -4,7 +4,7 @@ import type { SensorHealthKPIsProps } from "./types";
 
 export type { SensorHealthKPIsProps } from "./types";
 
-export function SensorHealthKPIs({ kpis }: SensorHealthKPIsProps) {
+export function SensorHealthKPIs({ kpis, isLoading = false }: SensorHealthKPIsProps) {
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
 			{KPI_CARDS_CONFIG.map((card) => (
@@ -16,6 +16,7 @@ export function SensorHealthKPIs({ kpis }: SensorHealthKPIsProps) {
 					icon={card.icon}
 					className={card.className}
 					iconClassName={card.iconClassName}
+					isLoading={isLoading}
 				/>
 			))}
 		</div>

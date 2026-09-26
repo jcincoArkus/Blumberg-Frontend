@@ -28,11 +28,15 @@ export const GlobalStatusBar = observer(function GlobalStatusBar() {
 		<div className="sticky top-0 z-30 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 dark:supports-backdrop-filter:bg-background/90 -mx-4 lg:-mx-6">
 			<div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 lg:px-6 py-2.5 text-sm whitespace-nowrap">
 				<div className="flex flex-wrap items-center gap-x-4 gap-y-1 lg:gap-x-6">
-					<StatusIndicator status={vm.systemStatus} />
-					<AlertSummary activeAlerts={vm.activeAlerts} />
+					<StatusIndicator status={vm.systemStatus} isLoading={vm.isStatusLoading} />
+					<AlertSummary activeAlerts={vm.activeAlerts} isLoading={vm.isAlertsLoading} />
 					<CurrentTime />
 				</div>
-				<SensorsOnline sensorsOnline={vm.sensorsOnline} totalSensors={vm.totalSensors} />
+				<SensorsOnline
+					sensorsOnline={vm.sensorsOnline}
+					totalSensors={vm.totalSensors}
+					isLoading={vm.isSensorsLoading}
+				/>
 			</div>
 		</div>
 	);

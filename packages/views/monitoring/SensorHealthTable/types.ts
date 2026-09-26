@@ -21,4 +21,6 @@ export interface SensorHealthTableProps {
 	sites: Site[];
 	equipment: Equipment[];
 	onViewDetails: (data: SensorHealthData) => void;
+	/** Fetch in flight with no rows yet: show a loading state instead of "No sensors found". */
+	isLoading?: boolean;
 }

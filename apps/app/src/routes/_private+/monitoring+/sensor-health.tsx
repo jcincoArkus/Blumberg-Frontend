@@ -36,7 +36,7 @@ const SensorHealthPage = observer(function SensorHealthPage() {
 			</div>
 
 			{/* KPI Summary Cards */}
-			<SensorHealthKPIs kpis={vm.kpis} />
+			<SensorHealthKPIs kpis={vm.kpis} isLoading={vm.isInitialLoading} />
 
 			{/* Sensor Health Table */}
 			<DashboardPanel
@@ -62,6 +62,7 @@ const SensorHealthPage = observer(function SensorHealthPage() {
 					sites={vm.monitoringSites}
 					equipment={vm.monitoringEquipment}
 					onViewDetails={handleViewDetails}
+					isLoading={vm.isLoading}
 				/>
 			</DashboardPanel>
 
