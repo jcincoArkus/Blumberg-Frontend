@@ -22,6 +22,17 @@ import {
 const AdminUsersPage = observer(function AdminUsersPage() {
 	const vm = useUsersViewModel();
 
+	if (vm.isLoading && vm.users.length === 0) {
+		return (
+			<DashboardPanel
+				title={t`User Management`}
+				description={t`Manage users, roles, and permissions`}
+			>
+				<p className="py-8 text-center text-sm text-muted-foreground">{t`Loading users…`}</p>
+			</DashboardPanel>
+		);
+	}
+
 	// Check if current user has admin role
 	if (!vm.hasAdminRole) {
 		return (
@@ -132,7 +143,7 @@ const AdminUsersPage = observer(function AdminUsersPage() {
 					open={vm.isUserEditorOpen}
 					onOpenChange={(open) => !open && vm.closeUserEditor()}
 					onSave={handleSaveUser}
-					currentUserId={vm.currentUser.id}
+					currentUserId={vm.currentUser?.id ?? ""}
 				/>
 			)}
 		</>

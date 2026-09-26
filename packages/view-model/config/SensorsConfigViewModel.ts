@@ -1,3 +1,16 @@
+import {
+	type EquipmentResponse,
+	getAllEquipmentV1ObservedQuery,
+	getAllSensorsV1ObservedQuery,
+	getAllSitesV1ObservedQuery,
+	getAllThresholdsV1ObservedQuery,
+	getSensorHealthListV1ObservedQuery,
+	type SensorHealthListItemResponse,
+	SensorHealthStatus,
+	type SensorResponse,
+	type SiteResponse,
+	type ThresholdResponse,
+} from "~@/api";
 import { makeAutoObservable } from "~@/mobx";
 import type {
 	Equipment,
@@ -9,29 +22,52 @@ import type {
 	Site,
 	TransformTypeOption,
 } from "~@/models";
-import {
-	getEquipment,
-	getEquipmentBySiteId,
-	getSensors,
-	getSensorTypeOptions,
-	getSites,
-	getTransformTypeOptions,
-	getUnitForSensor,
-} from "~@/models";
+import { getSensorTypeOptions, getTransformTypeOptions, getUnitForSensor } from "~@/models";
+import { unitSymbol } from "~@/ui";
 
 import type { Disposable, FilterableViewModel } from "../types";
+
+/** API page size is clamped to 100 server-side. */
+const PAGE = { Page: 1, PageSize: 100 };
+
+const HEALTH_TO_STATUS: Record<SensorHealthStatus, SensorStatus> = {
+	[SensorHealthStatus._0]: "active",
+	[SensorHealthStatus._1]: "warning",
+	[SensorHealthStatus._2]: "error",
+	[SensorHealthStatus._3]: "stale",
+	[SensorHealthStatus._4]: "offline",
+	[SensorHealthStatus._5]: "offline",
+};
+
+const KNOWN_TYPES: SensorType[] = ["temperature", "humidity", "co2", "o2", "pressure", "energy"];
+
+function toSensorType(raw: string | null | undefined): SensorType {
+	const v = (raw ?? "").toLowerCase() as SensorType;
+	return KNOWN_TYPES.includes(v) ? v : "temperature";
+}
+
+function itemsOf<T>(data: unknown): T[] {
+	return ((data as { items?: T[] | null } | null | undefined)?.items ?? []) as T[];
+}
 
 /**
  * ViewModel for the Sensors Configuration page.
  * Manages sensor CRUD operations, filtering, and UI state.
  */
 class SensorsConfigViewModel implements Disposable, FilterableViewModel {
-	// Observable state - data
-	sensors: Sensor[];
+	// Real data from the API (sensors/health gives name, site, equipment, last value/seen)
+	#healthQuery = getSensorHealthListV1ObservedQuery();
+	#sensorsQuery = getAllSensorsV1ObservedQuery();
+	#sitesQuery = getAllSitesV1ObservedQuery();
+	#equipmentQuery = getAllEquipmentV1ObservedQuery();
+	#thresholdsQuery = getAllThresholdsV1ObservedQuery();
+	#loaded = false;
 
-	// Readonly reference data
-	readonly sites: Site[];
-	readonly equipment: Equipment[];
+	/** Local edits (editor / status toggle) layered over API data until persisted. */
+	localOverrides: Record<string, Sensor> = {};
+	localAdded: Sensor[] = [];
+
+	// Readonly reference data (static option lists)
 	readonly sensorTypeOptions: SensorTypeOption[];
 	readonly transformTypeOptions: TransformTypeOption[];
 
@@ -56,14 +92,91 @@ class SensorsConfigViewModel implements Disposable, FilterableViewModel {
 
 	constructor() {
 		makeAutoObservable(this);
-		this.sensors = getSensors();
-		this.sites = getSites();
-		this.equipment = getEquipment();
 		this.sensorTypeOptions = getSensorTypeOptions();
 		this.transformTypeOptions = getTransformTypeOptions();
 	}
 
-	getEquipmentBySite = (siteId: string): Equipment[] => getEquipmentBySiteId(siteId);
+	/** Load (once) all data sources for the page. */
+	load = () => {
+		if (this.#loaded) return;
+		this.#loaded = true;
+		this.#healthQuery.load({ query: PAGE });
+		this.#sensorsQuery.load({ query: PAGE });
+		this.#sitesQuery.load({ query: PAGE });
+		this.#equipmentQuery.load({ query: PAGE });
+		this.#thresholdsQuery.load({ query: PAGE });
+	};
+
+	get isLoading(): boolean {
+		return this.#healthQuery.isLoading && this.apiSensors.length === 0;
+	}
+
+	get hasError(): boolean {
+		return this.#healthQuery.hasError;
+	}
+
+	get sites(): Site[] {
+		return itemsOf<SiteResponse>(this.#sitesQuery.data).map((s) => ({
+			id: s.id ?? "",
+			name: s.name ?? "",
+			location: [s.city, s.state].filter(Boolean).join(", "),
+		}));
+	}
+
+	get equipment(): Equipment[] {
+		return itemsOf<EquipmentResponse>(this.#equipmentQuery.data).map((e) => ({
+			id: e.id ?? "",
+			siteId: e.siteId ?? "",
+			name: e.name ?? "",
+			type: e.equipmentType ?? "",
+		}));
+	}
+
+	get #thresholdById(): Map<string, ThresholdResponse> {
+		return new Map(
+			itemsOf<ThresholdResponse>(this.#thresholdsQuery.data).map((t) => [t.id ?? "", t]),
+		);
+	}
+
+	get #sensorById(): Map<string, SensorResponse> {
+		return new Map(itemsOf<SensorResponse>(this.#sensorsQuery.data).map((s) => [s.id ?? "", s]));
+	}
+
+	/** Sensors as returned by the API, mapped to the config page model. */
+	get apiSensors(): Sensor[] {
+		const thresholds = this.#thresholdById;
+		const sensorsById = this.#sensorById;
+		return itemsOf<SensorHealthListItemResponse>(this.#healthQuery.data).map((h) => {
+			const raw = sensorsById.get(h.id ?? "");
+			const threshold = raw?.thresholdId ? thresholds.get(raw.thresholdId) : undefined;
+			return {
+				id: h.id ?? "",
+				name: h.name ?? raw?.serial ?? "",
+				type: toSensorType(h.sensorType ?? raw?.sensorTypeName),
+				siteId: h.siteId ?? "",
+				siteName: h.siteName ?? undefined,
+				equipmentId: h.equipmentId ?? raw?.equipmentId,
+				equipmentName: h.equipmentName ?? raw?.equipmentName ?? undefined,
+				value: h.lastValue ?? undefined,
+				unit: unitSymbol(h.unit),
+				status: h.healthStatus != null ? HEALTH_TO_STATUS[h.healthStatus] : "offline",
+				lastSeen: h.lastSeenAt ? new Date(h.lastSeenAt).toISOString() : undefined,
+				min: threshold?.min,
+				max: threshold?.max,
+			} satisfies Sensor;
+		});
+	}
+
+	/** API sensors with local edits applied, plus locally registered ones. */
+	get sensors(): Sensor[] {
+		const merged = this.apiSensors.map((s) => this.localOverrides[s.id] ?? s);
+		return [...merged, ...this.localAdded].sort(
+			(a, b) => (a.siteName ?? "").localeCompare(b.siteName ?? "") || a.name.localeCompare(b.name),
+		);
+	}
+
+	getEquipmentBySite = (siteId: string): Equipment[] =>
+		this.equipment.filter((e) => e.siteId === siteId);
 
 	getUnitForSensorType = (type: SensorType): string => getUnitForSensor(type);
 
@@ -159,12 +272,22 @@ class SensorsConfigViewModel implements Disposable, FilterableViewModel {
 	};
 
 	saveSensor = (sensor: Sensor) => {
+		const withNames: Sensor = {
+			...sensor,
+			siteName: sensor.siteName ?? this.sites.find((s) => s.id === sensor.siteId)?.name,
+			equipmentName:
+				sensor.equipmentName ?? this.equipment.find((e) => e.id === sensor.equipmentId)?.name,
+		};
 		if (this.editingSensor) {
 			// Update existing sensor
-			this.sensors = this.sensors.map((s) => (s.id === sensor.id ? sensor : s));
+			if (this.localAdded.some((s) => s.id === sensor.id)) {
+				this.localAdded = this.localAdded.map((s) => (s.id === sensor.id ? withNames : s));
+			} else {
+				this.localOverrides = { ...this.localOverrides, [sensor.id]: withNames };
+			}
 		} else {
 			// Create new sensor
-			this.sensors = [...this.sensors, sensor];
+			this.localAdded = [...this.localAdded, withNames];
 		}
 		this.closeEditor();
 	};
@@ -188,9 +311,15 @@ class SensorsConfigViewModel implements Disposable, FilterableViewModel {
 	};
 
 	toggleSensorStatus = (id: string, status: string) => {
-		this.sensors = this.sensors.map((s) =>
-			s.id === id ? { ...s, status: status as SensorStatus } : s,
-		);
+		const current = this.sensors.find((s) => s.id === id);
+		if (current) {
+			const updated = { ...current, status: status as SensorStatus };
+			if (this.localAdded.some((s) => s.id === id)) {
+				this.localAdded = this.localAdded.map((s) => (s.id === id ? updated : s));
+			} else {
+				this.localOverrides = { ...this.localOverrides, [id]: updated };
+			}
+		}
 		// Also update selected sensor if viewing details
 		if (this.selectedSensor?.id === id) {
 			this.selectedSensor = { ...this.selectedSensor, status: status as SensorStatus };
@@ -205,5 +334,6 @@ class SensorsConfigViewModel implements Disposable, FilterableViewModel {
 export const sensorsConfigViewModel = new SensorsConfigViewModel();
 
 export function useSensorsConfigViewModel() {
+	sensorsConfigViewModel.load();
 	return sensorsConfigViewModel;
 }

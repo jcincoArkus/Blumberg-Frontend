@@ -21,7 +21,7 @@ const SensorsConfigPage = observer(function SensorsConfigPage() {
 
 	return (
 		<div className="container py-6">
-			<div className="mb-6 flex items-center justify-between">
+			<div className="mb-6 flex flex-wrap items-center justify-between gap-3">
 				<div>
 					<h1 className="text-2xl font-semibold tracking-tight">{t`Sensor Management`}</h1>
 					<p className="text-muted-foreground text-sm">
@@ -33,6 +33,15 @@ const SensorsConfigPage = observer(function SensorsConfigPage() {
 					{t`Register Sensor`}
 				</Button>
 			</div>
+
+			{vm.hasError && (
+				<div className="mb-4 rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
+					{t`Couldn't load sensors. Please refresh the page to try again.`}
+				</div>
+			)}
+			{vm.isLoading && (
+				<div className="mb-4 text-sm text-muted-foreground">{t`Loading sensors…`}</div>
+			)}
 
 			<ConfigSensorsTable
 				sensors={vm.filteredSensors}
