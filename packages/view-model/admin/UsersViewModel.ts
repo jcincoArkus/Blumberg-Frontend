@@ -70,6 +70,11 @@ class UsersViewModel implements Disposable {
 		return this.#adminsQuery.isLoading;
 	}
 
+	/** True until the first users response (or error) arrives; false during refetches. */
+	get isInitialLoading(): boolean {
+		return this.#adminsQuery.data == null && !this.#adminsQuery.hasError;
+	}
+
 	get apiUsers(): User[] {
 		const data = this.#adminsQuery.data as { items?: AdminResponse[] | null } | undefined;
 		const me = authViewModel.currentUser;

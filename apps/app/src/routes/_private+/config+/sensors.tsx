@@ -3,7 +3,7 @@ import { Plus } from "lucide-react";
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
 import { sensorThresholdSeverityOptions, sensorThresholdTimeOptions } from "~@/mock-data";
-import { Button } from "~@/ui";
+import { Button, LoadingState } from "~@/ui";
 import { useSensorsConfigViewModel } from "~@/view-model";
 import {
 	ConfigSensorsTable,
@@ -39,29 +39,29 @@ const SensorsConfigPage = observer(function SensorsConfigPage() {
 					{t`Couldn't load sensors. Please refresh the page to try again.`}
 				</div>
 			)}
-			{vm.isLoading && (
-				<div className="mb-4 text-sm text-muted-foreground">{t`Loading sensors…`}</div>
+			{vm.isInitialLoading && vm.sensors.length === 0 ? (
+				<LoadingState variant="page" label={t`Loading sensors…`} />
+			) : (
+				<ConfigSensorsTable
+					sensors={vm.filteredSensors}
+					sites={vm.sites}
+					equipment={vm.equipment}
+					searchQuery={vm.searchQuery}
+					onSearchChange={vm.setSearchQuery}
+					statusFilter={vm.statusFilter}
+					onStatusFilterChange={vm.setStatusFilter}
+					typeFilter={vm.typeFilter}
+					onTypeFilterChange={vm.setTypeFilter}
+					siteFilter={vm.siteFilter}
+					onSiteFilterChange={vm.setSiteFilter}
+					equipmentFilter={vm.equipmentFilter}
+					onEquipmentFilterChange={vm.setEquipmentFilter}
+					onViewDetails={vm.viewDetails}
+					onEdit={vm.openEditor}
+					onSetThreshold={vm.openThresholdEditor}
+					onToggleStatus={vm.toggleSensorStatus}
+				/>
 			)}
-
-			<ConfigSensorsTable
-				sensors={vm.filteredSensors}
-				sites={vm.sites}
-				equipment={vm.equipment}
-				searchQuery={vm.searchQuery}
-				onSearchChange={vm.setSearchQuery}
-				statusFilter={vm.statusFilter}
-				onStatusFilterChange={vm.setStatusFilter}
-				typeFilter={vm.typeFilter}
-				onTypeFilterChange={vm.setTypeFilter}
-				siteFilter={vm.siteFilter}
-				onSiteFilterChange={vm.setSiteFilter}
-				equipmentFilter={vm.equipmentFilter}
-				onEquipmentFilterChange={vm.setEquipmentFilter}
-				onViewDetails={vm.viewDetails}
-				onEdit={vm.openEditor}
-				onSetThreshold={vm.openThresholdEditor}
-				onToggleStatus={vm.toggleSensorStatus}
-			/>
 
 			<SensorEditor
 				open={vm.isEditorOpen}

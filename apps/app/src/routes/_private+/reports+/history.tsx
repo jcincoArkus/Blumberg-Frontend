@@ -1,6 +1,6 @@
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
+import { LoadingState, SpinnerOverlay, Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
 import { useHistoricalReportsViewModel } from "~@/view-model";
 import { AlertsHistoryTab, HistoricalFilters, ReadingsHistoryTab } from "~@/views";
 
@@ -47,23 +47,32 @@ const HistoricalReportsPage = observer(function HistoricalReportsPage() {
 				</TabsList>
 
 				<TabsContent value="readings" className="space-y-6">
-					{vm.isLoadingReadings && vm.readings.length === 0 && (
-						<p className="text-sm text-muted-foreground">{t`Loading readings…`}</p>
+					{vm.isInitialReadingsLoading ? (
+						<LoadingState variant="section" label={t`Loading readings…`} />
+					) : (
+						<div className="relative">
+							<ReadingsHistoryTab
+								readings={vm.readings}
+								previousReadings={vm.previousReadings}
+								comparePrevious={vm.comparePrevious}
+							/>
+							{/* Filter change: keep current readings visible while the new ones load */}
+							{vm.isLoadingReadings && <SpinnerOverlay />}
+						</div>
 					)}
-					<ReadingsHistoryTab
-						readings={vm.readings}
-						previousReadings={vm.previousReadings}
-						comparePrevious={vm.comparePrevious}
-					/>
 				</TabsContent>
 
 				<TabsContent value="alerts" className="space-y-6">
-					<AlertsHistoryTab
-						alerts={vm.alerts}
-						previousAlerts={vm.previousAlerts}
-						comparePrevious={vm.comparePrevious}
-						equipment={vm.equipment}
-					/>
+					{vm.isInitialAlertsLoading ? (
+						<LoadingState variant="section" label={t`Loading alerts…`} />
+					) : (
+						<AlertsHistoryTab
+							alerts={vm.alerts}
+							previousAlerts={vm.previousAlerts}
+							comparePrevious={vm.comparePrevious}
+							equipment={vm.equipment}
+						/>
+					)}
 				</TabsContent>
 			</Tabs>
 		</div>

@@ -1,7 +1,7 @@
 import { Info, User } from "lucide-react";
 
 import { t } from "~@/i18n/macro";
-import { Badge } from "~@/ui";
+import { Badge, LoadingState } from "~@/ui";
 
 import type { AlertEvent } from "../types";
 import { getEventTypeConfig } from "./constants";
@@ -19,7 +19,7 @@ export function EventsHistorySection({ events, isLoading }: EventsHistorySection
 		<div className="space-y-4">
 			<h3 className="text-sm font-semibold text-foreground">{t`Events History`}</h3>
 			{isLoading ? (
-				<div className="py-4 text-center text-sm text-muted-foreground">{t`Loading…`}</div>
+				<LoadingState variant="inline" />
 			) : events.length === 0 ? (
 				<div className="py-4 text-center text-sm text-muted-foreground">
 					{t`No events recorded`}

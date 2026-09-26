@@ -7,6 +7,7 @@ import {
 	Badge,
 	Button,
 	cn,
+	LoadingState,
 	Pagination,
 	Table,
 	TableBody,
@@ -81,12 +82,7 @@ export function IngestionHistory({
 	}
 
 	if (loading) {
-		return (
-			<div className="py-12 flex items-center justify-center gap-2 text-muted-foreground">
-				<Loader2 className="size-6 animate-spin" aria-hidden="true" />
-				<p className="text-sm">{t`Loading ingestion runs...`}</p>
-			</div>
-		);
+		return <LoadingState variant="section" label={t`Loading ingestion runs...`} />;
 	}
 
 	if (runs.length === 0) {

@@ -1,7 +1,7 @@
 import { Mail } from "lucide-react";
 
 import { t } from "~@/i18n/macro";
-import { Badge } from "~@/ui";
+import { Badge, LoadingState } from "~@/ui";
 
 import type { AlertNotification } from "../types";
 import { getNotificationReasonLabels } from "./constants";
@@ -9,15 +9,21 @@ import { formatTimeOnly } from "./helpers";
 
 interface NotificationsAuditSectionProps {
 	notifications: AlertNotification[];
+	isLoading?: boolean;
 }
 
-export function NotificationsAuditSection({ notifications }: NotificationsAuditSectionProps) {
+export function NotificationsAuditSection({
+	notifications,
+	isLoading = false,
+}: NotificationsAuditSectionProps) {
 	const notificationReasonLabels = getNotificationReasonLabels();
 
 	return (
 		<div className="space-y-4">
 			<h3 className="text-sm font-semibold text-foreground">{t`Notifications Audit`}</h3>
-			{notifications.length === 0 ? (
+			{isLoading ? (
+				<LoadingState variant="inline" />
+			) : notifications.length === 0 ? (
 				<div className="py-4 text-center text-sm text-muted-foreground">
 					{t`No notifications sent`}
 				</div>

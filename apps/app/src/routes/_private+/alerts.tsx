@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { DashboardPanel } from "~@/ui";
+import { DashboardPanel, LoadingState } from "~@/ui";
 import { useAlertsViewModel } from "~@/view-model";
 import type { Alert } from "~@/views";
 import { AlertsStatusTabs, AlertsWorkQueueTable, KPIGauge } from "~@/views";
@@ -11,12 +11,8 @@ const AlertsPage = observer(function AlertsPage() {
 	const vm = useAlertsViewModel();
 	const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
 
-	if (vm.isLoading && vm.alerts.length === 0) {
-		return (
-			<div className="flex items-center justify-center py-12">
-				<p className="text-sm text-muted-foreground">{t`Loading alerts…`}</p>
-			</div>
-		);
+	if (vm.isInitialLoading && vm.alerts.length === 0) {
+		return <LoadingState variant="page" label={t`Loading alerts…`} />;
 	}
 
 	if (vm.error && vm.alerts.length === 0) {

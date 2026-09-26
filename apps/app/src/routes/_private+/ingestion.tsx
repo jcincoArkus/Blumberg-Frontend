@@ -43,7 +43,8 @@ const DataIngestionPage = observer(function DataIngestionPage() {
 					<ApiIngestionTab
 						apiRuns24h={vm.apiRuns24h}
 						validSensorIds={vm.validSensorIds}
-						runsLoading={vm.loadingRuns}
+						runsLoading={vm.isRecent24hLoading}
+						statsLoading={vm.isStats24hLoading}
 						runsError={vm.runsError}
 						onValidateReading={validateSensorReading}
 						onSubmitReadings={vm.submitReadings}
@@ -71,7 +72,7 @@ const DataIngestionPage = observer(function DataIngestionPage() {
 			>
 				<IngestionHistory
 					runs={vm.allRuns}
-					loading={vm.loadingRuns}
+					loading={vm.isHistoryLoading}
 					error={vm.runsError}
 					onViewDetails={vm.fetchRunDetail}
 					loadingDetail={vm.loadingDetail}

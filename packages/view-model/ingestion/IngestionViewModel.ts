@@ -146,6 +146,21 @@ class IngestionViewModel {
 		);
 	}
 
+	/** Ingestion history page has no data yet (first load or a newly requested page). */
+	get isHistoryLoading(): boolean {
+		return this.#runsListQuery.data == null && !this.#runsListQuery.hasError;
+	}
+
+	/** Recent 24h runs page has no data yet (first load or a newly requested page). */
+	get isRecent24hLoading(): boolean {
+		return this.#runs24hQuery.data == null && !this.#runs24hQuery.hasError;
+	}
+
+	/** 24h KPI stats have no data yet. */
+	get isStats24hLoading(): boolean {
+		return this.#stats24hQuery.data == null && !this.#stats24hQuery.hasError;
+	}
+
 	get loadingSensors(): boolean {
 		return this.#sensorsQuery.isLoading;
 	}

@@ -127,7 +127,7 @@ export function AlertDetailsDrawer({
 					<Separator />
 					<EventsHistorySection events={events} isLoading={isDetailLoading} />
 					<Separator />
-					<NotificationsAuditSection notifications={notifications} />
+					<NotificationsAuditSection notifications={notifications} isLoading={isDetailLoading} />
 				</div>
 			</DrawerContent>
 		</Drawer>

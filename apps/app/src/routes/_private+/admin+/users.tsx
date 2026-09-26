@@ -2,7 +2,7 @@ import { toast } from "sonner";
 
 import { t } from "~@/i18n/macro";
 import { observer } from "~@/mobx";
-import { DashboardPanel, Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
+import { DashboardPanel, LoadingState, Tabs, TabsContent, TabsList, TabsTrigger } from "~@/ui";
 import { useUsersViewModel } from "~@/view-model";
 import type { Role, RolePermissions, User } from "~@/views";
 import {
@@ -22,13 +22,13 @@ import {
 const AdminUsersPage = observer(function AdminUsersPage() {
 	const vm = useUsersViewModel();
 
-	if (vm.isLoading && vm.users.length === 0) {
+	if (vm.isInitialLoading && vm.users.length === 0) {
 		return (
 			<DashboardPanel
 				title={t`User Management`}
 				description={t`Manage users, roles, and permissions`}
 			>
-				<p className="py-8 text-center text-sm text-muted-foreground">{t`Loading users…`}</p>
+				<LoadingState variant="section" label={t`Loading users…`} />
 			</DashboardPanel>
 		);
 	}

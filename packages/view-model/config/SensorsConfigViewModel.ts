@@ -115,6 +115,11 @@ class SensorsConfigViewModel implements Disposable, FilterableViewModel {
 		return this.#healthQuery.hasError;
 	}
 
+	/** True until the first sensors response (or error) arrives; false during refetches. */
+	get isInitialLoading(): boolean {
+		return this.#healthQuery.data == null && !this.#healthQuery.hasError;
+	}
+
 	get sites(): Site[] {
 		return itemsOf<SiteResponse>(this.#sitesQuery.data).map((s) => ({
 			id: s.id ?? "",

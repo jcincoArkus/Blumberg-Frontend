@@ -72,6 +72,8 @@ class HistoricalReportsViewModel {
 	readings: HistoricalReading[] = [];
 	previousReadings: HistoricalReading[] = [];
 	isLoadingReadings = false;
+	/** Whether a readings request has completed at least once. */
+	hasLoadedReadings = false;
 
 	#requestId = 0;
 	#disposer: (() => void) | null = null;
@@ -180,7 +182,27 @@ class HistoricalReportsViewModel {
 			this.readings = current.flat().sort(byTimeDesc);
 			this.previousReadings = prev.flat().sort(byTimeDesc);
 			this.isLoadingReadings = false;
+			this.hasLoadedReadings = true;
 		});
+	}
+
+	/**
+	 * True while the first readings are still on their way (reference data or readings request),
+	 * so the tab can show a loading state instead of an empty-state flash. Refetches after a
+	 * filter change keep the previous readings on screen and are not included.
+	 */
+	get isInitialReadingsLoading(): boolean {
+		if (this.readings.length > 0) return false;
+		return (
+			equipmentOverviewViewModel.isLoading ||
+			this.isLoadingReadings ||
+			(!this.hasLoadedReadings && this.#filteredSensors.length > 0)
+		);
+	}
+
+	/** True until the first alerts response arrives (not during background polling). */
+	get isInitialAlertsLoading(): boolean {
+		return alertsViewModel.isInitialLoading && alertsViewModel.alerts.length === 0;
 	}
 
 	get dateRange() {

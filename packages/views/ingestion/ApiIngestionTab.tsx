@@ -13,6 +13,7 @@ import {
 	CardHeader,
 	CardTitle,
 	cn,
+	LoadingState,
 	Pagination,
 	Table,
 	TableBody,
@@ -76,6 +77,8 @@ interface ApiIngestionTabProps {
 	apiRuns24h: IngestionRun[];
 	validSensorIds: string[];
 	runsLoading?: boolean;
+	/** True while the 24h KPI stats are loading for the first time */
+	statsLoading?: boolean;
 	runsError?: string | null;
 	onValidateReading: (
 		reading: { sensorId?: string; timestamp?: string; value?: number },
@@ -103,6 +106,7 @@ export function ApiIngestionTab({
 	apiRuns24h,
 	validSensorIds: _validSensorIds,
 	runsLoading = false,
+	statsLoading = false,
 	runsError = null,
 	onValidateReading: _onValidateReading,
 	onSubmitReadings,
@@ -139,6 +143,9 @@ export function ApiIngestionTab({
 					errors: errorCodes.size,
 				};
 			})();
+
+	// Avoid showing 0 in the KPI cards before the first stats (or fallback runs) arrive
+	const kpisLoading = !last24hStats && (statsLoading || runsLoading);
 
 	const handleTestPayload = async () => {
 		setTestResult(null);
@@ -332,7 +339,11 @@ export function ApiIngestionTab({
 						<Database className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
 					</CardHeader>
 					<CardContent>
-						<div className="text-2xl font-bold">{kpis.totalRecords}</div>
+						{kpisLoading ? (
+							<LoadingState variant="inline" label={null} className="justify-start py-2" />
+						) : (
+							<div className="text-2xl font-bold">{kpis.totalRecords}</div>
+						)}
 						<p className="text-xs text-muted-foreground mt-1">{t`Last 24h`}</p>
 					</CardContent>
 				</Card>
@@ -342,10 +353,16 @@ export function ApiIngestionTab({
 						<CheckCircle2 className="h-4 w-4 text-success-foreground" aria-hidden="true" />
 					</CardHeader>
 					<CardContent>
-						<div className="text-2xl font-bold text-success-foreground">{kpis.accepted}</div>
-						<p className="text-xs text-muted-foreground mt-1">
-							{t`${kpis.totalRecords > 0 ? Math.round((kpis.accepted / kpis.totalRecords) * 100) : 0}% success rate`}
-						</p>
+						{kpisLoading ? (
+							<LoadingState variant="inline" label={null} className="justify-start py-2" />
+						) : (
+							<>
+								<div className="text-2xl font-bold text-success-foreground">{kpis.accepted}</div>
+								<p className="text-xs text-muted-foreground mt-1">
+									{t`${kpis.totalRecords > 0 ? Math.round((kpis.accepted / kpis.totalRecords) * 100) : 0}% success rate`}
+								</p>
+							</>
+						)}
 					</CardContent>
 				</Card>
 				<Card>
@@ -354,10 +371,16 @@ export function ApiIngestionTab({
 						<XCircle className="h-4 w-4 text-danger" aria-hidden="true" />
 					</CardHeader>
 					<CardContent>
-						<div className="text-2xl font-bold text-danger">{kpis.rejected}</div>
-						<p className="text-xs text-muted-foreground mt-1">
-							{t`${kpis.totalRecords > 0 ? Math.round((kpis.rejected / kpis.totalRecords) * 100) : 0}% rejection rate`}
-						</p>
+						{kpisLoading ? (
+							<LoadingState variant="inline" label={null} className="justify-start py-2" />
+						) : (
+							<>
+								<div className="text-2xl font-bold text-danger">{kpis.rejected}</div>
+								<p className="text-xs text-muted-foreground mt-1">
+									{t`${kpis.totalRecords > 0 ? Math.round((kpis.rejected / kpis.totalRecords) * 100) : 0}% rejection rate`}
+								</p>
+							</>
+						)}
 					</CardContent>
 				</Card>
 				<Card>
@@ -369,9 +392,13 @@ export function ApiIngestionTab({
 						/>
 					</CardHeader>
 					<CardContent>
-						<div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
-							{kpis.errors}
-						</div>
+						{kpisLoading ? (
+							<LoadingState variant="inline" label={null} className="justify-start py-2" />
+						) : (
+							<div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
+								{kpis.errors}
+							</div>
+						)}
 						<p className="text-xs text-muted-foreground mt-1">{t`Unique error types`}</p>
 					</CardContent>
 				</Card>
@@ -390,10 +417,7 @@ export function ApiIngestionTab({
 						</div>
 					)}
 					{runsLoading ? (
-						<div className="py-8 flex items-center justify-center gap-2 text-muted-foreground">
-							<Loader2 className="size-6 animate-spin" aria-hidden="true" />
-							<p className="text-sm">{t`Loading runs...`}</p>
-						</div>
+						<LoadingState variant="section" label={t`Loading runs...`} />
 					) : apiRuns24h.length === 0 ? (
 						<div className="py-8 text-center">
 							<Database className="size-8 mx-auto mb-2 text-muted-foreground" aria-hidden="true" />

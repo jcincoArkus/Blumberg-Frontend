@@ -125,6 +125,11 @@ class AlertsViewModel implements Disposable {
 		return this.#alertsQuery.isFetching;
 	}
 
+	/** True until the first alerts response (or error) arrives; false during background polling. */
+	get isInitialLoading(): boolean {
+		return this.#alertsQuery.data == null && !this.#alertsQuery.hasError;
+	}
+
 	get hasError(): boolean {
 		return this.#alertsQuery.hasError;
 	}
